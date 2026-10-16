@@ -31,7 +31,7 @@ docs/
 |---|---|---|---|
 | PR → `main` | `ci-pr.yml` | validate + type-check + cobertura + smoke (3 CTs) | ~5 min |
 | Push em `main` | `ci-merge.yml` | suíte completa com retry | ~50 min |
-| 03:00 BRT diário | `noturno.yml` | suíte completa + diff drift | ~55 min |
+| Manual (botão **Run workflow**) | `suite-completa.yml` | suíte completa + diff drift + abre issue se diverge | ~55 min |
 
 **Publicação (`bbuilder publish`)** continua sendo ação manual com confirmação. O CI nunca publica.
 
@@ -50,4 +50,4 @@ Para abrir um PR, siga o [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ![PR checks](https://github.com/wiv-operations/bbuilder_mbrf_hmg/actions/workflows/ci-pr.yml/badge.svg)
 ![Suite E2E](https://github.com/wiv-operations/bbuilder_mbrf_hmg/actions/workflows/ci-merge.yml/badge.svg)
-![Noturno](https://github.com/wiv-operations/bbuilder_mbrf_hmg/actions/workflows/noturno.yml/badge.svg)
+![Suite completa (manual)](https://github.com/wiv-operations/bbuilder_mbrf_hmg/actions/workflows/suite-completa.yml/badge.svg)

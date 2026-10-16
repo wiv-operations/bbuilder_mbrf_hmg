@@ -13,7 +13,7 @@ Este repositório hospeda os **flows** do chatbot da Central MBRF rodando no Bli
    - Script `scripts/check-coverage.mjs` — reprova o PR se algum state alterado não tem CT no mapa.
    - Smoke test (CT-20, CT-23, CT-25) contra o bot publicado em QAS.
 6. Após aprovação, o merge dispara a **suíte E2E completa**. Enquanto rodar, outros merges não são bloqueados; mas o status check sinaliza falhas.
-7. Toda noite, o pipeline noturno roda a suíte inteira novamente e compara o repo com o publicado via `bbuilder diff --published`. Se houver drift (alguém editou pelo canvas sem commitar), uma issue é aberta automaticamente.
+7. Quando quiser, rode manualmente o workflow **Suite completa (manual)** pela aba Actions. Ele dispara a suíte inteira + `bbuilder diff --published` e, se detectar drift (alguém editou pelo canvas sem commitar), abre uma issue automaticamente.
 8. **Publicar** continua ação manual: `bbuilder publish` roda localmente, com confirmação explícita. O CI nunca publica.
 
 ## Convenções
@@ -54,7 +54,7 @@ A conta de serviço precisa de permissão de **leitura e teste** no router `hmgm
 ## Perguntas comuns
 
 **Posso editar pelo canvas do Blip?**
-Pode, mas rode `bbuilder pull` imediatamente depois para trazer a mudança ao repo e abra um PR. Senão o noturno acusa drift.
+Pode, mas rode `bbuilder pull` imediatamente depois para trazer a mudança ao repo e abra um PR. Senão a próxima rodada manual do workflow "Suite completa" acusa drift.
 
 **Preciso criar CT para mudança de posição no canvas?**
 Não. O `check-coverage.mjs` já ignora mudanças só em `$position`.

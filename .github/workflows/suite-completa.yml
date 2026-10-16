@@ -1,8 +1,10 @@
-name: Noturno — suite + diff drift
+name: Suite completa (manual)
+
+# Suite E2E inteira + diff local x publicado.
+# Útil para auditoria sob demanda, investigação de incidente ou verificação
+# antes de uma publicação importante. Não roda em agenda — só manualmente.
 
 on:
-  schedule:
-    - cron: '0 6 * * *'   # 06:00 UTC = 03:00 BRT
   workflow_dispatch:
 
 permissions:
@@ -10,7 +12,7 @@ permissions:
   issues: write
 
 jobs:
-  nightly:
+  suite:
     name: Suite completa + diff --published
     runs-on: ubuntu-latest
     timeout-minutes: 120
@@ -51,7 +53,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: noturno-${{ github.run_number }}
+          name: suite-completa-${{ github.run_number }}
           path: |
             docs/evidencias/*.log
             drift.txt
@@ -68,7 +70,7 @@ jobs:
             github.rest.issues.create({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              title: `Drift detectado entre repo e Blip (noturno #${context.runNumber})`,
+              title: `Drift detectado entre repo e Blip (run #${context.runNumber})`,
               body: 'A verificação noturna encontrou diferenças entre o `main` do repositório e o que está publicado no Blip. Isso costuma indicar edição direto pelo canvas.\n\n```\n' + drift + '\n```',
               labels: ['drift']
             })
