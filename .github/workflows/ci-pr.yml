@@ -1,0 +1,72 @@
+name: PR checks
+
+on:
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  validate-and-smoke:
+    name: validate + type-check + cobertura + smoke
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # para o check-coverage conseguir ler o base-ref
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install deps
+        run: npm ci
+
+      - name: bbuilder validate (contra baseline)
+        run: node scripts/validate-against-baseline.mjs
+
+      - name: TypeScript type-check
+        run: npm run type-check
+
+      - name: Check de cobertura (states alterados vs tests/coverage.json)
+        id: coverage
+        run: |
+          node scripts/check-coverage.mjs origin/${{ github.base_ref }} | tee coverage-report.md
+        continue-on-error: true
+
+      - name: Postar comentário no PR
+        if: always()
+        uses: marocchino/sticky-pull-request-comment@v2
+        with:
+          header: coverage
+          path: coverage-report.md
+
+      - name: Falhar se cobertura reprovou
+        if: steps.coverage.outcome == 'failure'
+        run: exit 1
+
+      - name: bbuilder login
+        env:
+          BBUILDER_ACCESS_KEY: ${{ secrets.BBUILDER_ACCESS_KEY }}
+          BBUILDER_EMAIL: ${{ secrets.BBUILDER_EMAIL }}
+        run: npx bbuilder login --email "$BBUILDER_EMAIL" --access-key "$BBUILDER_ACCESS_KEY"
+
+      - name: Smoke test (3 CTs rápidos, ~2 min)
+        env:
+          BBUILDER_ACCESS_KEY: ${{ secrets.BBUILDER_ACCESS_KEY }}
+        run: node scripts/test-with-retry.mjs "CT-23|CT-25|CT-20" --max-retries 1
+
+      - name: Upload evidências
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: evidencias-pr-${{ github.event.pull_request.number }}
+          path: docs/evidencias/*.log
+          if-no-files-found: ignore
+          retention-days: 7

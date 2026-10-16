@@ -1,0 +1,469 @@
+{
+  "onboarding": {
+    "$contentActions": [
+      {
+        "input": {
+          "bypass": false,
+          "variable": "Initial"
+        }
+      }
+    ],
+    "$conditionOutputs": [
+      {
+        "stateId": "{{input.content@lastState}}",
+        "typeOfStateId": "variable",
+        "conditions": [
+          {
+            "source": "context",
+            "comparison": "exists",
+            "values": [],
+            "variable": "input.content@lastState"
+          }
+        ]
+      },
+      {
+        "stateId": "4a14c396-baa2-46f0-b7a1-7f44cbfda468",
+        "typeOfStateId": "state",
+        "conditions": [
+          {
+            "source": "input",
+            "comparison": "exists",
+            "values": []
+          }
+        ]
+      }
+    ],
+    "$enteringCustomActions": [],
+    "$leavingCustomActions": [],
+    "$defaultOutput": {
+      "stateId": "fallback"
+    },
+    "root": true,
+    "$title": "Início",
+    "$position": {
+      "top": "378.667px",
+      "left": "1195.67px"
+    }
+  },
+  "fallback": {
+    "$contentActions": [
+      {
+        "input": {
+          "bypass": true
+        }
+      }
+    ],
+    "$conditionOutputs": [],
+    "$enteringCustomActions": [
+      {
+        "type": "TrackEvent",
+        "settings": {
+          "extras": {},
+          "category": "Inputs inesperados",
+          "action": "{{state.previous.name}} - {{input.content}}"
+        },
+        "conditions": []
+      },
+      {
+        "type": "ExecuteScript",
+        "settings": {
+          "function": "run",
+          "source": "function run(inputContent) {\n\tlet redirect = \"{{resource.redirect@falhaAPI}}\"\n\n\tlet previous = \"{{state.previous.id}}\";\n\tlet previousSubFlow = \"{{stateSubFluxo}}\";\n\ttry {\n\t\treturn {\n\t\t\t\"origin\": redirect,\n\t\t\t\"lastState\": previousSubFlow ? previousSubFlow : previous,\n\t\t\t\"lastName\": \"{{state.previous.name}}\",\n\t\t\t\"inputType\": \"menu dinamico\",\n\t\t\tinputContent\n\t\t};\n\n\t} catch (error) {\n\t\treturn \"ERROR_FORMATTING_INPUT_CONTENT\"\n\t}\n}",
+          "inputVariables": [
+            "input.content"
+          ],
+          "outputVariable": "inputExcecoes",
+          "LocalTimeZoneEnabled": false
+        },
+        "conditions": []
+      },
+      {
+        "type": "SetVariable",
+        "settings": {
+          "variable": "stateSubFluxo",
+          "expiration": 1
+        },
+        "conditions": []
+      }
+    ],
+    "$leavingCustomActions": [
+      {
+        "type": "Redirect",
+        "settings": {
+          "context": {
+            "type": "text/plain",
+            "value": "{{inputExcecoes}}"
+          },
+          "address": "{{resource.redirect@excecao}}"
+        },
+        "conditions": []
+      }
+    ],
+    "$defaultOutput": {
+      "stateId": "onboarding"
+    },
+    "$title": "Exceções",
+    "$position": {
+      "top": "374.75px",
+      "left": "1409.75px"
+    }
+  },
+  "4a14c396-baa2-46f0-b7a1-7f44cbfda468": {
+    "$contentActions": [
+      {
+        "input": {
+          "bypass": true
+        }
+      }
+    ],
+    "$conditionOutputs": [
+      {
+        "stateId": "97eca0e4-dec9-4919-aeb8-73ff1e49054b",
+        "typeOfStateId": "state",
+        "conditions": [
+          {
+            "source": "context",
+            "comparison": "lessThanOrEquals",
+            "values": [
+              "2",
+              "2.0"
+            ],
+            "variable": "contadorFalhaApi"
+          }
+        ]
+      },
+      {
+        "stateId": "f6786ddc-1acd-4fcd-8ecd-26621222b524",
+        "typeOfStateId": "state",
+        "conditions": [
+          {
+            "source": "context",
+            "comparison": "greaterThanOrEquals",
+            "values": [
+              "3",
+              "3.0"
+            ],
+            "variable": "contadorFalhaApi"
+          }
+        ]
+      },
+      {
+        "stateId": "5394dc88-d7f6-4cca-8af9-f413b646475c",
+        "typeOfStateId": "state",
+        "conditions": [
+          {
+            "source": "input",
+            "comparison": "exists",
+            "values": []
+          }
+        ]
+      }
+    ],
+    "$enteringCustomActions": [],
+    "$leavingCustomActions": [],
+    "$defaultOutput": {
+      "stateId": "fallback"
+    },
+    "$localCustomActions": [],
+    "$title": "Valida qual API deu erro",
+    "$position": {
+      "top": "617px",
+      "left": "1196px"
+    }
+  },
+  "f6786ddc-1acd-4fcd-8ecd-26621222b524": {
+    "$contentActions": [
+      {
+        "action": {
+          "$description": "",
+          "type": "SendMessage",
+          "settings": {
+            "type": "application/vnd.lime.select+json",
+            "content": {
+              "text": "⚠️ Não consegui acessar suas informações agora devido à uma instabilidade momentânea.\n\nVocê pode tentar novamente em alguns instantes ou, se preferir, continuar seu atendimento com a Sophia, que pode te ajudar por outro canal.",
+              "scope": "immediate",
+              "options": [
+                {
+                  "text": "Tentar mais tarde...",
+                  "previewText": "Tentar mais tarde...",
+                  "value": null,
+                  "index": 0,
+                  "type": null
+                },
+                {
+                  "text": "Falar com a Sophia",
+                  "previewText": "Falar com a Sophia",
+                  "value": null,
+                  "index": 1,
+                  "type": null
+                }
+              ],
+              "quikReply": false
+            },
+            "metadata": {}
+          }
+        }
+      },
+      {
+        "input": {
+          "bypass": false
+        }
+      }
+    ],
+    "$conditionOutputs": [
+      {
+        "stateId": "7b03c245-1c10-4497-b15d-b0531a9ef642",
+        "typeOfStateId": "state",
+        "conditions": [
+          {
+            "source": "input",
+            "comparison": "equals",
+            "values": [
+              "Tentar mais tarde..."
+            ]
+          }
+        ]
+      },
+      {
+        "stateId": "e6af4bd8-25a7-4888-b14a-ee3c9d2ae186",
+        "typeOfStateId": "state",
+        "conditions": [
+          {
+            "source": "input",
+            "comparison": "equals",
+            "values": [
+              "Falar com a Sophia"
+            ]
+          }
+        ]
+      }
+    ],
+    "$enteringCustomActions": [
+      {
+        "$description": "",
+        "$inputSchema": {
+          "type": "object",
+          "properties": {},
+          "required": []
+        },
+        "type": "SetVariable",
+        "settings": {
+          "variable": "contadorFalhaApi"
+        },
+        "conditions": []
+      }
+    ],
+    "$leavingCustomActions": [],
+    "$defaultOutput": {
+      "stateId": "fallback"
+    },
+    "$localCustomActions": [],
+    "$title": "Falha em tentar novamente",
+    "$position": {
+      "top": "606px",
+      "left": "912px"
+    }
+  },
+  "97eca0e4-dec9-4919-aeb8-73ff1e49054b": {
+    "$contentActions": [
+      {
+        "input": {
+          "bypass": true
+        }
+      }
+    ],
+    "$conditionOutputs": [
+      {
+        "stateId": "afb9bf1d-21d4-4d4d-94c6-242a0b2d9ab1",
+        "typeOfStateId": "state",
+        "conditions": [
+          {
+            "source": "input",
+            "comparison": "exists",
+            "values": []
+          }
+        ]
+      }
+    ],
+    "$enteringCustomActions": [],
+    "$leavingCustomActions": [],
+    "$defaultOutput": {
+      "stateId": "fallback"
+    },
+    "$localCustomActions": [],
+    "$title": "Trata retry API",
+    "$position": {
+      "top": "629px",
+      "left": "1519px"
+    }
+  },
+  "5394dc88-d7f6-4cca-8af9-f413b646475c": {
+    "$contentActions": [
+      {
+        "input": {
+          "bypass": true
+        }
+      }
+    ],
+    "$conditionOutputs": [
+      {
+        "stateId": "4f27cd38-4d9e-48fa-8f96-2a335744adfb",
+        "typeOfStateId": "state",
+        "conditions": [
+          {
+            "source": "input",
+            "comparison": "exists",
+            "values": []
+          }
+        ]
+      }
+    ],
+    "$enteringCustomActions": [],
+    "$leavingCustomActions": [],
+    "$defaultOutput": {
+      "stateId": "fallback"
+    },
+    "$localCustomActions": [],
+    "$title": "Sucesso API",
+    "$position": {
+      "top": "809px",
+      "left": "1196px"
+    }
+  },
+  "4f27cd38-4d9e-48fa-8f96-2a335744adfb": {
+    "$contentActions": [
+      {
+        "input": {
+          "bypass": true
+        }
+      }
+    ],
+    "$conditionOutputs": [],
+    "$enteringCustomActions": [],
+    "$leavingCustomActions": [],
+    "$defaultOutput": {
+      "stateId": "onboarding",
+      "typeOfStateId": "state"
+    },
+    "$localCustomActions": [],
+    "$title": "[REDIRECT] Continua Fluxo",
+    "$position": {
+      "top": "989px",
+      "left": "1196px"
+    }
+  },
+  "afb9bf1d-21d4-4d4d-94c6-242a0b2d9ab1": {
+    "$contentActions": [
+      {
+        "input": {
+          "bypass": true
+        }
+      }
+    ],
+    "$conditionOutputs": [],
+    "$enteringCustomActions": [],
+    "$leavingCustomActions": [
+      {
+        "type": "Redirect",
+        "settings": {
+          "context": {
+            "type": "text/plain",
+            "value": "{\n\"lastState\": \"{{inputFalhaApi@lastState}}\"\n}"
+          },
+          "address": "{{inputFalhaApi@origin}}"
+        },
+        "conditions": []
+      }
+    ],
+    "$defaultOutput": {
+      "stateId": "onboarding",
+      "typeOfStateId": "state"
+    },
+    "$localCustomActions": [],
+    "$title": "[REDIRECT] Bloco request API",
+    "$position": {
+      "top": "617px",
+      "left": "1783px"
+    }
+  },
+  "7b03c245-1c10-4497-b15d-b0531a9ef642": {
+    "$contentActions": [
+      {
+        "input": {
+          "bypass": true
+        }
+      }
+    ],
+    "$conditionOutputs": [],
+    "$enteringCustomActions": [],
+    "$leavingCustomActions": [
+      {
+        "$description": "",
+        "$inputSchema": {
+          "type": "object",
+          "properties": {},
+          "required": []
+        },
+        "type": "Redirect",
+        "settings": {
+          "context": {
+            "type": "text/plain",
+            "value": "@redirect"
+          },
+          "address": "{{resource.redirect@ajudoEmAlgoMais}}"
+        },
+        "conditions": []
+      }
+    ],
+    "$defaultOutput": {
+      "stateId": "onboarding",
+      "typeOfStateId": "state"
+    },
+    "$localCustomActions": [],
+    "$title": "[REDIRECT] Ajudo em algo mais",
+    "$position": {
+      "top": "449px",
+      "left": "708px"
+    }
+  },
+  "e6af4bd8-25a7-4888-b14a-ee3c9d2ae186": {
+    "$contentActions": [
+      {
+        "input": {
+          "bypass": true
+        }
+      }
+    ],
+    "$conditionOutputs": [],
+    "$enteringCustomActions": [],
+    "$leavingCustomActions": [
+      {
+        "$description": "",
+        "$inputSchema": {
+          "type": "object",
+          "properties": {},
+          "required": []
+        },
+        "type": "Redirect",
+        "settings": {
+          "context": {
+            "type": "text/plain",
+            "value": "@redirect"
+          },
+          "address": "{{resource.redirect@falarComSophia}}"
+        },
+        "conditions": []
+      }
+    ],
+    "$defaultOutput": {
+      "stateId": "onboarding",
+      "typeOfStateId": "state"
+    },
+    "$localCustomActions": [],
+    "$title": "[REDIRECT] Falar com a Sophia",
+    "$position": {
+      "top": "771px",
+      "left": "711px"
+    }
+  }
+}

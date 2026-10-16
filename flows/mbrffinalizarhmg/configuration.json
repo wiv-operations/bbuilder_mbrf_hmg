@@ -1,0 +1,11 @@
+{
+  "builder:minimumIntentScore": "0.5",
+  "builder:stateTrack": "true",
+  "builder:#localTimeZone": "E. South America Standard Time",
+  "builder:useTunnelOwnerContext": "true",
+  "builder:brainEditFlowPermission": "false",
+  "TraceTargetType": "Http",
+  "TraceMode": "All",
+  "TraceTarget": "https://take-api-beholder.cs.blip.ai/api/traces/mbrffinalizarhmg",
+  "TraceCacheMode": 0
+}

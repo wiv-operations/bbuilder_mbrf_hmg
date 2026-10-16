@@ -1,0 +1,2640 @@
+{
+  "onboarding": {
+    "$contentActions": [
+      {
+        "input": {
+          "bypass": false,
+          "variable": "entrada"
+        }
+      }
+    ],
+    "$conditionOutputs": [
+      {
+        "stateId": "{{input.content@lastState}}",
+        "typeOfStateId": "variable",
+        "conditions": [
+          {
+            "source": "context",
+            "comparison": "exists",
+            "values": [],
+            "variable": "input.content@lastState"
+          }
+        ]
+      },
+      {
+        "stateId": "435eeb65-856b-49e3-9f80-93d0cf802d5a",
+        "typeOfStateId": "state",
+        "conditions": [
+          {
+            "source": "input",
+            "comparison": "exists",
+            "values": []
+          }
+        ]
+      }
+    ],
+    "$enteringCustomActions": [],
+    "$leavingCustomActions": [
+      {
+        "type": "SetVariable",
+        "settings": {
+          "variable": "contactSyncResourceBody"
+        },
+        "conditions": []
+      },
+      {
+        "$description": "",
+        "$inputSchema": {
+          "type": "object",
+          "properties": {},
+          "required": []
+        },
+        "type": "SetVariable",
+        "settings": {
+          "value": "{{contact.extras.Fila}}",
+          "variable": "FilaTrack"
+        },
+        "conditions": []
+      }
+    ],
+    "$defaultOutput": {
+      "stateId": "fallback"
+    },
+    "root": true,
+    "$position": {
+      "top": "117px",
+      "left": "687px"
+    },
+    "$title": "Início"
+  },
+  "fallback": {
+    "$contentActions": [
+      {
+        "input": {
+          "bypass": true
+        }
+      }
+    ],
+    "$conditionOutputs": [],
+    "$enteringCustomActions": [
+      {
+        "type": "TrackEvent",
+        "settings": {
+          "extras": {},
+          "category": "Inputs inesperados",
+          "action": "{{state.previous.name}} - {{input.content}}"
+        },
+        "conditions": []
+      },
+      {
+        "type": "ExecuteScript",
+        "settings": {
+          "function": "run",
+          "source": "function run(inputContent) {\n\tlet redirect = \"{{resource.redirect@ath}}\"\n\n\tlet previous = \"{{state.previous.id}}\";\n\tlet previousSubFlow = \"{{stateSubFluxo}}\";\n\ttry {\n\t\treturn {\n\t\t\t\"origin\": redirect,\n\t\t\t\"lastState\": previousSubFlow ? previousSubFlow : previous,\n\t\t\t\"lastName\": \"{{state.previous.name}}\",\n\t\t\t\"inputType\": \"menu dinamico\",\n\t\t\tinputContent\n\t\t};\n\n\t} catch (error) {\n\t\treturn \"ERROR_FORMATTING_INPUT_CONTENT\"\n\t}\n}",
+          "inputVariables": [
+            "input.content"
+          ],
+          "outputVariable": "inputExcecoes",
+          "LocalTimeZoneEnabled": false
+        },
+        "conditions": []
+      },
+      {
+        "type": "SetVariable",
+        "settings": {
+          "variable": "stateSubFluxo",
+          "expiration": 1
+        },
+        "conditions": []
+      }
+    ],
+    "$leavingCustomActions": [
+      {
+        "type": "Redirect",
+        "settings": {
+          "context": {
+            "type": "text/plain",
+            "value": "{{inputExcecoes}}"
+          },
+          "address": "{{resource.redirect@excecao}}"
+        },
+        "conditions": []
+      }
+    ],
+    "$defaultOutput": {
+      "stateId": "onboarding"
+    },
+    "$position": {
+      "top": "139px",
+      "left": "1689px"
+    },
+    "$title": "Exceções",
+    "addonsSettings": {
+      "shape": "0 50% 50% 0",
+      "backgroundColor": "#ffffff",
+      "textColor": "#000000"
+    }
+  },
+  "desk:0cc3c178-6024-45de-a78f-f1b1e6092f74": {
+    "$contentActions": [
+      {
+        "input": {
+          "bypass": false,
+          "conditions": [
+            {
+              "source": "context",
+              "variable": "desk_forwardToDeskState_status",
+              "comparison": "equals",
+              "values": [
+                "Success"
+              ]
+            }
+          ],
+          "expiration": "0:10"
+        }
+      }
+    ],
+    "$conditionOutputs": [
+      {
+        "conditions": [
+          {
+            "source": "context",
+            "variable": "desk_forwardToDeskState_status",
+            "comparison": "equals",
+            "values": [
+              "NoAgentAvailable"
+            ]
+          }
+        ],
+        "stateId": "68e22a66-9d84-4cba-ab3c-de2b6a44200e"
+      },
+      {
+        "conditions": [
+          {
+            "source": "context",
+            "variable": "desk_forwardToDeskState_status",
+            "comparison": "equals",
+            "values": [
+              "OutOfAttendanceHour"
+            ]
+          }
+        ],
+        "stateId": "f4ab4aea-4d7a-4abc-bce7-23da705b3fbf"
+      },
+      {
+        "stateId": "survey:29a311df-7c97-40bf-88e1-4b470bf51907",
+        "typeOfStateId": "state",
+        "conditions": [
+          {
+            "source": "input",
+            "comparison": "equals",
+            "values": [
+              "#sair",
+              "sair"
+            ]
+          }
+        ]
+      },
+      {
+        "conditions": [
+          {
+            "source": "context",
+            "variable": "input.type",
+            "comparison": "equals",
+            "values": [
+              "application/vnd.iris.ticket+json"
+            ]
+          },
+          {
+            "source": "context",
+            "variable": "input.content@status",
+            "comparison": "equals",
+            "values": [
+              "ClosedAttendant"
+            ]
+          }
+        ],
+        "stateId": "survey:a57496c7-c2b9-4edc-923a-1dde4dc37e09",
+        "typeOfStateId": "state"
+      },
+      {
+        "conditions": [
+          {
+            "source": "context",
+            "variable": "input.type",
+            "comparison": "equals",
+            "values": [
+              "application/vnd.iris.ticket+json"
+            ]
+          },
+          {
+            "source": "context",
+            "variable": "input.content@status",
+            "comparison": "equals",
+            "values": [
+              "ClosedClient"
+            ]
+          }
+        ],
+        "stateId": "survey:29a311df-7c97-40bf-88e1-4b470bf51907",
+        "typeOfStateId": "state"
+      },
+      {
+        "conditions": [
+          {
+            "source": "context",
+            "variable": "input.type",
+            "comparison": "equals",
+            "values": [
+              "application/vnd.iris.ticket+json"
+            ]
+          },
+          {
+            "source": "context",
+            "variable": "input.content@status",
+            "comparison": "equals",
+            "values": [
+              "ClosedClientInactivity"
+            ]
+          }
+        ],
+        "stateId": "survey:0cff8698-0a38-4c3c-b330-c81acf5ada87",
+        "typeOfStateId": "state"
+      },
+      {
+        "conditions": [
+          {
+            "source": "context",
+            "variable": "desk_forwardToDeskState_status",
+            "comparison": "equals",
+            "values": [
+              "Error"
+            ]
+          }
+        ],
+        "stateId": "fallback"
+      }
+    ],
+    "$enteringCustomActions": [
+      {
+        "type": "ForwardToDesk",
+        "conditions": [],
+        "settings": {}
+      }
+    ],
+    "$leavingCustomActions": [],
+    "$defaultOutput": {
+      "stateId": "desk:0cc3c178-6024-45de-a78f-f1b1e6092f74"
+    },
+    "$title": "Atendimento humano",
+    "$afterStateChangedActions": [
+      {
+        "type": "LeavingFromDesk",
+        "conditions": [],
+        "settings": {}
+      }
+    ],
+    "$position": {
+      "top": "815.5px",
+      "left": "682px"
+    }
+  },
+  "fd80ebec-6b6a-43e7-896b-1ec26c9b3682": {
+    "$contentActions": [
+      {
+        "input": {
+          "bypass": true
+        }
+      }
+    ],
+    "$conditionOutputs": [],
+    "$enteringCustomActions": [
+      {
+        "type": "MergeContact",
+        "settings": {
+          "extras": {
+            "lastCampaignId": "{{contact.extras.campaignId}}",
+            "campaignId": "NULL"
+          }
+        },
+        "conditions": []
+      },
+      {
+        "type": "Redirect",
+        "settings": {
+          "context": {
+            "type": "text/plain",
+            "value": "@redirectMenu"
+          },
+          "address": "{{resource.redirect@captacao}}"
+        },
+        "conditions": []
+      }
+    ],
+    "$leavingCustomActions": [],
+    "$defaultOutput": {
+      "stateId": "onboarding",
+      "typeOfStateId": "state"
+    },
+    "$title": "Redirect Captação",
+    "$position": {
+      "top": "162px",
+      "left": "1209px"
+    }
+  },
+  "desk:fa45f794-dd91-4e17-977a-708379a4c093": {
+    "$contentActions": [
+      {
+        "input": {
+          "bypass": false,
+          "conditions": [
+            {
+              "source": "context",
+              "variable": "desk_forwardToDeskState_status",
+              "comparison": "equals",
+              "values": [
+                "Success"
+              ]
+            }
+          ],
+          "expiration": "0:10"
+        }
+      }
+    ],
+    "$conditionOutputs": [
+      {
+        "stateId": "survey:29a311df-7c97-40bf-88e1-4b470bf51907",
+        "typeOfStateId": "state",
+        "conditions": [
+          {
+            "source": "input",
+            "comparison": "equals",
+            "values": [
+              "#sair",
+              "sair"
+            ]
+          }
+        ]
+      },
+      {
+        "conditions": [
+          {
+            "source": "context",
+            "variable": "input.type",
+            "comparison": "equals",
+            "values": [
+              "application/vnd.iris.ticket+json"
+            ]
+          },
+          {
+            "source": "context",
+            "variable": "input.content@status",
+            "comparison": "equals",
+            "values": [
+              "ClosedAttendant"
+            ]
+          }
+        ],
+        "stateId": "survey:a57496c7-c2b9-4edc-923a-1dde4dc37e09",
+        "typeOfStateId": "state"
+      },
+      {
+        "conditions": [
+          {
+            "source": "context",
+            "variable": "input.type",
+            "comparison": "equals",
+            "values": [
+              "application/vnd.iris.ticket+json"
+            ]
+          },
+          {
+            "source": "context",
+            "variable": "input.content@status",
+            "comparison": "equals",
+            "values": [
+              "ClosedClient"
+            ]
+          }
+        ],
+        "stateId": "survey:29a311df-7c97-40bf-88e1-4b470bf51907",
+        "typeOfStateId": "state"
+      },
+      {
+        "conditions": [
+          {
+            "source": "context",
+            "variable": "input.type",
+            "comparison": "equals",
+            "values": [
+              "application/vnd.iris.ticket+json"
+            ]
+          },
+          {
+            "source": "context",
+            "variable": "input.content@status",
+            "comparison": "equals",
+            "values": [
+              "ClosedClientInactivity"
+            ]
+          }
+        ],
+        "stateId": "survey:0cff8698-0a38-4c3c-b330-c81acf5ada87",
+        "typeOfStateId": "state"
+      },
+      {
+        "conditions": [
+          {
+            "source": "context",
+            "variable": "desk_forwardToDeskState_status",
+            "comparison": "equals",
+            "values": [
+              "Error"
+            ]
+          }
+        ],
+        "stateId": "fallback"
+      }
+    ],
+    "$enteringCustomActions": [
+      {
+        "type": "ForwardToDesk",
+        "conditions": [],
+        "settings": {}
+      }
+    ],
+    "$leavingCustomActions": [],
+    "$defaultOutput": {
+      "stateId": "desk:fa45f794-dd91-4e17-977a-708379a4c093"
+    },
+    "$title": "Atendimento humano - Fora do horário",
+    "$afterStateChangedActions": [
+      {
+        "type": "LeavingFromDesk",
+        "conditions": [],
+        "settings": {}
+      }
+    ],
+    "$position": {
+      "top": "1166.5px",
+      "left": "670px"
+    }
+  },
+  "435eeb65-856b-49e3-9f80-93d0cf802d5a": {
+    "$contentActions": [
+      {
+        "input": {
+          "bypass": true,
+          "variable": "CPF"
+        }
+      }
+    ],
+    "$conditionOutputs": [
+      {
+        "stateId": "b1b5af8b-8833-46f6-b6b6-148108f63838",
+        "typeOfStateId": "state",
+        "conditions": [
+          {
+            "source": "input",
+            "comparison": "exists",
+            "values": []
+          }
+        ]
+      }
+    ],
+    "$enteringCustomActions": [
+      {
+        "type": "ExecuteScript",
+        "settings": {
+          "function": "run",
+          "source": "function run (contact, tunnel) {\n    try {\n        contact = JSON.parse(contact);\n        contact.identity = tunnel;\n        return contact;\n    } catch(e) {\n        return contact;\n    }\n}",
+          "inputVariables": [
+            "contact.serialized",
+            "tunnel.identity"
+          ],
+          "outputVariable": "contactSyncResourceBody",
+          "LocalTimeZoneEnabled": false
+        },
+        "conditions": [],
+        "continueOnError": true
+      },
+      {
+        "type": "ProcessHttp",
+        "settings": {
+          "headers": {
+            "Authorization": "{{bucket.blipToken}}"
+          },
+          "method": "POST",
+          "body": "{\r\n    \"id\": \"{{random.guid}}\",\r\n    \"method\": \"set\",\r\n    \"uri\": \"/contacts\",\r\n    \"type\": \"application/vnd.lime.contact+json\",\r\n    \"resource\": {{contactSyncResourceBody}}\r\n}",
+          "uri": "{{resource.blipUrl}}/commands",
+          "responseStatusVariable": "statusSync",
+          "responseBodyVariable": "responseSync"
+        },
+        "conditions": [
+          {
+            "values": [],
+            "source": "context",
+            "comparison": "exists",
+            "variable": "contactSyncResourceBody"
+          }
+        ]
+      },
+      {
+        "type": "TrackEvent",
+        "settings": {
+          "extras": {},
+          "category": "[{{application.identifier}}][{{state.name}}][API] Sincroniza contato no blip",
+          "action": "Data: {{calendar.datetime}} | Status: {{statusSync}} | Response: {{responseSync}} | Body: {\r\n    \"id\": \"{{random.guid}}\",\r\n    \"method\": \"set\",\r\n    \"uri\": \"/contacts\",\r\n    \"type\": \"application/vnd.lime.contact+json\",\r\n    \"resource\": {{contactSyncResourceBody}}\r\n} | Identity: {{contact.identity}}"
+        },
+        "conditions": []
+      }
+    ],
+    "$leavingCustomActions": [],
+    "$defaultOutput": {
+      "stateId": "fallback"
+    },
+    "$title": "Sincroniza Contato",
+    "$position": {
+      "top": "347px",
+      "left": "686px"
+    }
+  },
+  "afffd256-594e-449c-9c2a-f681c74d79f7": {
+    "$contentActions": [
+      {
+        "action": {
+          "$description": "",
+          "type": "SendMessage",
+          "settings": {
+            "type": "text/plain",
+            "content": "Ficamos muito felizes em saber que sua experiência com nossa equipe foi positiva! 🥰",
+            "metadata": {}
+          }
+        }
+      },
+      {
+        "action": {
+          "type": "SendMessage",
+          "settings": {
+            "type": "application/vnd.lime.select+json",
+            "content": {
+              "text": "Você tem interesse em fazer um comentário sobre sua avaliação?",
+              "scope": "immediate",
+              "options": [
+                {
+                  "text": "Sim, claro",
+                  "previewText": "Sim, claro",
+                  "value": null,
+                  "index": 0,
+                  "type": null
+                },
+                {
+                  "text": "Não, obrigado",
+                  "previewText": "Não, obrigado",
+                  "value": null,
+                  "index": 1,
+                  "type": null
+                }
+              ],
+              "quikReply": false
+            },
+            "metadata": {}
+          }
+        }
+      },
+      {
+        "input": {
+          "bypass": false,
+          "expiration": "0:10",
+          "variable": "motivoNota"
+        }
+      }
+    ],
+    "$conditionOutputs": [
+      {
+        "stateId": "42059d9d-25d5-4a55-b11c-263494887451",
+        "typeOfStateId": "state",
+        "conditions": [
+          {
+            "source": "input",
+            "comparison": "equals",
+            "values": [
+              "Sim!",
+              "sim",
+              "Sim, claro"
+            ]
+          }
+        ]
+      },
+      {
+        "stateId": "3a06f1f3-bb49-4d43-b1d8-22bd40362fc5",
+        "typeOfStateId": "state",
+        "conditions": [
+          {
+            "source": "input",
+            "comparison": "equals",
+            "values": [
+              "Não",
+              "nao",
+              "Não, obrigado"
+            ]
+          }
+        ]
+      },
+      {
+        "stateId": "3a06f1f3-bb49-4d43-b1d8-22bd40362fc5",
+        "typeOfStateId": "state",
+        "conditions": [
+          {
+            "source": "input",
+            "comparison": "exists",
+            "values": []
+          }
+        ]
+      },
+      {
+        "stateId": "3a06f1f3-bb49-4d43-b1d8-22bd40362fc5",
+        "typeOfStateId": "state",
+        "conditions": [
+          {
+            "source": "input",
+            "comparison": "notExists",
+            "values": []
+          }
+        ]
+      }
+    ],
+    "$enteringCustomActions": [
+      {
+        "type": "TrackEvent",
+        "settings": {
+          "extras": {},
+          "category": "Pesquisa de Satisfação - Tipo Resposta",
+          "action": "Promotor"
+        },
+        "conditions": []
+      },
+      {
+        "type": "SetVariable",
+        "settings": {
+          "variable": "deskSurveyRatingCategory",
+          "value": "Promotor"
+        },
+        "conditions": []
+      }
+    ],
+    "$leavingCustomActions": [],
+    "$defaultOutput": {
+      "stateId": "fallback"
+    },
+    "$title": "Promotores",
+    "$position": {
+      "top": "763.5px",
+      "left": "1900px"
+    }
+  },
+  "ac13c98b-73f5-4dfd-8bd7-5f152b86e9fd": {
+    "$contentActions": [
+      {
+        "action": {
+          "$description": "",
+          "type": "SendMessage",
+          "settings": {
+            "type": "text/plain",
+            "content": "Obrigado por deixar sua opinião! Vamos usar seu feedback pra tornar sua próxima experiência ainda melhor.",
+            "metadata": {}
+          }
+        }
+      },
+      {
+        "action": {
+          "type": "SendMessage",
+          "settings": {
+            "type": "application/vnd.lime.select+json",
+            "content": {
+              "text": "Tem alguma sugestão para a gente melhorar?",
+              "scope": "immediate",
+              "options": [
+                {
+                  "text": "Sim",
+                  "previewText": "Sim",
+                  "value": null,
+                  "index": 0,
+                  "type": null
+                },
+                {
+                  "text": "Não",
+                  "previewText": "Não",
+                  "value": null,
+                  "index": 1,
+                  "type": null
+                }
+              ],
+              "quikReply": false
+            },
+            "metadata": {}
+          }
+        }
+      },
+      {
+        "input": {
+          "bypass": false,
+          "expiration": "0:10",
+          "variable": "motivoNota"
+        }
+      }
+    ],
+    "$conditionOutputs": [
+      {
+        "stateId": "42059d9d-25d5-4a55-b11c-263494887451",
+        "typeOfStateId": "state",
+        "conditions": [
+          {
+            "source": "input",
+            "comparison": "contains",
+            "values": [
+              "Sim"
+            ]
+          }
+        ]
+      },
+      {
+        "stateId": "3a06f1f3-bb49-4d43-b1d8-22bd40362fc5",
+        "typeOfStateId": "state",
+        "conditions": [
+          {
+            "source": "input",
+            "comparison": "contains",
+            "values": [
+              "Não",
+              "nao"
+            ]
+          }
+        ]
+      }
+    ],
+    "$enteringCustomActions": [
+      {
+        "type": "TrackEvent",
+        "settings": {
+          "extras": {},
+          "category": "Pesquisa de Satisfação - Tipo Resposta",
+          "action": "Neutro"
+        },
+        "conditions": []
+      },
+      {
+        "type": "SetVariable",
+        "settings": {
+          "variable": "deskSurveyRatingCategory",
+          "value": "Neutro"
+        },
+        "conditions": []
+      }
+    ],
+    "$leavingCustomActions": [],
+    "$defaultOutput": {
+      "stateId": "fallback"
+    },
+    "$title": "Neutros",
+    "$position": {
+      "top": "956.5px",
+      "left": "1911px"
+    }
+  },
+  "6182aa3f-ace0-4059-b08a-cfc8d3883abe": {
+    "$contentActions": [
+      {
+        "action": {
+          "$description": "",
+          "type": "SendMessage",
+          "settings": {
+            "type": "text/plain",
+            "content": "Sentimos muito por não termos alcançado suas expectativas no atendimento. 😢",
+            "metadata": {}
+          }
+        }
+      },
+      {
+        "action": {
+          "type": "SendMessage",
+          "settings": {
+            "type": "application/vnd.lime.select+json",
+            "content": {
+              "text": "Tem alguma <b>sugestão</b> para a gente melhorar?",
+              "scope": "immediate",
+              "options": [
+                {
+                  "text": "Sim, compartilhar",
+                  "previewText": "Sim, compartilhar",
+                  "value": null,
+                  "index": 0,
+                  "type": null
+                },
+                {
+                  "text": "Não",
+                  "previewText": "Não",
+                  "value": null,
+                  "index": 1,
+                  "type": null
+                }
+              ],
+              "quikReply": false
+            },
+            "metadata": {}
+          }
+        }
+      },
+      {
+        "input": {
+          "bypass": false,
+          "expiration": "0:10",
+          "variable": "motivoNota"
+        }
+      }
+    ],
+    "$conditionOutputs": [
+      {
+        "stateId": "42059d9d-25d5-4a55-b11c-263494887451",
+        "typeOfStateId": "state",
+        "conditions": [
+          {
+            "source": "input",
+            "comparison": "equals",
+            "values": [
+              "Ok, compartilhar",
+              "sim",
+              "claro",
+              "Sim, quero compartilhar",
+              "Sim, compartilhar"
+            ]
+          }
+        ]
+      },
+      {
+        "stateId": "3a06f1f3-bb49-4d43-b1d8-22bd40362fc5",
+        "typeOfStateId": "state",
+        "conditions": [
+          {
+            "source": "input",
+            "comparison": "equals",
+            "values": [
+              "Não",
+              "n",
+              "nao",
+              "em outro momento",
+              "agora não"
+            ]
+          }
+        ]
+      }
+    ],
+    "$enteringCustomActions": [
+      {
+        "type": "TrackEvent",
+        "settings": {
+          "extras": {},
+          "category": "Pesquisa de Satisfação - Tipo Resposta",
+          "action": "Detrator"
+        },
+        "conditions": []
+      },
+      {
+        "type": "SetVariable",
+        "settings": {
+          "variable": "deskSurveyRatingCategory",
+          "value": "Detrator"
+        },
+        "conditions": []
+      }
+    ],
+    "$leavingCustomActions": [],
+    "$defaultOutput": {
+      "stateId": "fallback"
+    },
+    "$title": "Detratores",
+    "$position": {
+      "top": "1133.5px",
+      "left": "1900px"
+    }
+  },
+  "42059d9d-25d5-4a55-b11c-263494887451": {
+    "$contentActions": [
+      {
+        "action": {
+          "type": "SendMessage",
+          "settings": {
+            "type": "text/plain",
+            "content": "Certo, fique à vontade para enviar seu comentário em sua próxima mensagem. Vou registrar tudo!",
+            "metadata": {}
+          }
+        }
+      },
+      {
+        "input": {
+          "bypass": false,
+          "variable": "deskSurveyComment",
+          "expiration": "0:10"
+        }
+      },
+      {
+        "action": {
+          "type": "SendMessage",
+          "settings": {
+            "type": "text/plain",
+            "content": "Pode ter certeza que seu comentário será levado em consideração! ✍️",
+            "metadata": {
+              "#stateName": "{{state.name}}",
+              "#stateId": "{{state.id}}",
+              "#messageId": "{{input.message@id}}",
+              "#previousStateId": "{{state.previous.id}}",
+              "#previousStateName": "{{state.previous.name}}"
+            }
+          }
+        }
+      }
+    ],
+    "$conditionOutputs": [
+      {
+        "stateId": "3a06f1f3-bb49-4d43-b1d8-22bd40362fc5",
+        "typeOfStateId": "state",
+        "conditions": [
+          {
+            "source": "input",
+            "comparison": "exists",
+            "values": []
+          }
+        ]
+      },
+      {
+        "stateId": "3a06f1f3-bb49-4d43-b1d8-22bd40362fc5",
+        "typeOfStateId": "state",
+        "conditions": [
+          {
+            "source": "input",
+            "comparison": "notExists",
+            "values": []
+          }
+        ]
+      }
+    ],
+    "$enteringCustomActions": [],
+    "$leavingCustomActions": [
+      {
+        "type": "TrackEvent",
+        "settings": {
+          "extras": {},
+          "category": "Pesquisa de Satisfação - Fluxo",
+          "action": "2 - Comentário"
+        },
+        "conditions": []
+      },
+      {
+        "type": "TrackEvent",
+        "settings": {
+          "extras": {},
+          "category": "Comentários",
+          "action": "{{deskSurveyComment}}"
+        },
+        "conditions": [
+          {
+            "comparison": "exists",
+            "source": "context",
+            "values": [],
+            "variable": "deskSurveyComment"
+          }
+        ]
+      },
+      {
+        "type": "TrackEvent",
+        "settings": {
+          "extras": {},
+          "action": "{{deskSurveyComment}}",
+          "category": "Comentários do atendente {{dadosTiquete@emailAgent}}"
+        },
+        "conditions": [
+          {
+            "values": [],
+            "source": "context",
+            "comparison": "exists",
+            "variable": "dadosTiquete"
+          },
+          {
+            "comparison": "exists",
+            "source": "context",
+            "values": [],
+            "variable": "deskSurveyComment"
+          }
+        ]
+      }
+    ],
+    "$defaultOutput": {
+      "stateId": "fallback"
+    },
+    "$title": "Comentários",
+    "$position": {
+      "top": "948.5px",
+      "left": "2101px"
+    }
+  },
+  "3a06f1f3-bb49-4d43-b1d8-22bd40362fc5": {
+    "$contentActions": [
+      {
+        "action": {
+          "type": "SendMessage",
+          "settings": {
+            "type": "text/plain",
+            "content": "Pronto, salvei aqui a avaliação seu atendimento: \n🎟️ <b>Ticket:</b> #{{deskSurveyTicketSequentialId}}\n🎯 <b>Nota:</b>  {{deskSurveyRatingValue}} ",
+            "metadata": {}
+          }
+        }
+      },
+      {
+        "input": {
+          "bypass": true
+        }
+      }
+    ],
+    "$conditionOutputs": [
+      {
+        "stateId": "516c7921-910f-48ee-af04-612ff009eeae",
+        "typeOfStateId": "state",
+        "conditions": [
+          {
+            "source": "input",
+            "comparison": "exists",
+            "values": []
+          }
+        ]
+      }
+    ],
+    "$enteringCustomActions": [
+      {
+        "type": "ProcessCommand",
+        "settings": {
+          "to": "postmaster@desk.msging.net",
+          "method": "set",
+          "resource": {
+            "ticketId": "{{deskSurveyTicketId}}",
+            "survey": "{{deskSurveySurveyId}}",
+            "answer": "{{deskSurveyRatingCategory}}",
+            "answerScore": "{{deskSurveyRatingValue}}",
+            "comment": "{{deskSurveyComment}}"
+          },
+          "type": "application/vnd.iris.desk.attendance-survey-answer+json",
+          "from": "{{application.identity}}",
+          "uri": "/attendance-survey-answer",
+          "variable": "deskSurveySetSurveyAnswerResponse"
+        },
+        "conditions": []
+      },
+      {
+        "type": "TrackEvent",
+        "settings": {
+          "extras": {},
+          "category": "Pesquisa de Satisfação - Fluxo",
+          "action": "3 - Salvar"
+        },
+        "conditions": []
+      },
+      {
+        "type": "TrackEvent",
+        "settings": {
+          "extras": {},
+          "category": "Pesquisa de satisfação - Usuários",
+          "action": "Identificador: {{contact.identity}} | Nome: {{contact.name}} | Telefone: {{contact.phoneNumber}} | E-mail: {{contact.email}} | Nota: {{deskSurveyRatingValue}} | Quis Comentar: {{motivoNota}} | Comentário: {{deskSurveyComment}}"
+        },
+        "conditions": []
+      },
+      {
+        "$description": "",
+        "$inputSchema": {
+          "type": "object",
+          "properties": {},
+          "required": []
+        },
+        "type": "TrackEvent",
+        "settings": {
+          "extras": {},
+          "category": "PesquisadesatisfacaoTicket",
+          "action": "Identificador: {{contact.identity}} | Nome: {{contact.name}} | Telefone: {{contact.phoneNumber}} | E-mail: {{contact.email}} | Nota: {{deskSurveyRatingValue}} | Quis Comentar: {{motivoNota}} | Comentário: {{deskSurveyComment}} | Numero Ticket: #{{deskSurveyTicketSequentialId}} | Fila: {{context.FilaTrack}} | Canal: {{channel}}"
+        },
+        "conditions": []
+      }
+    ],
+    "$leavingCustomActions": [
+      {
+        "type": "SetVariable",
+        "settings": {
+          "variable": "deskSurveyInvalidSurveyResponseAttempts",
+          "value": "0",
+          "expiration": 1
+        },
+        "conditions": []
+      },
+      {
+        "type": "SetVariable",
+        "settings": {
+          "variable": "deskSurveyHelpDeskEncodedFromIdentity",
+          "expiration": 1
+        },
+        "conditions": []
+      },
+      {
+        "type": "SetVariable",
+        "settings": {
+          "variable": "deskSurveyLastTicketResponse",
+          "expiration": 1
+        },
+        "conditions": []
+      },
+      {
+        "type": "SetVariable",
+        "settings": {
+          "variable": "deskSurveyTicketId",
+          "expiration": 1
+        },
+        "conditions": []
+      },
+      {
+        "type": "SetVariable",
+        "settings": {
+          "variable": "deskSurveyTicketSequentialId",
+          "expiration": 1
+        },
+        "conditions": []
+      },
+      {
+        "type": "SetVariable",
+        "settings": {
+          "variable": "deskSurveyRatingValue",
+          "expiration": 1
+        },
+        "conditions": []
+      },
+      {
+        "type": "SetVariable",
+        "settings": {
+          "variable": "deskSurveyComment",
+          "expiration": 1
+        },
+        "conditions": []
+      },
+      {
+        "type": "SetVariable",
+        "settings": {
+          "variable": "deskSurveySurveyId",
+          "expiration": 1
+        },
+        "conditions": []
+      },
+      {
+        "type": "SetVariable",
+        "settings": {
+          "variable": "deskSurveyRatingCategory",
+          "expiration": 1
+        },
+        "conditions": []
+      },
+      {
+        "type": "SetVariable",
+        "settings": {
+          "variable": "deskSurveyRatingValue",
+          "expiration": 1
+        },
+        "conditions": []
+      },
+      {
+        "type": "SetVariable",
+        "settings": {
+          "variable": "deskSurveyRatingValueNotFormatted",
+          "expiration": 1
+        },
+        "conditions": []
+      }
+    ],
+    "$defaultOutput": {
+      "stateId": "516c7921-910f-48ee-af04-612ff009eeae"
+    },
+    "$title": "Salvar Dados da Pesquisa",
+    "$position": {
+      "top": "921.5px",
+      "left": "2368px"
+    }
+  },
+  "516c7921-910f-48ee-af04-612ff009eeae": {
+    "$contentActions": [
+      {
+        "action": {
+          "type": "SendMessage",
+          "settings": {
+            "type": "text/plain",
+            "content": "A MBRF agradece e deseja um excelente dia!",
+            "metadata": {}
+          }
+        }
+      },
+      {
+        "input": {
+          "bypass": true
+        }
+      }
+    ],
+    "$conditionOutputs": [],
+    "$enteringCustomActions": [
+      {
+        "type": "SetVariable",
+        "settings": {
+          "variable": "deskSurveyInvalidSurveyResponseAttempts",
+          "value": "0",
+          "expiration": 1
+        },
+        "conditions": [
+          {
+            "values": [
+              "1"
+            ],
+            "source": "context",
+            "comparison": "greaterThanOrEquals",
+            "variable": "deskSurveyInvalidSurveyResponseAttempts"
+          }
+        ]
+      },
+      {
+        "type": "TrackEvent",
+        "settings": {
+          "extras": {},
+          "category": "Atendimento finalizado",
+          "action": "desk"
+        },
+        "conditions": []
+      }
+    ],
+    "$leavingCustomActions": [],
+    "$defaultOutput": {
+      "stateId": "fa2f4026-37b6-446f-aa49-08b2829eb70b",
+      "typeOfStateId": "state"
+    },
+    "$title": "Agradecimento pelo Contato",
+    "$position": {
+      "top": "931.5px",
+      "left": "2638px"
+    }
+  },
+  "fa2f4026-37b6-446f-aa49-08b2829eb70b": {
+    "$contentActions": [
+      {
+        "input": {
+          "bypass": true
+        }
+      }
+    ],
+    "$conditionOutputs": [],
+    "$enteringCustomActions": [
+      {
+        "type": "MergeContact",
+        "settings": {
+          "extras": {
+            "lastCampaignId": "{{contact.extras.campaignId}}",
+            "campaignId": "NULL"
+          }
+        },
+        "conditions": []
+      },
+      {
+        "type": "Redirect",
+        "settings": {
+          "address": "{{resource.redirect@captacao}}"
+        },
+        "conditions": []
+      }
+    ],
+    "$leavingCustomActions": [],
+    "$defaultOutput": {
+      "stateId": "onboarding",
+      "typeOfStateId": "state"
+    },
+    "$title": "Redirect Captação (Encerra contato)",
+    "$position": {
+      "top": "161px",
+      "left": "995px"
+    }
+  },
+  "68e22a66-9d84-4cba-ab3c-de2b6a44200e": {
+    "$contentActions": [
+      {
+        "action": {
+          "type": "SendMessage",
+          "settings": {
+            "type": "text/plain",
+            "content": "Estamos com alta demanda no momento.\n\nAguarde só um pouquinho, logo um atendente estará disponível pra te ajudar! 😊",
+            "metadata": {}
+          }
+        }
+      },
+      {
+        "input": {
+          "bypass": true
+        }
+      }
+    ],
+    "$conditionOutputs": [
+      {
+        "stateId": "desk:fa45f794-dd91-4e17-977a-708379a4c093",
+        "typeOfStateId": "state",
+        "conditions": [
+          {
+            "source": "input",
+            "comparison": "exists",
+            "values": []
+          }
+        ]
+      }
+    ],
+    "$enteringCustomActions": [],
+    "$leavingCustomActions": [],
+    "$defaultOutput": {
+      "stateId": "fallback"
+    },
+    "$title": "Alto volume de atendimento",
+    "$position": {
+      "top": "877px",
+      "left": "392px"
+    }
+  },
+  "survey:29a311df-7c97-40bf-88e1-4b470bf51907": {
+    "$contentActions": [
+      {
+        "input": {
+          "bypass": true
+        }
+      }
+    ],
+    "$conditionOutputs": [
+      {
+        "stateId": "5e9a66bf-ba59-4618-8be3-93fc2f366f39",
+        "typeOfStateId": "state",
+        "conditions": [
+          {
+            "source": "input",
+            "comparison": "exists",
+            "values": []
+          }
+        ]
+      }
+    ],
+    "$enteringCustomActions": [
+      {
+        "type": "SetVariable",
+        "settings": {
+          "variable": "deskSurveyInvalidSurveyResponseAttempts",
+          "value": "0",
+          "expiration": 360
+        },
+        "conditions": [
+          {
+            "values": [],
+            "source": "context",
+            "comparison": "notExists",
+            "variable": "deskSurveyInvalidSurveyResponseAttempts"
+          }
+        ]
+      },
+      {
+        "type": "TrackEvent",
+        "settings": {
+          "extras": {},
+          "category": "Pesquisa de Satisfação - Fluxo",
+          "action": "1 - Início"
+        },
+        "conditions": [
+          {
+            "values": [
+              "0"
+            ],
+            "source": "context",
+            "comparison": "equals",
+            "variable": "deskSurveyInvalidSurveyResponseAttempts"
+          }
+        ]
+      },
+      {
+        "type": "ExecuteScript",
+        "settings": {
+          "function": "run",
+          "source": "function run(identity) {\n\ttry {\n\t\treturn (identity !== undefined) ? encodeURIComponent(identity) : identity;\n\t} catch(e) {\n\t\treturn identity;\n\t}\n}",
+          "inputVariables": [
+            "input.message.fromidentity"
+          ],
+          "outputVariable": "deskSurveyHelpDeskEncodedFromIdentity",
+          "LocalTimeZoneEnabled": false
+        },
+        "conditions": []
+      },
+      {
+        "type": "ProcessCommand",
+        "settings": {
+          "to": "postmaster@desk.msging.net",
+          "method": "get",
+          "from": "{{application.identity}}",
+          "uri": "/tickets?$skip=0&$take=1&$filter=customerIdentity%20eq%20%27{{deskSurveyHelpDeskEncodedFromIdentity}}%27%20and%20%28status%20eq%20%27ClosedAttendant%27%20or%20status%20eq%20%27ClosedClient%27%20or%20status%20eq%20%27ClosedClientInactivity%27%29",
+          "variable": "deskSurveyLastTicketResponse"
+        },
+        "conditions": []
+      },
+      {
+        "type": "ExecuteScript",
+        "settings": {
+          "function": "run",
+          "source": "function run(ticketsResponse) {\n\ttry {\n\t\tif(ticketsResponse != undefined){\n\t\t\tlet jsonResponse = JSON.parse(ticketsResponse);\n\t\t\tif(jsonResponse.resource && jsonResponse.resource.items && jsonResponse.resource.items.length > 0){\n\t\t\t\treturn jsonResponse.resource.items[0].id;\n\t\t\t}\n\t\t}\n\t\treturn undefined; \n\t} catch(e) {\n\t\treturn undefined;\n\t}\n}",
+          "inputVariables": [
+            "deskSurveyLastTicketResponse"
+          ],
+          "outputVariable": "deskSurveyTicketId",
+          "LocalTimeZoneEnabled": false
+        },
+        "conditions": [
+          {
+            "values": [],
+            "source": "context",
+            "comparison": "exists",
+            "variable": "deskSurveyLastTicketResponse"
+          }
+        ]
+      },
+      {
+        "type": "ExecuteScript",
+        "settings": {
+          "function": "run",
+          "source": "function run(ticketsResponse) {\n\ttry {\n\t\tif(ticketsResponse != undefined){\n\t\t\tlet jsonResponse = JSON.parse(ticketsResponse);\n\t\t\tif(jsonResponse.resource && jsonResponse.resource.items && jsonResponse.resource.items.length > 0){\n\t\t\t\treturn jsonResponse.resource.items[0].sequentialId;\n\t\t\t}\n\t\t}\n\t\treturn undefined;\n\t} catch(e) {\n\t\treturn undefined;\n\t}\n}",
+          "inputVariables": [
+            "deskSurveyLastTicketResponse"
+          ],
+          "outputVariable": "deskSurveyTicketSequentialId",
+          "LocalTimeZoneEnabled": false
+        },
+        "conditions": []
+      },
+      {
+        "type": "SetVariable",
+        "settings": {
+          "variable": "deskSurveySurveyId",
+          "value": "Pesquisa de Satisfação"
+        },
+        "conditions": []
+      },
+      {
+        "type": "SetVariable",
+        "settings": {
+          "variable": "deskSurveyComment"
+        },
+        "conditions": []
+      },
+      {
+        "type": "ExecuteScript",
+        "settings": {
+          "function": "run",
+          "source": "function run(dados) {\n    try {\n        // Faz o parse dos dados recebidos\n        dados = JSON.parse(dados);\n\n        // Acessa o primeiro item do array \"items\" dentro de \"resource\"\n        const item = dados.resource.items[0];\n\n        let dadosTiquete = {};\n\n        // Se existir \"agentIdentity\", faz o tratamento do e-mail\n        if (item.agentIdentity) {\n            dadosTiquete.emailAgent = item.agentIdentity.split(\"@\")[0];\n            dadosTiquete.emailAgent = decodeURIComponent(dadosTiquete.emailAgent);\n        }\n\n        // Coleta e trata a fila do atendente\n        if (item.team) {\n            dadosTiquete.Fila = item.team;\n        }\n\n        // Coleta e trata o número do ticket\n        if (item.sequentialId) {\n            dadosTiquete.Ticket = item.sequentialId;\n        }\n\n        // Coleta e trata as tags (se existirem)\n        if (item.tags) {\n            dadosTiquete.Tags = item.tags;\n        }\n\n        // Retorna os dados do ticket\n        return dadosTiquete;\n\n    } catch (e) {\n        return null;  // Retorna null em caso de erro\n    }\n}\n",
+          "inputVariables": [
+            "deskSurveyLastTicketResponse"
+          ],
+          "outputVariable": "dadosTiquete",
+          "LocalTimeZoneEnabled": false
+        },
+        "conditions": [],
+        "continueOnError": true
+      },
+      {
+        "type": "MergeContact",
+        "settings": {
+          "extras": {
+            "dadosTicket": "{{dadosTiquete}}"
+          }
+        },
+        "conditions": [
+          {
+            "values": [],
+            "source": "context",
+            "comparison": "exists",
+            "variable": "dadosTiquete"
+          }
+        ]
+      },
+      {
+        "type": "TrackEvent",
+        "settings": {
+          "extras": {},
+          "category": "{{dadosTiquete@emailAgent}}",
+          "action": "Realizado"
+        },
+        "conditions": [
+          {
+            "values": [],
+            "source": "context",
+            "comparison": "exists",
+            "variable": "dadosTiquete@emailAgent"
+          }
+        ]
+      },
+      {
+        "type": "TrackEvent",
+        "settings": {
+          "extras": {},
+          "category": "{{dadosTiquete@emailAgent}}",
+          "action": "Realizado - {{dadosTiquete@Fila}}"
+        },
+        "conditions": [
+          {
+            "values": [],
+            "comparison": "exists",
+            "source": "context",
+            "variable": "dadosTiquete@emailAgent"
+          },
+          {
+            "values": [],
+            "source": "context",
+            "comparison": "exists",
+            "variable": "dadosTiquete@Fila"
+          }
+        ]
+      },
+      {
+        "type": "TrackEvent",
+        "settings": {
+          "extras": {},
+          "category": "AtendimentosTotais",
+          "action": "Abandono"
+        },
+        "conditions": [
+          {
+            "values": [],
+            "source": "context",
+            "comparison": "notExists",
+            "variable": "dadosTiquete"
+          }
+        ]
+      },
+      {
+        "type": "TrackEvent",
+        "settings": {
+          "extras": {},
+          "category": "AtendimentosTotais",
+          "action": "Encerrado"
+        },
+        "conditions": [
+          {
+            "values": [],
+            "source": "context",
+            "comparison": "exists",
+            "variable": "dadosTiquete"
+          }
+        ]
+      },
+      {
+        "type": "ExecuteScript",
+        "settings": {
+          "function": "run",
+          "source": "function run(dadosTiquete) {\n\ttry {\n\t\tif(!dadosTiquete) return false;\n\n\t\tdadosTiquete = JSON.parse(dadosTiquete);\n\n\t\tconst tag = dadosTiquete.Tags ? dadosTiquete.Tags.find((tg) => tg.toString().includes(\"[Transferência]\")) : false;\n\n\t\tif(!tag) return false;\n\n\t\tconst [fluxo, fila] = tag.replace(\" | \", \"|\").replace(\"| \", \"|\").replace(\" |\", \"|\").split(\"|\");\n\n\t\tconst output = {}\n\n\t\toutput.fluxo = fluxo.replace(\"[Transferência] \", \"\").replace(\"[Transferência]\", \"\");\n\t\tif(fila) output.fila = fila.replace(\"[Fila] \", \"\").replace(\"[Fila]\", \"\");\n\n\t\treturn JSON.stringify(output);\n\t} catch(e) {\n\t\treturn false;\n\t}\n}\n",
+          "inputVariables": [
+            "dadosTiquete"
+          ],
+          "outputVariable": "findTagTransfer",
+          "LocalTimeZoneEnabled": false
+        },
+        "conditions": []
+      }
+    ],
+    "$leavingCustomActions": [],
+    "$defaultOutput": {
+      "stateId": "fallback",
+      "typeOfStateId": "state"
+    },
+    "$title": "Trackeamento - Cliente finaliza",
+    "$position": {
+      "top": "714.5px",
+      "left": "1098px"
+    }
+  },
+  "survey:0cff8698-0a38-4c3c-b330-c81acf5ada87": {
+    "$contentActions": [
+      {
+        "action": {
+          "type": "SendMessage",
+          "settings": {
+            "type": "text/plain",
+            "content": "Como não obtive nenhum retorno à mensagem que enviei, infelizmente terei que encerrar nosso atendimento.\n\nCaso ainda tenha alguma dúvida, fique à vontade para entrar em contato através dos nossos canais de atendimento. ",
+            "metadata": {}
+          }
+        }
+      },
+      {
+        "input": {
+          "bypass": true
+        }
+      }
+    ],
+    "$conditionOutputs": [
+      {
+        "stateId": "5e9a66bf-ba59-4618-8be3-93fc2f366f39",
+        "typeOfStateId": "state",
+        "conditions": [
+          {
+            "source": "input",
+            "comparison": "exists",
+            "values": []
+          }
+        ]
+      }
+    ],
+    "$enteringCustomActions": [
+      {
+        "type": "SetVariable",
+        "settings": {
+          "variable": "deskSurveyInvalidSurveyResponseAttempts",
+          "value": "0",
+          "expiration": 360
+        },
+        "conditions": [
+          {
+            "values": [],
+            "source": "context",
+            "comparison": "notExists",
+            "variable": "deskSurveyInvalidSurveyResponseAttempts"
+          }
+        ]
+      },
+      {
+        "type": "TrackEvent",
+        "settings": {
+          "extras": {},
+          "category": "Pesquisa de Satisfação - Fluxo",
+          "action": "1 - Início"
+        },
+        "conditions": [
+          {
+            "values": [
+              "0"
+            ],
+            "source": "context",
+            "comparison": "equals",
+            "variable": "deskSurveyInvalidSurveyResponseAttempts"
+          }
+        ]
+      },
+      {
+        "type": "ExecuteScript",
+        "settings": {
+          "function": "run",
+          "source": "function run(identity) {\n\ttry {\n\t\treturn (identity !== undefined) ? encodeURIComponent(identity) : identity;\n\t} catch(e) {\n\t\treturn identity;\n\t}\n}",
+          "inputVariables": [
+            "input.message.fromidentity"
+          ],
+          "outputVariable": "deskSurveyHelpDeskEncodedFromIdentity",
+          "LocalTimeZoneEnabled": false
+        },
+        "conditions": []
+      },
+      {
+        "type": "ProcessCommand",
+        "settings": {
+          "to": "postmaster@desk.msging.net",
+          "method": "get",
+          "from": "{{application.identity}}",
+          "uri": "/tickets?$skip=0&$take=1&$filter=customerIdentity%20eq%20%27{{deskSurveyHelpDeskEncodedFromIdentity}}%27%20and%20%28status%20eq%20%27ClosedAttendant%27%20or%20status%20eq%20%27ClosedClient%27%20or%20status%20eq%20%27ClosedClientInactivity%27%29",
+          "variable": "deskSurveyLastTicketResponse"
+        },
+        "conditions": []
+      },
+      {
+        "type": "ExecuteScript",
+        "settings": {
+          "function": "run",
+          "source": "function run(ticketsResponse) {\n\ttry {\n\t\tif(ticketsResponse != undefined){\n\t\t\tlet jsonResponse = JSON.parse(ticketsResponse);\n\t\t\tif(jsonResponse.resource && jsonResponse.resource.items && jsonResponse.resource.items.length > 0){\n\t\t\t\treturn jsonResponse.resource.items[0].id;\n\t\t\t}\n\t\t}\n\t\treturn undefined; \n\t} catch(e) {\n\t\treturn undefined;\n\t}\n}",
+          "inputVariables": [
+            "deskSurveyLastTicketResponse"
+          ],
+          "outputVariable": "deskSurveyTicketId",
+          "LocalTimeZoneEnabled": false
+        },
+        "conditions": [
+          {
+            "values": [],
+            "source": "context",
+            "comparison": "exists",
+            "variable": "deskSurveyLastTicketResponse"
+          }
+        ]
+      },
+      {
+        "type": "ExecuteScript",
+        "settings": {
+          "function": "run",
+          "source": "function run(ticketsResponse) {\n\ttry {\n\t\tif(ticketsResponse != undefined){\n\t\t\tlet jsonResponse = JSON.parse(ticketsResponse);\n\t\t\tif(jsonResponse.resource && jsonResponse.resource.items && jsonResponse.resource.items.length > 0){\n\t\t\t\treturn jsonResponse.resource.items[0].sequentialId;\n\t\t\t}\n\t\t}\n\t\treturn undefined;\n\t} catch(e) {\n\t\treturn undefined;\n\t}\n}",
+          "inputVariables": [
+            "deskSurveyLastTicketResponse"
+          ],
+          "outputVariable": "deskSurveyTicketSequentialId",
+          "LocalTimeZoneEnabled": false
+        },
+        "conditions": []
+      },
+      {
+        "type": "SetVariable",
+        "settings": {
+          "variable": "deskSurveySurveyId",
+          "value": "Pesquisa de Satisfação"
+        },
+        "conditions": []
+      },
+      {
+        "type": "SetVariable",
+        "settings": {
+          "variable": "deskSurveyComment"
+        },
+        "conditions": []
+      },
+      {
+        "type": "TrackEvent",
+        "settings": {
+          "extras": {},
+          "category": "AtendimentosTotais",
+          "action": "Encerrado por inatividade"
+        },
+        "conditions": []
+      },
+      {
+        "type": "TrackEvent",
+        "settings": {
+          "extras": {},
+          "category": "AtendimentosTotais",
+          "action": "Encerrado"
+        },
+        "conditions": [
+          {
+            "values": [],
+            "source": "context",
+            "comparison": "exists",
+            "variable": "dadosTiquete"
+          }
+        ]
+      },
+      {
+        "type": "ExecuteScript",
+        "settings": {
+          "function": "run",
+          "source": "function run(dados) {\n    try {\n        // Faz o parse dos dados recebidos\n        dados = JSON.parse(dados);\n\n        // Acessa o primeiro item do array \"items\" dentro de \"resource\"\n        const item = dados.resource.items[0];\n\n        let dadosTiquete = {};\n\n        // Se existir \"agentIdentity\", faz o tratamento do e-mail\n        if (item.agentIdentity) {\n            dadosTiquete.emailAgent = item.agentIdentity.split(\"@\")[0];\n            dadosTiquete.emailAgent = decodeURIComponent(dadosTiquete.emailAgent);\n        }\n\n        // Coleta e trata a fila do atendente\n        if (item.team) {\n            dadosTiquete.Fila = item.team;\n        }\n\n        // Coleta e trata o número do ticket\n        if (item.sequentialId) {\n            dadosTiquete.Ticket = item.sequentialId;\n        }\n\n        // Coleta e trata as tags (se existirem)\n        if (item.tags) {\n            dadosTiquete.Tags = item.tags;\n        }\n\n        // Retorna os dados do ticket\n        return dadosTiquete;\n\n    } catch (e) {\n        return null;  // Retorna null em caso de erro\n    }\n}\n",
+          "inputVariables": [
+            "deskSurveyLastTicketResponse"
+          ],
+          "outputVariable": "dadosTiquete",
+          "LocalTimeZoneEnabled": false
+        },
+        "conditions": [],
+        "continueOnError": true
+      },
+      {
+        "type": "MergeContact",
+        "settings": {
+          "extras": {
+            "dadosTicket": "{{dadosTiquete}}"
+          }
+        },
+        "conditions": [
+          {
+            "values": [],
+            "source": "context",
+            "comparison": "exists",
+            "variable": "dadosTiquete"
+          }
+        ]
+      },
+      {
+        "type": "ExecuteScript",
+        "settings": {
+          "function": "run",
+          "source": "function run(dadosTiquete) {\n\ttry {\n\t\tif(!dadosTiquete) return false;\n\n\t\tdadosTiquete = JSON.parse(dadosTiquete);\n\n\t\tconst tag = dadosTiquete.Tags ? dadosTiquete.Tags.find((tg) => tg.toString().includes(\"[Transferência]\")) : false;\n\n\t\tif(!tag) return false;\n\n\t\tconst [fluxo, fila] = tag.replace(\" | \", \"|\").replace(\"| \", \"|\").replace(\" |\", \"|\").split(\"|\");\n\n\t\tconst output = {}\n\n\t\toutput.fluxo = fluxo.replace(\"[Transferência] \", \"\").replace(\"[Transferência]\", \"\");\n\t\tif(fila) output.fila = fila.replace(\"[Fila] \", \"\").replace(\"[Fila]\", \"\");\n\n\t\treturn JSON.stringify(output);\n\t} catch(e) {\n\t\treturn false;\n\t}\n}\n",
+          "inputVariables": [
+            "dadosTiquete"
+          ],
+          "outputVariable": "findTagTransfer",
+          "LocalTimeZoneEnabled": false
+        },
+        "conditions": []
+      }
+    ],
+    "$leavingCustomActions": [],
+    "$defaultOutput": {
+      "stateId": "fallback",
+      "typeOfStateId": "state"
+    },
+    "$title": "Trackeamento - Finalizado por Inatividade",
+    "$position": {
+      "top": "1164.5px",
+      "left": "1091px"
+    }
+  },
+  "5e9a66bf-ba59-4618-8be3-93fc2f366f39": {
+    "$contentActions": [
+      {
+        "action": {
+          "type": "SendMessage",
+          "settings": {
+            "type": "application/vnd.lime.select+json",
+            "content": {
+              "text": "😉 Que tal agora me avaliar?\n\nEm uma escala de <b>1 a 5</b>, sendo <b>1 muito insatisfeito</b> e <b>5 muito satisfeito</b>, qual o seu nível de satisfação com o atendimento que acabou de receber?",
+              "options": [
+                {
+                  "text": "5 - 🤩",
+                  "previewText": "5 - 🤩",
+                  "value": null,
+                  "index": 0,
+                  "type": null
+                },
+                {
+                  "text": "4 - 😄",
+                  "previewText": "4 - 😄",
+                  "value": null,
+                  "index": 1,
+                  "type": null
+                },
+                {
+                  "text": "3 - 🙂",
+                  "previewText": "3 - 🙂",
+                  "value": null,
+                  "index": 2,
+                  "type": null
+                },
+                {
+                  "index": -1,
+                  "text": "2 - 😐",
+                  "previewText": "2 - 😐",
+                  "type": null,
+                  "value": null
+                },
+                {
+                  "index": -1,
+                  "text": "1 - 😟",
+                  "previewText": "1 - 😟",
+                  "type": null,
+                  "value": null
+                }
+              ],
+              "limitMenu": false
+            },
+            "metadata": {}
+          }
+        }
+      },
+      {
+        "input": {
+          "bypass": false,
+          "variable": "deskSurveyRatingValueNotFormatted",
+          "expiration": "0:10"
+        }
+      }
+    ],
+    "$conditionOutputs": [
+      {
+        "stateId": "6182aa3f-ace0-4059-b08a-cfc8d3883abe",
+        "typeOfStateId": "state",
+        "conditions": [
+          {
+            "source": "context",
+            "comparison": "equals",
+            "values": [
+              "1",
+              "2"
+            ],
+            "variable": "deskSurveyRatingValue"
+          }
+        ]
+      },
+      {
+        "stateId": "ac13c98b-73f5-4dfd-8bd7-5f152b86e9fd",
+        "typeOfStateId": "state",
+        "conditions": [
+          {
+            "source": "context",
+            "comparison": "equals",
+            "values": [
+              "3"
+            ],
+            "variable": "deskSurveyRatingValue"
+          }
+        ]
+      },
+      {
+        "stateId": "afffd256-594e-449c-9c2a-f681c74d79f7",
+        "typeOfStateId": "state",
+        "conditions": [
+          {
+            "source": "context",
+            "comparison": "equals",
+            "values": [
+              "4",
+              "5"
+            ],
+            "variable": "deskSurveyRatingValue"
+          }
+        ]
+      },
+      {
+        "stateId": "516c7921-910f-48ee-af04-612ff009eeae",
+        "typeOfStateId": "state",
+        "conditions": [
+          {
+            "source": "input",
+            "comparison": "exists",
+            "values": []
+          },
+          {
+            "values": [
+              "0"
+            ],
+            "source": "context",
+            "comparison": "greaterThan",
+            "variable": "deskSurveyInvalidSurveyResponseAttempts"
+          }
+        ]
+      },
+      {
+        "stateId": "516c7921-910f-48ee-af04-612ff009eeae",
+        "typeOfStateId": "state",
+        "conditions": [
+          {
+            "source": "context",
+            "comparison": "notExists",
+            "values": [],
+            "variable": "deskSurveyLastTicketResponse"
+          }
+        ]
+      },
+      {
+        "stateId": "516c7921-910f-48ee-af04-612ff009eeae",
+        "typeOfStateId": "state",
+        "conditions": [
+          {
+            "source": "input",
+            "comparison": "notExists",
+            "values": []
+          }
+        ]
+      }
+    ],
+    "$enteringCustomActions": [
+      {
+        "type": "MergeContact",
+        "settings": {
+          "extras": {
+            "Fila": "Default",
+            "Atendente": "Default"
+          }
+        },
+        "conditions": []
+      },
+      {
+        "type": "ExecuteScript",
+        "settings": {
+          "function": "run",
+          "source": "const VARIABLES_MOCK = [\n\t'5511900000000@wa.gw.msging.net'\n]\n\nfunction run(origem) {\n        let canal = \"Outros\";\n    try {\n        if(!origem) return canal;\n\n        origem = origem.split(\"@\")[1];\n\n        switch(origem){\n\n            case \"0mn.io\":\n            canal = \"Blip Chat\";\n            break;\n\n            case \"instagram.gw.msging.net\":\n            canal = \"Instagram\";\n            break;\n\n            case \"messenger.gw.msging.net\":\n            canal = \"Messenger\";\n            break;\n\n            case \"wa.gw.msging.net\":\n            canal = \"WhatsApp\";\n            break;\n\n            case \"telegram.gw.msging.net\":\n            canal = \"Telegram\";\n            break;\n\n            case \"abs.gw.msging.net \":\n            canal = \"Teams\";\n            break;\n\n            default:\n            canal = \"Outros\";\n        }\n        return canal;\n    } catch(e) {\n        return canal;\n    }\n}",
+          "inputVariables": [
+            "contact.identity"
+          ],
+          "outputVariable": "channel",
+          "LocalTimeZoneEnabled": false
+        },
+        "conditions": []
+      }
+    ],
+    "$leavingCustomActions": [
+      {
+        "type": "ExecuteScript",
+        "settings": {
+          "function": "run",
+          "source": "function run(nps) {\n\ttry {\n\t\tif (nps.includes(\"5\") || nps.includes(\"🤩\")) return \"5\";\n\t\tif (nps.includes(\"4\") || nps.includes(\"😄\")) return \"4\";\n\t\tif (nps.includes(\"3\") || nps.includes(\"🙂\")) return \"3\";\n\t\tif (nps.includes(\"2\") || nps.includes(\"😐\")) return \"2\";\n\t\tif (nps.includes(\"1\") || nps.includes(\"😟\")) return \"1\";\n\n\t\treturn false;\n\t} catch(e) {\n\t\treturn false;\n\t}\n}",
+          "inputVariables": [
+            "deskSurveyRatingValueNotFormatted"
+          ],
+          "outputVariable": "deskSurveyRatingValue",
+          "LocalTimeZoneEnabled": false
+        },
+        "conditions": []
+      },
+      {
+        "type": "TrackEvent",
+        "settings": {
+          "extras": {},
+          "category": "NPS Totais",
+          "action": "Realizado"
+        },
+        "conditions": []
+      },
+      {
+        "type": "TrackEvent",
+        "settings": {
+          "extras": {},
+          "category": "NPS",
+          "action": "{{deskSurveyRatingValue}}"
+        },
+        "conditions": [
+          {
+            "comparison": "exists",
+            "source": "context",
+            "values": [],
+            "variable": "deskSurveyRatingValue"
+          }
+        ]
+      },
+      {
+        "type": "TrackEvent",
+        "settings": {
+          "extras": {},
+          "category": "Notas do atendente {{dadosTiquete@emailAgent}}",
+          "action": "{{deskSurveyRatingValue}}"
+        },
+        "conditions": [
+          {
+            "values": [],
+            "source": "context",
+            "comparison": "exists",
+            "variable": "dadosTiquete"
+          },
+          {
+            "comparison": "exists",
+            "source": "context",
+            "values": [],
+            "variable": "deskSurveyRatingValue"
+          }
+        ]
+      },
+      {
+        "type": "TrackEvent",
+        "settings": {
+          "extras": {},
+          "category": "Nota por fila: {{dadosTiquete@Fila}}",
+          "action": "{{deskSurveyRatingValue}}"
+        },
+        "conditions": [
+          {
+            "values": [],
+            "source": "context",
+            "comparison": "exists",
+            "variable": "dadosTiquete"
+          },
+          {
+            "comparison": "exists",
+            "source": "context",
+            "values": [],
+            "variable": "deskSurveyRatingValue"
+          }
+        ]
+      },
+      {
+        "type": "TrackEvent",
+        "settings": {
+          "extras": {},
+          "category": "NPS por atendente",
+          "action": "{{dadosTiquete@emailAgent}} - {{deskSurveyRatingValue}}"
+        },
+        "conditions": [
+          {
+            "values": [],
+            "source": "context",
+            "comparison": "exists",
+            "variable": "dadosTiquete"
+          }
+        ]
+      },
+      {
+        "$description": "",
+        "$inputSchema": {
+          "type": "object",
+          "properties": {},
+          "required": []
+        },
+        "type": "TrackEvent",
+        "settings": {
+          "extras": {},
+          "category": "PesquisadesatisfacaoTicketUsuarioNaoavaliou",
+          "action": "{\"$id\":\"439220d8-d675-4a53-b170-93c8826e2563\",\"$typeOfContent\":\"\",\"$description\":\"\",\"$inputSchema\":{\"type\":\"object\",\"properties\":{},\"required\":[]},\"type\":\"TrackEvent\",\"$title\":\"Pesquisa de satisfação ticket\",\"$invalid\":false,\"settings\":{\"extras\":{},\"category\":\"PesquisadesatisfacaoTicket\",\"action\":\"Identificador: {{contact.identity}} | Nome: {{contact.name}} | Telefone: {{contact.phoneNumber}} | E-mail: {{contact.email}} | Nota: {{deskSurveyRatingValue}} | Quis Comentar: {{motivoNota}} | Comentário: {{deskSurveyComment}} | Numero Ticket: #{{deskSurveyTicketSequentialId}} | Fila: {{context.FilaTrack}} | Canal: {{channel}}\"},\"conditions\":[]} | Unidade: {{unidadeLadoUsuario}} | Data: {{calendar.datetime}}"
+        },
+        "conditions": []
+      },
+      {
+        "$description": "",
+        "$inputSchema": {
+          "type": "object",
+          "properties": {},
+          "required": []
+        },
+        "type": "TrackEvent",
+        "settings": {
+          "extras": {},
+          "category": "PesquisadesatisfacaoTicket",
+          "action": "Identificador: {{contact.identity}} | Nome: {{contact.name}} | Telefone: {{contact.phoneNumber}} | E-mail: {{contact.email}} | | Numero Ticket: #{{deskSurveyTicketSequentialId}} | Fila: {{context.FilaTrack}} | Canal: {{channel}} | Unidade: {{unidadeLadoUsuario}} | Data: {{calendar.datetime}}"
+        },
+        "conditions": [
+          {
+            "source": "input",
+            "comparison": "notExists",
+            "values": []
+          }
+        ]
+      }
+    ],
+    "$defaultOutput": {
+      "stateId": "fallback"
+    },
+    "$title": "Pergunta de satisfação",
+    "$position": {
+      "top": "936.5px",
+      "left": "1514px"
+    }
+  },
+  "survey:a57496c7-c2b9-4edc-923a-1dde4dc37e09": {
+    "$contentActions": [
+      {
+        "input": {
+          "bypass": true
+        }
+      }
+    ],
+    "$conditionOutputs": [
+      {
+        "stateId": "5e9a66bf-ba59-4618-8be3-93fc2f366f39",
+        "typeOfStateId": "state",
+        "conditions": [
+          {
+            "source": "input",
+            "comparison": "exists",
+            "values": []
+          }
+        ]
+      }
+    ],
+    "$enteringCustomActions": [
+      {
+        "type": "SetVariable",
+        "settings": {
+          "variable": "deskSurveyInvalidSurveyResponseAttempts",
+          "value": "0",
+          "expiration": 360
+        },
+        "conditions": [
+          {
+            "values": [],
+            "source": "context",
+            "comparison": "notExists",
+            "variable": "deskSurveyInvalidSurveyResponseAttempts"
+          }
+        ]
+      },
+      {
+        "type": "TrackEvent",
+        "settings": {
+          "extras": {},
+          "category": "Pesquisa de Satisfação - Fluxo",
+          "action": "1 - Início"
+        },
+        "conditions": [
+          {
+            "values": [
+              "0"
+            ],
+            "source": "context",
+            "comparison": "equals",
+            "variable": "deskSurveyInvalidSurveyResponseAttempts"
+          }
+        ]
+      },
+      {
+        "type": "ExecuteScript",
+        "settings": {
+          "function": "run",
+          "source": "function run(identity) {\n\ttry {\n\t\treturn (identity !== undefined) ? encodeURIComponent(identity) : identity;\n\t} catch(e) {\n\t\treturn identity;\n\t}\n}",
+          "inputVariables": [
+            "input.message.fromidentity"
+          ],
+          "outputVariable": "deskSurveyHelpDeskEncodedFromIdentity",
+          "LocalTimeZoneEnabled": false
+        },
+        "conditions": []
+      },
+      {
+        "type": "ProcessCommand",
+        "settings": {
+          "to": "postmaster@desk.msging.net",
+          "method": "get",
+          "from": "{{application.identity}}",
+          "uri": "/tickets?$skip=0&$take=1&$filter=customerIdentity%20eq%20%27{{deskSurveyHelpDeskEncodedFromIdentity}}%27%20and%20%28status%20eq%20%27ClosedAttendant%27%20or%20status%20eq%20%27ClosedClient%27%20or%20status%20eq%20%27ClosedClientInactivity%27%29",
+          "variable": "deskSurveyLastTicketResponse"
+        },
+        "conditions": []
+      },
+      {
+        "type": "ExecuteScript",
+        "settings": {
+          "function": "run",
+          "source": "function run(ticketsResponse) {\n\ttry {\n\t\tif(ticketsResponse != undefined){\n\t\t\tlet jsonResponse = JSON.parse(ticketsResponse);\n\t\t\tif(jsonResponse.resource && jsonResponse.resource.items && jsonResponse.resource.items.length > 0){\n\t\t\t\treturn jsonResponse.resource.items[0].id;\n\t\t\t}\n\t\t}\n\t\treturn undefined; \n\t} catch(e) {\n\t\treturn undefined;\n\t}\n}",
+          "inputVariables": [
+            "deskSurveyLastTicketResponse"
+          ],
+          "outputVariable": "deskSurveyTicketId",
+          "LocalTimeZoneEnabled": false
+        },
+        "conditions": [
+          {
+            "values": [],
+            "source": "context",
+            "comparison": "exists",
+            "variable": "deskSurveyLastTicketResponse"
+          }
+        ]
+      },
+      {
+        "type": "ExecuteScript",
+        "settings": {
+          "function": "run",
+          "source": "function run(ticketsResponse) {\n\ttry {\n\t\tif(ticketsResponse != undefined){\n\t\t\tlet jsonResponse = JSON.parse(ticketsResponse);\n\t\t\tif(jsonResponse.resource && jsonResponse.resource.items && jsonResponse.resource.items.length > 0){\n\t\t\t\treturn jsonResponse.resource.items[0].sequentialId;\n\t\t\t}\n\t\t}\n\t\treturn undefined;\n\t} catch(e) {\n\t\treturn undefined;\n\t}\n}",
+          "inputVariables": [
+            "deskSurveyLastTicketResponse"
+          ],
+          "outputVariable": "deskSurveyTicketSequentialId",
+          "LocalTimeZoneEnabled": false
+        },
+        "conditions": []
+      },
+      {
+        "type": "SetVariable",
+        "settings": {
+          "variable": "deskSurveySurveyId",
+          "value": "Pesquisa de Satisfação"
+        },
+        "conditions": []
+      },
+      {
+        "type": "SetVariable",
+        "settings": {
+          "variable": "deskSurveyComment"
+        },
+        "conditions": []
+      },
+      {
+        "type": "ExecuteScript",
+        "settings": {
+          "function": "run",
+          "source": "function run(dados) {\n    try {\n        // Faz o parse dos dados recebidos\n        dados = JSON.parse(dados);\n\n        // Acessa o primeiro item do array \"items\" dentro de \"resource\"\n        const item = dados.resource.items[0];\n\n        let dadosTiquete = {};\n\n        // Se existir \"agentIdentity\", faz o tratamento do e-mail\n        if (item.agentIdentity) {\n            dadosTiquete.emailAgent = item.agentIdentity.split(\"@\")[0];\n            dadosTiquete.emailAgent = decodeURIComponent(dadosTiquete.emailAgent);\n        }\n\n        // Coleta e trata a fila do atendente\n        if (item.team) {\n            dadosTiquete.Fila = item.team;\n        }\n\n        // Coleta e trata o número do ticket\n        if (item.sequentialId) {\n            dadosTiquete.Ticket = item.sequentialId;\n        }\n\n        // Coleta e trata as tags (se existirem)\n        if (item.tags) {\n            dadosTiquete.Tags = item.tags;\n        }\n\n        // Retorna os dados do ticket\n        return dadosTiquete;\n\n    } catch (e) {\n        return null;  // Retorna null em caso de erro\n    }\n}\n",
+          "inputVariables": [
+            "deskSurveyLastTicketResponse"
+          ],
+          "outputVariable": "dadosTiquete",
+          "LocalTimeZoneEnabled": false
+        },
+        "conditions": [],
+        "continueOnError": true
+      },
+      {
+        "type": "MergeContact",
+        "settings": {
+          "extras": {
+            "dadosTicket": "{{dadosTiquete}}"
+          }
+        },
+        "conditions": [
+          {
+            "values": [],
+            "source": "context",
+            "comparison": "exists",
+            "variable": "dadosTiquete"
+          }
+        ]
+      },
+      {
+        "type": "TrackEvent",
+        "settings": {
+          "extras": {},
+          "category": "AtendimentosTotais",
+          "action": "Encerrado"
+        },
+        "conditions": []
+      },
+      {
+        "type": "TrackEvent",
+        "settings": {
+          "extras": {},
+          "category": "AtendimentosTotais",
+          "action": "Encerrado pelo Atendente"
+        },
+        "conditions": []
+      },
+      {
+        "type": "TrackEvent",
+        "settings": {
+          "extras": {},
+          "category": "{{dadosTiquete@emailAgent}}",
+          "action": "Realizado - {{dadosTiquete@Fila}}"
+        },
+        "conditions": [
+          {
+            "values": [],
+            "source": "context",
+            "comparison": "exists",
+            "variable": "dadosTiquete@emailAgent"
+          },
+          {
+            "values": [],
+            "source": "context",
+            "comparison": "exists",
+            "variable": "dadosTiquete@Fila"
+          }
+        ]
+      },
+      {
+        "type": "TrackEvent",
+        "settings": {
+          "extras": {},
+          "category": "{{dadosTiquete@emailAgent}}",
+          "action": "Realizado"
+        },
+        "conditions": [
+          {
+            "values": [],
+            "source": "context",
+            "comparison": "exists",
+            "variable": "dadosTiquete@emailAgent"
+          }
+        ]
+      },
+      {
+        "type": "ExecuteScript",
+        "settings": {
+          "function": "run",
+          "source": "function run(dadosTiquete) {\n\ttry {\n\t\tif(!dadosTiquete) return false;\n\n\t\tdadosTiquete = JSON.parse(dadosTiquete);\n\n\t\tconst tag = dadosTiquete.Tags ? dadosTiquete.Tags.find((tg) => tg.toString().includes(\"[Transferência]\")) : false;\n\n\t\tif(!tag) return false;\n\n\t\tconst [fluxo, fila] = tag.replace(\" | \", \"|\").replace(\"| \", \"|\").replace(\" |\", \"|\").split(\"|\");\n\n\t\tconst output = {}\n\n\t\toutput.fluxo = fluxo.replace(\"[Transferência] \", \"\").replace(\"[Transferência]\", \"\");\n\t\tif(fila) output.fila = fila.replace(\"[Fila] \", \"\").replace(\"[Fila]\", \"\");\n\n\t\treturn JSON.stringify(output);\n\t} catch(e) {\n\t\treturn false;\n\t}\n}\n",
+          "inputVariables": [
+            "dadosTiquete"
+          ],
+          "outputVariable": "findTagTransfer",
+          "LocalTimeZoneEnabled": false
+        },
+        "conditions": []
+      }
+    ],
+    "$leavingCustomActions": [],
+    "$defaultOutput": {
+      "stateId": "fallback",
+      "typeOfStateId": "state"
+    },
+    "$title": "Trackeamento - Atendente finaliza",
+    "$position": {
+      "top": "921.5px",
+      "left": "1086px"
+    }
+  },
+  "f4ab4aea-4d7a-4abc-bce7-23da705b3fbf": {
+    "$contentActions": [
+      {
+        "action": {
+          "type": "SendMessage",
+          "settings": {
+            "type": "text/plain",
+            "content": "Nesse momento estamos <b>fora do nosso horário</b> de atendimento!\n\nO horário de atendimento é de {{horarioAtendimento}}\n\n👩‍💻 Mas não se preocupe, assim que alguém do nosso time estiver disponível, <b>iremos atender você!</b>",
+            "metadata": {}
+          }
+        }
+      },
+      {
+        "input": {
+          "bypass": true
+        }
+      }
+    ],
+    "$conditionOutputs": [
+      {
+        "stateId": "desk:fa45f794-dd91-4e17-977a-708379a4c093",
+        "typeOfStateId": "state",
+        "conditions": [
+          {
+            "source": "input",
+            "comparison": "exists",
+            "values": []
+          }
+        ]
+      }
+    ],
+    "$enteringCustomActions": [
+      {
+        "type": "ProcessHttp",
+        "settings": {
+          "headers": {
+            "Authorization": "{{bucket.blipToken}}"
+          },
+          "method": "POST",
+          "body": "{\r\n    \"id\": \"{{random.guid}}\",\r\n    \"to\": \"postmaster@desk.msging.net\",\r\n    \"method\": \"get\",\r\n    \"uri\": \"/attendance-hour/\"\r\n}",
+          "uri": "{{resource.blipUrl}}/commands",
+          "responseStatusVariable": "statusSearchHourOfTeams",
+          "responseBodyVariable": "responseSearchHourOfTeams"
+        },
+        "conditions": [
+          {
+            "values": [],
+            "source": "context",
+            "comparison": "exists",
+            "variable": "contactSyncResourceBody"
+          }
+        ]
+      },
+      {
+        "type": "ExecuteScript",
+        "settings": {
+          "function": "run",
+          "source": "function run(response, fila) {\n  try {\n    if (typeof response === \"string\") {\n      response = JSON.parse(response);\n    }\n\n    if (\n      !response ||\n      !response.resource ||\n      !response.resource.items ||\n      response.resource.items.length === 0\n    ) {\n      return null;\n    }\n\n    const items = response.resource.items;\n    const filaUpper = String(fila || \"\").toUpperCase();\n    let selectedItem = null;\n\n    // tenta encontrar pela fila\n    for (let i = 0; i < items.length; i++) {\n      const title = String(items[i].title || \"\").toUpperCase();\n\n      if (\n        title === filaUpper ||\n        title.indexOf(filaUpper) !== -1 ||\n        filaUpper.indexOf(title) !== -1\n      ) {\n        selectedItem = items[i];\n        break;\n      }\n    }\n\n    // fallback obrigatório: Horário Regular\n    if (!selectedItem) {\n      for (let j = 0; j < items.length; j++) {\n        if (String(items[j].title).toUpperCase() === \"HORÁRIO REGULAR\") {\n          selectedItem = items[j];\n          break;\n        }\n      }\n    }\n\n    return selectedItem ? JSON.stringify(selectedItem) : null;\n\n  } catch (e) {\n    return null;\n  }\n}",
+          "inputVariables": [
+            "responseSearchHourOfTeams",
+            "contact.extras.Fila"
+          ],
+          "outputVariable": "teamHour",
+          "LocalTimeZoneEnabled": false
+        },
+        "conditions": []
+      },
+      {
+        "type": "ProcessHttp",
+        "settings": {
+          "headers": {
+            "Authorization": "Key ZGV2YXRoMjpqa0M4aUZ3UE9rMmZOeXNad05uaw=="
+          },
+          "method": "POST",
+          "body": "{\r\n    \"id\": \"{{random.guid}}\",\r\n    \"to\": \"postmaster@desk.msging.net\",\r\n    \"method\": \"get\",\r\n    \"uri\": \"/attendance-hour-container/c01a22a0-62fb-4d7c-9a13-0199efafb04d\"\r\n}",
+          "uri": "https://orlario.http.msging.net/commands",
+          "responseStatusVariable": "statusSearchHourByContainerId",
+          "responseBodyVariable": "responseSearchHourByContainerId"
+        },
+        "conditions": []
+      },
+      {
+        "type": "ExecuteScript",
+        "settings": {
+          "function": "run",
+          "source": "const DAYS_OF_WEEK = {\n  \"monday\": \"Segunda-feira\",\n  \"tuesday\": \"Terça-feira\",\n  \"wednesday\": \"Quarta-feira\",\n  \"thursday\": \"Quinta-feira\",\n  \"friday\": \"Sexta-feira\",\n  \"saturday\": \"Sábado\",\n  \"sunday\": \"Domingo\",\n};\n\n  function run(response, actualDay) {\n    try {\n        response = JSON.parse(response);\n      const items = response.resource.attendanceHourScheduleItems;\n      const itemsFeriados = response.resource.attendanceHourOffItems || [];\n      const isFeriado = itemsFeriados.some((item) => item.startDate.includes(actualDay) || item.endDate.includes(actualDay))\n      const days = {};\n      \n      items.forEach((item) => {\n        const key = item.startTime + \"-\" + item.endTime;\n        if(days[key]) days[key].push(item.dayOfWeek);\n        else days[key] = [item.dayOfWeek];\n      });\n\n      let output = Object.entries(days);\n  \n      output = output.map((day) => {\n        const [horaInicial, horaFinal] = day[0].split(\"-\");\n        const daysOfWeek = day[1].sort((dayA, dayB) => {\n            dayA = dayA.toString().toLowerCase().trim();\n            dayB = dayB.toString().toLowerCase().trim();\n            const sortingArr = Object.keys(DAYS_OF_WEEK);\n            return sortingArr.indexOf(dayA) - sortingArr.indexOf(dayB);\n        }).map((day) => {\n          day = day.toString().toLowerCase().trim();\n          return DAYS_OF_WEEK[day] || day\n        })\n        return `${daysOfWeek.filter((v, index, array) => index === 0 || array.length - 1 === index).join(\" a \")} das ${horaInicial.slice(0, 5)}h às ${horaFinal.slice(0, 5)}h`\n      }).join('\\n e de ');\n  \n      if (isFeriado) output += \"\\n <b>hoje não estamos funcionando por conta do feriado</b>\";\n  \n      return output;\n    } catch(e) {\n      return 'segunda a sexta em horário comercial';\n    }\n  }",
+          "inputVariables": [
+            "responseSearchHourByContainerId",
+            "calendar.date"
+          ],
+          "outputVariable": "horarioAtendimento",
+          "LocalTimeZoneEnabled": false
+        },
+        "conditions": []
+      },
+      {
+        "type": "TrackEvent",
+        "settings": {
+          "extras": {},
+          "category": "[{{application.identifier}}][{{state.name}}][API] Busca horários das filas",
+          "action": "Data: {{calendar.datetime}} | Status: {{statusSearchHourOfTeams}} | Response: {{responseSearchHourOfTeams}} | Body: {\r\n    \"id\": \"{{random.guid}}\",\r\n    \"to\": \"postmaster@desk.msging.net\",\r\n    \"method\": \"get\",\r\n    \"uri\": \"/attendance-hour/\"\r\n} | Identity: {{contact.identity}}"
+        },
+        "conditions": []
+      },
+      {
+        "type": "TrackEvent",
+        "settings": {
+          "extras": {},
+          "category": "[{{application.identifier}}][{{state.name}}][API] Busca horário da fila",
+          "action": "Data: {{calendar.datetime}} | Status: {{statusSearchHourByContainerId}} | Response: {{responseSearchHourByContainerId}} | Body: {\r\n    \"id\": \"{{random.guid}}\",\r\n    \"to\": \"postmaster@desk.msging.net\",\r\n    \"method\": \"get\",\r\n    \"uri\": \"/attendance-hour-container/c01a22a0-62fb-4d7c-9a13-0199efafb04d\"\r\n} | Identity: {{contact.identity}}"
+        },
+        "conditions": []
+      }
+    ],
+    "$leavingCustomActions": [],
+    "$defaultOutput": {
+      "stateId": "fallback"
+    },
+    "$title": "Fora do horário - Geral",
+    "$position": {
+      "top": "1187px",
+      "left": "357px"
+    }
+  },
+  "b1b5af8b-8833-46f6-b6b6-148108f63838": {
+    "$contentActions": [
+      {
+        "action": {
+          "type": "SendMessage",
+          "settings": {
+            "type": "text/plain",
+            "content": "Se você quiser sair do atendimento basta digitar \"<b>#sair</b>\" 😉",
+            "metadata": {}
+          }
+        }
+      },
+      {
+        "input": {
+          "bypass": true
+        }
+      }
+    ],
+    "$conditionOutputs": [
+      {
+        "stateId": "31e04dfe-37cd-4aaa-98f0-f3c7b84f88f3",
+        "typeOfStateId": "state",
+        "conditions": [
+          {
+            "source": "input",
+            "comparison": "exists",
+            "values": []
+          }
+        ]
+      }
+    ],
+    "$enteringCustomActions": [],
+    "$leavingCustomActions": [],
+    "$defaultOutput": {
+      "stateId": "fallback"
+    },
+    "$title": "Mensagem #sair",
+    "$position": {
+      "top": "499px",
+      "left": "685px"
+    }
+  },
+  "31e04dfe-37cd-4aaa-98f0-f3c7b84f88f3": {
+    "$contentActions": [
+      {
+        "input": {
+          "bypass": true
+        }
+      }
+    ],
+    "$conditionOutputs": [
+      {
+        "stateId": "desk:0cc3c178-6024-45de-a78f-f1b1e6092f74",
+        "typeOfStateId": "state",
+        "conditions": [
+          {
+            "source": "input",
+            "comparison": "exists",
+            "values": [],
+            "variable": "atendentesFiltrados"
+          }
+        ]
+      }
+    ],
+    "$enteringCustomActions": [],
+    "$leavingCustomActions": [],
+    "$defaultOutput": {
+      "stateId": "fallback"
+    },
+    "$title": "Distribuição atendimento",
+    "$position": {
+      "top": "600px",
+      "left": "373px"
+    }
+  },
+  "89f91d10-f603-4328-8fd5-06b25fd4f132": {
+    "$contentActions": [
+      {
+        "input": {
+          "bypass": true
+        }
+      }
+    ],
+    "$conditionOutputs": [],
+    "$enteringCustomActions": [],
+    "$leavingCustomActions": [
+      {
+        "type": "Redirect",
+        "settings": {
+          "context": {
+            "type": "text/plain",
+            "value": "@trasferenciaSetor"
+          },
+          "address": "{{findAthTransfer}}"
+        },
+        "conditions": [
+          {
+            "values": [],
+            "source": "context",
+            "comparison": "exists",
+            "variable": "findAthTransfer"
+          },
+          {
+            "values": [
+              "false"
+            ],
+            "source": "context",
+            "comparison": "notEquals",
+            "variable": "findAthTransfer"
+          }
+        ]
+      }
+    ],
+    "$defaultOutput": {
+      "stateId": "onboarding",
+      "typeOfStateId": "state"
+    },
+    "$title": "Redirect - Outro setor/fluxo",
+    "$position": {
+      "top": "163px",
+      "left": "1430px"
+    }
+  }
+}

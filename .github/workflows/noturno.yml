@@ -1,0 +1,74 @@
+name: Noturno — suite + diff drift
+
+on:
+  schedule:
+    - cron: '0 6 * * *'   # 06:00 UTC = 03:00 BRT
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  nightly:
+    name: Suite completa + diff --published
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install deps
+        run: npm ci
+
+      - name: bbuilder login
+        env:
+          BBUILDER_ACCESS_KEY: ${{ secrets.BBUILDER_ACCESS_KEY }}
+          BBUILDER_EMAIL: ${{ secrets.BBUILDER_EMAIL }}
+        run: npx bbuilder login --email "$BBUILDER_EMAIL" --access-key "$BBUILDER_ACCESS_KEY"
+
+      - name: Diff local x publicado (detecta drift do canvas)
+        id: diff
+        run: |
+          npx bbuilder diff --published | tee drift.txt
+          if grep -qE '(~|\+|\-) state' drift.txt; then
+            echo "has_drift=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Suite E2E completa
+        continue-on-error: true
+        env:
+          BBUILDER_ACCESS_KEY: ${{ secrets.BBUILDER_ACCESS_KEY }}
+        run: node scripts/test-with-retry.mjs --max-retries 2
+
+      - name: Upload artefatos
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: noturno-${{ github.run_number }}
+          path: |
+            docs/evidencias/*.log
+            drift.txt
+          if-no-files-found: ignore
+          retention-days: 60
+
+      - name: Abrir issue se houve drift
+        if: steps.diff.outputs.has_drift == 'true'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs')
+            const drift = fs.readFileSync('drift.txt', 'utf8')
+            github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: `Drift detectado entre repo e Blip (noturno #${context.runNumber})`,
+              body: 'A verificação noturna encontrou diferenças entre o `main` do repositório e o que está publicado no Blip. Isso costuma indicar edição direto pelo canvas.\n\n```\n' + drift + '\n```',
+              labels: ['drift']
+            })

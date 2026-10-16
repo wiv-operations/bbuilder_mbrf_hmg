@@ -1,0 +1,362 @@
+{
+  "onboarding": {
+    "$contentActions": [
+      {
+        "input": {
+          "bypass": false,
+          "variable": "Initial"
+        }
+      }
+    ],
+    "$conditionOutputs": [
+      {
+        "stateId": "{{input.content@lastState}}",
+        "typeOfStateId": "variable",
+        "conditions": [
+          {
+            "source": "context",
+            "comparison": "exists",
+            "values": [],
+            "variable": "input.content@lastState"
+          }
+        ]
+      },
+      {
+        "stateId": "0f43804e-632d-4eb6-a91d-d0f165593835",
+        "typeOfStateId": "state",
+        "conditions": [
+          {
+            "source": "input",
+            "comparison": "exists",
+            "values": []
+          },
+          {
+            "source": "context",
+            "comparison": "notEquals",
+            "variable": "contact.extras.channel",
+            "values": [
+              "WhatsApp"
+            ]
+          }
+        ]
+      },
+      {
+        "stateId": "685550df-158c-4e03-8899-6b8a8b49860c",
+        "typeOfStateId": "state",
+        "conditions": [
+          {
+            "source": "input",
+            "comparison": "exists",
+            "values": []
+          }
+        ]
+      }
+    ],
+    "$enteringCustomActions": [],
+    "$leavingCustomActions": [],
+    "$defaultOutput": {
+      "stateId": "fallback"
+    },
+    "root": true,
+    "$title": "Início",
+    "$position": {
+      "top": "41px",
+      "left": "706px"
+    }
+  },
+  "fallback": {
+    "$contentActions": [
+      {
+        "input": {
+          "bypass": true
+        }
+      }
+    ],
+    "$conditionOutputs": [],
+    "$enteringCustomActions": [
+      {
+        "type": "TrackEvent",
+        "settings": {
+          "extras": {},
+          "category": "Inputs inesperados",
+          "action": "{{state.previous.name}} - {{input.content}}"
+        },
+        "conditions": []
+      },
+      {
+        "type": "ExecuteScript",
+        "settings": {
+          "function": "run",
+          "source": "function run(inputContent) {\n\tlet redirect = \"{{resource.redirect@falarComSophia}}\"\n\n\tlet previous = \"{{state.previous.id}}\";\n\tlet previousSubFlow = \"{{stateSubFluxo}}\";\n\ttry {\n\t\treturn {\n\t\t\t\"origin\": redirect,\n\t\t\t\"lastState\": previousSubFlow ? previousSubFlow : previous,\n\t\t\t\"lastName\": \"{{state.previous.name}}\",\n\t\t\t\"inputType\": \"menu dinamico\",\n\t\t\tinputContent\n\t\t};\n\n\t} catch (error) {\n\t\treturn \"ERROR_FORMATTING_INPUT_CONTENT\"\n\t}\n}",
+          "inputVariables": [
+            "input.content"
+          ],
+          "outputVariable": "inputExcecoes",
+          "LocalTimeZoneEnabled": false
+        },
+        "conditions": []
+      },
+      {
+        "type": "SetVariable",
+        "settings": {
+          "variable": "stateSubFluxo",
+          "expiration": 1
+        },
+        "conditions": []
+      }
+    ],
+    "$leavingCustomActions": [
+      {
+        "type": "Redirect",
+        "settings": {
+          "context": {
+            "type": "text/plain",
+            "value": "{{inputExcecoes}}"
+          },
+          "address": "{{resource.redirect@excecao}}"
+        },
+        "conditions": []
+      }
+    ],
+    "$defaultOutput": {
+      "stateId": "onboarding"
+    },
+    "$title": "Exceções",
+    "$position": {
+      "top": "31px",
+      "left": "200px"
+    }
+  },
+  "685550df-158c-4e03-8899-6b8a8b49860c": {
+    "$contentActions": [
+      {
+        "action": {
+          "$description": "",
+          "type": "SendMessage",
+          "settings": {
+            "type": "text/plain",
+            "content": "Para te ajudar da melhor forma, seu atendimento continuará com a Sophia, nossa assistente especializada.\n\nPara isso <b>acesse o link para falar com ela ou chame ela diretamente clicando em “conversar”</b>:\n\n🔗https://wa.me/+558007028800\n\nAguardamos o seu contato",
+            "metadata": {}
+          }
+        }
+      },
+      {
+        "input": {
+          "bypass": true
+        }
+      }
+    ],
+    "$conditionOutputs": [
+      {
+        "stateId": "6381f70d-c27b-417d-87ab-e61b1a2a5c78",
+        "typeOfStateId": "state",
+        "conditions": [
+          {
+            "source": "input",
+            "comparison": "exists",
+            "values": []
+          }
+        ]
+      }
+    ],
+    "$enteringCustomActions": [
+      {
+        "$description": "",
+        "$inputSchema": {
+          "type": "object",
+          "properties": {},
+          "required": []
+        },
+        "type": "TrackEvent",
+        "settings": {
+          "extras": {
+            "identificador": "{{contact.identity}}",
+            "origem": "{{origem}}",
+            "canal": "{{channel}}"
+          },
+          "category": "Sophia encaminhamento exibicao",
+          "action": "exibicao"
+        },
+        "conditions": []
+      }
+    ],
+    "$leavingCustomActions": [],
+    "$defaultOutput": {
+      "stateId": "fallback"
+    },
+    "$localCustomActions": [],
+    "$title": "[MSG] Falar com sophia",
+    "$position": {
+      "top": "218px",
+      "left": "840px"
+    }
+  },
+  "6381f70d-c27b-417d-87ab-e61b1a2a5c78": {
+    "$contentActions": [
+      {
+        "action": {
+          "type": "SendRawMessage",
+          "settings": {
+            "metadata": {},
+            "type": "application/json",
+            "rawContent": "{{sendContact}}"
+          }
+        }
+      },
+      {
+        "input": {
+          "bypass": true
+        }
+      }
+    ],
+    "$conditionOutputs": [
+      {
+        "stateId": "2f3f3d2d-f880-40e6-bf9f-91bc9d1e7222",
+        "typeOfStateId": "state",
+        "conditions": [
+          {
+            "source": "input",
+            "comparison": "exists",
+            "values": []
+          }
+        ]
+      }
+    ],
+    "$enteringCustomActions": [
+      {
+        "type": "ExecuteScript",
+        "settings": {
+          "function": "run",
+          "source": "function run() {\n\ttry {\n\t\tconst info = {\n\t\t\temail: \"saccentral@brf.com\",\n\t\t\tname: \"Sophia\",\n\t\t\tphone: \"558007028800\",\n\t\t\tsite: \"https://centralmbrf.com.br/\",\n\t\t}\n\t\t\n\t\treturn {\n\t\t\t\"type\": \"contacts\",\n\t\t\t\"contacts\": [\n\t\t\t\t{\n\t\t\t\t\"addresses\": [],\n\t\t\t\t\"birthday\": \"\",\n\t\t\t\t\"emails\": [\n\t\t\t\t\t{\n\t\t\t\t\t\"email\": info.email,\n\t\t\t\t\t\"type\": \"Work\"\n\t\t\t\t\t}\n\t\t\t\t],\n\t\t\t\t\"name\": {\n\t\t\t\t\t\"formatted_name\": info.name,\n\t\t\t\t\t\"first_name\": info.name,\n\t\t\t\t\t\"last_name\": \"\",\n\t\t\t\t\t\"middle_name\": \"\",\n\t\t\t\t\t\"suffix\": \"\",\n\t\t\t\t\t\"prefix\": \"\"\n\t\t\t\t},\n\t\t\t\t\"org\": {},\n\t\t\t\t\"phones\": [\n\t\t\t\t\t{\n\t\t\t\t\t\t\"phone\": `+${info.phone}`,\n\t\t\t\t\t\t\"type\": \"main\",\n\t\t\t\t\t\t\"wa_id\": info.phone,\n\t\t\t\t\t}\n\t\t\t\t],\n\t\t\t\t\"urls\": [\n\t\t\t\t\t{\n\t\t\t\t\t\"url\": info.site,\n\t\t\t\t\t\"type\": \"Company\"\n\t\t\t\t\t}\n\t\t\t\t]\n\t\t\t\t}\n\t\t\t]\n\t\t};\n\t} catch(e) {\n\t\treturn {}\n\t}\n}\n",
+          "inputVariables": [],
+          "outputVariable": "sendContact",
+          "LocalTimeZoneEnabled": false
+        },
+        "conditions": []
+      }
+    ],
+    "$leavingCustomActions": [
+      {
+        "$description": "",
+        "$inputSchema": {
+          "type": "object",
+          "properties": {},
+          "required": []
+        },
+        "type": "TrackEvent",
+        "settings": {
+          "extras": {
+            "identificador": "{{contact.identity}}",
+            "origem": "{{origem}}",
+            "canal": "{{channel}}"
+          },
+          "category": "Sophia contato exibicao",
+          "action": "exibicao"
+        },
+        "conditions": []
+      }
+    ],
+    "$defaultOutput": {
+      "stateId": "2f3f3d2d-f880-40e6-bf9f-91bc9d1e7222",
+      "typeOfStateId": "state"
+    },
+    "$title": "[CONTATO] Sophia",
+    "$position": {
+      "top": "401px",
+      "left": "710px"
+    }
+  },
+  "2f3f3d2d-f880-40e6-bf9f-91bc9d1e7222": {
+    "$contentActions": [
+      {
+        "input": {
+          "bypass": true
+        }
+      }
+    ],
+    "$conditionOutputs": [],
+    "$enteringCustomActions": [],
+    "$leavingCustomActions": [
+      {
+        "$description": "",
+        "$inputSchema": {
+          "type": "object",
+          "properties": {},
+          "required": []
+        },
+        "type": "Redirect",
+        "settings": {
+          "context": {
+            "type": "text/plain",
+            "value": "@Redirect"
+          },
+          "address": "{{resource.redirect@ajudoEmAlgoMais}}"
+        },
+        "conditions": []
+      }
+    ],
+    "$defaultOutput": {
+      "stateId": "onboarding",
+      "typeOfStateId": "state"
+    },
+    "$localCustomActions": [],
+    "$title": "[REDIRECT] Ajudo em algo mais",
+    "$position": {
+      "top": "589px",
+      "left": "711px"
+    }
+  },
+  "0f43804e-632d-4eb6-a91d-d0f165593835": {
+    "$contentActions": [
+      {
+        "action": {
+          "$description": "",
+          "type": "SendMessage",
+          "settings": {
+            "type": "text/plain",
+            "content": "Para te ajudar da melhor forma, seu atendimento continuará com a Sophia, nossa assistente especializada.\n\nPara isso <b>acesse o link abaixo para falar com ela</b>:\n\n🔗https://wa.me/+558007028800\n\nAguardamos o seu contato",
+            "metadata": {}
+          }
+        }
+      },
+      {
+        "input": {
+          "bypass": true
+        }
+      }
+    ],
+    "$conditionOutputs": [],
+    "$enteringCustomActions": [
+      {
+        "$description": "",
+        "$inputSchema": {
+          "type": "object",
+          "properties": {},
+          "required": []
+        },
+        "type": "TrackEvent",
+        "settings": {
+          "extras": {
+            "identificador": "{{contact.identity}}",
+            "origem": "{{origem}}",
+            "canal": "{{channel}}"
+          },
+          "category": "Sophia encaminhamento BlipChat exibicao",
+          "action": "exibicao"
+        },
+        "conditions": []
+      }
+    ],
+    "$leavingCustomActions": [],
+    "$defaultOutput": {
+      "stateId": "2f3f3d2d-f880-40e6-bf9f-91bc9d1e7222",
+      "typeOfStateId": "state"
+    },
+    "$localCustomActions": [],
+    "$title": "[MSG] Falar com sophia blip chat",
+    "$position": {
+      "top": "206px",
+      "left": "512px"
+    }
+  }
+}

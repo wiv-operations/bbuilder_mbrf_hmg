@@ -1,0 +1,4453 @@
+{
+  "onboarding": {
+    "$contentActions": [
+      {
+        "input": {
+          "bypass": false,
+          "variable": "Initial"
+        }
+      }
+    ],
+    "$conditionOutputs": [
+      {
+        "stateId": "24780462-8f92-4004-9d67-4f1d060d7e3f",
+        "typeOfStateId": "state",
+        "conditions": [
+          {
+            "source": "context",
+            "comparison": "equals",
+            "values": [
+              "comercioExterno"
+            ],
+            "variable": "intencaoMbrf"
+          }
+        ]
+      },
+      {
+        "stateId": "9338e2ca-9fb4-4bc8-84fd-cb7f20448912",
+        "typeOfStateId": "state",
+        "conditions": [
+          {
+            "source": "context",
+            "comparison": "equals",
+            "values": [
+              "vagasMBRF"
+            ],
+            "variable": "intencaoMbrf"
+          }
+        ]
+      },
+      {
+        "stateId": "e87afa66-c52b-4a68-bdc4-afb4e6b3c658",
+        "typeOfStateId": "state",
+        "conditions": [
+          {
+            "source": "input",
+            "comparison": "equals",
+            "values": [
+              "@MenuInicial",
+              "@redirectMenu"
+            ]
+          }
+        ]
+      },
+      {
+        "stateId": "e6212c1f-e453-423f-aa89-a8d9bafa2876",
+        "typeOfStateId": "state",
+        "conditions": [
+          {
+            "source": "input",
+            "comparison": "equals",
+            "values": [
+              "@redirectLGPD"
+            ]
+          }
+        ]
+      },
+      {
+        "stateId": "{{input.content@lastState}}",
+        "typeOfStateId": "variable",
+        "conditions": [
+          {
+            "source": "context",
+            "comparison": "exists",
+            "values": [],
+            "variable": "input.content@lastState"
+          }
+        ]
+      },
+      {
+        "stateId": "6d55bf51-91f5-4782-bd4e-b7bf6b9409cf",
+        "conditions": [
+          {
+            "source": "input",
+            "comparison": "matches",
+            "values": [
+              ".*"
+            ]
+          }
+        ],
+        "typeOfStateId": "state"
+      }
+    ],
+    "$enteringCustomActions": [],
+    "$leavingCustomActions": [
+      {
+        "type": "SetVariable",
+        "settings": {
+          "variable": "message",
+          "value": "{{input.message}}"
+        },
+        "conditions": [
+          {
+            "values": [
+              "#wa.referral.source_id"
+            ],
+            "source": "context",
+            "comparison": "contains",
+            "variable": "input.message"
+          }
+        ]
+      },
+      {
+        "type": "ExecuteScript",
+        "settings": {
+          "function": "run",
+          "source": "const VARIABLES_MOCK = [\n\t'5511900000000@wa.gw.msging.net'\n]\n\nfunction run(origem) {\n        let canal = \"Outros\";\n    try {\n        if(!origem) return canal;\n\n        origem = origem.split(\"@\")[1];\n\n        switch(origem){\n\n            case \"0mn.io\":\n            canal = \"Blip Chat\";\n            break;\n\n            case \"instagram.gw.msging.net\":\n            canal = \"Instagram\";\n            break;\n\n            case \"messenger.gw.msging.net\":\n            canal = \"Messenger\";\n            break;\n\n            case \"wa.gw.msging.net\":\n            canal = \"WhatsApp\";\n            break;\n\n            case \"telegram.gw.msging.net\":\n            canal = \"Telegram\";\n            break;\n\n            case \"abs.gw.msging.net \":\n            canal = \"Teams\";\n            break;\n\n            default:\n            canal = \"Outros\";\n        }\n        return canal;\n    } catch(e) {\n        return canal;\n    }\n}",
+          "inputVariables": [
+            "contact.identity"
+          ],
+          "outputVariable": "channel",
+          "LocalTimeZoneEnabled": false
+        },
+        "conditions": []
+      },
+      {
+        "$description": "",
+        "$inputSchema": {
+          "type": "object",
+          "properties": {},
+          "required": []
+        },
+        "type": "ExecuteScript",
+        "settings": {
+          "function": "run",
+          "source": "function run(input) {\n    try {\n\n        if (\n            input !== null &&\n            input !== undefined &&\n            String(input).trim() !== \"\"\n        ) {\n            return \"Retorno\";\n        }\n\n        return \"Novo\";\n\n    } catch (e) {\n        return \"Novo\";\n    }\n}",
+          "inputVariables": [
+            "contact.extras.aceitouLGPD"
+          ],
+          "outputVariable": "tipoEntrada",
+          "LocalTimeZoneEnabled": false
+        },
+        "conditions": []
+      },
+      {
+        "$description": "",
+        "$inputSchema": {
+          "type": "object",
+          "properties": {},
+          "required": []
+        },
+        "type": "ExecuteScript",
+        "settings": {
+          "function": "run",
+          "source": "function run(input) {\n  try {\n    if (!input) {\n      return \"Sem identificacao\";\n    }\n\n    const texto = String(input);\n\n    if (texto.includes(\"#wa.referral.source_id\")) {\n      return \"Campanha\";\n    }\n\t\n    return \"Organico\";\n\n  } catch (error) {\n    return \"Sem identificacao\";\n  }\n}",
+          "inputVariables": [
+            "input.message"
+          ],
+          "outputVariable": "origem",
+          "LocalTimeZoneEnabled": false
+        },
+        "conditions": []
+      },
+      {
+        "type": "MergeContact",
+        "settings": {
+          "extras": {
+            "channel": "{{channel}}"
+          }
+        },
+        "conditions": []
+      },
+      {
+        "type": "TrackEvent",
+        "settings": {
+          "extras": {
+            "identificador": "{{contact.identity}}",
+            "origem": "{{origem}}",
+            "canal": "{{channel}}"
+          },
+          "category": "Entrada fluxo origem",
+          "action": "{{origem}}"
+        },
+        "conditions": []
+      },
+      {
+        "type": "TrackEvent",
+        "settings": {
+          "extras": {
+            "identificador": "{{contact.identity}}",
+            "origem": "{{origem}}",
+            "canal": "{{channel}}"
+          },
+          "category": "Entrada usuario tipo",
+          "action": "{{tipoEntrada}}"
+        },
+        "conditions": []
+      },
+      {
+        "type": "TrackEvent",
+        "settings": {
+          "extras": {},
+          "action": "{{channel}}",
+          "category": "Entrada canal origem"
+        },
+        "conditions": []
+      },
+      {
+        "type": "ExecuteScript",
+        "settings": {
+          "function": "run",
+          "source": "/*function run(identity) {\n    let idPart = String(identity || \"\").split(\"@\")[0];\n\n    // só trata como telefone se o idPart for INTEIRAMENTE numérico.\n    // um GUID tem letras e hífens, então nunca passa aqui.\n    let ehNumerico = /^\\+?\\d+$/.test(idPart);\n    let digits = idPart.replace(/\\D/g, \"\");\n    let ehTelefone = ehNumerico && digits.length >= 10 && digits.length <= 13;\n\n    if (!ehTelefone) {\n        return { ehTelefone: \"false\", ddd: \"\", telefone: \"\", telefoneCompleto: \"\" };\n    }\n\n    let semDDI = (digits.indexOf(\"55\") === 0 && digits.length >= 12)\n        ? digits.substring(2)\n        : digits;\n\n    return {\n        ehTelefone: \"true\",\n        ddd: semDDI.substring(0, 2),\n        telefone: semDDI.substring(2),\n        telefoneCompleto: \"+55\" + semDDI\n    };\n}*/\n\nfunction run(identity) {\n    try {\n        let idPart = String(identity || \"\").split(\"@\")[0];\n\n        // Só trata como telefone se o idPart for inteiramente numérico\n        let ehNumerico = /^\\+?\\d+$/.test(idPart);\n        let digits = idPart.replace(/\\D/g, \"\");\n        let ehTelefone = ehNumerico && digits.length >= 10 && digits.length <= 13;\n\n        if (!ehTelefone) {\n            return {\n                ehTelefone: \"false\",\n                ddd: \"\",\n                telefone: \"\",\n                telefoneCompleto: \"\"\n            };\n        }\n\n        let semDDI = (digits.indexOf(\"55\") === 0 && digits.length >= 12)\n            ? digits.substring(2)\n            : digits;\n\n        return {\n            ehTelefone: \"true\",\n            ddd: semDDI.substring(0, 2),\n            telefone: semDDI.substring(2),\n            telefoneCompleto: \"+55\" + semDDI\n        };\n\n    } catch (e) {\n        return {\n            ehTelefone: \"false\",\n            ddd: \"\",\n            telefone: \"\",\n            telefoneCompleto: \"\"\n        };\n    }\n}",
+          "inputVariables": [
+            "contact.identity"
+          ],
+          "outputVariable": "phone",
+          "LocalTimeZoneEnabled": false
+        },
+        "conditions": []
+      },
+      {
+        "type": "MergeContact",
+        "settings": {
+          "extras": {},
+          "phoneNumber": "{{phone@telefoneCompleto}}"
+        },
+        "conditions": [
+          {
+            "source": "context",
+            "variable": "phone@ehTelefone",
+            "comparison": "equals",
+            "values": [
+              "true"
+            ]
+          }
+        ]
+      },
+      {
+        "$description": "",
+        "$inputSchema": {
+          "type": "object",
+          "properties": {},
+          "required": []
+        },
+        "type": "ExecuteScriptV2",
+        "settings": {
+          "function": "run",
+          "source": "function run(input) {\n  if (input === null || input === undefined || input === \"\") {\n    return false;\n  }\n\n  let dados = input;\n\n  // Aceita objeto, string JSON ou texto puro\n  if (typeof dados === \"string\") {\n    try {\n      dados = JSON.parse(dados);\n    } catch (e) {\n      dados = { inputContent: input };\n    }\n  }\n\n  if (typeof dados === \"string\") {\n    dados = { inputContent: dados };\n  }\n\n  if (!dados || !dados.inputContent) {\n    return false;\n  }\n\n  function normalizar(texto) {\n    return String(texto)\n      .toLowerCase()\n      .replace(/[áàãâä]/g, \"a\")\n      .replace(/[éèêë]/g, \"e\")\n      .replace(/[íìîï]/g, \"i\")\n      .replace(/[óòõôö]/g, \"o\")\n      .replace(/[úùûü]/g, \"u\")\n      .replace(/ç/g, \"c\")\n      .replace(/[^a-z0-9\\s-]/g, \" \") // remove pontuação e emojis\n      .replace(/\\s+/g, \" \")\n      .trim();\n  }\n\n  // Normaliza a lista uma vez e remove duplicados\n  function prepararLista(lista) {\n    let resultado = [];\n    let vistos = {};\n    for (let i = 0; i < lista.length; i++) {\n      let item = normalizar(lista[i]);\n      if (item && !vistos[item]) {\n        vistos[item] = true;\n        resultado.push(item);\n      }\n    }\n    return resultado;\n  }\n\n  // Verifica se a frase aparece na mensagem como palavras inteiras\n  function contem(texto, frase) {\n    return (\" \" + texto + \" \").indexOf(\" \" + frase + \" \") !== -1;\n  }\n\n  function encontrar(texto, lista) {\n    for (let i = 0; i < lista.length; i++) {\n      if (contem(texto, lista[i])) {\n        return true;\n      }\n    }\n    return false;\n  }\n\n  let vagasMBRF = prepararLista([\n    \"vaga de emprego\",\n    \"curriculo\",\n    \"vagas\",\n    \"emprego\",\n\"estagiario\",\n\"estagiaria\",\n\"vaga\",\n\"trainee\",\n\"trabalho\",\n\"profissional\",\n\"contratando\",\n\"contratação\",\n\"curriculo\",\n\"curriculum\",\n\"recrutamento\",\n\"aprendiz\",\n    \"Vagas MBRF\",\n    \"trabalhar com a MBRF\",\n    \"vagas de emprego\",\n    \"vaga de trabalho\",\n    \"vagas de trabalho\",\n    \"vaga para trabalhar\",\n    \"vagas para trabalhar\",\n    \"vaga disponível\",\n    \"vagas disponíveis\",\n    \"oportunidade de emprego\",\n    \"oportunidades de emprego\",\n    \"oportunidade de trabalho\",\n    \"oportunidades de trabalho\",\n    \"oportunidade profissional\",\n    \"oportunidades profissionais\",\n    \"procuro emprego\",\n    \"procuro trabalho\",\n    \"procurando emprego\",\n    \"procurando trabalho\",\n    \"estou à procura de emprego\",\n    \"estou a procura de emprego\",\n    \"estou à procura de trabalho\",\n    \"estou a procura de trabalho\",\n    \"estou em busca de emprego\",\n    \"estou em busca de trabalho\",\n    \"busco emprego\",\n    \"busco trabalho\",\n    \"quero um emprego\",\n    \"quero trabalhar na MBRF\",\n    \"quero um trabalho\",\n    \"quero conseguir um emprego\",\n    \"quero conseguir trabalho\",\n    \"preciso de emprego\",\n    \"preciso de trabalho\",\n    \"quero uma vaga\",\n    \"quero uma oportunidade\",\n    \"tem vaga de emprego\",\n    \"tem vagas de emprego\",\n    \"tem vaga de trabalho\",\n    \"tem vagas de trabalho\",\n    \"tem alguma vaga de emprego\",\n    \"tem alguma vaga disponível\",\n    \"tem alguma oportunidade de emprego\",\n    \"vocês têm vaga de emprego\",\n    \"vocês tem vaga de emprego\",\n    \"vcs tem vaga de emprego\",\n    \"vocês estão contratando\",\n    \"vcs estão contratando\",\n    \"estão contratando funcionários\",\n    \"estão contratando pessoas\",\n    \"estão contratando no momento\",\n    \"estão com vagas abertas\",\n    \"estão com contratação aberta\",\n    \"a empresa está contratando\",\n    \"a empresa está contratando funcionários\",\n    \"como faço para conseguir um emprego\",\n    \"como faço para conseguir uma vaga\",\n    \"como faço para trabalhar na empresa\",\n    \"como faço para trabalhar na BRF\",\n    \"como faço para trabalhar na Marfrig\",\n    \"quero trabalhar na BRF\",\n    \"quero trabalhar na Marfrig\",\n    \"queria trabalhar na BRF\",\n    \"queria trabalhar na Marfrig\",\n    \"gostaria de trabalhar na BRF\",\n    \"gostaria de trabalhar na Marfrig\",\n    \"como faço para enviar currículo\",\n    \"como faço para enviar meu currículo\",\n    \"como faço para mandar currículo\",\n    \"como faço para mandar meu currículo\",\n    \"onde envio meu currículo\",\n    \"onde mando meu currículo\",\n    \"onde posso enviar meu currículo\",\n    \"onde posso mandar meu currículo\",\n    \"quero enviar currículo\",\n    \"quero enviar meu currículo\",\n    \"quero mandar currículo\",\n    \"quero mandar meu currículo\",\n    \"gostaria de enviar currículo\",\n    \"gostaria de enviar meu currículo\",\n    \"gostaria de mandar currículo\",\n    \"gostaria de deixar meu currículo\",\n    \"quero deixar meu currículo\",\n    \"posso deixar meu currículo\",\n    \"onde deixo meu currículo\",\n    \"onde cadastro meu currículo\",\n    \"como cadastro meu currículo\",\n    \"cadastro de currículo\",\n    \"enviar currículo\",\n    \"mandar currículo\",\n    \"deixar currículo\",\n    \"cadastrar currículo\",\n    \"currículo para vaga\",\n    \"currículo de emprego\",\n    \"contato para enviar currículo\",\n    \"contato para mandar currículo\",\n    \"contato para deixar currículo\",\n    \"contato do RH para emprego\",\n    \"contato do RH para currículo\",\n    \"falar com o RH sobre emprego\",\n    \"falar com o RH sobre vaga\",\n    \"falar com recursos humanos sobre emprego\",\n    \"falar com recursos humanos sobre vaga\",\n    \"contato de recrutamento\",\n    \"contato para recrutamento\",\n    \"recrutamento e seleção\",\n    \"processo seletivo\",\n    \"processo de seleção\",\n    \"processo de contratação\",\n    \"processo seletivo para emprego\",\n    \"processo seletivo para vaga\",\n    \"jovem aprendiz\",\n    \"vaga de jovem aprendiz\",\n    \"vaga para jovem aprendiz\",\n    \"vagas para jovem aprendiz\",\n    \"oportunidade para jovem aprendiz\",\n    \"programa jovem aprendiz\",\n    \"contratação de jovem aprendiz\",\n    \"menor aprendiz\",\n    \"vaga de menor aprendiz\",\n    \"vaga para menor aprendiz\",\n    \"vagas para menor aprendiz\",\n    \"oportunidade para menor aprendiz\",\n    \"programa menor aprendiz\",\n    \"contratação de menor aprendiz\",\n    \"primeiro emprego\",\n    \"vaga de primeiro emprego\",\n    \"oportunidade de primeiro emprego\",\n    \"estágio profissional\",\n    \"vaga de estágio\",\n    \"vagas de estágio\",\n    \"oportunidade de estágio\",\n    \"programa de estágio\",\n    \"processo seletivo de estágio\",\n    \"vaga para estagiário\",\n    \"vaga para estagiária\",\n    \"vagas para estagiário\",\n    \"vagas para estagiária\",\n    \"programa de trainee\",\n    \"vaga de trainee\",\n    \"vagas de trainee\",\n    \"oportunidade de trainee\"\n  ]);\n\n  let comercioExterno = prepararLista([\n    \"informações sobre exportação\",\n    \"comercio\",\n    \"chicken paws\",\n    \"exportação\",\n    \"export\",\n    \"exterior\",\n    \"exportar\",\n    \"informação sobre exportação\",\n    \"informações de exportação\",\n    \"informação de exportação\",\n    \"quero exportar\",\n    \"quero exportar produtos\",\n    \"quero exportar para\",\n    \"gostaria de exportar\",\n    \"gostaria de exportar produtos\",\n    \"gostaria de exportar para\",\n    \"tenho interesse em exportar\",\n    \"tenho interesse em exportação\",\n    \"interesse em exportação\",\n    \"interesse em exportar produtos\",\n    \"informações sobre importação\",\n    \"informação sobre importação\",\n    \"informações de importação\",\n    \"informação de importação\",\n    \"quero importar\",\n    \"quero importar produtos\",\n    \"quero importar da BRF\",\n    \"quero importar da Marfrig\",\n    \"gostaria de importar\",\n    \"gostaria de importar produtos\",\n    \"tenho interesse em importar\",\n    \"tenho interesse em importação\",\n    \"interesse em importação\",\n    \"interesse em importar produtos\",\n    \"departamento de exportação\",\n    \"departamento exportação\",\n    \"setor de exportação\",\n    \"equipe de exportação\",\n    \"time de exportação\",\n    \"área de exportação\",\n    \"gerente de exportação\",\n    \"gerente da exportação\",\n    \"responsável pela exportação\",\n    \"responsável por exportação\",\n    \"contato do departamento de exportação\",\n    \"contato da exportação\",\n    \"contato do setor de exportação\",\n    \"contato do gerente de exportação\",\n    \"falar com o departamento de exportação\",\n    \"falar com o setor de exportação\",\n    \"falar com a equipe de exportação\",\n    \"falar com gerente de exportação\",\n    \"atendente do departamento de exportação\",\n    \"atendimento de exportação\",\n    \"vendas internacionais\",\n    \"venda internacional\",\n    \"vendas para o exterior\",\n    \"venda para o exterior\",\n    \"vender para o exterior\",\n    \"vender produtos para o exterior\",\n    \"comprar para exportação\",\n    \"compra para exportação\",\n    \"produto para exportação\",\n    \"produtos para exportação\",\n    \"carne para exportação\",\n    \"frango para exportação\",\n    \"frango congelado para exportação\",\n    \"exportação de carne\",\n    \"exportação de frango\",\n    \"exportação de alimentos\",\n    \"exportação de produtos\",\n    \"mercado internacional\",\n    \"mercado internacional da BRF\",\n    \"mercado internacional da Marfrig\",\n    \"comércio exterior\",\n    \"comércio internacional\",\n    \"negócios internacionais\",\n    \"negocio internacional\",\n    \"international market\",\n    \"international markets\",\n    \"international sales\",\n    \"international sales agent\",\n    \"international sales department\",\n    \"international business\",\n    \"export department\",\n    \"export manager\",\n    \"export team\",\n    \"export sales\",\n    \"global markets\",\n    \"global market\",\n    \"international buyer\",\n    \"international importer\",\n    \"international customer\",\n    \"foreign buyer\",\n    \"foreign importer\",\n    \"comprador internacional\",\n    \"compradora internacional\",\n    \"comprador estrangeiro\",\n    \"compradora estrangeira\",\n    \"importador internacional\",\n    \"importadora internacional\",\n    \"cliente internacional\",\n    \"cliente estrangeiro\",\n    \"empresa estrangeira\",\n    \"empresa internacional\",\n    \"fornecedor internacional\",\n    \"fornecedor estrangeiro\",\n    \"parceria comercial internacional\",\n    \"parceria de fornecimento internacional\",\n    \"parceria internacional\",\n    \"parceria de longo prazo\",\n    \"sourcing partnership\",\n    \"long-term sourcing partnership\",\n    \"international sourcing\",\n    \"international distribution\",\n    \"distribuição internacional\",\n    \"distribuidor internacional\",\n    \"distribuidor estrangeiro\",\n    \"compra de contêineres\",\n    \"compra de containers\",\n    \"comprar contêineres\",\n    \"comprar containers\",\n    \"exportação em contêiner\",\n    \"exportação em containers\",\n    \"20 contêineres\",\n    \"20 containers\",\n    \"contêiner para exportação\",\n    \"container para exportação\",\n    \"contêineres para exportação\",\n    \"containers para exportação\",\n    \"carga internacional para exportação\",\n    \"transporte internacional para exportação\",\n    \"logística internacional para exportação\",\n    \"frete internacional para exportação\",\n    \"embarque internacional\",\n    \"embarque para exportação\",\n    \"toneladas para exportação\",\n    \"toneladas de frango\",\n    \"toneladas de carne\",\n    \"toneladas de produtos\",\n    \"metric tons\",\n    \"metric tonnes\",\n    \"FOB para exportação\",\n    \"FOB exportação\",\n    \"CIF exportação\",\n    \"CIF para exportação\",\n    \"Incoterm de exportação\",\n    \"Incoterms de exportação\",\n    \"certificação para exportação\",\n    \"certificações para exportação\",\n    \"certificação Halal\",\n    \"Halal para exportação\",\n    \"frango Halal\",\n    \"frango congelado Halal\",\n    \"halal frozen chicken\",\n    \"frozen chicken for export\",\n    \"frozen whole chicken for export\",\n    \"frozen poultry for export\",\n    \"buy frozen chicken\",\n    \"buy frozen poultry\",\n    \"import frozen chicken\",\n    \"import frozen poultry\",\n    \"export frozen chicken\",\n    \"export frozen poultry\",\n    \"export to Japan\",\n    \"export to Brazil\",\n    \"import from Brazil\",\n    \"buy from Brazil\",\n    \"Brazilian supplier\",\n    \"Brazilian poultry supplier\",\n    \"Brazilian meat supplier\",\n    \"CNPJ estrangeiro\",\n    \"CNPJ internacional\",\n    \"CNPJ de empresa estrangeira\",\n    \"empresa sem CNPJ brasileiro\",\n    \"empresa estrangeira sem CNPJ\",\n    \"não tenho CNPJ brasileiro\",\n    \"não temos CNPJ brasileiro\",\n    \"não possuo CNPJ brasileiro\",\n    \"não possuímos CNPJ brasileiro\",\n    \"documento estrangeiro para cadastro\",\n    \"documentos estrangeiros para cadastro\",\n    \"documentação estrangeira para cadastro\",\n    \"documento internacional para cadastro\",\n    \"documentos internacionais para cadastro\",\n    \"cadastro de empresa estrangeira\",\n    \"cadastro para empresa estrangeira\",\n    \"cadastro de comprador internacional\",\n    \"cadastro de comprador estrangeiro\",\n    \"não consigo cadastrar empresa estrangeira\",\n    \"não consigo fazer cadastro de empresa estrangeira\",\n    \"site não aceita documento estrangeiro\",\n    \"sistema não aceita documento estrangeiro\",\n    \"cadastro não aceita documento estrangeiro\"\n  ]);\n\n  let entrada = normalizar(dados.inputContent);\n\n  if (!entrada) {\n    return false;\n  }\n\n  if (encontrar(entrada, vagasMBRF)) {\n    return \"vagasMBRF\";\n  }\n\n  if (encontrar(entrada, comercioExterno)) {\n    return \"comercioExterno\";\n  }\n\n  return false;\n}",
+          "inputVariables": [
+            "input.content"
+          ],
+          "outputVariable": "intencaoMbrf"
+        },
+        "conditions": []
+      }
+    ],
+    "$defaultOutput": {
+      "stateId": "fallback"
+    },
+    "root": true,
+    "$title": "Início",
+    "$position": {
+      "top": "355px",
+      "left": "1276px"
+    }
+  },
+  "fallback": {
+    "$contentActions": [
+      {
+        "input": {
+          "bypass": true
+        }
+      }
+    ],
+    "$conditionOutputs": [],
+    "$enteringCustomActions": [
+      {
+        "type": "TrackEvent",
+        "settings": {
+          "extras": {},
+          "category": "Inputs inesperados",
+          "action": "{{state.previous.name}} - {{input.content}}"
+        },
+        "conditions": []
+      },
+      {
+        "type": "ExecuteScript",
+        "settings": {
+          "function": "run",
+          "source": "const VARIABLES_MOCK = [\n\t'Texto qualquer'\n]\n\nfunction run(inputContent) {\n\tlet redirect = \"{{resource.redirect@captacao}}\"\n\n\tlet previous = \"{{state.previous.id}}\";\n\tlet previousSubFlow = \"{{stateSubFluxo}}\";\n\ttry {\n\t\treturn {\n\t\t\t\"origin\": redirect,\n\t\t\t\"lastState\": previousSubFlow ? previousSubFlow : previous,\n\t\t\t\"lastName\": \"{{state.previous.name}}\",\n\t\t\t\"inputType\": \"menu dinamico\",\n\t\t\tinputContent\n\t\t};\n\n\t} catch (error) {\n\t\treturn \"ERROR_FORMATTING_INPUT_CONTENT\"\n\t}\n}",
+          "inputVariables": [
+            "input.content"
+          ],
+          "outputVariable": "inputExcecoes",
+          "LocalTimeZoneEnabled": false
+        },
+        "conditions": []
+      },
+      {
+        "type": "SetVariable",
+        "settings": {
+          "variable": "stateSubFluxo",
+          "expiration": 1
+        },
+        "conditions": []
+      }
+    ],
+    "$leavingCustomActions": [
+      {
+        "type": "Redirect",
+        "settings": {
+          "context": {
+            "type": "text/plain",
+            "value": "{{inputExcecoes}}"
+          },
+          "address": "{{resource.redirect@excecao}}"
+        },
+        "conditions": []
+      }
+    ],
+    "$defaultOutput": {
+      "stateId": "onboarding"
+    },
+    "$title": "Exceções",
+    "$position": {
+      "top": "260px",
+      "left": "808px"
+    }
+  },
+  "6d55bf51-91f5-4782-bd4e-b7bf6b9409cf": {
+    "$contentActions": [
+      {
+        "input": {
+          "bypass": true
+        }
+      }
+    ],
+    "$conditionOutputs": [
+      {
+        "stateId": "088f908d-1511-4a52-899a-32459830282c",
+        "typeOfStateId": "state",
+        "conditions": [
+          {
+            "source": "context",
+            "comparison": "contains",
+            "values": [
+              "Aceito"
+            ],
+            "variable": "contact.extras.aceitouLGPD"
+          }
+        ]
+      },
+      {
+        "stateId": "5236725b-6463-4d0c-be89-1ce1933c7763",
+        "typeOfStateId": "state",
+        "conditions": [
+          {
+            "source": "input",
+            "comparison": "exists",
+            "values": []
+          }
+        ]
+      }
+    ],
+    "$enteringCustomActions": [],
+    "$leavingCustomActions": [],
+    "$defaultOutput": {
+      "stateId": "fallback"
+    },
+    "$title": "Verifica primeiro contato do usuário",
+    "$position": {
+      "top": "354px",
+      "left": "1641px"
+    }
+  },
+  "e6212c1f-e453-423f-aa89-a8d9bafa2876": {
+    "$contentActions": [
+      {
+        "action": {
+          "$description": "",
+          "type": "SendMessage",
+          "settings": {
+            "type": "text/plain",
+            "content": "🔒 Ao prosseguir você estará de acordo com a nossa política de privacidade.\n\nMais informações, acesse:\nmbrf.com/wp-content/uploads/2025/10/Politica-de-Privacidade-MBRF-PT.pdf",
+            "metadata": {}
+          }
+        }
+      },
+      {
+        "input": {
+          "bypass": true
+        }
+      }
+    ],
+    "$conditionOutputs": [
+      {
+        "stateId": "1cc62207-89b8-4c0d-b5fe-a07588ee329a",
+        "typeOfStateId": "state",
+        "conditions": [
+          {
+            "source": "input",
+            "comparison": "exists",
+            "values": []
+          }
+        ]
+      }
+    ],
+    "$enteringCustomActions": [
+      {
+        "type": "TrackEvent",
+        "settings": {
+          "extras": {
+            "identificador": "{{contact.identity}}",
+            "origem": "{{origem}}",
+            "canal": "{{channel}}"
+          },
+          "category": "Lgpd exibicao",
+          "action": "Exibicao"
+        },
+        "conditions": []
+      }
+    ],
+    "$leavingCustomActions": [],
+    "$defaultOutput": {
+      "stateId": "fallback"
+    },
+    "$title": "[MSG] LGPD",
+    "$position": {
+      "top": "559px",
+      "left": "1276px"
+    }
+  },
+  "08ce1d53-309b-4b38-923c-11eb8f586b08": {
+    "$contentActions": [
+      {
+        "action": {
+          "$description": "",
+          "type": "SendMessage",
+          "settings": {
+            "type": "text/plain",
+            "content": "Para continuar, informe o <b>CNPJ do atendimento, por favor.</b>\n\n<i>Digite apenas os números do CNPJ.</i> ",
+            "metadata": {}
+          }
+        }
+      },
+      {
+        "input": {
+          "bypass": false,
+          "variable": "cnpjNotFormatted",
+          "expiration": "0:15"
+        }
+      }
+    ],
+    "$conditionOutputs": [
+      {
+        "stateId": "11bc444c-ccc7-4134-98af-50b4552c285a",
+        "typeOfStateId": "state",
+        "conditions": [
+          {
+            "source": "context",
+            "comparison": "equals",
+            "values": [
+              "CNPJ"
+            ],
+            "variable": "cnpj@type"
+          }
+        ]
+      }
+    ],
+    "$enteringCustomActions": [
+      {
+        "type": "TrackEvent",
+        "settings": {
+          "extras": {
+            "identificador": "{{contact.identity}}",
+            "origem": "{{origem}}",
+            "canal": "{{channel}}"
+          },
+          "category": "Documento coleta exibicao",
+          "action": "Exibicao"
+        },
+        "conditions": []
+      }
+    ],
+    "$leavingCustomActions": [
+      {
+        "type": "MergeContact",
+        "settings": {
+          "extras": {
+            "aceitouLGPD": "Aceito"
+          }
+        },
+        "conditions": []
+      },
+      {
+        "$description": "",
+        "$inputSchema": {
+          "type": "object",
+          "properties": {},
+          "required": []
+        },
+        "type": "ExecuteScriptV2",
+        "settings": {
+          "function": "run",
+          "source": "function run(input) {\n    try {\n        const raw = String(input || \"\").replace(/[^a-zA-Z0-9]/g, \"\");\n        let type = null;\n\n        if (raw.length === 11 && /^\\d+$/.test(raw)) {\n            type = \"CPF\";\n        } else if (raw.length === 14) {\n            type = \"CNPJ\";\n        } else {\n            return false;\n        }\n\n        function isNumeric(str) {\n            return /^\\d+$/.test(str);\n        }\n\n        function validateCpf(cpf) {\n            if (!/^\\d{11}$/.test(cpf)) return false;\n            if (/^(\\d)\\1+$/.test(cpf)) return false;\n\n            let sum = 0;\n\n            for (let i = 0; i < 9; i++) {\n                sum += parseInt(cpf[i]) * (10 - i);\n            }\n\n            let rev = 11 - (sum % 11);\n\n            if (rev >= 10) {\n                rev = 0;\n            }\n\n            if (rev !== parseInt(cpf[9])) {\n                return false;\n            }\n\n            sum = 0;\n\n            for (let i = 0; i < 10; i++) {\n                sum += parseInt(cpf[i]) * (11 - i);\n            }\n\n            rev = 11 - (sum % 11);\n\n            if (rev >= 10) {\n                rev = 0;\n            }\n\n            if (rev !== parseInt(cpf[10])) {\n                return false;\n            }\n\n            return true;\n        }\n\n        function formatCnpj(cnpj) {\n            if (/^\\d{14}$/.test(cnpj)) {\n                return cnpj.replace(\n                    /(\\d{2})(\\d{3})(\\d{3})(\\d{4})(\\d{2})/,\n                    \"$1.$2.$3/$4-$5\"\n                );\n            }\n\n            return cnpj.replace(\n                /(.{2})(.{3})(.{3})(.{4})(.{2})/,\n                \"$1.$2.$3/$4-$5\"\n            );\n        }\n\n        function validateCnpj(cnpj) {\n            if (!isNumeric(cnpj)) {\n                return true;\n            }\n\n            if (/^(\\d)\\1+$/.test(cnpj)) {\n                return false;\n            }\n\n            let length = cnpj.length - 2;\n            let numbers = cnpj.substring(0, length);\n            let digits = cnpj.substring(length);\n            let sum = 0;\n            let pos = length - 7;\n\n            for (let i = length; i >= 1; i--) {\n                sum += numbers[length - i] * pos--;\n                if (pos < 2) {\n                    pos = 9;\n                }\n            }\n\n            let result = sum % 11 < 2\n                ? 0\n                : 11 - (sum % 11);\n\n            if (result != digits[0]) {\n                return false;\n            }\n\n            length++;\n            numbers = cnpj.substring(0, length);\n            sum = 0;\n            pos = length - 7;\n\n            for (let i = length; i >= 1; i--) {\n                sum += numbers[length - i] * pos--;\n                if (pos < 2) {\n                    pos = 9;\n                }\n            }\n\n            result = sum % 11 < 2\n                ? 0\n                : 11 - (sum % 11);\n\n            if (result != digits[1]) {\n                return false;\n            }\n\n            return true;\n        }\n\n        const isValid = type === \"CPF\"\n            ? validateCpf(raw)\n            : validateCnpj(raw);\n\n        if (!isValid) {\n            return false;\n        }\n\n        return {\n            raw: raw,\n            type: type,\n            formatted: type === \"CPF\"\n                ? raw.replace(\n                    /(\\d{3})(\\d{3})(\\d{3})(\\d{2})/,\n                    \"$1.$2.$3-$4\"\n                )\n                : formatCnpj(raw)\n        };\n\n    } catch (e) {\n        return false;\n    }\n}",
+          "inputVariables": [
+            "cnpjNotFormatted"
+          ],
+          "outputVariable": "cnpj"
+        },
+        "conditions": []
+      },
+      {
+        "type": "MergeContact",
+        "settings": {
+          "extras": {},
+          "taxDocument": "{{cnpj@raw}}"
+        },
+        "conditions": [
+          {
+            "source": "context",
+            "comparison": "notEquals",
+            "values": [
+              "false"
+            ],
+            "variable": "cnpj"
+          }
+        ]
+      }
+    ],
+    "$defaultOutput": {
+      "stateId": "fallback"
+    },
+    "$title": "Pergunta CNPJ NEW",
+    "$position": {
+      "top": "1446px",
+      "left": "495px"
+    }
+  },
+  "5236725b-6463-4d0c-be89-1ce1933c7763": {
+    "$contentActions": [
+      {
+        "action": {
+          "type": "SendMessage",
+          "settings": {
+            "type": "text/plain",
+            "content": "Oie! Seja bem vindo(a) ao canal oficial da Central MBRF! Eu sou o Assistente Virtual 🤖 e estou aqui para te ajudar!",
+            "metadata": {}
+          }
+        }
+      },
+      {
+        "input": {
+          "bypass": true
+        }
+      }
+    ],
+    "$conditionOutputs": [],
+    "$enteringCustomActions": [
+      {
+        "type": "TrackEvent",
+        "settings": {
+          "extras": {
+            "identificador": "{{contact.identity}}",
+            "origem": "{{origem}}",
+            "canal": "{{channel}}"
+          },
+          "category": "Saudacao inicial exibicao",
+          "action": "Exibicao"
+        },
+        "conditions": []
+      },
+      {
+        "$description": "",
+        "$inputSchema": {
+          "type": "object",
+          "properties": {},
+          "required": []
+        },
+        "type": "SetVariable",
+        "settings": {
+          "variable": "horaEntrada",
+          "value": "{{calendar.datetime}}"
+        },
+        "conditions": []
+      }
+    ],
+    "$leavingCustomActions": [],
+    "$defaultOutput": {
+      "stateId": "e6212c1f-e453-423f-aa89-a8d9bafa2876",
+      "typeOfStateId": "state"
+    },
+    "$title": "[MSG] Go to - Bem vindo primeiro Contato",
+    "$position": {
+      "top": "199px",
+      "left": "1838px"
+    }
+  },
+  "088f908d-1511-4a52-899a-32459830282c": {
+    "$contentActions": [
+      {
+        "action": {
+          "type": "SendMessage",
+          "settings": {
+            "type": "text/plain",
+            "content": "Olá novamente! 👋\nQue bom ter você por aqui no atendimento da Central MBRF.",
+            "metadata": {}
+          }
+        }
+      },
+      {
+        "input": {
+          "bypass": true
+        }
+      }
+    ],
+    "$conditionOutputs": [],
+    "$enteringCustomActions": [
+      {
+        "type": "TrackEvent",
+        "settings": {
+          "extras": {
+            "identificador": "{{contact.identity}}",
+            "origem": "{{origem}}",
+            "canal": "{{channel}}"
+          },
+          "category": "Saudacao inicial retorno exibicao",
+          "action": "Exibicao"
+        },
+        "conditions": []
+      },
+      {
+        "$description": "",
+        "$inputSchema": {
+          "type": "object",
+          "properties": {},
+          "required": []
+        },
+        "type": "SetVariable",
+        "settings": {
+          "variable": "horaEntrada",
+          "value": "{{calendar.datetime}}"
+        },
+        "conditions": []
+      }
+    ],
+    "$leavingCustomActions": [],
+    "$defaultOutput": {
+      "stateId": "af4efc18-0978-457a-a617-f957566dacfa",
+      "typeOfStateId": "state"
+    },
+    "$title": "[MSG] Go to - Bem vindo ja entrou em contato",
+    "$position": {
+      "top": "391px",
+      "left": "1842px"
+    },
+    "addonsSettings": {
+      "backgroundColor": "#263238",
+      "shape": "50% 0 50% 0"
+    }
+  },
+  "subflow:31a36d6a-d869-4078-bc06-3298d5582bc6": {
+    "$contentActions": [
+      {
+        "input": {
+          "bypass": false,
+          "expiration": "0:10"
+        }
+      }
+    ],
+    "$conditionOutputs": [
+      {
+        "stateId": "d975b7a6-6c78-4da8-a9a4-d799fc52baae",
+        "typeOfStateId": "state",
+        "conditions": [
+          {
+            "source": "context",
+            "comparison": "equals",
+            "values": [
+              "🔥 Ofertas",
+              "🔥 Ofertas e Oportunidades",
+              "🔥 Ofertas e oportunidades"
+            ],
+            "variable": "itemEscolhidoObjeto@title"
+          }
+        ]
+      },
+      {
+        "stateId": "d975b7a6-6c78-4da8-a9a4-d799fc52baae",
+        "typeOfStateId": "state",
+        "conditions": [
+          {
+            "source": "context",
+            "comparison": "contains",
+            "values": [
+              "fertas"
+            ],
+            "variable": "itemEscolhidoObjeto@title"
+          }
+        ]
+      },
+      {
+        "stateId": "8a6de90d-ed09-4835-84be-17d8ae9aba8f",
+        "typeOfStateId": "state",
+        "conditions": [
+          {
+            "source": "context",
+            "comparison": "equals",
+            "values": [
+              "🛒 Comprar produtos",
+              "🍗 Comprar produtos"
+            ],
+            "variable": "itemEscolhidoObjeto@title"
+          }
+        ]
+      },
+      {
+        "stateId": "8a6de90d-ed09-4835-84be-17d8ae9aba8f",
+        "typeOfStateId": "state",
+        "conditions": [
+          {
+            "source": "context",
+            "comparison": "contains",
+            "values": [
+              "Comprar produtos"
+            ],
+            "variable": "itemEscolhidoObjeto@title"
+          }
+        ]
+      },
+      {
+        "stateId": "b03402d8-ff2a-483f-9635-1ad56dec61ef",
+        "typeOfStateId": "state",
+        "conditions": [
+          {
+            "source": "context",
+            "comparison": "equals",
+            "values": [
+              "🔁 Recomprar"
+            ],
+            "variable": "itemEscolhidoObjeto@title"
+          }
+        ]
+      },
+      {
+        "stateId": "b03402d8-ff2a-483f-9635-1ad56dec61ef",
+        "typeOfStateId": "state",
+        "conditions": [
+          {
+            "source": "context",
+            "comparison": "contains",
+            "values": [
+              "Recomprar"
+            ],
+            "variable": "itemEscolhidoObjeto@title"
+          }
+        ]
+      },
+      {
+        "stateId": "f838956c-841e-470f-9d55-29a3f055750e",
+        "typeOfStateId": "state",
+        "conditions": [
+          {
+            "source": "context",
+            "comparison": "equals",
+            "values": [
+              "true"
+            ],
+            "variable": "itemEscolhidoObjeto@dados"
+          },
+          {
+            "source": "input",
+            "comparison": "exists",
+            "values": []
+          }
+        ]
+      }
+    ],
+    "$enteringCustomActions": [
+      {
+        "type": "TrackEvent",
+        "settings": {
+          "category": "subflow:31a36d6a-d869-4078-bc06-3298d5582bc6",
+          "action": "Entering subflow - subflow:31a36d6a-d869-4078-bc06-3298d5582bc6",
+          "subflowDefaultAction": true
+        }
+      },
+      {
+        "type": "MergeContact",
+        "settings": {
+          "extras": {
+            "subflowId": "subflow:31a36d6a-d869-4078-bc06-3298d5582bc6"
+          },
+          "subflowDefaultAction": true
+        }
+      },
+      {
+        "type": "TrackEvent",
+        "settings": {
+          "category": "subflow:4293aeac-aff6-4876-a88a-4be9c93e74c3",
+          "action": "Entering subflow - subflow:4293aeac-aff6-4876-a88a-4be9c93e74c3",
+          "subflowDefaultAction": true
+        }
+      },
+      {
+        "type": "MergeContact",
+        "settings": {
+          "extras": {
+            "subflowId": "subflow:4293aeac-aff6-4876-a88a-4be9c93e74c3"
+          },
+          "subflowDefaultAction": true
+        }
+      },
+      {
+        "type": "ExecuteScript",
+        "settings": {
+          "function": "run",
+          "source": "function run() {\n\ttry {\n\t\treturn JSON.stringify({\n\t\t\tbody: \"Oi, {{contact.name}}! 😊 Tudo pronto.\\n\\nIdentificamos *ofertas exclusivas para o seu negócio hoje!* O que vamos fazer agora?\",\n\t\t\tfooter: \"Basta clicar em 'selecionar assunto' para escolher uma opção\",\n\t\t\tbutton: \"Selecionar assunto\",\n\t\t\tcategories: [\n\t\t\t\t{\n\t\t\t\t\ttitle: \"Assuntos\",\n\t\t\t\t\trows: [\n\t\t\t\t\t\t{\n\t\t\t\t\t\t\ttitle: \"🔥 Ofertas e oportunidades\",\n\t\t\t\t\t\t\tdescription: \"Confira todas as ofertas e oportunidades de compra para o seu negócio\",\n\t\t\t\t\t\t\tdados: true\n\t\t\t\t\t\t},\n\t\t\t\t\t\t{\n\t\t\t\t\t\t\ttitle: \"🔁 Recomprar\",\n\t\t\t\t\t\t\tdescription: \"Recomprar o meu último pedido baseado no histórico\"\n\t\t\t\t\t\t},\n\t\t\t\t\t\t{\n\t\t\t\t\t\t\ttitle: \"🍗 Comprar produtos\",\n\t\t\t\t\t\t\tdescription: \"Comprar produtos para o meu negócio\",\n\t\t\t\t\t\t\tdados: true\n\t\t\t\t\t\t},\n\t\t\t\t\t\t{\n\t\t\t\t\t\t\ttitle: \"🛒 Meus Pedidos\",\n\t\t\t\t\t\t\tdescription: \"Acompanhe seus pedidos de forma rápida e prática.\",\n\t\t\t\t\t\t\tredirect: \"{{resource.redirect@meusPedidos}}\",\n\t\t\t\t\t\t\tdados: true\n\t\t\t\t\t\t},\n\t\t\t\t\t\t{\n\t\t\t\t\t\t\ttitle: \"💰 Financeiro\",\n\t\t\t\t\t\t\tdescription: \"Fale sobre boletos, vencimentos e outras questões financeiras.\",\n\t\t\t\t\t\t\tredirect: \"{{resource.redirect@financeiro}}\",\n\t\t\t\t\t\t\tdados: true\n\t\t\t\t\t\t},\n\t\t\t\t\t\t{\n\t\t\t\t\t\t\ttitle: \"💬Ajuda e Suporte\",\n\t\t\t\t\t\t\tdescription: \"Dúvidas e abertura de chamados\",\n\t\t\t\t\t\t\tredirect: \"{{resource.redirect@ajudaSuporte}}\",\n\t\t\t\t\t\t\tdados: true\n\t\t\t\t\t\t},\n\t\t\t\t\t\t{\n\t\t\t\t\t\t\ttitle: \"👤Meu Cadastro\",\n\t\t\t\t\t\t\tdescription: \"Atualize dados cadastrais de forma simples e rápida.\",\n\t\t\t\t\t\t\tredirect: \"{{resource.redirect@meuCadastro}}\",\n\t\t\t\t\t\t\tdados: true\n\t\t\t\t\t\t}\n\t\t\t\t\t]\n\t\t\t\t}\n\t\t\t]\n\t\t});\n\n\t} catch (e) {\n\t\treturn \"{}\";\n\t}\n}",
+          "inputVariables": [],
+          "outputVariable": "itensMenuDinamico",
+          "LocalTimeZoneEnabled": false
+        },
+        "conditions": []
+      },
+      {
+        "type": "SetVariable",
+        "settings": {
+          "variable": "stateSubFluxo",
+          "value": "{{state.id}}"
+        },
+        "conditions": []
+      },
+      {
+        "type": "SetVariable",
+        "settings": {
+          "variable": "tituloSubFluxo",
+          "value": "{{state.name}}"
+        },
+        "conditions": []
+      },
+      {
+        "type": "TrackEvent",
+        "settings": {
+          "extras": {
+            "identificador": "{{contact.identity}}",
+            "origem": "{{origem}}",
+            "canal": "{{channel}}"
+          },
+          "category": "Menu navegacao exibicao",
+          "action": "Exibicao"
+        },
+        "conditions": []
+      }
+    ],
+    "$leavingCustomActions": [
+      {
+        "type": "SetVariable",
+        "settings": {
+          "variable": "stateSubFluxo",
+          "value": "{{state.id}}",
+          "expiration": 5
+        },
+        "conditions": []
+      }
+    ],
+    "$defaultOutput": {
+      "stateId": "fallback"
+    },
+    "shortNameOfSubflow": "menuinicialsmartsales2",
+    "$imageUri": "",
+    "$title": "Menu inicial - Smart Sales",
+    "$position": {
+      "top": "3013px",
+      "left": "545px"
+    }
+  },
+  "e87afa66-c52b-4a68-bdc4-afb4e6b3c658": {
+    "$contentActions": [
+      {
+        "input": {
+          "bypass": true
+        }
+      }
+    ],
+    "$conditionOutputs": [],
+    "$enteringCustomActions": [],
+    "$leavingCustomActions": [],
+    "$defaultOutput": {
+      "stateId": "9e94a810-b692-4333-b259-5b3d6ad0df38",
+      "typeOfStateId": "state"
+    },
+    "$localCustomActions": [],
+    "$title": "Go to - Menu inicial",
+    "$position": {
+      "top": "410px",
+      "left": "1544px"
+    },
+    "addonsSettings": {
+      "backgroundColor": "#263238",
+      "shape": "50% 0 50% 0"
+    }
+  },
+  "f838956c-841e-470f-9d55-29a3f055750e": {
+    "$contentActions": [
+      {
+        "input": {
+          "bypass": true
+        }
+      }
+    ],
+    "$conditionOutputs": [],
+    "$enteringCustomActions": [],
+    "$leavingCustomActions": [
+      {
+        "$description": "",
+        "$inputSchema": {
+          "type": "object",
+          "properties": {},
+          "required": []
+        },
+        "type": "Redirect",
+        "settings": {
+          "context": {
+            "type": "text/plain",
+            "value": "@redirect"
+          },
+          "address": "{{itemEscolhidoObjeto@redirect}}"
+        },
+        "conditions": []
+      }
+    ],
+    "$defaultOutput": {
+      "stateId": "onboarding",
+      "typeOfStateId": "state"
+    },
+    "$localCustomActions": [],
+    "$title": "[REDIRECT] Redirecionar serviço do menu",
+    "$position": {
+      "top": "3371px",
+      "left": "1072px"
+    }
+  },
+  "af4efc18-0978-457a-a617-f957566dacfa": {
+    "$contentActions": [
+      {
+        "action": {
+          "$description": "",
+          "type": "SendMessage",
+          "settings": {
+            "type": "application/vnd.lime.select+json",
+            "content": {
+              "text": "Você já é um <b>cliente</b> cadastrado na Central MBRF? 😊",
+              "scope": "immediate",
+              "options": [
+                {
+                  "text": "Sim",
+                  "previewText": "Sim",
+                  "value": null,
+                  "index": 0,
+                  "type": null
+                },
+                {
+                  "text": "Não",
+                  "previewText": "Não",
+                  "value": null,
+                  "index": 1,
+                  "type": null
+                }
+              ],
+              "quikReply": false
+            },
+            "metadata": {}
+          }
+        }
+      },
+      {
+        "input": {
+          "bypass": false,
+          "expiration": "0:15"
+        }
+      }
+    ],
+    "$conditionOutputs": [
+      {
+        "stateId": "203a2feb-f1a2-4f84-ad01-f225ee9a7a7c",
+        "typeOfStateId": "state",
+        "conditions": [
+          {
+            "source": "context",
+            "comparison": "equals",
+            "values": [
+              "Sim"
+            ],
+            "variable": "intentAction"
+          }
+        ]
+      },
+      {
+        "stateId": "54f9150c-8c93-4da1-b4b4-aa1fcd427be6",
+        "typeOfStateId": "state",
+        "conditions": [
+          {
+            "source": "context",
+            "comparison": "equals",
+            "values": [
+              "Não"
+            ],
+            "variable": "intentAction"
+          }
+        ]
+      }
+    ],
+    "$enteringCustomActions": [
+      {
+        "type": "SetVariable",
+        "settings": {
+          "variable": "intentAction"
+        },
+        "conditions": []
+      },
+      {
+        "type": "TrackEvent",
+        "settings": {
+          "extras": {
+            "identificador": "{{contact.identity}}",
+            "origem": "{{origem}}",
+            "canal": "{{channel}}"
+          },
+          "category": "Cliente perfil exibicao",
+          "action": "Exibicao"
+        },
+        "conditions": []
+      },
+      {
+        "type": "MergeContact",
+        "settings": {
+          "extras": {
+            "aceitouLGPD": "Aceito"
+          }
+        },
+        "conditions": []
+      }
+    ],
+    "$leavingCustomActions": [
+      {
+        "type": "ExecuteScript",
+        "settings": {
+          "function": "run",
+          "source": "function run(input) {\n  try {\n    let opcoesMenu = {\n      \"1\": \"Sim\",\n      \"2\": \"Não\",\n    };\n\n    let menuRegex = {\n      \"1\": /\\b(?:sim|claro|confirmo|positivo|ok|okay|pode\\s+ser|aceito|continuar)\\b/i,\n\n      \"2\": /\\b(?:n[aã]o|negativo|desistir|prefiro\\s+n[aã]o)\\b/i,\n    };\n\n    input = input.trim();\n\n    for (let prop in menuRegex) {\n      if (menuRegex[prop].test(input)) {\n        return opcoesMenu[prop];\n      }\n    }\n\n    return \"Input inesperado\";\n  } catch (error) {\n    return \"Input inesperado\";\n  }\n}",
+          "inputVariables": [
+            "input.content"
+          ],
+          "outputVariable": "intentAction",
+          "LocalTimeZoneEnabled": false
+        },
+        "conditions": []
+      },
+      {
+        "type": "TrackEvent",
+        "settings": {
+          "extras": {
+            "identificador": "{{contact.identity}}",
+            "origem": "{{origem}}",
+            "canal": "{{channel}}"
+          },
+          "category": "Cliente perfil menu selecao",
+          "action": "{{intentAction}}"
+        },
+        "conditions": [
+          {
+            "source": "input",
+            "comparison": "exists",
+            "values": []
+          }
+        ]
+      },
+      {
+        "type": "TrackEvent",
+        "settings": {
+          "extras": {
+            "identificador": "{{contact.identity}}",
+            "origem": "{{origem}}",
+            "canal": "{{channel}}"
+          },
+          "category": "Cliente perfil menu input inesperado",
+          "action": "{{input.content}}"
+        },
+        "conditions": [
+          {
+            "source": "context",
+            "variable": "intentAction",
+            "comparison": "equals",
+            "values": [
+              "Input inesperado"
+            ]
+          },
+          {
+            "source": "input",
+            "comparison": "exists",
+            "values": []
+          }
+        ]
+      }
+    ],
+    "$defaultOutput": {
+      "stateId": "fallback"
+    },
+    "$localCustomActions": [],
+    "$title": "[MSG] Pergunta se é cliente",
+    "$position": {
+      "top": "1202px",
+      "left": "1412px"
+    }
+  },
+  "54f9150c-8c93-4da1-b4b4-aa1fcd427be6": {
+    "$contentActions": [
+      {
+        "action": {
+          "$description": "",
+          "type": "SendRawMessage",
+          "settings": {
+            "metadata": {},
+            "type": "application/json",
+            "rawContent": "{\n  \"recipient_type\": \"individual\",\n  \"type\": \"interactive\",\n  \"interactive\": {\n    \"type\": \"cta_url\",\n    \"body\": {\n      \"text\": \"Não encontramos o seus dados em nosso sistema.\\n\\nVocê pode se cadastrar de forma rápida *clicando em cadastrar agora*.\\n\\nApós o cadastro, é só retornar para continuarmos o seu atendimento. 💛\"\n    },\n    \"action\": {\n      \"name\": \"cta_url\",\n      \"parameters\": {\n        \"display_text\": \"Cadastrar Agora\",\n        \"url\": \"https://www.centralmbrf.com.br/SelfRegister\"\n      }\n    }\n  }\n}"
+          }
+        }
+      },
+      {
+        "input": {
+          "bypass": true
+        }
+      }
+    ],
+    "$conditionOutputs": [
+      {
+        "stateId": "3a3f9751-2b1e-4d93-933f-e157860fb6c9",
+        "typeOfStateId": "state",
+        "conditions": [
+          {
+            "source": "input",
+            "comparison": "exists",
+            "values": []
+          }
+        ]
+      }
+    ],
+    "$enteringCustomActions": [
+      {
+        "type": "TrackEvent",
+        "settings": {
+          "extras": {
+            "identificador": "{{contact.identity}}",
+            "origem": "{{origem}}",
+            "canal": "{{channel}}"
+          },
+          "category": "mensagem nao cliente exibicao",
+          "action": "Exibicao"
+        },
+        "conditions": []
+      }
+    ],
+    "$leavingCustomActions": [],
+    "$defaultOutput": {
+      "stateId": "fallback"
+    },
+    "$localCustomActions": [],
+    "$title": "[MSG] Cadastro",
+    "$position": {
+      "top": "1431px",
+      "left": "1524px"
+    }
+  },
+  "3a3f9751-2b1e-4d93-933f-e157860fb6c9": {
+    "$contentActions": [
+      {
+        "action": {
+          "$description": "",
+          "type": "SendMessage",
+          "settings": {
+            "type": "text/plain",
+            "content": "A Central MBRF agradece o seu contato!",
+            "metadata": {}
+          }
+        }
+      },
+      {
+        "input": {
+          "bypass": true
+        }
+      }
+    ],
+    "$conditionOutputs": [],
+    "$enteringCustomActions": [
+      {
+        "type": "TrackEvent",
+        "settings": {
+          "extras": {
+            "identificador": "{{contact.identity}}",
+            "origem": "{{origem}}",
+            "canal": "{{channel}}"
+          },
+          "category": "Fluxo finalizacao",
+          "action": "Encerrado"
+        },
+        "conditions": []
+      },
+      {
+        "$description": "",
+        "$inputSchema": {
+          "type": "object",
+          "properties": {},
+          "required": []
+        },
+        "type": "SetVariable",
+        "settings": {
+          "variable": "horaFim",
+          "value": "{{calendar.datetime}}"
+        },
+        "conditions": []
+      }
+    ],
+    "$leavingCustomActions": [
+      {
+        "$description": "",
+        "$inputSchema": {
+          "type": "object",
+          "properties": {},
+          "required": []
+        },
+        "type": "ExecuteScript",
+        "settings": {
+          "function": "run",
+          "source": "function run(horaEntrada, horaFim) {\n  try {\n    function parseDataGMT0(dataTexto) {\n      const [data, hora] = dataTexto.split(\" \");\n      const [mes, dia, ano] = data.split(\"/\");\n      const [hh, mm, ss] = hora.split(\":\");\n\n      return new Date(Date.UTC(ano, mes - 1, dia, hh, mm, ss));\n    }\n\n    function formatarBrasil(data) {\n      const dataBrasil = new Date(data.getTime() - 3 * 60 * 60 * 1000);\n\n      const dia = String(dataBrasil.getUTCDate()).padStart(2, \"0\");\n      const mes = String(dataBrasil.getUTCMonth() + 1).padStart(2, \"0\");\n      const ano = dataBrasil.getUTCFullYear();\n\n      const hora = String(dataBrasil.getUTCHours()).padStart(2, \"0\");\n      const minuto = String(dataBrasil.getUTCMinutes()).padStart(2, \"0\");\n\n      return {\n        data: `${dia}/${mes}/${ano}`,\n        hora: `${hora}:${minuto}`\n      };\n    }\n\n    const entrada = parseDataGMT0(horaEntrada);\n    const fim = parseDataGMT0(horaFim);\n\n    const diferencaMs = fim - entrada;\n    const totalSegundos = Math.floor(diferencaMs / 1000);\n    const totalMinutos = Math.floor(totalSegundos / 60);\n\n    const horas = Math.floor(totalMinutos / 60);\n    const minutos = totalMinutos % 60;\n    const segundos = totalSegundos % 60;\n\n    const entradaFormatada = formatarBrasil(entrada);\n    const fimFormatada = formatarBrasil(fim);\n\n    let tempoTexto = \"\";\n\n    if (horas > 0) {\n      tempoTexto += `${horas} ${horas === 1 ? \"hora\" : \"horas\"}`;\n    }\n\n    if (minutos > 0) {\n      if (tempoTexto) tempoTexto += \" e \";\n      tempoTexto += `${minutos} ${minutos === 1 ? \"minuto\" : \"minutos\"}`;\n    }\n\n    if (horas === 0 && minutos === 0) {\n      tempoTexto = `${segundos} ${segundos === 1 ? \"segundo\" : \"segundos\"}`;\n    }\n\n    return {\n      horaEntrada,\n      horaFim,\n      tempoInteracao: {\n        horas,\n        minutos,\n        segundos,\n        totalMinutos,\n        totalSegundos\n      },\n      relatorio: `Entrou às ${entradaFormatada.hora} do dia ${entradaFormatada.data} finalizou interação às ${fimFormatada.hora} do dia ${fimFormatada.data} tempo de interação de ${tempoTexto}`\n    };\n  } catch (error) {\n    return {\n      erro: \"Erro ao calcular tempo de interação\"\n    };\n  }\n}",
+          "inputVariables": [
+            "horaEntrada",
+            "horaFim"
+          ],
+          "outputVariable": "tempoInteracao",
+          "LocalTimeZoneEnabled": false
+        },
+        "conditions": []
+      },
+      {
+        "type": "TrackEvent",
+        "settings": {
+          "extras": {
+            "identificador": "{{contact.identity}}",
+            "origem": "{{origem}}",
+            "canal": "{{channel}}"
+          },
+          "category": "tempo de interacao",
+          "action": "identificador: {{contact.identity}} | {{tempoInteracao@relatorio}}"
+        },
+        "conditions": []
+      }
+    ],
+    "$defaultOutput": {
+      "stateId": "onboarding",
+      "typeOfStateId": "state"
+    },
+    "$localCustomActions": [],
+    "$title": "[MSG] Central MBRF agradece o contato",
+    "$position": {
+      "top": "1574px",
+      "left": "1524px"
+    }
+  },
+  "656989df-c8e0-4697-9ba7-16d83d8efa6c": {
+    "$contentActions": [
+      {
+        "input": {
+          "bypass": true
+        }
+      }
+    ],
+    "$conditionOutputs": [
+      {
+        "stateId": "3c93290e-9f89-45c2-933b-217a6461a1f0",
+        "typeOfStateId": "state",
+        "conditions": [
+          {
+            "source": "context",
+            "comparison": "exists",
+            "values": [],
+            "variable": "contact.extras.optIn"
+          }
+        ]
+      },
+      {
+        "stateId": "39a66cb2-44ce-476c-a1cc-c2cf7101ce68",
+        "typeOfStateId": "state",
+        "conditions": [
+          {
+            "source": "context",
+            "comparison": "notExists",
+            "values": [],
+            "variable": "contact.extras.optIn"
+          }
+        ]
+      }
+    ],
+    "$enteringCustomActions": [
+      {
+        "$description": "",
+        "$inputSchema": {
+          "type": "object",
+          "properties": {},
+          "required": []
+        },
+        "type": "SetVariable",
+        "settings": {
+          "variable": "contadorXcnpj",
+          "value": "0",
+          "expiration": 1
+        },
+        "conditions": []
+      },
+      {
+        "type": "TrackEvent",
+        "settings": {
+          "extras": {
+            "identificador": "{{contact.identity}}",
+            "origem": "{{origem}}",
+            "canal": "{{channel}}"
+          },
+          "category": "Optin status validacao",
+          "action": "{{contact.extras.optIn}}"
+        },
+        "conditions": [
+          {
+            "source": "context",
+            "comparison": "exists",
+            "variable": "contact.extras.optIn",
+            "values": []
+          }
+        ]
+      },
+      {
+        "$description": "",
+        "$inputSchema": {
+          "type": "object",
+          "properties": {},
+          "required": []
+        },
+        "type": "SetVariable",
+        "settings": {
+          "variable": "cnpj",
+          "value": "{{contact.taxDocument}}"
+        },
+        "conditions": []
+      },
+      {
+        "$description": "",
+        "$inputSchema": {
+          "type": "object",
+          "properties": {},
+          "required": []
+        },
+        "type": "SetVariable",
+        "settings": {
+          "variable": "email",
+          "value": "{{retornoCliente@Email}}"
+        },
+        "conditions": [
+          {
+            "source": "context",
+            "variable": "apiCustomer@items",
+            "comparison": "notEquals",
+            "values": [
+              "[]"
+            ]
+          }
+        ]
+      },
+      {
+        "$description": "",
+        "$inputSchema": {
+          "type": "object",
+          "properties": {},
+          "required": []
+        },
+        "type": "ExecuteScript",
+        "settings": {
+          "function": "run",
+          "source": "function run(input) {\n  try {\n    const data = typeof input === \"string\" ? JSON.parse(input) : input;\n\n    // Cliente não existe\n    if (\n      !data ||\n      !data.data ||\n      !data.data.get_person_customer ||\n      !Array.isArray(data.data.get_person_customer.items) ||\n      data.data.get_person_customer.items.length === 0\n    ) {\n      return false;\n    }\n\n    const item = data.data.get_person_customer.items[0];\n\n    // Formata nome:\n    // VALDIR ZIMMERMANN KAIST\n    // -> Valdir Zimmermann Kaist\n    function formatarNome(nome) {\n      if (!nome) {\n        return null;\n      }\n\n      return String(nome)\n        .trim()\n        .toLowerCase()\n        .split(/\\s+/)\n        .map(function (parte) {\n          return parte.charAt(0).toUpperCase() + parte.slice(1);\n        })\n        .join(\" \");\n    }\n\n    const shared_id = item.shared_id || null;\n\n    const document_id =\n      item.documents &&\n      item.documents.length > 0 &&\n      item.documents[0].document_id\n        ? item.documents[0].document_id\n        : null;\n\n    // Nome completo formatado\n    const Name = formatarNome(item.description);\n\n    // Primeiro nome\n    const FirstName =\n      Name\n        ? Name.split(/\\s+/)[0]\n        : null;\n\n    // E-mail\n    const Email = item.email\n      ? String(item.email).trim()\n      : null;\n\n    const salesInfo = Array.isArray(item.sales_informations)\n      ? item.sales_informations\n      : [];\n\n    // Procura shipping_code com endereço\n    for (let i = 0; i < salesInfo.length; i++) {\n      const partners = Array.isArray(salesInfo[i].partners)\n        ? salesInfo[i].partners\n        : [];\n\n      for (let j = 0; j < partners.length; j++) {\n        const partner = partners[j];\n\n        if (\n          partner &&\n          partner.partner_function === \"shipping_code\" &&\n          Array.isArray(partner.addresses) &&\n          partner.addresses.length > 0\n        ) {\n          return {\n            shared_id: shared_id,\n            document_id: document_id,\n\n            FirstName: FirstName,\n            Name: Name,\n            Email: Email,\n\n            partner_function: partner.partner_function,\n            addresses: partner.addresses[0]\n          };\n        }\n      }\n    }\n\n    // Não encontrou shipping_code\n    return {\n      shared_id: shared_id,\n      document_id: document_id,\n\n      FirstName: FirstName,\n      Name: Name,\n      Email: Email,\n\n      partner_function: \"shipping_code\",\n      addresses: false\n    };\n\n  } catch (e) {\n    return false;\n  }\n}",
+          "inputVariables": [
+            "apiCustomer"
+          ],
+          "outputVariable": "infosUserSalesForce",
+          "LocalTimeZoneEnabled": false
+        },
+        "conditions": []
+      },
+      {
+        "$description": "",
+        "$inputSchema": {
+          "type": "object",
+          "properties": {},
+          "required": []
+        },
+        "type": "MergeContact",
+        "settings": {
+          "extras": {
+            "userAuth": "true"
+          }
+        },
+        "conditions": []
+      }
+    ],
+    "$leavingCustomActions": [],
+    "$defaultOutput": {
+      "stateId": "39a66cb2-44ce-476c-a1cc-c2cf7101ce68",
+      "typeOfStateId": "state"
+    },
+    "$localCustomActions": [],
+    "$title": "Verifica Opt-in",
+    "$position": {
+      "top": "2143px",
+      "left": "1149px"
+    }
+  },
+  "3c93290e-9f89-45c2-933b-217a6461a1f0": {
+    "$contentActions": [
+      {
+        "input": {
+          "bypass": true
+        }
+      }
+    ],
+    "$conditionOutputs": [],
+    "$enteringCustomActions": [],
+    "$leavingCustomActions": [],
+    "$defaultOutput": {
+      "stateId": "9e94a810-b692-4333-b259-5b3d6ad0df38",
+      "typeOfStateId": "state"
+    },
+    "$localCustomActions": [],
+    "$title": "Go to - Menu inicial",
+    "$position": {
+      "top": "2377px",
+      "left": "1245px"
+    },
+    "addonsSettings": {
+      "shape": "50% 0 50% 0",
+      "backgroundColor": "#263238"
+    }
+  },
+  "39a66cb2-44ce-476c-a1cc-c2cf7101ce68": {
+    "$contentActions": [
+      {
+        "action": {
+          "$description": "",
+          "type": "SendMessage",
+          "settings": {
+            "type": "application/vnd.lime.select+json",
+            "content": {
+              "text": "Antes de continuarmos, você aceita receber notificações aqui no WhatsApp sobre promoções exclusivas e status dos seus pedidos?",
+              "scope": "immediate",
+              "options": [
+                {
+                  "text": "Sim",
+                  "previewText": "Sim",
+                  "value": null,
+                  "index": 0,
+                  "type": null
+                },
+                {
+                  "text": "Não",
+                  "previewText": "Não",
+                  "value": null,
+                  "index": 1,
+                  "type": null
+                }
+              ],
+              "quikReply": false
+            },
+            "metadata": {}
+          }
+        }
+      },
+      {
+        "input": {
+          "bypass": false,
+          "variable": "optIn",
+          "expiration": "0:15"
+        }
+      }
+    ],
+    "$conditionOutputs": [
+      {
+        "stateId": "70cb08c2-9a5f-493a-afb3-51c6027350d0",
+        "typeOfStateId": "state",
+        "conditions": [
+          {
+            "source": "context",
+            "comparison": "equals",
+            "values": [
+              "Sim"
+            ],
+            "variable": "intentAction"
+          }
+        ]
+      },
+      {
+        "stateId": "70cb08c2-9a5f-493a-afb3-51c6027350d0",
+        "typeOfStateId": "state",
+        "conditions": [
+          {
+            "source": "context",
+            "comparison": "equals",
+            "values": [
+              "Não"
+            ],
+            "variable": "intentAction"
+          }
+        ]
+      }
+    ],
+    "$enteringCustomActions": [
+      {
+        "type": "SetVariable",
+        "settings": {
+          "variable": "intentAction"
+        },
+        "conditions": []
+      },
+      {
+        "type": "TrackEvent",
+        "settings": {
+          "extras": {
+            "identificador": "{{contact.identity}}",
+            "origem": "{{origem}}",
+            "canal": "{{channel}}"
+          },
+          "category": "Optin menu exibicao",
+          "action": "Exibicao"
+        },
+        "conditions": []
+      }
+    ],
+    "$leavingCustomActions": [
+      {
+        "$description": "",
+        "$inputSchema": {
+          "type": "object",
+          "properties": {},
+          "required": []
+        },
+        "type": "MergeContact",
+        "settings": {
+          "extras": {
+            "optIn": "{{optIn}}"
+          }
+        },
+        "conditions": []
+      },
+      {
+        "type": "ExecuteScript",
+        "settings": {
+          "function": "run",
+          "source": "function run(input) {\n  try {\n    let opcoesMenu = {\n      \"1\": \"Sim\",\n      \"2\": \"Não\",\n    };\n\n    let menuRegex = {\n      \"1\": /\\b(?:sim|claro|confirmo|positivo|ok|okay|pode\\s+ser|aceito|continuar)\\b/i,\n\n      \"2\": /\\b(?:n[aã]o|negativo|desistir|prefiro\\s+n[aã]o)\\b/i,\n    };\n\n    input = input.trim();\n\n    for (let prop in menuRegex) {\n      if (menuRegex[prop].test(input)) {\n        return opcoesMenu[prop];\n      }\n    }\n\n    return \"Input inesperado\";\n  } catch (error) {\n    return \"Input inesperado\";\n  }\n}",
+          "inputVariables": [
+            "input.content"
+          ],
+          "outputVariable": "intentAction",
+          "LocalTimeZoneEnabled": false
+        },
+        "conditions": []
+      },
+      {
+        "type": "TrackEvent",
+        "settings": {
+          "extras": {
+            "identificador": "{{contact.identity}}",
+            "origem": "{{origem}}",
+            "canal": "{{channel}}"
+          },
+          "category": "Optin menu selecao",
+          "action": "{{intentAction}}"
+        },
+        "conditions": [
+          {
+            "source": "input",
+            "comparison": "exists",
+            "values": []
+          }
+        ]
+      },
+      {
+        "type": "TrackEvent",
+        "settings": {
+          "extras": {
+            "identificador": "{{contact.identity}}",
+            "origem": "{{origem}}",
+            "canal": "{{channel}}"
+          },
+          "category": "Optin menu input",
+          "action": "{{input.content}}"
+        },
+        "conditions": [
+          {
+            "source": "context",
+            "variable": "intentAction",
+            "comparison": "equals",
+            "values": [
+              "Input inesperado"
+            ]
+          },
+          {
+            "source": "input",
+            "comparison": "exists",
+            "values": []
+          }
+        ]
+      }
+    ],
+    "$defaultOutput": {
+      "stateId": "fallback"
+    },
+    "$localCustomActions": [],
+    "$title": "Pergunta se aceita receber mensagens",
+    "$position": {
+      "top": "2378px",
+      "left": "1062px"
+    }
+  },
+  "70cb08c2-9a5f-493a-afb3-51c6027350d0": {
+    "$contentActions": [
+      {
+        "action": {
+          "$description": "",
+          "type": "SendMessage",
+          "settings": {
+            "type": "text/plain",
+            "content": "Certo, {{infosUserSalesForce@FirstName}}. Vou armazenar essa informação aqui. ☺️",
+            "metadata": {}
+          }
+        }
+      },
+      {
+        "input": {
+          "bypass": true
+        }
+      }
+    ],
+    "$conditionOutputs": [],
+    "$enteringCustomActions": [
+      {
+        "type": "TrackEvent",
+        "settings": {
+          "extras": {
+            "identificador": "{{contact.identity}}",
+            "origem": "{{origem}}",
+            "canal": "{{channel}}"
+          },
+          "category": "Optin registro",
+          "action": "Salvo"
+        },
+        "conditions": []
+      }
+    ],
+    "$leavingCustomActions": [],
+    "$defaultOutput": {
+      "stateId": "9e94a810-b692-4333-b259-5b3d6ad0df38",
+      "typeOfStateId": "state"
+    },
+    "$localCustomActions": [],
+    "$title": "[MSG] Go to - Resposta Opt-in",
+    "$position": {
+      "top": "2577px",
+      "left": "1062px"
+    },
+    "addonsSettings": {
+      "shape": "50% 0 50% 0",
+      "backgroundColor": "#263238"
+    }
+  },
+  "f1ea4228-807c-4f80-a754-858cfa4b4dba": {
+    "$contentActions": [
+      {
+        "action": {
+          "$description": "",
+          "type": "SendMessage",
+          "settings": {
+            "type": "text/plain",
+            "content": "No momento, este canal está passando por melhorias e ainda está em fase de desenvolvimento. 😊\n\nEm breve estará disponível para você! Por favor, tente novamente mais tarde.",
+            "metadata": {}
+          }
+        }
+      },
+      {
+        "input": {
+          "bypass": true
+        }
+      }
+    ],
+    "$conditionOutputs": [],
+    "$enteringCustomActions": [],
+    "$leavingCustomActions": [],
+    "$defaultOutput": {
+      "stateId": "onboarding",
+      "typeOfStateId": "state"
+    },
+    "$localCustomActions": [],
+    "$title": "Fluxo em desenvolvimento volte mais tarde",
+    "$position": {
+      "top": "659px",
+      "left": "1023px"
+    }
+  },
+  "1cc62207-89b8-4c0d-b5fe-a07588ee329a": {
+    "$contentActions": [
+      {
+        "input": {
+          "bypass": true
+        }
+      }
+    ],
+    "$conditionOutputs": [
+      {
+        "stateId": "373d6c38-4cda-4816-8802-fd8f5741baf9",
+        "typeOfStateId": "state",
+        "conditions": [
+          {
+            "source": "context",
+            "comparison": "equals",
+            "values": [
+              "false"
+            ],
+            "variable": "infosUserName@phoneStatus"
+          }
+        ]
+      },
+      {
+        "stateId": "9d883e05-4da2-450a-969f-4116c0b0b837",
+        "typeOfStateId": "state",
+        "conditions": [
+          {
+            "source": "context",
+            "comparison": "equals",
+            "values": [
+              "true"
+            ],
+            "variable": "infosUserName@phoneStatus"
+          }
+        ]
+      }
+    ],
+    "$enteringCustomActions": [
+      {
+        "$description": "",
+        "$inputSchema": {
+          "type": "object",
+          "properties": {},
+          "required": []
+        },
+        "type": "ExecuteScriptV2",
+        "settings": {
+          "function": "run",
+          "source": "function run() {\n    try {\n        return {\n            guidStatus: false,\n            guid: \"\",\n            bsuid: \"\",\n            phoneStatus: false,\n            phone: \"\"\n        };\n\n    } catch (e) {\n        return {\n            guidStatus: false,\n            guid: \"\",\n            bsuid: \"\",\n            phoneStatus: false,\n            phone: \"\"\n        };\n    }\n}",
+          "inputVariables": [],
+          "outputVariable": "infosUserName"
+        },
+        "conditions": [
+          {
+            "source": "context",
+            "comparison": "notExists",
+            "values": [],
+            "variable": "infosUserName"
+          }
+        ]
+      },
+      {
+        "type": "ExecuteScript",
+        "settings": {
+          "function": "run",
+          "source": "function run(contactIdentity, contactPhoneNumber, inputMessageMetadata) {\n    try {\n        let identity = contactIdentity || \"\";\n        let phoneNumber = contactPhoneNumber || \"\";\n\n        // Extrair apenas a parte antes do '@' da variável identity (Antigo BSUID, agora guid)\n        let idPart = identity.split('@')[0];\n\n        // Extração flexível do BSUID (Aceita o JSON inteiro ou apenas o metadado)\n        let bsuid = \"false\";\n        if (inputMessageMetadata) {\n            try {\n                let parsedInput = typeof inputMessageMetadata === \"string\" \n                    ? JSON.parse(inputMessageMetadata) \n                    : inputMessageMetadata;\n                \n                // Cenário 1: Se recebeu o JSON inteiro contendo o objeto .metadata interno\n                if (parsedInput && parsedInput.metadata && parsedInput.metadata[\"#wa.bsuid\"]) {\n                    bsuid = parsedInput.metadata[\"#wa.bsuid\"];\n                } \n                // Cenário 2: Se recebeu diretamente apenas o objeto metadata {}\n                else if (parsedInput && parsedInput[\"#wa.bsuid\"]) {\n                    bsuid = parsedInput[\"#wa.bsuid\"];\n                }\n            } catch (e) {\n                // Se o parse falhar por string corrompida, bsuid continua \"false\"\n            }\n        }\n\n        // Função para garantir o formato +55\n        const formatToPlus55 = (numberStr) => {\n            let cleanNumber = numberStr.trim().replace(/[^\\d+]/g, '');\n            if (!cleanNumber) return \"\";\n\n            if (cleanNumber.startsWith('+55')) {\n                return '+' + cleanNumber.replace(/\\D/g, '');\n            }\n            \n            let digitsOnly = cleanNumber.replace(/\\D/g, '');\n\n            if (digitsOnly.startsWith('55')) {\n                return '+' + digitsOnly;\n            }\n\n            return '+55' + digitsOnly;\n        };\n\n        const isPhoneValid = (numberStr) => {\n            let cleanNumber = numberStr.replace(/\\D/g, '');\n            return /^\\d{10,15}$/.test(cleanNumber);\n        };\n\n        // Formata e valida os campos\n        let formattedIdPart = formatToPlus55(idPart);\n        let isIdentityPhone = isPhoneValid(idPart); \n        \n        let formattedPhoneNumber = formatToPlus55(phoneNumber);\n        let isPhoneNumberValid = phoneNumber.trim() !== \"\" && isPhoneValid(formattedPhoneNumber);\n        \n        // Mapeamentos para a nova estrutura de guid\n        let guidStatus = isIdentityPhone ? \"false\" : \"true\";\n        let guid = isIdentityPhone ? \"false\" : idPart;\n\n        let phoneStatus = \"false\";\n        if (phoneNumber.trim() === \"\") {\n            phoneStatus = \"false\";\n        } else if (isPhoneNumberValid) {\n            phoneStatus = \"true\";\n        }\n\n        let finalPhone = \"false\";\n        if (isIdentityPhone) {\n            finalPhone = formattedIdPart;\n        } else if (isPhoneNumberValid) {\n            finalPhone = formattedPhoneNumber;\n        }\n\n        // Retorno com guid e o bsuid extraído do metadado\n        let result = {\n            \"guidStatus\": guidStatus,\n            \"guid\": guid,\n            \"bsuid\": bsuid,\n            \"phoneStatus\": phoneStatus,\n            \"phone\": finalPhone\n        };\n\n        return JSON.stringify(result);\n\n    } catch (error) {\n        let errorResult = {\n            \"guidStatus\": \"false\",\n            \"guid\": \"false\",\n            \"bsuid\": \"false\",\n            \"phoneStatus\": \"false\",\n            \"phone\": \"false\",\n            \"error\": error.message\n        };\n        \n        return JSON.stringify(errorResult);\n    }\n}",
+          "inputVariables": [
+            "contact.identity",
+            "contact.phoneNumber",
+            "input.message"
+          ],
+          "outputVariable": "infosUserName",
+          "LocalTimeZoneEnabled": false
+        },
+        "conditions": [],
+        "continueOnError": true
+      }
+    ],
+    "$leavingCustomActions": [
+      {
+        "type": "TrackEvent",
+        "settings": {
+          "extras": {
+            "identificador": "{{contact.identity}}",
+            "origem": "{{origem}}",
+            "canal": "{{channel}}"
+          },
+          "category": "Bsuid retorno",
+          "action": "{{infosUserName@phoneStatus}}"
+        },
+        "conditions": []
+      }
+    ],
+    "$defaultOutput": {
+      "stateId": "fallback"
+    },
+    "$localCustomActions": [],
+    "$title": "GUID + BSUID VERIFICATION",
+    "$position": {
+      "top": "741px",
+      "left": "1276px"
+    }
+  },
+  "373d6c38-4cda-4816-8802-fd8f5741baf9": {
+    "$contentActions": [
+      {
+        "input": {
+          "bypass": true
+        }
+      }
+    ],
+    "$conditionOutputs": [
+      {
+        "stateId": "70e72d21-6ca8-4e11-acc7-671e4dec4954",
+        "typeOfStateId": "state",
+        "conditions": [
+          {
+            "source": "input",
+            "comparison": "exists",
+            "values": []
+          }
+        ]
+      }
+    ],
+    "$enteringCustomActions": [
+      {
+        "$description": "",
+        "$inputSchema": {
+          "type": "object",
+          "properties": {},
+          "required": []
+        },
+        "type": "MergeContact",
+        "settings": {
+          "extras": {
+            "guid": "{{infosUserName@guid}}",
+            "bsuid": "{{infosUserName@bsuid}}"
+          }
+        },
+        "conditions": [
+          {
+            "source": "context",
+            "comparison": "equals",
+            "variable": "infosUserName@guidStatus",
+            "values": [
+              "true"
+            ]
+          }
+        ]
+      }
+    ],
+    "$leavingCustomActions": [],
+    "$defaultOutput": {
+      "stateId": "fallback"
+    },
+    "$localCustomActions": [],
+    "$title": "salvar dados de usar name",
+    "$position": {
+      "top": "680px",
+      "left": "1651px"
+    }
+  },
+  "d6315f94-f299-455d-9eca-aca446d15277": {
+    "$contentActions": [
+      {
+        "input": {
+          "bypass": true
+        }
+      }
+    ],
+    "$conditionOutputs": [
+      {
+        "stateId": "1cc62207-89b8-4c0d-b5fe-a07588ee329a",
+        "typeOfStateId": "state",
+        "conditions": [
+          {
+            "source": "input",
+            "comparison": "exists",
+            "values": []
+          }
+        ]
+      }
+    ],
+    "$enteringCustomActions": [
+      {
+        "type": "MergeContact",
+        "settings": {
+          "extras": {},
+          "phoneNumber": "{{phoneNumber}}"
+        },
+        "conditions": [
+          {
+            "source": "context",
+            "comparison": "notEquals",
+            "variable": "phoneNumber",
+            "values": [
+              "false"
+            ]
+          }
+        ]
+      }
+    ],
+    "$leavingCustomActions": [],
+    "$defaultOutput": {
+      "stateId": "fallback"
+    },
+    "$localCustomActions": [],
+    "$title": "Salva contato",
+    "$position": {
+      "top": "854px",
+      "left": "1642px"
+    }
+  },
+  "70e72d21-6ca8-4e11-acc7-671e4dec4954": {
+    "$contentActions": [
+      {
+        "action": {
+          "type": "SendMessage",
+          "settings": {
+            "type": "text/plain",
+            "content": "Para localizar seu cadastro e continuar seu atendimento, <b>informe seu número de telefone com DDD</b>\n\n<i>Exemplo:</i> 5531999999999",
+            "metadata": {}
+          }
+        }
+      },
+      {
+        "input": {
+          "bypass": false,
+          "variable": "telefoneNotFormatted",
+          "expiration": "0:15"
+        }
+      }
+    ],
+    "$conditionOutputs": [
+      {
+        "stateId": "98e79a41-12ba-4bd2-b800-5351ae92b797",
+        "typeOfStateId": "state",
+        "conditions": [
+          {
+            "source": "context",
+            "comparison": "equals",
+            "values": [
+              "false"
+            ],
+            "variable": "phoneNumber"
+          },
+          {
+            "values": [],
+            "source": "input",
+            "comparison": "exists"
+          }
+        ]
+      },
+      {
+        "stateId": "d6315f94-f299-455d-9eca-aca446d15277",
+        "typeOfStateId": "state",
+        "conditions": [
+          {
+            "source": "input",
+            "comparison": "exists",
+            "values": []
+          }
+        ]
+      }
+    ],
+    "$enteringCustomActions": [
+      {
+        "type": "TrackEvent",
+        "settings": {
+          "extras": {
+            "identificador": "{{contact.identity}}",
+            "origem": "{{origem}}",
+            "canal": "{{channel}}"
+          },
+          "category": "Pedido numero telefone exibicao",
+          "action": "Exibicao"
+        },
+        "conditions": []
+      }
+    ],
+    "$leavingCustomActions": [
+      {
+        "type": "ExecuteScript",
+        "settings": {
+          "function": "run",
+          "source": "function run(number) {\n  try {\n    if (!number) return false;\n\n    if (number.trim().startsWith('+') && !number.trim().startsWith('+55')) {\n        return \"+\" + number.toString().replace(/[^\\d]+/g, \"\");\n    }\n\n    let numberFormatting = number.toString().replace(/[^\\d]+/g, \"\");\n    if (numberFormatting.length >= 10) {\n      if (numberFormatting.length >= 12 && numberFormatting.startsWith('55')) {\n        numberFormatting = numberFormatting.slice(2);\n      }\n      if (numberFormatting.startsWith('0')) {\n        numberFormatting = numberFormatting.slice(1);\n      }\n      //número completo\n      if (numberFormatting.length >= 12) {\n        return false\n      } else {\n        numberFormatting = \"55\" + numberFormatting;\n        return \"+\" + numberFormatting;\n      }\n    } else {\n      return false\n    }\n  } catch(e) {\n    return false;\n  }\n}",
+          "inputVariables": [
+            "telefoneNotFormatted"
+          ],
+          "outputVariable": "phoneNumber",
+          "LocalTimeZoneEnabled": false
+        },
+        "conditions": []
+      },
+      {
+        "type": "TrackEvent",
+        "settings": {
+          "extras": {
+            "identificador": "{{contact.identity}}",
+            "origem": "{{origem}}",
+            "canal": "{{channel}}"
+          },
+          "category": "Numero telefone input",
+          "action": "{{input.content}}"
+        },
+        "conditions": []
+      },
+      {
+        "type": "TrackEvent",
+        "settings": {
+          "extras": {
+            "identificador": "{{contact.identity}}",
+            "origem": "{{origem}}",
+            "canal": "{{channel}}"
+          },
+          "category": "Input telefone retorno",
+          "action": "Invalido"
+        },
+        "conditions": [
+          {
+            "source": "context",
+            "variable": "phoneNumber",
+            "comparison": "equals",
+            "values": [
+              "false"
+            ]
+          }
+        ]
+      },
+      {
+        "type": "TrackEvent",
+        "settings": {
+          "extras": {
+            "identificador": "{{contact.identity}}",
+            "origem": "{{origem}}",
+            "canal": "{{channel}}"
+          },
+          "category": "Input telefone retorno",
+          "action": "Valido"
+        },
+        "conditions": [
+          {
+            "source": "context",
+            "variable": "phoneNumber",
+            "comparison": "notEquals",
+            "values": [
+              "false"
+            ]
+          }
+        ]
+      }
+    ],
+    "$defaultOutput": {
+      "stateId": "fallback"
+    },
+    "$title": "Pergunta: telefone",
+    "$position": {
+      "top": "765px",
+      "left": "1955px"
+    },
+    "invalidOutputs": true
+  },
+  "3022c9cf-f531-4e4f-aa16-9a328ae2b7e9": {
+    "$contentActions": [
+      {
+        "action": {
+          "$description": "",
+          "type": "SendMessage",
+          "settings": {
+            "type": "text/plain",
+            "content": "No momento, sem o número de telefone não conseguimos continuar com o atendimento por aqui.\n\nPara continuar, você pode acessar pelo site ou app da Central MBRF ou, se ainda não tiver cadastro, realizá-lo primeiro.\n\nhttps://www.centralmbrf.com.br/",
+            "metadata": {}
+          }
+        }
+      },
+      {
+        "input": {
+          "bypass": true
+        }
+      }
+    ],
+    "$conditionOutputs": [],
+    "$enteringCustomActions": [
+      {
+        "type": "ExecuteScript",
+        "settings": {
+          "function": "run",
+          "source": "function run(inputContent) {\n\ttry {\n\t\tif (!inputContent || inputContent === \"\") {\n\t\t\treturn \"INATIVIDADE\"\n\t\t}\n\n\t\treturn inputContent;\n\t} catch (error) {\n\t\treturn inputContent || \"INATIVIDADE\";\n\t}\n}",
+          "inputVariables": [
+            "input.content"
+          ],
+          "outputVariable": "inputContent",
+          "LocalTimeZoneEnabled": false
+        },
+        "conditions": []
+      },
+      {
+        "type": "TrackEvent",
+        "settings": {
+          "extras": {
+            "Identificador": "{{contact.identity}}",
+            "Nome": "{{contact.name}}",
+            "Telefone": "{{contact.phoneNumber}}",
+            "E-mail": "{{contact.email}}"
+          },
+          "category": "[{{application.identifier}}] Inputs inesperados - Por Fluxo[{{application.identifier}}] Inputs inesperados - Por Bloco",
+          "action": "[{{application.identifier}}][{{state.previous.name}}] | {{inputContent}}"
+        },
+        "conditions": []
+      },
+      {
+        "type": "TrackEvent",
+        "settings": {
+          "extras": {
+            "Identificador": "{{contact.identity}}",
+            "Nome": "{{contact.name}}",
+            "Telefone": "{{contact.phoneNumber}}",
+            "E-mail": "{{contact.email}}"
+          },
+          "category": "[{{application.identifier}}] Inputs inesperados - Por Fluxo",
+          "action": "[{{application.identifier}}] | {{inputContent}}"
+        },
+        "conditions": []
+      },
+      {
+        "type": "TrackEvent",
+        "settings": {
+          "extras": {
+            "Identificador": "{{contact.identity}}",
+            "Nome": "{{contact.name}}",
+            "Telefone": "{{contact.phoneNumber}}",
+            "E-mail": "{{contact.email}}"
+          },
+          "category": "Inputs inesperados",
+          "action": "{{inputContent}}"
+        },
+        "conditions": []
+      }
+    ],
+    "$leavingCustomActions": [],
+    "$defaultOutput": {
+      "stateId": "onboarding",
+      "typeOfStateId": "state"
+    },
+    "$title": "[GO TO] Finalização",
+    "$position": {
+      "top": "830px",
+      "left": "2456px"
+    },
+    "invalidOutputs": true
+  },
+  "203a2feb-f1a2-4f84-ad01-f225ee9a7a7c": {
+    "$contentActions": [
+      {
+        "action": {
+          "type": "SendMessage",
+          "settings": {
+            "type": "text/plain",
+            "content": "✉️ <b>Por favor, informe o seu e-mail de acesso.</b>\n\nℹ️ <i>O mesmo usado para fazer login no site/app.</i>",
+            "metadata": {}
+          }
+        }
+      },
+      {
+        "input": {
+          "bypass": false,
+          "variable": "emailNotFormatted",
+          "expiration": "0:15"
+        }
+      }
+    ],
+    "$conditionOutputs": [
+      {
+        "stateId": "87f297cf-0c07-4c5c-8f1f-d9a521e8312d",
+        "typeOfStateId": "state",
+        "conditions": [
+          {
+            "source": "context",
+            "comparison": "equals",
+            "values": [
+              "false"
+            ],
+            "variable": "email"
+          },
+          {
+            "values": [],
+            "source": "input",
+            "comparison": "exists"
+          }
+        ]
+      },
+      {
+        "stateId": "762682cc-02e5-4374-9b2d-cbebfea35d8c",
+        "typeOfStateId": "state",
+        "conditions": [
+          {
+            "source": "input",
+            "comparison": "exists",
+            "values": []
+          }
+        ]
+      }
+    ],
+    "$enteringCustomActions": [
+      {
+        "type": "TrackEvent",
+        "settings": {
+          "extras": {
+            "identificador": "{{contact.identity}}",
+            "origem": "{{origem}}",
+            "canal": "{{channel}}"
+          },
+          "category": "email coleta exibicao",
+          "action": "Exibicao"
+        },
+        "conditions": []
+      }
+    ],
+    "$leavingCustomActions": [
+      {
+        "type": "ExecuteScript",
+        "settings": {
+          "function": "run",
+          "source": "function run(input) {\n    try {\n        let emailMatch = /[^\\s@]+@[^\\s@]+\\.[^\\s@]+/.exec(input.trim());\n        return emailMatch && emailMatch[0] ? emailMatch[0] : false;\n    } catch(e) {\n        return false;\n    }\n}",
+          "inputVariables": [
+            "emailNotFormatted"
+          ],
+          "outputVariable": "email",
+          "LocalTimeZoneEnabled": false
+        },
+        "conditions": []
+      },
+      {
+        "$description": "",
+        "$inputSchema": {
+          "type": "object",
+          "properties": {},
+          "required": []
+        },
+        "type": "MergeContact",
+        "settings": {
+          "extras": {},
+          "email": "{{email}}"
+        },
+        "conditions": []
+      }
+    ],
+    "$defaultOutput": {
+      "stateId": "fallback"
+    },
+    "$title": "Pergunta: email",
+    "$position": {
+      "top": "1432px",
+      "left": "1312px"
+    },
+    "invalidOutputs": true
+  },
+  "dcfb2409-db47-4450-acf0-10f29e30a839": {
+    "$contentActions": [
+      {
+        "action": {
+          "$description": "",
+          "type": "SendMessage",
+          "settings": {
+            "type": "application/vnd.lime.select+json",
+            "content": {
+              "text": "Desculpe, mas o <b>e-mail</b> informado <b>não é válido.</b> 😞\n\n👉 Caso <b>não lembre o seu e-mail</b> de acesso, <b>clique em “Esqueci o E-mail”</b>\n\n👉 Se o <b>e-mail estiver errado, clique em “Informar E-mail”</b>\n\n<i>Basta clicar em uma opção para seguirmos.</i>",
+              "scope": "immediate",
+              "options": [
+                {
+                  "text": "Esqueci o E-mail",
+                  "previewText": "Esqueci o E-mail",
+                  "value": null,
+                  "index": 0,
+                  "type": null
+                },
+                {
+                  "text": "Informar E-mail",
+                  "previewText": "Informar E-mail",
+                  "value": null,
+                  "index": 1,
+                  "type": null
+                }
+              ],
+              "quikReply": false
+            },
+            "metadata": {}
+          }
+        }
+      },
+      {
+        "input": {
+          "bypass": false,
+          "expiration": "0:15"
+        }
+      }
+    ],
+    "$conditionOutputs": [
+      {
+        "stateId": "08ce1d53-309b-4b38-923c-11eb8f586b08",
+        "typeOfStateId": "state",
+        "conditions": [
+          {
+            "source": "context",
+            "comparison": "equals",
+            "values": [
+              "Esqueci o E-mail"
+            ],
+            "variable": "intentAction"
+          }
+        ]
+      },
+      {
+        "stateId": "087d1830-4554-4354-8f72-fea905b2efec",
+        "typeOfStateId": "state",
+        "conditions": [
+          {
+            "source": "context",
+            "comparison": "equals",
+            "values": [
+              "Informar E-mail"
+            ],
+            "variable": "intentAction"
+          }
+        ]
+      }
+    ],
+    "$enteringCustomActions": [
+      {
+        "type": "SetVariable",
+        "settings": {
+          "variable": "intentAction"
+        },
+        "conditions": []
+      },
+      {
+        "type": "TrackEvent",
+        "settings": {
+          "extras": {
+            "identificador": "{{contact.identity}}",
+            "origem": "{{origem}}",
+            "canal": "{{channel}}"
+          },
+          "category": "Esqueceu email menu exibicao",
+          "action": "Exibicao"
+        },
+        "conditions": []
+      },
+      {
+        "$description": "",
+        "$inputSchema": {
+          "type": "object",
+          "properties": {},
+          "required": []
+        },
+        "type": "ExecuteScript",
+        "settings": {
+          "function": "run",
+          "source": "function run(contadorXcnpj){\n    try {\n        contadorXcnpj = parseInt(contadorXcnpj)\n        contadorXcnpj += 1\n        return contadorXcnpj\n    } catch(e) {\n        return contadorXcnpj;        \n    }\n}",
+          "inputVariables": [
+            "contadorFalha"
+          ],
+          "outputVariable": "contadorFalha",
+          "LocalTimeZoneEnabled": false
+        },
+        "conditions": []
+      }
+    ],
+    "$leavingCustomActions": [
+      {
+        "type": "ExecuteScript",
+        "settings": {
+          "function": "run",
+          "source": "function run(input) {\n  try {\n    const opcoesMenu = {\n      \"1\": \"Esqueci o E-mail\",\n      \"2\": \"Informar E-mail\"\n    };\n\n    const menuRegex = {\n      \"1\": /\\b(?:esqueci\\s+o\\s+e-?mail|esqueci\\s+meu\\s+e-?mail|n[aã]o\\s+lembro\\s+o\\s+e-?mail|n[aã]o\\s+sei\\s+o\\s+e-?mail|n[aã]o\\s+me\\s+recordo\\s+do\\s+e-?mail|esqueci\\s+email)\\b/i,\n\n      \"2\": /\\b(?:informar\\s+e-?mail|informar\\s+meu\\s+e-?mail|digitar\\s+e-?mail|enviar\\s+e-?mail|passar\\s+e-?mail|cadastrar\\s+e-?mail|quero\\s+informar\\s+o\\s+e-?mail)\\b/i\n    };\n\n    input = String(input || \"\").trim();\n\n    if (input === \"1\") {\n      return opcoesMenu[\"1\"];\n    }\n\n    if (input === \"2\") {\n      return opcoesMenu[\"2\"];\n    }\n\n    for (const prop in menuRegex) {\n      if (menuRegex[prop].test(input)) {\n        return opcoesMenu[prop];\n      }\n    }\n\n    return \"Input inesperado\";\n\n  } catch (error) {\n    return \"Input inesperado\";\n  }\n}",
+          "inputVariables": [
+            "input.content"
+          ],
+          "outputVariable": "intentAction",
+          "LocalTimeZoneEnabled": false
+        },
+        "conditions": []
+      },
+      {
+        "type": "TrackEvent",
+        "settings": {
+          "extras": {
+            "identificador": "{{contact.identity}}",
+            "origem": "{{origem}}",
+            "canal": "{{channel}}"
+          },
+          "category": "Esqueceu email menu selecao",
+          "action": "{{intentAction}}"
+        },
+        "conditions": [
+          {
+            "source": "input",
+            "comparison": "exists",
+            "values": []
+          }
+        ]
+      },
+      {
+        "type": "TrackEvent",
+        "settings": {
+          "extras": {
+            "identificador": "{{contact.identity}}",
+            "origem": "{{origem}}",
+            "canal": "{{channel}}"
+          },
+          "category": "Esqueceu email menu  input",
+          "action": "{{input.content}}"
+        },
+        "conditions": [
+          {
+            "source": "context",
+            "variable": "intentAction",
+            "comparison": "equals",
+            "values": [
+              "Input inesperado"
+            ]
+          },
+          {
+            "source": "input",
+            "comparison": "exists",
+            "values": []
+          }
+        ]
+      }
+    ],
+    "$defaultOutput": {
+      "stateId": "fallback"
+    },
+    "$localCustomActions": [],
+    "$title": "[MSG] E-mail inválido",
+    "$position": {
+      "top": "1211px",
+      "left": "588px"
+    }
+  },
+  "087d1830-4554-4354-8f72-fea905b2efec": {
+    "$contentActions": [
+      {
+        "input": {
+          "bypass": true
+        }
+      }
+    ],
+    "$conditionOutputs": [],
+    "$enteringCustomActions": [],
+    "$leavingCustomActions": [],
+    "$defaultOutput": {
+      "stateId": "203a2feb-f1a2-4f84-ad01-f225ee9a7a7c",
+      "typeOfStateId": "state"
+    },
+    "$localCustomActions": [],
+    "$title": "GO TO - Informar e-mail",
+    "$position": {
+      "top": "1446px",
+      "left": "681px"
+    }
+  },
+  "11bc444c-ccc7-4134-98af-50b4552c285a": {
+    "$contentActions": [
+      {
+        "input": {
+          "bypass": true
+        }
+      }
+    ],
+    "$conditionOutputs": [
+      {
+        "stateId": "1e82cf93-7207-429a-aa04-6dafc4a000fa",
+        "typeOfStateId": "state",
+        "conditions": [
+          {
+            "source": "context",
+            "comparison": "notEquals",
+            "values": [
+              "200",
+              "201",
+              "204",
+              "206",
+              "202",
+              "203",
+              "205"
+            ],
+            "variable": "statusApiCustomer"
+          }
+        ]
+      },
+      {
+        "stateId": "f4323e62-381a-4e48-89a7-419c532de6e9",
+        "typeOfStateId": "state",
+        "conditions": [
+          {
+            "source": "context",
+            "comparison": "equals",
+            "values": [
+              "200",
+              "201",
+              "202",
+              "203",
+              "20205",
+              "206"
+            ],
+            "variable": "statusApiCustomer"
+          }
+        ]
+      }
+    ],
+    "$enteringCustomActions": [
+      {
+        "$description": "",
+        "$inputSchema": {
+          "type": "object",
+          "properties": {},
+          "required": []
+        },
+        "type": "ProcessHttp",
+        "settings": {
+          "headers": {
+            "client_id": "{{resource.clientIdYgg}}",
+            "client_secret": "{{resource.clientSecretYgg}}",
+            "Content-Type": "application/x-www-form-urlencoded"
+          },
+          "method": "POST",
+          "body": "grant_type=client_credentials&client_id={{resource.clientIdYgg}}&client_secret={{resource.clientSecretYgg}}&scope=openid",
+          "uri": "{{resource.yggUrl}}/token",
+          "responseStatusVariable": "statusApiTokenYgg",
+          "responseBodyVariable": "apiTokenYgg"
+        },
+        "conditions": []
+      },
+      {
+        "$description": "",
+        "$inputSchema": {
+          "type": "object",
+          "properties": {},
+          "required": []
+        },
+        "type": "ProcessHttp",
+        "settings": {
+          "headers": {
+            "Authorization": "Bearer {{apiTokenYgg@access_token}}"
+          },
+          "method": "POST",
+          "body": "{\n  \"query\": \"query MyQuery { get_person_customer(filters: { documents: { document_value: \\\"{{contact.taxDocument}}\\\" } }) { items { active shared_id description email contact_group creation_date updated_at mi1_shared_id schema_version addresses { city complements federative_unit country latitude longitude neighborhood street_number street type zip_code } contacts { type description country_number area_number } documents { document_id type document_additional_info { expedition_date expedition_organization } } taxes { contributor_icms industrial_sector substitution_group } sales_informations { active activity_sector condition_exped_code currency group_team icon_terms_code minimum_order_value office_code organization_code region_code sales_region tactical_targeting distribution { center channel } payment_conditions { conditions } price_information { group list_category } staff_member_seller { person_staffmember_portfolio shared_id_person_staffmember } partners { partner_function partner_shared_id addresses { complements city country federative_unit latitude longitude street neighborhood type street_number zip_code } } } } } }\"\n}",
+          "uri": "{{resource.yggUrl}}/person/customer/search",
+          "responseStatusVariable": "statusApiCustomer",
+          "responseBodyVariable": "apiCustomer"
+        },
+        "conditions": []
+      },
+      {
+        "$description": "",
+        "$inputSchema": {
+          "type": "object",
+          "properties": {},
+          "required": []
+        },
+        "type": "ExecuteScript",
+        "settings": {
+          "function": "run",
+          "source": "function run(input) {\n  try {\n    const data = typeof input === \"string\" ? JSON.parse(input) : input;\n\n    // Cliente não existe\n    if (\n      !data ||\n      !data.data ||\n      !data.data.get_person_customer ||\n      !Array.isArray(data.data.get_person_customer.items) ||\n      data.data.get_person_customer.items.length === 0\n    ) {\n      return false;\n    }\n\n    const item = data.data.get_person_customer.items[0];\n\n    // Formata nome:\n    // VALDIR ZIMMERMANN KAIST\n    // -> Valdir Zimmermann Kaist\n    function formatarNome(nome) {\n      if (!nome) {\n        return null;\n      }\n\n      return String(nome)\n        .trim()\n        .toLowerCase()\n        .split(/\\s+/)\n        .map(function (parte) {\n          return parte.charAt(0).toUpperCase() + parte.slice(1);\n        })\n        .join(\" \");\n    }\n\n    const shared_id = item.shared_id || null;\n\n    const document_id =\n      item.documents &&\n      item.documents.length > 0 &&\n      item.documents[0].document_id\n        ? item.documents[0].document_id\n        : null;\n\n    // Nome completo formatado\n    const Name = formatarNome(item.description);\n\n    // Primeiro nome\n    const FirstName =\n      Name\n        ? Name.split(/\\s+/)[0]\n        : null;\n\n    // E-mail\n    const Email = item.email\n      ? String(item.email).trim()\n      : null;\n\n    const salesInfo = Array.isArray(item.sales_informations)\n      ? item.sales_informations\n      : [];\n\n    // Procura shipping_code com endereço\n    for (let i = 0; i < salesInfo.length; i++) {\n      const partners = Array.isArray(salesInfo[i].partners)\n        ? salesInfo[i].partners\n        : [];\n\n      for (let j = 0; j < partners.length; j++) {\n        const partner = partners[j];\n\n        if (\n          partner &&\n          partner.partner_function === \"shipping_code\" &&\n          Array.isArray(partner.addresses) &&\n          partner.addresses.length > 0\n        ) {\n          return {\n            shared_id: shared_id,\n            document_id: document_id,\n\n            FirstName: FirstName,\n            Name: Name,\n            Email: Email,\n\n            partner_function: partner.partner_function,\n            addresses: partner.addresses[0]\n          };\n        }\n      }\n    }\n\n    // Não encontrou shipping_code\n    return {\n      shared_id: shared_id,\n      document_id: document_id,\n\n      FirstName: FirstName,\n      Name: Name,\n      Email: Email,\n\n      partner_function: \"shipping_code\",\n      addresses: false\n    };\n\n  } catch (e) {\n    return false;\n  }\n}",
+          "inputVariables": [
+            "apiCustomer"
+          ],
+          "outputVariable": "retornoCliente",
+          "LocalTimeZoneEnabled": false
+        },
+        "conditions": []
+      }
+    ],
+    "$leavingCustomActions": [],
+    "$defaultOutput": {
+      "stateId": "fallback"
+    },
+    "$localCustomActions": [],
+    "$title": "[API] Busca info cliente YGG",
+    "$position": {
+      "top": "1625px",
+      "left": "495px"
+    }
+  },
+  "1e82cf93-7207-429a-aa04-6dafc4a000fa": {
+    "$contentActions": [
+      {
+        "input": {
+          "bypass": true
+        }
+      }
+    ],
+    "$conditionOutputs": [
+      {
+        "stateId": "11bc444c-ccc7-4134-98af-50b4552c285a",
+        "typeOfStateId": "state",
+        "conditions": [
+          {
+            "source": "context",
+            "comparison": "lessThanOrEquals",
+            "values": [
+              "2"
+            ],
+            "variable": "contadorFalha"
+          }
+        ]
+      },
+      {
+        "stateId": "cfcccda0-b52f-49ef-a001-78ac559b9db1",
+        "typeOfStateId": "state",
+        "conditions": [
+          {
+            "source": "context",
+            "comparison": "greaterThanOrEquals",
+            "values": [
+              "3"
+            ],
+            "variable": "contadorFalha"
+          }
+        ]
+      }
+    ],
+    "$enteringCustomActions": [
+      {
+        "type": "TrackEvent",
+        "settings": {
+          "extras": {
+            "identificador": "{{contact.identity}}",
+            "origem": "{{origem}}",
+            "canal": "{{channel}}"
+          },
+          "category": "API contato nova busca",
+          "action": "Erro"
+        },
+        "conditions": []
+      },
+      {
+        "$description": "",
+        "$inputSchema": {
+          "type": "object",
+          "properties": {},
+          "required": []
+        },
+        "type": "ExecuteScript",
+        "settings": {
+          "function": "run",
+          "source": "function run(contadorXcnpj){\n    try {\n        contadorXcnpj = parseInt(contadorXcnpj)\n        contadorXcnpj += 1\n        return contadorXcnpj\n    } catch(e) {\n        return contadorXcnpj;        \n    }\n}",
+          "inputVariables": [
+            "contadorFalha"
+          ],
+          "outputVariable": "contadorFalha",
+          "LocalTimeZoneEnabled": false
+        },
+        "conditions": []
+      }
+    ],
+    "$leavingCustomActions": [],
+    "$defaultOutput": {
+      "stateId": "fallback"
+    },
+    "$localCustomActions": [],
+    "$title": "[FALHA API] Busca info cliente",
+    "$position": {
+      "top": "1618px",
+      "left": "206px"
+    }
+  },
+  "f4323e62-381a-4e48-89a7-419c532de6e9": {
+    "$contentActions": [
+      {
+        "action": {
+          "$description": "",
+          "type": "SendMessage",
+          "settings": {
+            "type": "text/plain",
+            "content": "Encontrei as seguintes informações referentes ao(s) e-mail(s) de cadastro em nosso sistema:\n\n{{emailComMask}} ",
+            "metadata": {}
+          }
+        }
+      },
+      {
+        "input": {
+          "bypass": true
+        }
+      }
+    ],
+    "$conditionOutputs": [
+      {
+        "stateId": "6067436e-688a-4ed1-9571-908201148624",
+        "typeOfStateId": "state",
+        "conditions": [
+          {
+            "source": "input",
+            "comparison": "exists",
+            "values": []
+          }
+        ]
+      }
+    ],
+    "$enteringCustomActions": [
+      {
+        "type": "TrackEvent",
+        "settings": {
+          "extras": {
+            "identificador": "{{contact.identity}}",
+            "origem": "{{origem}}",
+            "canal": "{{channel}}"
+          },
+          "category": "API contato nova busca",
+          "action": "Sucesso"
+        },
+        "conditions": []
+      },
+      {
+        "type": "TrackEvent",
+        "settings": {
+          "extras": {
+            "identificador": "{{contact.identity}}",
+            "origem": "{{origem}}",
+            "canal": "{{channel}}"
+          },
+          "category": "mensagem esqueceu email de cadastro exibicao",
+          "action": "Sucesso"
+        },
+        "conditions": []
+      },
+      {
+        "$description": "",
+        "$inputSchema": {
+          "type": "object",
+          "properties": {},
+          "required": []
+        },
+        "type": "ExecuteScriptV2",
+        "settings": {
+          "function": "run",
+          "source": "function run(input) {\n    try {\n        const data = typeof input === \"string\"\n            ? JSON.parse(input)\n            : input;\n\n        if (!data) {\n            return \"\";\n        }\n\n        function mascararEmail(email) {\n            if (!email || typeof email !== \"string\") {\n                return \"\";\n            }\n\n            const emailLimpo = email.trim();\n\n            const emailMatch = emailLimpo.match(\n                /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$/\n            );\n\n            if (!emailMatch) {\n                return \"\";\n            }\n\n            const partes = emailLimpo.split(\"@\");\n\n            if (partes.length !== 2) {\n                return \"\";\n            }\n\n            const usuario = partes[0];\n            const dominio = partes[1];\n\n            const finalUsuario = usuario.length <= 2\n                ? usuario\n                : usuario.slice(-2);\n\n            return \"***\" + finalUsuario + \"@\" + dominio;\n        }\n\n        let registros = [];\n\n        if (Array.isArray(data)) {\n            registros = data;\n        } else if (Array.isArray(data.records)) {\n            registros = data.records;\n        } else {\n            registros = [data];\n        }\n\n        const emailsMascarados = [];\n\n        registros.forEach(function (registro) {\n            if (!registro || !registro.Email) {\n                return;\n            }\n\n            const emails = String(registro.Email)\n                .split(/[;,]+/)\n                .map(function (email) {\n                    return email.trim();\n                })\n                .filter(function (email) {\n                    return email !== \"\";\n                });\n\n            emails.forEach(function (email) {\n                const emailMascarado = mascararEmail(email);\n\n                if (emailMascarado) {\n                    emailsMascarados.push(emailMascarado);\n                }\n            });\n        });\n\n        if (emailsMascarados.length === 0) {\n            return \"\";\n        }\n\n        return emailsMascarados.join(\"\\n\");\n\n    } catch (e) {\n        return \"\";\n    }\n}",
+          "inputVariables": [
+            "retornoCliente"
+          ],
+          "outputVariable": "emailComMask"
+        },
+        "conditions": []
+      }
+    ],
+    "$leavingCustomActions": [],
+    "$defaultOutput": {
+      "stateId": "fallback"
+    },
+    "$localCustomActions": [],
+    "$title": "[MSG] E-mail encontrado",
+    "$position": {
+      "top": "1788px",
+      "left": "494px"
+    }
+  },
+  "6067436e-688a-4ed1-9571-908201148624": {
+    "$contentActions": [
+      {
+        "action": {
+          "$description": "",
+          "type": "SendMessage",
+          "settings": {
+            "type": "application/vnd.lime.select+json",
+            "content": {
+              "text": "Selecione uma opção para continuarmos. 😉\n\n<i>Basta clicar em uma opção para seguirmos.</i>",
+              "scope": "immediate",
+              "options": [
+                {
+                  "text": "Informar o E-mail",
+                  "previewText": "Informar o E-mail",
+                  "value": null,
+                  "index": 0,
+                  "type": null
+                },
+                {
+                  "text": "Esqueci o E-mail",
+                  "previewText": "Esqueci o E-mail",
+                  "value": null,
+                  "index": 1,
+                  "type": null
+                }
+              ],
+              "quikReply": false
+            },
+            "metadata": {}
+          }
+        }
+      },
+      {
+        "input": {
+          "bypass": false,
+          "expiration": "0:15"
+        }
+      }
+    ],
+    "$conditionOutputs": [
+      {
+        "stateId": "71ac5e3c-c237-41fb-938c-aa9c927029aa",
+        "typeOfStateId": "state",
+        "conditions": [
+          {
+            "source": "context",
+            "comparison": "equals",
+            "values": [
+              "Informar o E-mail"
+            ],
+            "variable": "intentAction"
+          }
+        ]
+      },
+      {
+        "stateId": "38a260a9-c7e2-4bba-8f09-be270c1dd6ea",
+        "typeOfStateId": "state",
+        "conditions": [
+          {
+            "source": "context",
+            "comparison": "equals",
+            "values": [
+              "Esqueci o E-mail"
+            ],
+            "variable": "intentAction"
+          }
+        ]
+      }
+    ],
+    "$enteringCustomActions": [
+      {
+        "type": "SetVariable",
+        "settings": {
+          "variable": "intentAction"
+        },
+        "conditions": []
+      },
+      {
+        "type": "TrackEvent",
+        "settings": {
+          "extras": {
+            "identificador": "{{contact.identity}}",
+            "origem": "{{origem}}",
+            "canal": "{{channel}}"
+          },
+          "category": "Menu informar email exibicao",
+          "action": "Exibicao"
+        },
+        "conditions": []
+      }
+    ],
+    "$leavingCustomActions": [
+      {
+        "type": "ExecuteScript",
+        "settings": {
+          "function": "run",
+          "source": "function run(input) {\n  try {\n    const opcoesMenu = {\n      \"1\": \"Informar o E-mail\",\n      \"2\": \"Esqueci o E-mail\"\n    };\n\n    const menuRegex = {\n      \"1\": /\\b(?:informar\\s+o\\s+e-?mail|informar\\s+e-?mail|informar\\s+meu\\s+e-?mail|digitar\\s+e-?mail|enviar\\s+e-?mail|passar\\s+e-?mail|cadastrar\\s+e-?mail|quero\\s+informar\\s+o\\s+e-?mail)\\b/i,\n\n      \"2\": /\\b(?:esqueci\\s+o\\s+e-?mail|esqueci\\s+meu\\s+e-?mail|n[aã]o\\s+lembro\\s+o\\s+e-?mail|n[aã]o\\s+sei\\s+o\\s+e-?mail|n[aã]o\\s+me\\s+recordo\\s+do\\s+e-?mail|esqueci\\s+email)\\b/i\n    };\n\n    input = String(input || \"\").trim();\n\n    if (input === \"1\") {\n      return opcoesMenu[\"1\"];\n    }\n\n    if (input === \"2\") {\n      return opcoesMenu[\"2\"];\n    }\n\n    for (const prop in menuRegex) {\n      if (menuRegex[prop].test(input)) {\n        return opcoesMenu[prop];\n      }\n    }\n\n    return \"Input inesperado\";\n\n  } catch (error) {\n    return \"Input inesperado\";\n  }\n}",
+          "inputVariables": [
+            "input.content"
+          ],
+          "outputVariable": "intentAction",
+          "LocalTimeZoneEnabled": false
+        },
+        "conditions": []
+      },
+      {
+        "type": "TrackEvent",
+        "settings": {
+          "extras": {
+            "identificador": "{{contact.identity}}",
+            "origem": "{{origem}}",
+            "canal": "{{channel}}"
+          },
+          "category": "Menu informar email selecao",
+          "action": "{{intentAction}}"
+        },
+        "conditions": [
+          {
+            "source": "input",
+            "comparison": "exists",
+            "values": []
+          }
+        ]
+      },
+      {
+        "type": "TrackEvent",
+        "settings": {
+          "extras": {
+            "identificador": "{{contact.identity}}",
+            "origem": "{{origem}}",
+            "canal": "{{channel}}"
+          },
+          "category": "Menu informar email input",
+          "action": "{{input.content}}"
+        },
+        "conditions": [
+          {
+            "source": "context",
+            "variable": "intentAction",
+            "comparison": "equals",
+            "values": [
+              "Input inesperado"
+            ]
+          },
+          {
+            "source": "input",
+            "comparison": "exists",
+            "values": []
+          }
+        ]
+      },
+      {
+        "$description": "",
+        "$inputSchema": {
+          "type": "object",
+          "properties": {},
+          "required": []
+        },
+        "type": "SetVariable",
+        "settings": {
+          "variable": "contadorFalha"
+        },
+        "conditions": []
+      }
+    ],
+    "$defaultOutput": {
+      "stateId": "fallback"
+    },
+    "$localCustomActions": [],
+    "$title": "[MSG] Selecionar uma opção",
+    "$position": {
+      "top": "1981px",
+      "left": "493px"
+    }
+  },
+  "71ac5e3c-c237-41fb-938c-aa9c927029aa": {
+    "$contentActions": [
+      {
+        "input": {
+          "bypass": true
+        }
+      }
+    ],
+    "$conditionOutputs": [],
+    "$enteringCustomActions": [],
+    "$leavingCustomActions": [],
+    "$defaultOutput": {
+      "stateId": "203a2feb-f1a2-4f84-ad01-f225ee9a7a7c",
+      "typeOfStateId": "state"
+    },
+    "$localCustomActions": [],
+    "$title": "GO TO - Informar e-mail II",
+    "$position": {
+      "top": "2212px",
+      "left": "401px"
+    }
+  },
+  "38a260a9-c7e2-4bba-8f09-be270c1dd6ea": {
+    "$contentActions": [
+      {
+        "action": {
+          "$description": "",
+          "type": "SendMessage",
+          "settings": {
+            "type": "text/plain",
+            "content": "No momento, <b>não é possível</b> seguir sem sua <b>autenticação</b> em nosso sistema.\n\nPara continuar, você pode ligar para nossa Central e falar com o time de atendimento para a recuperação do seu e-mail:\n\n☎️ 0800 702 3311\n\nDepois é só voltar por aqui que sigo com você 😊",
+            "metadata": {}
+          }
+        }
+      },
+      {
+        "action": {
+          "$description": "",
+          "type": "SendMessage",
+          "settings": {
+            "type": "text/plain",
+            "content": "A Central MBRF agradece o seu contato! ",
+            "metadata": {}
+          }
+        }
+      },
+      {
+        "input": {
+          "bypass": true
+        }
+      }
+    ],
+    "$conditionOutputs": [],
+    "$enteringCustomActions": [
+      {
+        "type": "TrackEvent",
+        "settings": {
+          "extras": {
+            "identificador": "{{contact.identity}}",
+            "origem": "{{origem}}",
+            "canal": "{{channel}}"
+          },
+          "category": "Mensagem SAC email exibicao",
+          "action": "Exibicao"
+        },
+        "conditions": []
+      },
+      {
+        "type": "TrackEvent",
+        "settings": {
+          "extras": {
+            "identificador": "{{contact.identity}}",
+            "origem": "{{origem}}",
+            "canal": "{{channel}}"
+          },
+          "category": "Fluxo finalizacao",
+          "action": "Exibicao"
+        },
+        "conditions": []
+      }
+    ],
+    "$leavingCustomActions": [],
+    "$defaultOutput": {
+      "stateId": "onboarding",
+      "typeOfStateId": "state"
+    },
+    "$localCustomActions": [],
+    "$title": "[MSG] Esqueci e-mail",
+    "$position": {
+      "top": "2215px",
+      "left": "586px"
+    }
+  },
+  "d975b7a6-6c78-4da8-a9a4-d799fc52baae": {
+    "$contentActions": [
+      {
+        "input": {
+          "bypass": true
+        }
+      }
+    ],
+    "$conditionOutputs": [],
+    "$enteringCustomActions": [],
+    "$leavingCustomActions": [
+      {
+        "$description": "",
+        "$inputSchema": {
+          "type": "object",
+          "properties": {},
+          "required": []
+        },
+        "type": "Redirect",
+        "settings": {
+          "context": {
+            "type": "text/plain",
+            "value": "@redirect"
+          },
+          "address": "{{resource.redirect@oportunidades}}"
+        },
+        "conditions": []
+      }
+    ],
+    "$defaultOutput": {
+      "stateId": "onboarding",
+      "typeOfStateId": "state"
+    },
+    "$localCustomActions": [],
+    "$title": "[REDIRECT] Oferta e oportunidades",
+    "$position": {
+      "top": "2927px",
+      "left": "1070px"
+    }
+  },
+  "762682cc-02e5-4374-9b2d-cbebfea35d8c": {
+    "$contentActions": [
+      {
+        "action": {
+          "$description": "",
+          "type": "SendMessage",
+          "settings": {
+            "type": "text/plain",
+            "content": "Perfeito, digite, por favor, a <b>sua senha de login.</b>\n\nℹ️ <i>A mesma usada para fazer login no site/app.</i>",
+            "metadata": {}
+          }
+        }
+      },
+      {
+        "input": {
+          "bypass": false,
+          "variable": "senha",
+          "expiration": "0:15"
+        }
+      }
+    ],
+    "$conditionOutputs": [
+      {
+        "stateId": "1a571e3c-7a87-4e54-b82d-c2275a448f16",
+        "typeOfStateId": "state",
+        "conditions": [
+          {
+            "source": "input",
+            "comparison": "exists",
+            "values": []
+          }
+        ]
+      }
+    ],
+    "$enteringCustomActions": [],
+    "$leavingCustomActions": [
+      {
+        "$description": "",
+        "$inputSchema": {
+          "type": "object",
+          "properties": {},
+          "required": []
+        },
+        "type": "MergeContact",
+        "settings": {
+          "extras": {
+            "senha": "{{senha}}"
+          }
+        },
+        "conditions": []
+      }
+    ],
+    "$defaultOutput": {
+      "stateId": "fallback"
+    },
+    "$localCustomActions": [],
+    "$title": "Pede senha login",
+    "$position": {
+      "top": "1582px",
+      "left": "1312px"
+    }
+  },
+  "98e79a41-12ba-4bd2-b800-5351ae92b797": {
+    "$contentActions": [
+      {
+        "action": {
+          "type": "SendMessage",
+          "settings": {
+            "type": "text/plain",
+            "content": "Por favor, <b>tente novamente e confira se o DDD foi informado corretamente</b> e se não houve nenhum erro de digitação.\n\n<b>Exemplo: 11 98543261.</b>",
+            "metadata": {}
+          }
+        }
+      },
+      {
+        "input": {
+          "bypass": false,
+          "variable": "telefoneNotFormatted",
+          "expiration": "0:15"
+        }
+      }
+    ],
+    "$conditionOutputs": [
+      {
+        "stateId": "3022c9cf-f531-4e4f-aa16-9a328ae2b7e9",
+        "typeOfStateId": "state",
+        "conditions": [
+          {
+            "source": "context",
+            "comparison": "equals",
+            "values": [
+              "false"
+            ],
+            "variable": "phoneNumber"
+          },
+          {
+            "values": [],
+            "source": "input",
+            "comparison": "exists"
+          }
+        ]
+      },
+      {
+        "stateId": "2f201809-a23c-443c-9767-4a58cfbfdd69",
+        "typeOfStateId": "state",
+        "conditions": [
+          {
+            "source": "input",
+            "comparison": "exists",
+            "values": []
+          }
+        ]
+      }
+    ],
+    "$enteringCustomActions": [
+      {
+        "type": "TrackEvent",
+        "settings": {
+          "extras": {
+            "identificador": "{{contact.identity}}",
+            "origem": "{{origem}}",
+            "canal": "{{channel}}"
+          },
+          "category": "Pedido numero telefone segunda vez exibicao",
+          "action": "Exibicao"
+        },
+        "conditions": []
+      }
+    ],
+    "$leavingCustomActions": [
+      {
+        "type": "ExecuteScript",
+        "settings": {
+          "function": "run",
+          "source": "function run(number) {\n  try {\n    if (!number) return false;\n\n    if (number.trim().startsWith('+') && !number.trim().startsWith('+55')) {\n        return \"+\" + number.toString().replace(/[^\\d]+/g, \"\");\n    }\n\n    let numberFormatting = number.toString().replace(/[^\\d]+/g, \"\");\n    if (numberFormatting.length >= 10) {\n      if (numberFormatting.length >= 12 && numberFormatting.startsWith('55')) {\n        numberFormatting = numberFormatting.slice(2);\n      }\n      if (numberFormatting.startsWith('0')) {\n        numberFormatting = numberFormatting.slice(1);\n      }\n      //número completo\n      if (numberFormatting.length >= 12) {\n        return false\n      } else {\n        numberFormatting = \"55\" + numberFormatting;\n        return \"+\" + numberFormatting;\n      }\n    } else {\n      return false\n    }\n  } catch(e) {\n    return false;\n  }\n}",
+          "inputVariables": [
+            "telefoneNotFormatted"
+          ],
+          "outputVariable": "phoneNumber",
+          "LocalTimeZoneEnabled": false
+        },
+        "conditions": []
+      },
+      {
+        "type": "TrackEvent",
+        "settings": {
+          "extras": {
+            "identificador": "{{contact.identity}}",
+            "origem": "{{origem}}",
+            "canal": "{{channel}}"
+          },
+          "category": "Numero telefone input",
+          "action": "{{input.content}}"
+        },
+        "conditions": []
+      },
+      {
+        "type": "TrackEvent",
+        "settings": {
+          "extras": {
+            "identificador": "{{contact.identity}}",
+            "origem": "{{origem}}",
+            "canal": "{{channel}}"
+          },
+          "category": "Input telefone retorno",
+          "action": "Invalido"
+        },
+        "conditions": [
+          {
+            "source": "context",
+            "variable": "phoneNumber",
+            "comparison": "equals",
+            "values": [
+              "false"
+            ]
+          }
+        ]
+      },
+      {
+        "type": "TrackEvent",
+        "settings": {
+          "extras": {
+            "identificador": "{{contact.identity}}",
+            "origem": "{{origem}}",
+            "canal": "{{channel}}"
+          },
+          "category": "Input telefone retorno",
+          "action": "Valido"
+        },
+        "conditions": [
+          {
+            "source": "context",
+            "variable": "phoneNumber",
+            "comparison": "notEquals",
+            "values": [
+              "false"
+            ]
+          }
+        ]
+      }
+    ],
+    "$defaultOutput": {
+      "stateId": "fallback"
+    },
+    "$title": "Pergunta: telefone [Segunda vez]",
+    "$position": {
+      "top": "741px",
+      "left": "2177px"
+    },
+    "invalidOutputs": true
+  },
+  "2f201809-a23c-443c-9767-4a58cfbfdd69": {
+    "$contentActions": [
+      {
+        "input": {
+          "bypass": true
+        }
+      }
+    ],
+    "$conditionOutputs": [],
+    "$enteringCustomActions": [],
+    "$leavingCustomActions": [],
+    "$defaultOutput": {
+      "stateId": "d6315f94-f299-455d-9eca-aca446d15277",
+      "typeOfStateId": "state"
+    },
+    "$localCustomActions": [],
+    "$title": "[GO TO] Salva contato",
+    "$position": {
+      "top": "706px",
+      "left": "2457px"
+    }
+  },
+  "cfcccda0-b52f-49ef-a001-78ac559b9db1": {
+    "$contentActions": [
+      {
+        "action": {
+          "$description": "",
+          "type": "SendMessage",
+          "settings": {
+            "type": "text/plain",
+            "content": "⚠️ Não consegui localizar seu cadastro agora.\n\nVocê pode:\n👉 Tentar novamente em alguns instantes\n👉 Acessar pelo site/app da Central MBRF\n🔗 https://www.centralmbrf.com.br/",
+            "metadata": {}
+          }
+        }
+      },
+      {
+        "action": {
+          "$description": "",
+          "type": "SendMessage",
+          "settings": {
+            "type": "text/plain",
+            "content": "A Central MBRF agradece o seu contato!",
+            "metadata": {}
+          }
+        }
+      },
+      {
+        "input": {
+          "bypass": true
+        }
+      }
+    ],
+    "$conditionOutputs": [],
+    "$enteringCustomActions": [
+      {
+        "$description": "",
+        "$inputSchema": {
+          "type": "object",
+          "properties": {},
+          "required": []
+        },
+        "type": "SetVariable",
+        "settings": {
+          "variable": "contadorFalha"
+        },
+        "conditions": []
+      }
+    ],
+    "$leavingCustomActions": [],
+    "$defaultOutput": {
+      "stateId": "onboarding",
+      "typeOfStateId": "state"
+    },
+    "$localCustomActions": [],
+    "$title": "[MSG] Cadastro não encontrado",
+    "$position": {
+      "top": "1812px",
+      "left": "206px"
+    }
+  },
+  "b03402d8-ff2a-483f-9635-1ad56dec61ef": {
+    "$contentActions": [
+      {
+        "input": {
+          "bypass": true
+        }
+      }
+    ],
+    "$conditionOutputs": [],
+    "$enteringCustomActions": [],
+    "$leavingCustomActions": [
+      {
+        "$description": "",
+        "$inputSchema": {
+          "type": "object",
+          "properties": {},
+          "required": []
+        },
+        "type": "Redirect",
+        "settings": {
+          "context": {
+            "type": "text/plain",
+            "value": "@redirect"
+          },
+          "address": "{{resource.redirect@recompra}}"
+        },
+        "conditions": []
+      }
+    ],
+    "$defaultOutput": {
+      "stateId": "onboarding",
+      "typeOfStateId": "state"
+    },
+    "$localCustomActions": [],
+    "$title": "[REDIRECT] Recompra",
+    "$position": {
+      "top": "3093px",
+      "left": "1072px"
+    }
+  },
+  "e03d34b8-76a2-4088-b373-eb05a4422dbc": {
+    "$contentActions": [
+      {
+        "input": {
+          "bypass": true
+        }
+      }
+    ],
+    "$conditionOutputs": [],
+    "$enteringCustomActions": [],
+    "$leavingCustomActions": [],
+    "$defaultOutput": {
+      "stateId": "d975b7a6-6c78-4da8-a9a4-d799fc52baae",
+      "typeOfStateId": "state"
+    },
+    "$localCustomActions": [],
+    "$title": "GO TO - Ofertas e oportunidades",
+    "$position": {
+      "top": "542px",
+      "left": "1026px"
+    }
+  },
+  "subflow:51bd1684-1925-4431-9081-f0fe8c1b9023": {
+    "$contentActions": [
+      {
+        "input": {
+          "bypass": false
+        }
+      }
+    ],
+    "$conditionOutputs": [
+      {
+        "stateId": "d975b7a6-6c78-4da8-a9a4-d799fc52baae",
+        "typeOfStateId": "state",
+        "conditions": [
+          {
+            "source": "context",
+            "comparison": "equals",
+            "values": [
+              "🔥 Ofertas e Oportunidades",
+              "🔥 Ofertas"
+            ],
+            "variable": "itemEscolhidoObjeto@title"
+          }
+        ]
+      },
+      {
+        "typeOfStateId": "state",
+        "conditions": [
+          {
+            "source": "context",
+            "comparison": "equals",
+            "values": [
+              "🍗 Comprar produtos"
+            ],
+            "variable": "itemEscolhidoObjeto@title"
+          }
+        ],
+        "stateId": "8a6de90d-ed09-4835-84be-17d8ae9aba8f"
+      },
+      {
+        "typeOfStateId": "state",
+        "conditions": [
+          {
+            "source": "context",
+            "comparison": "contains",
+            "values": [
+              "fertas"
+            ],
+            "variable": "itemEscolhidoObjeto@title"
+          }
+        ],
+        "stateId": "d975b7a6-6c78-4da8-a9a4-d799fc52baae"
+      },
+      {
+        "typeOfStateId": "state",
+        "conditions": [
+          {
+            "source": "context",
+            "comparison": "contains",
+            "values": [
+              "Comprar produtos"
+            ],
+            "variable": "itemEscolhidoObjeto@title"
+          }
+        ],
+        "stateId": "8a6de90d-ed09-4835-84be-17d8ae9aba8f"
+      },
+      {
+        "typeOfStateId": "state",
+        "conditions": [
+          {
+            "source": "context",
+            "comparison": "equals",
+            "values": [
+              "true"
+            ],
+            "variable": "itemEscolhidoObjeto@dados"
+          }
+        ],
+        "stateId": "f838956c-841e-470f-9d55-29a3f055750e"
+      }
+    ],
+    "$enteringCustomActions": [
+      {
+        "$description": "",
+        "$inputSchema": {
+          "type": "object",
+          "properties": {},
+          "required": []
+        },
+        "type": "TrackEvent",
+        "settings": {
+          "category": "subflow:51bd1684-1925-4431-9081-f0fe8c1b9023",
+          "action": "Entering subflow - subflow:51bd1684-1925-4431-9081-f0fe8c1b9023",
+          "subflowDefaultAction": true
+        }
+      },
+      {
+        "$description": "",
+        "$inputSchema": {
+          "type": "object",
+          "properties": {},
+          "required": []
+        },
+        "type": "MergeContact",
+        "settings": {
+          "extras": {
+            "subflowId": "subflow:51bd1684-1925-4431-9081-f0fe8c1b9023"
+          },
+          "subflowDefaultAction": true
+        }
+      },
+      {
+        "type": "TrackEvent",
+        "settings": {
+          "category": "subflow:31a36d6a-d869-4078-bc06-3298d5582bc6",
+          "action": "Entering subflow - subflow:31a36d6a-d869-4078-bc06-3298d5582bc6",
+          "subflowDefaultAction": true
+        }
+      },
+      {
+        "type": "MergeContact",
+        "settings": {
+          "extras": {
+            "subflowId": "subflow:31a36d6a-d869-4078-bc06-3298d5582bc6"
+          },
+          "subflowDefaultAction": true
+        }
+      },
+      {
+        "type": "TrackEvent",
+        "settings": {
+          "category": "subflow:4293aeac-aff6-4876-a88a-4be9c93e74c3",
+          "action": "Entering subflow - subflow:4293aeac-aff6-4876-a88a-4be9c93e74c3",
+          "subflowDefaultAction": true
+        }
+      },
+      {
+        "type": "MergeContact",
+        "settings": {
+          "extras": {
+            "subflowId": "subflow:4293aeac-aff6-4876-a88a-4be9c93e74c3"
+          },
+          "subflowDefaultAction": true
+        }
+      },
+      {
+        "type": "ExecuteScript",
+        "settings": {
+          "function": "run",
+          "source": "function run() {\n\ttry {\n\t\treturn JSON.stringify({\n\t\t\tbody: \"Oi, {{contact.name}}! 😊 Tudo pronto.\\n\\nIdentificamos *ofertas exclusivas para o seu negócio hoje!* O que vamos fazer agora?\",\n\t\t\tfooter: \"Basta clicar em 'selecionar assunto' para escolher uma opção\",\n\t\t\tbutton: \"Selecionar assunto\",\n\t\t\tcategories: [\n\t\t\t\t{\n\t\t\t\t\ttitle: \"Assuntos\",\n\t\t\t\t\trows: [\n\t\t\t\t\t\t{\n\t\t\t\t\t\t\ttitle: \"🔥 Ofertas\",\n\t\t\t\t\t\t\tdescription: \"Confira todas as ofertas e oportunidades de compra para o seu negócio\",\n\t\t\t\t\t\t\tdados: true\n\t\t\t\t\t\t},\n\t\t\t\t\t\t{\n\t\t\t\t\t\t\ttitle: \"🍗 Comprar produtos\",\n\t\t\t\t\t\t\tdescription: \"Comprar produtos para o meu negócio\",\n\t\t\t\t\t\t\tdados: true\n\t\t\t\t\t\t},\n\t\t\t\t\t\t{\n\t\t\t\t\t\t\ttitle: \"🛒 Meus Pedidos\",\n\t\t\t\t\t\t\tdescription: \"Acompanhe seus pedidos de forma rápida e prática.\",\n\t\t\t\t\t\t\tredirect: \"{{resource.redirect@meusPedidos}}\",\n\t\t\t\t\t\t\tdados: true\n\t\t\t\t\t\t},\n\t\t\t\t\t\t{\n\t\t\t\t\t\t\ttitle: \"💰 Financeiro\",\n\t\t\t\t\t\t\tdescription: \"Fale sobre boletos, vencimentos e outras questões financeiras.\",\n\t\t\t\t\t\t\tredirect: \"{{resource.redirect@financeiro}}\",\n\t\t\t\t\t\t\tdados: true\n\t\t\t\t\t\t},\n\t\t\t\t\t\t{\n\t\t\t\t\t\t\ttitle: \"💬Ajuda e Suporte\",\n\t\t\t\t\t\t\tdescription: \"Dúvidas e abertura de chamados\",\n\t\t\t\t\t\t\tredirect: \"{{resource.redirect@ajudaSuporte}}\",\n\t\t\t\t\t\t\tdados: true\n\t\t\t\t\t\t},\n\t\t\t\t\t\t{\n\t\t\t\t\t\t\ttitle: \"👤Meu Cadastro\",\n\t\t\t\t\t\t\tdescription: \"Atualize dados cadastrais de forma simples e rápida.\",\n\t\t\t\t\t\t\tredirect: \"{{resource.redirect@meuCadastro}}\",\n\t\t\t\t\t\t\tdados: true\n\t\t\t\t\t\t}\n\t\t\t\t\t]\n\t\t\t\t}\n\t\t\t]\n\t\t});\n\n\t} catch (e) {\n\t\treturn \"{}\";\n\t}\n}",
+          "inputVariables": [],
+          "outputVariable": "itensMenuDinamico",
+          "LocalTimeZoneEnabled": false
+        },
+        "conditions": []
+      },
+      {
+        "type": "SetVariable",
+        "settings": {
+          "variable": "stateSubFluxo",
+          "value": "{{state.id}}"
+        },
+        "conditions": []
+      },
+      {
+        "type": "SetVariable",
+        "settings": {
+          "variable": "tituloSubFluxo",
+          "value": "{{state.name}}"
+        },
+        "conditions": []
+      },
+      {
+        "type": "TrackEvent",
+        "settings": {
+          "extras": {
+            "identificador": "{{contact.identity}}",
+            "origem": "{{origem}}",
+            "canal": "{{channel}}"
+          },
+          "category": "Menu navegacao exibicao",
+          "action": "Exibicao"
+        },
+        "conditions": []
+      }
+    ],
+    "$leavingCustomActions": [
+      {
+        "type": "SetVariable",
+        "settings": {
+          "variable": "stateSubFluxo",
+          "value": "{{state.id}}",
+          "expiration": 5
+        },
+        "conditions": []
+      }
+    ],
+    "$defaultOutput": {
+      "stateId": "fallback"
+    },
+    "$localCustomActions": [],
+    "shortNameOfSubflow": "menuinicialssmartsaele3",
+    "$imageUri": "",
+    "$title": "Menu inicial - S/ Smart Saele",
+    "$position": {
+      "top": "3236px",
+      "left": "545px"
+    }
+  },
+  "8a6de90d-ed09-4835-84be-17d8ae9aba8f": {
+    "$contentActions": [
+      {
+        "input": {
+          "bypass": true
+        }
+      }
+    ],
+    "$conditionOutputs": [],
+    "$enteringCustomActions": [],
+    "$leavingCustomActions": [
+      {
+        "$description": "",
+        "$inputSchema": {
+          "type": "object",
+          "properties": {},
+          "required": []
+        },
+        "type": "Redirect",
+        "settings": {
+          "context": {
+            "type": "text/plain",
+            "value": "@redirect"
+          },
+          "address": "{{resource.redirect@comprarProduto}}"
+        },
+        "conditions": []
+      }
+    ],
+    "$defaultOutput": {
+      "stateId": "onboarding",
+      "typeOfStateId": "state"
+    },
+    "$localCustomActions": [],
+    "$title": "[REDIRECT] Comprar produto",
+    "$position": {
+      "top": "3230px",
+      "left": "1073px"
+    }
+  },
+  "9e94a810-b692-4333-b259-5b3d6ad0df38": {
+    "$contentActions": [
+      {
+        "input": {
+          "bypass": true
+        }
+      }
+    ],
+    "$conditionOutputs": [
+      {
+        "stateId": "subflow:31a36d6a-d869-4078-bc06-3298d5582bc6",
+        "typeOfStateId": "state",
+        "conditions": [
+          {
+            "source": "context",
+            "comparison": "exists",
+            "values": [],
+            "variable": "contact.extras.smartsalesOrder"
+          }
+        ]
+      },
+      {
+        "stateId": "subflow:51bd1684-1925-4431-9081-f0fe8c1b9023",
+        "typeOfStateId": "state",
+        "conditions": [
+          {
+            "source": "input",
+            "comparison": "exists",
+            "values": []
+          }
+        ]
+      }
+    ],
+    "$enteringCustomActions": [],
+    "$leavingCustomActions": [],
+    "$defaultOutput": {
+      "stateId": "fallback"
+    },
+    "$localCustomActions": [],
+    "$title": "Valida tipo menu",
+    "$position": {
+      "top": "3182px",
+      "left": "254px"
+    }
+  },
+  "1a571e3c-7a87-4e54-b82d-c2275a448f16": {
+    "$contentActions": [
+      {
+        "input": {
+          "bypass": true
+        }
+      }
+    ],
+    "$conditionOutputs": [
+      {
+        "stateId": "bf6e932b-f0a5-40d0-a90a-3932063a1271",
+        "typeOfStateId": "state",
+        "conditions": [
+          {
+            "source": "context",
+            "comparison": "greaterThanOrEquals",
+            "values": [
+              "2"
+            ],
+            "variable": "contadorSenhaIncorreta"
+          }
+        ]
+      },
+      {
+        "stateId": "ca616e6f-2b8a-44df-92fe-ded0042a65f8",
+        "typeOfStateId": "state",
+        "conditions": [
+          {
+            "source": "context",
+            "comparison": "notEquals",
+            "values": [
+              "false"
+            ],
+            "variable": "compatibilityCnpj"
+          }
+        ]
+      }
+    ],
+    "$enteringCustomActions": [
+      {
+        "$description": "",
+        "$inputSchema": {
+          "type": "object",
+          "properties": {},
+          "required": []
+        },
+        "type": "ProcessHttp",
+        "settings": {
+          "headers": {},
+          "method": "POST",
+          "body": "{\n  \"username\": \"{{contact.email}}\",\n  \"password\": \"{{contact.extras.senha}}\"\n}",
+          "uri": "{{resource.urlBase}}/vforcesite/services/apexrest/ecommerce/login",
+          "responseStatusVariable": "statusToken",
+          "responseBodyVariable": "retornoToken"
+        },
+        "conditions": []
+      },
+      {
+        "$description": "",
+        "$inputSchema": {
+          "type": "object",
+          "properties": {},
+          "required": []
+        },
+        "type": "ProcessHttp",
+        "settings": {
+          "headers": {
+            "Authorization": "Bearer {{retornoToken@token}}"
+          },
+          "method": "GET",
+          "uri": "{{resource.urlBase}}/services/data/v62.0/query/?q=SELECT+Id%2C+Username%2C+AccountId+FROM+User+WHERE+UserName+%3D+%27{{contact.email}}%27",
+          "responseStatusVariable": "statusAccountId",
+          "responseBodyVariable": "retorrnoAccountId"
+        },
+        "conditions": [
+          {
+            "source": "context",
+            "comparison": "exists",
+            "values": [],
+            "variable": "retornoToken@token"
+          }
+        ]
+      }
+    ],
+    "$leavingCustomActions": [
+      {
+        "$description": "",
+        "$inputSchema": {
+          "type": "object",
+          "properties": {},
+          "required": []
+        },
+        "type": "ExecuteScript",
+        "settings": {
+          "function": "run",
+          "source": "function run(input) {\n    try {\n        const data = typeof input === \"string\" ? JSON.parse(input) : input;\n\n        if (\n            !data.records ||\n            data.records.length === 0\n        ) {\n            return null;\n        }\n\n        return data.records[0].AccountId;\n    } catch (e) {\n        return null;\n    }\n}",
+          "inputVariables": [
+            "retorrnoAccountId"
+          ],
+          "outputVariable": "accountId",
+          "LocalTimeZoneEnabled": false
+        },
+        "conditions": [
+          {
+            "source": "context",
+            "variable": "statusAccountId",
+            "comparison": "equals",
+            "values": [
+              "200"
+            ]
+          }
+        ]
+      },
+      {
+        "$description": "Incrementa o contador de falhas de login quando o CNPJ nao confere",
+        "type": "ExecuteScript",
+        "settings": {
+          "function": "run",
+          "source": "function run(contador) {\n  try {\n    let atual = parseInt(contador, 10);\n    if (isNaN(atual)) {\n      atual = 0;\n    }\n    return String(atual + 1);\n  } catch (e) {\n    return \"1\";\n  }\n}",
+          "inputVariables": [
+            "contadorSenhaIncorreta"
+          ],
+          "outputVariable": "contadorSenhaIncorreta",
+          "LocalTimeZoneEnabled": false
+        },
+        "conditions": [
+          {
+            "source": "context",
+            "variable": "accountId",
+            "comparison": "notExists",
+            "values": []
+          }
+        ]
+      },
+      {
+        "$description": "",
+        "$inputSchema": {
+          "type": "object",
+          "properties": {},
+          "required": []
+        },
+        "type": "MergeContact",
+        "settings": {
+          "extras": {
+            "accountId": "{{accountId}}"
+          }
+        },
+        "conditions": [
+          {
+            "source": "context",
+            "comparison": "exists",
+            "values": [],
+            "variable": "accountId"
+          }
+        ]
+      }
+    ],
+    "$defaultOutput": {
+      "stateId": "fallback"
+    },
+    "$localCustomActions": [],
+    "$title": "[API] Login usuario",
+    "$position": {
+      "top": "1745px",
+      "left": "1312px"
+    }
+  },
+  "ca616e6f-2b8a-44df-92fe-ded0042a65f8": {
+    "$contentActions": [
+      {
+        "input": {
+          "bypass": true
+        }
+      }
+    ],
+    "$conditionOutputs": [
+      {
+        "stateId": "656989df-c8e0-4697-9ba7-16d83d8efa6c",
+        "typeOfStateId": "state",
+        "conditions": [
+          {
+            "source": "input",
+            "comparison": "exists",
+            "values": []
+          }
+        ]
+      }
+    ],
+    "$enteringCustomActions": [],
+    "$leavingCustomActions": [],
+    "$defaultOutput": {
+      "stateId": "fallback"
+    },
+    "$localCustomActions": [],
+    "$title": "sucesso",
+    "$position": {
+      "top": "2009px",
+      "left": "1148px"
+    }
+  },
+  "bf6e932b-f0a5-40d0-a90a-3932063a1271": {
+    "$contentActions": [
+      {
+        "action": {
+          "$description": "",
+          "type": "SendMessage",
+          "settings": {
+            "type": "application/vnd.lime.select+json",
+            "content": {
+              "text": "Ops! Não conseguimos autenticar o seu cadastro nessa segunda tentativa. 🤔\n\nPara sua segurança, vale a pena dar uma olhadinha no seu cadastro em nosso site ou aplicativo para confirmar se as informações estão atualizadas:\n\n🌐 Link: https://www.figma.com/exit?url=https%3A%2F%2Fcentralmbrf.com.br%2F\n\nComo prefere continuar?",
+              "scope": "immediate",
+              "options": [
+                {
+                  "text": "Falar com a Sophia",
+                  "previewText": "Falar com a Sophia",
+                  "value": null,
+                  "index": 0,
+                  "type": null
+                },
+                {
+                  "text": "Encerrar conversa",
+                  "previewText": "Encerrar conversa",
+                  "value": null,
+                  "index": 1,
+                  "type": null
+                }
+              ],
+              "quikReply": false
+            },
+            "metadata": {}
+          }
+        }
+      },
+      {
+        "input": {
+          "bypass": false
+        }
+      }
+    ],
+    "$conditionOutputs": [
+      {
+        "stateId": "54a18495-c098-47fe-940c-35d38c25150b",
+        "typeOfStateId": "state",
+        "conditions": [
+          {
+            "source": "context",
+            "comparison": "equals",
+            "values": [
+              "Falar com a Sophia"
+            ],
+            "variable": "intentAction"
+          }
+        ]
+      },
+      {
+        "stateId": "27495c40-f4d9-4962-856d-6a530ef1986b",
+        "typeOfStateId": "state",
+        "conditions": [
+          {
+            "source": "context",
+            "comparison": "equals",
+            "values": [
+              "Encerrar conversa"
+            ],
+            "variable": "intentAction"
+          }
+        ]
+      }
+    ],
+    "$enteringCustomActions": [
+      {
+        "type": "SetVariable",
+        "settings": {
+          "variable": "intentAction"
+        },
+        "conditions": []
+      }
+    ],
+    "$leavingCustomActions": [
+      {
+        "type": "ExecuteScript",
+        "settings": {
+          "function": "run",
+          "source": "function run(input) {\n  try {\n    let opcoesMenu = {\n      \"1\": \"Falar com a Sophia\",\n      \"2\": \"Encerrar conversa\",\n    };\n\n    let menuRegex = {\n      \"1\": /\\b(?:1|sophia|sofia|falar|atendente|humano|suporte|sim|claro|quero)\\b/i,\n      \"2\": /\\b(?:2|n[aã]o|negativo|desistir|prefiro\\s+n[aã]o|encerrar(?:\\s+a?\\s*conversa)?|parar|sair|cancelar|fim|tchau)\\b/i,\n    };\n\n    input = input.trim();\n\n    for (let prop in menuRegex) {\n      if (menuRegex[prop].test(input)) {\n        return opcoesMenu[prop];\n      }\n    }\n\n    return \"Input inesperado\";\n  } catch (error) {\n    return \"Input inesperado\";\n  }\n}",
+          "inputVariables": [
+            "input.content"
+          ],
+          "outputVariable": "intentAction",
+          "LocalTimeZoneEnabled": false
+        },
+        "conditions": []
+      }
+    ],
+    "$defaultOutput": {
+      "stateId": "fallback"
+    },
+    "$localCustomActions": [],
+    "$title": "Senha incorreta 2x",
+    "$position": {
+      "top": "2008px",
+      "left": "1462px"
+    }
+  },
+  "54a18495-c098-47fe-940c-35d38c25150b": {
+    "$contentActions": [
+      {
+        "input": {
+          "bypass": true
+        }
+      }
+    ],
+    "$conditionOutputs": [],
+    "$enteringCustomActions": [],
+    "$leavingCustomActions": [
+      {
+        "$description": "",
+        "$inputSchema": {
+          "type": "object",
+          "properties": {},
+          "required": []
+        },
+        "type": "Redirect",
+        "settings": {
+          "context": {
+            "type": "text/plain",
+            "value": "@redirect"
+          },
+          "address": "{{resource.redirect@falarComSophia}}"
+        },
+        "conditions": []
+      }
+    ],
+    "$defaultOutput": {
+      "stateId": "onboarding",
+      "typeOfStateId": "state"
+    },
+    "$localCustomActions": [],
+    "$title": "[Redirect] Sophia",
+    "$position": {
+      "top": "2212px",
+      "left": "1371px"
+    }
+  },
+  "27495c40-f4d9-4962-856d-6a530ef1986b": {
+    "$contentActions": [
+      {
+        "action": {
+          "$description": "",
+          "type": "SendMessage",
+          "settings": {
+            "type": "text/plain",
+            "content": "Fico feliz em ter te ajudado!\n\nSempre que precisar, pode contar comigo! 🤝 ",
+            "metadata": {}
+          }
+        }
+      },
+      {
+        "input": {
+          "bypass": true
+        }
+      }
+    ],
+    "$conditionOutputs": [],
+    "$enteringCustomActions": [],
+    "$leavingCustomActions": [],
+    "$defaultOutput": {
+      "stateId": "3022c9cf-f531-4e4f-aa16-9a328ae2b7e9",
+      "typeOfStateId": "state"
+    },
+    "$localCustomActions": [],
+    "$title": "Finaliza",
+    "$position": {
+      "top": "2211px",
+      "left": "1563px"
+    }
+  },
+  "24780462-8f92-4004-9d67-4f1d060d7e3f": {
+    "$contentActions": [
+      {
+        "input": {
+          "bypass": true
+        }
+      }
+    ],
+    "$conditionOutputs": [],
+    "$enteringCustomActions": [],
+    "$leavingCustomActions": [
+      {
+        "$description": "",
+        "$inputSchema": {
+          "type": "object",
+          "properties": {},
+          "required": []
+        },
+        "type": "Redirect",
+        "settings": {
+          "context": {
+            "type": "text/plain",
+            "value": "@redirect"
+          },
+          "address": "{{resource.redirect@comercioExterior}}"
+        },
+        "conditions": []
+      }
+    ],
+    "$defaultOutput": {
+      "stateId": "onboarding",
+      "typeOfStateId": "state"
+    },
+    "$localCustomActions": [],
+    "$title": "[REDIRECT] Comercio Externo",
+    "$position": {
+      "top": "266px",
+      "left": "1027px"
+    }
+  },
+  "9338e2ca-9fb4-4bc8-84fd-cb7f20448912": {
+    "$contentActions": [
+      {
+        "input": {
+          "bypass": true
+        }
+      }
+    ],
+    "$conditionOutputs": [],
+    "$enteringCustomActions": [],
+    "$leavingCustomActions": [
+      {
+        "$description": "",
+        "$inputSchema": {
+          "type": "object",
+          "properties": {},
+          "required": []
+        },
+        "type": "Redirect",
+        "settings": {
+          "context": {
+            "type": "text/plain",
+            "value": "@redirect"
+          },
+          "address": "{{resource.redirect@vagasMbrf}}"
+        },
+        "conditions": []
+      }
+    ],
+    "$defaultOutput": {
+      "stateId": "onboarding",
+      "typeOfStateId": "state"
+    },
+    "$localCustomActions": [],
+    "$title": "[REDIRECT] Vagas MBRF",
+    "$position": {
+      "top": "405px",
+      "left": "1026px"
+    }
+  },
+  "87f297cf-0c07-4c5c-8f1f-d9a521e8312d": {
+    "$contentActions": [
+      {
+        "input": {
+          "bypass": true
+        }
+      }
+    ],
+    "$conditionOutputs": [],
+    "$enteringCustomActions": [],
+    "$leavingCustomActions": [],
+    "$defaultOutput": {
+      "stateId": "dcfb2409-db47-4450-acf0-10f29e30a839",
+      "typeOfStateId": "state"
+    },
+    "$localCustomActions": [],
+    "$title": "[GO TO] [MSG] E-mail inválido",
+    "$position": {
+      "top": "1431px",
+      "left": "1081px"
+    }
+  },
+  "9d883e05-4da2-450a-969f-4116c0b0b837": {
+    "$contentActions": [
+      {
+        "input": {
+          "bypass": true
+        }
+      }
+    ],
+    "$conditionOutputs": [
+      {
+        "stateId": "91e9dc4e-a7ea-4e7f-849b-7486936fd81c",
+        "typeOfStateId": "state",
+        "conditions": [
+          {
+            "source": "context",
+            "comparison": "exists",
+            "values": [],
+            "variable": "contact.extras.userAuth"
+          },
+          {
+            "source": "context",
+            "variable": "userAuth",
+            "comparison": "equals",
+            "values": [
+              "true"
+            ]
+          },
+          {
+            "source": "context",
+            "variable": "contact.email",
+            "comparison": "exists",
+            "values": []
+          }
+        ]
+      },
+      {
+        "stateId": "af4efc18-0978-457a-a617-f957566dacfa",
+        "typeOfStateId": "state",
+        "conditions": [
+          {
+            "source": "input",
+            "comparison": "exists",
+            "values": []
+          }
+        ]
+      }
+    ],
+    "$enteringCustomActions": [],
+    "$leavingCustomActions": [],
+    "$defaultOutput": {
+      "stateId": "fallback"
+    },
+    "$localCustomActions": [],
+    "$title": "Valida se já fez login",
+    "$position": {
+      "top": "942px",
+      "left": "1276px"
+    }
+  },
+  "91e9dc4e-a7ea-4e7f-849b-7486936fd81c": {
+    "$contentActions": [
+      {
+        "action": {
+          "$description": "",
+          "type": "SendMessage",
+          "settings": {
+            "type": "application/vnd.lime.select+json",
+            "content": {
+              "text": "No seu ultimo acesso utilizou o e-mail:\n\n{{contact.email}}\n\nDeseja continuar com esse e-mail?",
+              "scope": "immediate",
+              "options": [
+                {
+                  "text": "Sim",
+                  "previewText": "Sim",
+                  "value": null,
+                  "index": 0,
+                  "type": null
+                },
+                {
+                  "text": "Não",
+                  "previewText": "Não",
+                  "value": null,
+                  "index": 1,
+                  "type": null
+                }
+              ],
+              "quikReply": false
+            },
+            "metadata": {}
+          }
+        }
+      },
+      {
+        "input": {
+          "bypass": false
+        }
+      }
+    ],
+    "$conditionOutputs": [
+      {
+        "stateId": "8efb3977-fa5c-4c26-8962-8c60fb1914b9",
+        "typeOfStateId": "state",
+        "conditions": [
+          {
+            "source": "context",
+            "comparison": "equals",
+            "values": [
+              "Sim"
+            ],
+            "variable": "intentAction"
+          }
+        ]
+      },
+      {
+        "stateId": "af4efc18-0978-457a-a617-f957566dacfa",
+        "typeOfStateId": "state",
+        "conditions": [
+          {
+            "source": "context",
+            "comparison": "equals",
+            "values": [
+              "Não"
+            ],
+            "variable": "intentAction"
+          }
+        ]
+      }
+    ],
+    "$enteringCustomActions": [
+      {
+        "type": "SetVariable",
+        "settings": {
+          "variable": "intentAction"
+        },
+        "conditions": []
+      },
+      {
+        "type": "TrackEvent",
+        "settings": {
+          "extras": {
+            "identificador": "{{contact.identity}}",
+            "origem": "{{origem}}",
+            "canal": "{{channel}}"
+          },
+          "category": "Cliente perfil exibicao",
+          "action": "Exibicao"
+        },
+        "conditions": []
+      },
+      {
+        "type": "MergeContact",
+        "settings": {
+          "extras": {
+            "aceitouLGPD": "Aceito"
+          }
+        },
+        "conditions": []
+      }
+    ],
+    "$leavingCustomActions": [
+      {
+        "type": "ExecuteScript",
+        "settings": {
+          "function": "run",
+          "source": "function run(input) {\n  try {\n    let opcoesMenu = {\n      \"1\": \"Sim\",\n      \"2\": \"Não\",\n    };\n\n    let menuRegex = {\n      \"1\": /\\b(?:sim|claro|confirmo|positivo|ok|okay|pode\\s+ser|aceito|continuar)\\b/i,\n\n      \"2\": /\\b(?:n[aã]o|negativo|desistir|prefiro\\s+n[aã]o)\\b/i,\n    };\n\n    input = input.trim();\n\n    for (let prop in menuRegex) {\n      if (menuRegex[prop].test(input)) {\n        return opcoesMenu[prop];\n      }\n    }\n\n    return \"Input inesperado\";\n  } catch (error) {\n    return \"Input inesperado\";\n  }\n}",
+          "inputVariables": [
+            "input.content"
+          ],
+          "outputVariable": "intentAction",
+          "LocalTimeZoneEnabled": false
+        },
+        "conditions": []
+      },
+      {
+        "type": "TrackEvent",
+        "settings": {
+          "extras": {
+            "identificador": "{{contact.identity}}",
+            "origem": "{{origem}}",
+            "canal": "{{channel}}"
+          },
+          "category": "Cliente perfil menu selecao",
+          "action": "{{intentAction}}"
+        },
+        "conditions": [
+          {
+            "source": "input",
+            "comparison": "exists",
+            "values": []
+          }
+        ]
+      },
+      {
+        "type": "TrackEvent",
+        "settings": {
+          "extras": {
+            "identificador": "{{contact.identity}}",
+            "origem": "{{origem}}",
+            "canal": "{{channel}}"
+          },
+          "category": "Cliente perfil menu input inesperado",
+          "action": "{{input.content}}"
+        },
+        "conditions": [
+          {
+            "source": "context",
+            "variable": "intentAction",
+            "comparison": "equals",
+            "values": [
+              "Input inesperado"
+            ]
+          },
+          {
+            "source": "input",
+            "comparison": "exists",
+            "values": []
+          }
+        ]
+      }
+    ],
+    "$defaultOutput": {
+      "stateId": "fallback"
+    },
+    "$localCustomActions": [],
+    "$title": "Valida ultimo e-mail",
+    "$position": {
+      "top": "1212px",
+      "left": "1147px"
+    }
+  },
+  "8efb3977-fa5c-4c26-8962-8c60fb1914b9": {
+    "$contentActions": [
+      {
+        "input": {
+          "bypass": true
+        }
+      }
+    ],
+    "$conditionOutputs": [],
+    "$enteringCustomActions": [],
+    "$leavingCustomActions": [],
+    "$defaultOutput": {
+      "stateId": "762682cc-02e5-4374-9b2d-cbebfea35d8c",
+      "typeOfStateId": "state"
+    },
+    "$localCustomActions": [],
+    "$title": "[GO TO] Pede senha login",
+    "$position": {
+      "top": "1211px",
+      "left": "933px"
+    }
+  }
+}

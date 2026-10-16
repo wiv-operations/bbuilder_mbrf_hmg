@@ -1,0 +1,1 @@
+O objetivo desse bot é autenticar o usuário e permitir que o mesmo realize a compra de produtos de acordo com o seu perfil utilizando smartsales, depois dos produtos selecionados é coletado algumas informações até concluir o pedido.

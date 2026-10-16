@@ -1,0 +1,571 @@
+{
+  "onboarding": {
+    "$contentActions": [
+      {
+        "input": {
+          "bypass": false,
+          "variable": "Initial"
+        }
+      }
+    ],
+    "$conditionOutputs": [
+      {
+        "stateId": "{{input.content@lastState}}",
+        "typeOfStateId": "variable",
+        "conditions": [
+          {
+            "source": "context",
+            "comparison": "exists",
+            "values": [],
+            "variable": "input.content@lastState"
+          }
+        ]
+      },
+      {
+        "stateId": "b253217e-bbfc-4733-a1a2-8d44084ecc04",
+        "typeOfStateId": "state",
+        "conditions": [
+          {
+            "source": "input",
+            "comparison": "exists",
+            "values": []
+          }
+        ]
+      }
+    ],
+    "$enteringCustomActions": [],
+    "$leavingCustomActions": [],
+    "$defaultOutput": {
+      "stateId": "fallback"
+    },
+    "root": true,
+    "$title": "Início",
+    "$position": {
+      "top": "41px",
+      "left": "707px"
+    }
+  },
+  "fallback": {
+    "$contentActions": [
+      {
+        "input": {
+          "bypass": true
+        }
+      }
+    ],
+    "$conditionOutputs": [],
+    "$enteringCustomActions": [
+      {
+        "type": "TrackEvent",
+        "settings": {
+          "extras": {},
+          "category": "Inputs inesperados",
+          "action": "{{state.previous.name}} - {{input.content}}"
+        },
+        "conditions": []
+      },
+      {
+        "type": "ExecuteScript",
+        "settings": {
+          "function": "run",
+          "source": "function run(inputContent) {\n\tlet redirect = \"{{resource.redirect@ajudoEmAlgoMais}}\"\n\n\tlet previous = \"{{state.previous.id}}\";\n\tlet previousSubFlow = \"{{stateSubFluxo}}\";\n\ttry {\n\t\treturn {\n\t\t\t\"origin\": redirect,\n\t\t\t\"lastState\": previousSubFlow ? previousSubFlow : previous,\n\t\t\t\"lastName\": \"{{state.previous.name}}\",\n\t\t\t\"inputType\": \"menu dinamico\",\n\t\t\tinputContent\n\t\t};\n\n\t} catch (error) {\n\t\treturn \"ERROR_FORMATTING_INPUT_CONTENT\"\n\t}\n}",
+          "inputVariables": [
+            "input.content"
+          ],
+          "outputVariable": "inputExcecoes",
+          "LocalTimeZoneEnabled": false
+        },
+        "conditions": []
+      },
+      {
+        "type": "SetVariable",
+        "settings": {
+          "variable": "stateSubFluxo",
+          "expiration": 1
+        },
+        "conditions": []
+      }
+    ],
+    "$leavingCustomActions": [
+      {
+        "type": "Redirect",
+        "settings": {
+          "context": {
+            "type": "text/plain",
+            "value": "{{inputExcecoes}}"
+          },
+          "address": "{{resource.redirect@excecao}}"
+        },
+        "conditions": []
+      }
+    ],
+    "$defaultOutput": {
+      "stateId": "onboarding"
+    },
+    "$title": "Exceções",
+    "$position": {
+      "top": "43px",
+      "left": "482px"
+    }
+  },
+  "b253217e-bbfc-4733-a1a2-8d44084ecc04": {
+    "$contentActions": [
+      {
+        "action": {
+          "$description": "",
+          "type": "SendMessage",
+          "settings": {
+            "type": "application/vnd.lime.select+json",
+            "content": {
+              "text": "Posso te apoiar em mais alguma coisa por aqui? 😊",
+              "scope": "immediate",
+              "options": [
+                {
+                  "text": "Sim",
+                  "previewText": "Sim",
+                  "value": null,
+                  "index": 0,
+                  "type": null
+                },
+                {
+                  "text": "Não",
+                  "previewText": "Não",
+                  "value": null,
+                  "index": 1,
+                  "type": null
+                }
+              ],
+              "quikReply": false
+            },
+            "metadata": {}
+          }
+        }
+      },
+      {
+        "input": {
+          "bypass": false,
+          "expiration": "0:10"
+        }
+      }
+    ],
+    "$conditionOutputs": [
+      {
+        "stateId": "3e6e3778-ba86-4b1f-a54a-71761f1294f8",
+        "typeOfStateId": "state",
+        "conditions": [
+          {
+            "source": "context",
+            "comparison": "equals",
+            "values": [
+              "Sim"
+            ],
+            "variable": "intentAction"
+          }
+        ]
+      },
+      {
+        "stateId": "debb045e-7ea6-472d-a339-b8d397d835e2",
+        "typeOfStateId": "state",
+        "conditions": [
+          {
+            "source": "context",
+            "comparison": "equals",
+            "values": [
+              "Não"
+            ],
+            "variable": "intentAction"
+          }
+        ]
+      }
+    ],
+    "$enteringCustomActions": [
+      {
+        "type": "SetVariable",
+        "settings": {
+          "variable": "intentAction"
+        },
+        "conditions": []
+      },
+      {
+        "type": "TrackEvent",
+        "settings": {
+          "extras": {
+            "identificador": "{{contact.identity}}",
+            "origem": "{{origem}}",
+            "canal": "{{channel}}"
+          },
+          "category": "Ajuda menu exibicao",
+          "action": "Exibicao"
+        },
+        "conditions": []
+      }
+    ],
+    "$leavingCustomActions": [
+      {
+        "type": "ExecuteScript",
+        "settings": {
+          "function": "run",
+          "source": "function run(input) {\n  try {\n    let opcoesMenu = {\n      \"1\": \"Sim\",\n      \"2\": \"Não\",\n    };\n\n    let menuRegex = {\n      \"1\": /\\b(?:sim|claro|confirmo|positivo|ok|okay|pode\\s+ser|aceito|quero|continuar)\\b/i,\n\n      \"2\": /\\b(?:n[aã]o|negativo|cancelar|desistir|prefiro\\s+n[aã]o|sair|encerrar|parar)\\b/i,\n    };\n\n    input = input.trim();\n\n    for (let prop in menuRegex) {\n      if (menuRegex[prop].test(input)) {\n        return opcoesMenu[prop];\n      }\n    }\n\n    return \"Input inesperado\";\n  } catch (error) {\n    return \"Input inesperado\";\n  }\n}",
+          "inputVariables": [
+            "input.content"
+          ],
+          "outputVariable": "intentAction",
+          "LocalTimeZoneEnabled": false
+        },
+        "conditions": []
+      },
+      {
+        "type": "TrackEvent",
+        "settings": {
+          "extras": {
+            "identificador": "{{contact.identity}}",
+            "origem": "{{origem}}",
+            "canal": "{{channel}}"
+          },
+          "category": "Ajuda menu selecao",
+          "action": "{{intentAction}}"
+        },
+        "conditions": []
+      },
+      {
+        "type": "TrackEvent",
+        "settings": {
+          "extras": {
+            "identificador": "{{contact.identity}}",
+            "origem": "{{origem}}",
+            "canal": "{{channel}}"
+          },
+          "category": "Ajuda menu input",
+          "action": "{{input.content}}"
+        },
+        "conditions": [
+          {
+            "source": "context",
+            "variable": "intentAction",
+            "comparison": "equals",
+            "values": [
+              "Input inesperado"
+            ]
+          }
+        ]
+      }
+    ],
+    "$defaultOutput": {
+      "stateId": "fallback"
+    },
+    "$localCustomActions": [],
+    "$title": "[MSG] Posso apoiar em algo mais",
+    "$position": {
+      "top": "218px",
+      "left": "707px"
+    }
+  },
+  "3e6e3778-ba86-4b1f-a54a-71761f1294f8": {
+    "$contentActions": [
+      {
+        "action": {
+          "$description": "",
+          "type": "SendMessage",
+          "settings": {
+            "type": "application/vnd.lime.select+json",
+            "content": {
+              "text": "Perfeito! Como posso te ajudar?\n\nBasta clicar em uma opção para me informar.",
+              "scope": "immediate",
+              "options": [
+                {
+                  "text": "Menu inicial",
+                  "previewText": "Menu inicial",
+                  "value": null,
+                  "index": 0,
+                  "type": null
+                },
+                {
+                  "text": "Encerrar conversa",
+                  "previewText": "Encerrar conversa",
+                  "value": null,
+                  "index": 1,
+                  "type": null
+                }
+              ],
+              "quikReply": false
+            },
+            "metadata": {}
+          }
+        }
+      },
+      {
+        "input": {
+          "bypass": false,
+          "expiration": "0:15"
+        }
+      }
+    ],
+    "$conditionOutputs": [
+      {
+        "stateId": "d4795f97-2f10-46f9-8267-9f0df759abe1",
+        "typeOfStateId": "state",
+        "conditions": [
+          {
+            "source": "input",
+            "comparison": "equals",
+            "values": [
+              "Menu inicial"
+            ]
+          }
+        ]
+      },
+      {
+        "stateId": "e8d473a1-35e9-4d16-b949-ed1b4b6697e4",
+        "typeOfStateId": "state",
+        "conditions": [
+          {
+            "source": "input",
+            "comparison": "equals",
+            "values": [
+              "Encerrar conversa"
+            ]
+          }
+        ]
+      }
+    ],
+    "$enteringCustomActions": [
+      {
+        "type": "SetVariable",
+        "settings": {
+          "variable": "intentAction"
+        },
+        "conditions": []
+      },
+      {
+        "type": "TrackEvent",
+        "settings": {
+          "extras": {
+            "identificador": "{{contact.identity}}",
+            "origem": "{{origem}}",
+            "canal": "{{channel}}"
+          },
+          "category": "como posso te ajudar menu exibicao",
+          "action": "Exibicao"
+        },
+        "conditions": []
+      }
+    ],
+    "$leavingCustomActions": [
+      {
+        "type": "ExecuteScript",
+        "settings": {
+          "function": "run",
+          "source": "function run(input) {\n  try {\n    let opcoesMenu = {\n      \"1\": \"Menu inicial\",\n      \"2\": \"Encerrar conversa\",\n    };\n\n    let menuRegex = {\n      \"1\": /\\b(?:menu\\s*inicial|inicio|come[cç]ar|voltar|retornar|menu|continuar|sim|ok|okay|claro|quero)\\b/i,\n\n      \"2\": /\\b(?:encerrar\\s*conversa|encerrar|finalizar|sair|parar|cancelar|tchau|não|nao)\\b/i,\n    };\n\n    input = input.trim();\n\n    for (let prop in menuRegex) {\n      if (menuRegex[prop].test(input)) {\n        return opcoesMenu[prop];\n      }\n    }\n\n    return \"Input inesperado\";\n  } catch (error) {\n    return \"Input inesperado\";\n  }\n}",
+          "inputVariables": [
+            "input.content"
+          ],
+          "outputVariable": "intentAction",
+          "LocalTimeZoneEnabled": false
+        },
+        "conditions": []
+      },
+      {
+        "type": "TrackEvent",
+        "settings": {
+          "extras": {
+            "identificador": "{{contact.identity}}",
+            "origem": "{{origem}}",
+            "canal": "{{channel}}"
+          },
+          "category": "como posso te ajudar menu selecao",
+          "action": "{{intentAction}}"
+        },
+        "conditions": []
+      },
+      {
+        "type": "TrackEvent",
+        "settings": {
+          "extras": {
+            "identificador": "{{contact.identity}}",
+            "origem": "{{origem}}",
+            "canal": "{{channel}}"
+          },
+          "category": "como posso te ajudar menu input",
+          "action": "{{input.content}}"
+        },
+        "conditions": [
+          {
+            "source": "context",
+            "variable": "intentAction",
+            "comparison": "equals",
+            "values": [
+              "Input inesperado"
+            ]
+          }
+        ]
+      }
+    ],
+    "$defaultOutput": {
+      "stateId": "fallback"
+    },
+    "$localCustomActions": [],
+    "$title": "[MSG] Selecionou SIM",
+    "$position": {
+      "top": "413px",
+      "left": "428px"
+    }
+  },
+  "debb045e-7ea6-472d-a339-b8d397d835e2": {
+    "$contentActions": [
+      {
+        "action": {
+          "$description": "",
+          "type": "SendMessage",
+          "settings": {
+            "type": "text/plain",
+            "content": "Fico feliz em ter te ajudado!\n\nSempre que precisar, pode contar comigo! 🤝",
+            "metadata": {}
+          }
+        }
+      },
+      {
+        "input": {
+          "bypass": true
+        }
+      }
+    ],
+    "$conditionOutputs": [],
+    "$enteringCustomActions": [
+      {
+        "type": "TrackEvent",
+        "settings": {
+          "extras": {
+            "identificador": "{{contact.identity}}",
+            "origem": "{{origem}}",
+            "canal": "{{channel}}"
+          },
+          "category": "Fluxo finalizacao",
+          "action": "Exibicao"
+        },
+        "conditions": []
+      }
+    ],
+    "$leavingCustomActions": [],
+    "$defaultOutput": {
+      "stateId": "e8d473a1-35e9-4d16-b949-ed1b4b6697e4",
+      "typeOfStateId": "state"
+    },
+    "$localCustomActions": [],
+    "$title": "[MSG] Selecionou NÃO",
+    "$position": {
+      "top": "407px",
+      "left": "1018px"
+    }
+  },
+  "d4795f97-2f10-46f9-8267-9f0df759abe1": {
+    "$contentActions": [
+      {
+        "input": {
+          "bypass": true
+        }
+      }
+    ],
+    "$conditionOutputs": [],
+    "$enteringCustomActions": [],
+    "$leavingCustomActions": [
+      {
+        "$description": "",
+        "$inputSchema": {
+          "type": "object",
+          "properties": {},
+          "required": []
+        },
+        "type": "Redirect",
+        "settings": {
+          "context": {
+            "type": "text/plain",
+            "value": "@redirect"
+          },
+          "address": "{{resource.redirect@captacao}}"
+        },
+        "conditions": [
+          {
+            "source": "context",
+            "comparison": "notExists",
+            "variable": "contact.extras.clienteIdentificado",
+            "values": []
+          }
+        ]
+      },
+      {
+        "$description": "",
+        "$inputSchema": {
+          "type": "object",
+          "properties": {},
+          "required": []
+        },
+        "type": "Redirect",
+        "settings": {
+          "context": {
+            "type": "text/plain",
+            "value": "@MenuInicial"
+          },
+          "address": "{{resource.redirect@captacao}}"
+        },
+        "conditions": [
+          {
+            "source": "context",
+            "comparison": "exists",
+            "variable": "contact.extras.clienteIdentificado",
+            "values": []
+          }
+        ]
+      }
+    ],
+    "$defaultOutput": {
+      "stateId": "onboarding",
+      "typeOfStateId": "state"
+    },
+    "$localCustomActions": [],
+    "$title": "[REDIRECT] Menu inicial",
+    "$position": {
+      "top": "231px",
+      "left": "115px"
+    }
+  },
+  "e8d473a1-35e9-4d16-b949-ed1b4b6697e4": {
+    "$contentActions": [
+      {
+        "input": {
+          "bypass": true
+        }
+      }
+    ],
+    "$conditionOutputs": [],
+    "$enteringCustomActions": [],
+    "$leavingCustomActions": [
+      {
+        "$description": "",
+        "$inputSchema": {
+          "type": "object",
+          "properties": {},
+          "required": []
+        },
+        "type": "Redirect",
+        "settings": {
+          "context": {
+            "type": "text/plain",
+            "value": "@redirect"
+          },
+          "address": "{{resource.redirect@finalizacao}}"
+        },
+        "conditions": []
+      }
+    ],
+    "$defaultOutput": {
+      "stateId": "onboarding",
+      "typeOfStateId": "state"
+    },
+    "$localCustomActions": [],
+    "$title": "[REDIRECT] Finalizacao",
+    "$position": {
+      "top": "563px",
+      "left": "110px"
+    }
+  }
+}

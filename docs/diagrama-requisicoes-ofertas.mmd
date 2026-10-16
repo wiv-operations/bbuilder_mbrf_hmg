@@ -1,0 +1,101 @@
+%%{init: {"theme":"base","themeVariables":{"fontSize":"15px","primaryColor":"#eaf2ff","primaryBorderColor":"#2f6fdb","lineColor":"#5b6b7f","clusterBkg":"#f7f9fc","clusterBorder":"#c5d2e0"}}}%%
+flowchart TD
+  START([Entrada no fluxo<br/>de Ofertas e Oportunidades]):::start
+
+  %% ===== AUTENTICACAO E ELEGIBILIDADE =====
+  subgraph AUTH["1 - Autenticacao, contas e elegibilidade"]
+    direction TB
+    E125["<b>Busca contas vinculadas</b><br/>e125a412 - 6 req"]:::api
+    E125R["POST /ecommerce/login (token)<br/>GET /query (usuario SF)<br/>GET /external-managed-accounts<br/>GET /query (contas SF)<br/>POST [YGG]/token<br/>POST [YGG]/person/customer/search"]:::req
+    A7E1["<b>Verifica elegibilidade</b><br/>a7e1c0de - 3 req"]:::api
+    A7E1R["POST /ecommerce/login (token)<br/>GET /ecommerce/account/id<br/>POST /ecommerce/credit"]:::req
+    BD0B["<b>Recupera valor minimo</b><br/>bd0baa6f - 2 req"]:::api
+    BD0BR["POST /ecommerce/login (token)<br/>POST /ecommerce/minimumorderamount"]:::req
+    E125 --- E125R
+    A7E1 --- A7E1R
+    BD0B --- BD0BR
+    E125 --> A7E1 --> BD0B
+  end
+
+  %% ===== PREPARO DO CARRINHO =====
+  subgraph CART["2 - Preparo e leitura do carrinho"]
+    direction TB
+    SMART["<b>Smart Sales</b><br/>a66fab48 - 2 req"]:::ext
+    SMARTR["POST api.smartsales.whitewall.dev/user/entering-action/send<br/>POST api.smartsales.whitewall.dev/user/leaving-action"]:::reqext
+    SMARTV["<b>Cria variavel Smart Sales</b><br/>a04f9c20 - 2 req"]:::ext
+    SMARTVR["POST mbrf.http.msging.net/commands x2"]:::reqext
+    SYNC["<b>Sincroniza carrinho</b><br/>0892c280 - 16 req (8 login)"]:::apibig
+    SYNCR["DELETE /carts/current<br/>POST /carts (novo)<br/>GET /products<br/>POST /carts/id/cart-items/batch<br/>POST /ecommerce/deliverywindow<br/>POST /custom/cart/recalculator x2"]:::req
+    READ["<b>Le carrinho Salesforce</b><br/>d21cd5d2 - 4 req"]:::api
+    READR["POST /ecommerce/login (token)<br/>POST /custom/cart/recalculator<br/>GET /carts/id/cart-items"]:::req
+    SMART --- SMARTR
+    SMARTV --- SMARTVR
+    SYNC --- SYNCR
+    READ --- READR
+    SMARTV --> SMART --> SYNC --> READ
+  end
+
+  %% ===== SPLIT / VALOR MINIMO =====
+  subgraph SPLIT["3 - Carrinho escolhido e split"]
+    direction TB
+    A096["<b>Carrinho escolhido + split</b><br/>a096ebdd - 4 req"]:::api
+    A096R["POST /ecommerce/login (token) x2<br/>GET /carts/current<br/>POST /ecommerce/splitcart/id"]:::req
+    A096 --- A096R
+  end
+
+  %% ===== PAGAMENTO E ENTREGA =====
+  subgraph PAYDEL["4 - Pagamento e janela de entrega"]
+    direction TB
+    PAY["<b>Condicoes de pagamento</b><br/>5e247944 - 4 req"]:::api
+    PAYR["POST /ecommerce/login (token) x2<br/>GET /carts/current<br/>POST /ecommerce/paymentcondition"]:::req
+    DEL["<b>Janelas de entrega</b><br/>ae01d44d - 4 req"]:::api
+    DELR["POST /ecommerce/login (token) x2<br/>GET /carts/current<br/>POST /ecommerce/deliverywindow"]:::req
+    GRAVA["<b>Grava pagamento no carrinho</b><br/>a0a34fab - 4 req"]:::api
+    GRAVAR["POST /ecommerce/login (token) x2<br/>GET /carts/current<br/>PUT /ecommerce/webcart/id"]:::req
+    PAY --- PAYR
+    DEL --- DELR
+    GRAVA --- GRAVAR
+    PAY --> DEL --> GRAVA
+  end
+
+  %% ===== CHECKOUT E PEDIDO =====
+  subgraph CHECKOUT["5 - Recalculo, checkout e criacao do pedido"]
+    direction TB
+    RECALC["<b>Recalcula carrinho</b><br/>6b3901e1 - 6 req (3 login)"]:::api
+    RECALCR["POST /custom/cart/recalculator x3"]:::req
+    INIT["<b>Inicia checkout</b><br/>a1199190 - 6 req"]:::apibig
+    INITR["POST /checkouts<br/>GET /checkouts/active<br/>DELETE /checkouts/active<br/>POST /checkouts (retry)"]:::req
+    CONS["<b>Consulta checkout</b><br/>dc6be84b - 2 req"]:::api
+    CONSR["POST /ecommerce/login (token)<br/>GET /checkouts/id"]:::req
+    SELDATA["<b>Seleciona data de entrega</b><br/>8b0f3d77 - 6 req"]:::apibig
+    SELDATAR["PATCH /sobjects/CartDeliveryGroup x2<br/>PATCH /checkouts/id x2<br/>(+ login/token)"]:::req
+    PEDIDO["<b>Cria pedido</b><br/>bb835db0 - 2 req"]:::api
+    PEDIDOR["POST /ecommerce/login (token)<br/>POST /checkouts/id/orders"]:::req
+    RECALC --- RECALCR
+    INIT --- INITR
+    CONS --- CONSR
+    SELDATA --- SELDATAR
+    PEDIDO --- PEDIDOR
+    RECALC --> INIT --> CONS
+    CONS -->|"202 aguarda / selecao"| SELDATA
+    SELDATA --> CONS
+    CONS -->|"final"| PEDIDO
+  end
+
+  SUCCESS([Pedido criado<br/>com sucesso]):::done
+
+  %% ===== LIGACOES PRINCIPAIS =====
+  START --> E125
+  BD0B --> SMARTV
+  READ --> SPLIT
+  A096 --> PAY
+  GRAVA --> RECALC
+  PEDIDO --> SUCCESS
+
+  classDef start fill:#d7f5dd,stroke:#2e9e52,stroke-width:2px,color:#14532d;
+  classDef done fill:#d7f5dd,stroke:#2e9e52,stroke-width:2px,color:#14532d;
+  classDef api fill:#eaf2ff,stroke:#2f6fdb,stroke-width:1.5px,color:#0b2d6b;
+  classDef apibig fill:#fff0e6,stroke:#e8731c,stroke-width:2px,color:#7a3400;
+  classDef ext fill:#f3e8ff,stroke:#8b43d6,stroke-width:1.5px,color:#4a1d85;
+  classDef req fill:#fbfdff,stroke:#9db3cc,stroke-width:1px,color:#30465e,font-size:12px;
+  classDef reqext fill:#faf5ff,stroke:#c3a0e8,stroke-width:1px,color:#4a1d85,font-size:12px;

@@ -1,0 +1,1283 @@
+{
+  "onboarding": {
+    "$contentActions": [
+      {
+        "input": {
+          "bypass": false
+        }
+      }
+    ],
+    "$conditionOutputs": [
+      {
+        "stateId": "welcome",
+        "conditions": [
+          {
+            "source": "input",
+            "comparison": "matches",
+            "values": [
+              ".*"
+            ]
+          }
+        ]
+      }
+    ],
+    "$enteringCustomActions": [],
+    "$leavingCustomActions": [],
+    "$defaultOutput": {
+      "stateId": "fallback"
+    },
+    "$title": "Início",
+    "$position": {
+      "top": "120px",
+      "left": "644px"
+    }
+  },
+  "fallback": {
+    "$contentActions": [
+      {
+        "input": {
+          "bypass": true
+        }
+      }
+    ],
+    "$conditionOutputs": [
+      {
+        "stateId": "error",
+        "conditions": [
+          {
+            "source": "input",
+            "comparison": "matches",
+            "values": [
+              ".*"
+            ]
+          }
+        ]
+      }
+    ],
+    "$enteringCustomActions": [],
+    "$leavingCustomActions": [],
+    "$defaultOutput": {
+      "stateId": "onboarding"
+    },
+    "$title": "Exceções",
+    "$position": {
+      "top": "117px",
+      "left": "999px"
+    }
+  },
+  "welcome": {
+    "$contentActions": [
+      {
+        "action": {
+          "type": "SendMessage",
+          "settings": {
+            "type": "application/vnd.lime.select+json",
+            "content": {
+              "text": "Olá, {{contact.name}}!\n\nSeja bem-vindo(a) ao formulário de feedback da reunião geral.\n\nVou coletar algumas perguntinhas rápidas, mas se preferir, pode enviar um audio contando o que achou 🎙️\n\nVamos começar?",
+              "scope": "immediate",
+              "options": [
+                {
+                  "text": "Dar feedback",
+                  "previewText": "Dar feedback",
+                  "value": null,
+                  "index": 0,
+                  "type": null
+                }
+              ],
+              "quikReply": false
+            },
+            "metadata": {}
+          }
+        }
+      },
+      {
+        "input": {
+          "bypass": true
+        }
+      }
+    ],
+    "$conditionOutputs": [
+      {
+        "stateId": "a5099eed-18f1-4bf5-a448-0079fe6a89b2",
+        "typeOfStateId": "state",
+        "conditions": [
+          {
+            "source": "input",
+            "comparison": "exists",
+            "values": []
+          }
+        ]
+      }
+    ],
+    "$enteringCustomActions": [
+      {
+        "type": "SetVariable",
+        "settings": {
+          "variable": "gptUses",
+          "value": "0"
+        },
+        "conditions": []
+      },
+      {
+        "type": "ExecuteScript",
+        "settings": {
+          "function": "run",
+          "source": "function run(identity) {\n\treturn identity.split(\"@\")[0]\n}",
+          "inputVariables": [
+            "contact.identity"
+          ],
+          "outputVariable": "phone",
+          "LocalTimeZoneEnabled": false
+        },
+        "conditions": []
+      }
+    ],
+    "$leavingCustomActions": [],
+    "$defaultOutput": {
+      "stateId": "fallback"
+    },
+    "$title": "Boas vindas",
+    "$position": {
+      "top": "240px",
+      "left": "644px"
+    }
+  },
+  "error": {
+    "$contentActions": [
+      {
+        "action": {
+          "type": "SendMessage",
+          "settings": {
+            "type": "text/plain",
+            "content": "Desculpe, infelizmente você não está mais elegivel para o formulário.",
+            "metadata": {}
+          }
+        }
+      },
+      {
+        "input": {
+          "bypass": false
+        }
+      }
+    ],
+    "$conditionOutputs": [
+      {
+        "stateId": "fallback",
+        "typeOfStateId": "state",
+        "conditions": [
+          {
+            "source": "input",
+            "comparison": "exists",
+            "values": []
+          }
+        ]
+      }
+    ],
+    "$enteringCustomActions": [],
+    "$leavingCustomActions": [],
+    "$defaultOutput": {
+      "stateId": "onboarding"
+    },
+    "$title": "Erro padrão",
+    "$position": {
+      "top": "243px",
+      "left": "999px"
+    }
+  },
+  "599bda93-49c5-4db7-9e42-3437f8ac0f90": {
+    "$contentActions": [
+      {
+        "action": {
+          "type": "SendMessage",
+          "settings": {
+            "type": "text/plain",
+            "content": "Ei, você ainda está por ai? ",
+            "metadata": {}
+          }
+        }
+      },
+      {
+        "input": {
+          "bypass": false
+        }
+      }
+    ],
+    "$conditionOutputs": [
+      {
+        "stateId": "3f03b179-90a1-4269-888d-0d9d5043032c",
+        "typeOfStateId": "state",
+        "conditions": [
+          {
+            "source": "input",
+            "comparison": "exists",
+            "values": []
+          }
+        ]
+      }
+    ],
+    "$enteringCustomActions": [],
+    "$leavingCustomActions": [],
+    "$defaultOutput": {
+      "stateId": "fallback"
+    },
+    "$title": "Incentiva Interação",
+    "$position": {
+      "top": "353px",
+      "left": "416px"
+    }
+  },
+  "3f03b179-90a1-4269-888d-0d9d5043032c": {
+    "$contentActions": [
+      {
+        "input": {
+          "bypass": true
+        }
+      },
+      {
+        "action": {
+          "type": "SendRawMessage",
+          "settings": {
+            "metadata": {
+              "#stateName": "{{state.name}}",
+              "#stateId": "{{state.id}}",
+              "#messageId": "{{input.message@id}}",
+              "#previousStateId": "{{state.previous.id}}",
+              "#previousStateName": "{{state.previous.name}}"
+            },
+            "type": "application/json",
+            "rawContent": "{\n  \"messaging_product\": \"whatsapp\",\n  \"status\": \"read\",\n  \"message_id\": \"{{input.message.id}}\",\n  \"typing_indicator\": {\n    \"type\": \"text\"\n  }\n}"
+          }
+        }
+      }
+    ],
+    "$conditionOutputs": [
+      {
+        "stateId": "cfd373ee-a8d1-48e7-8b19-982db42555f9",
+        "typeOfStateId": "state",
+        "conditions": [
+          {
+            "source": "context",
+            "comparison": "equals",
+            "values": [
+              "submeter_formulario"
+            ],
+            "variable": "skill@id"
+          }
+        ]
+      },
+      {
+        "stateId": "fa340cd3-bc2e-4f35-8003-72fe4a17ecee",
+        "typeOfStateId": "state",
+        "conditions": [
+          {
+            "source": "context",
+            "comparison": "equals",
+            "values": [
+              "submeter_observacao"
+            ],
+            "variable": "skill@id"
+          }
+        ]
+      },
+      {
+        "stateId": "95d1e99d-fde6-425a-899a-da7fdec71128",
+        "typeOfStateId": "state",
+        "conditions": [
+          {
+            "source": "context",
+            "comparison": "equals",
+            "values": [
+              "enviar_menu"
+            ],
+            "variable": "skill@id"
+          }
+        ]
+      },
+      {
+        "stateId": "c3f21c05-ef03-4cf8-96e1-820ad11daacb",
+        "typeOfStateId": "state",
+        "conditions": [
+          {
+            "source": "context",
+            "comparison": "exists",
+            "values": [],
+            "variable": "result"
+          }
+        ]
+      },
+      {
+        "stateId": "7da8d846-683f-4da9-9e82-391996178181",
+        "typeOfStateId": "state",
+        "conditions": [
+          {
+            "source": "input",
+            "comparison": "exists",
+            "values": []
+          }
+        ]
+      }
+    ],
+    "$enteringCustomActions": [],
+    "$leavingCustomActions": [
+      {
+        "type": "SetVariable",
+        "settings": {
+          "value": "",
+          "variable": "result"
+        },
+        "conditions": []
+      },
+      {
+        "type": "SetVariable",
+        "settings": {
+          "value": "",
+          "variable": "skill"
+        },
+        "conditions": []
+      },
+      {
+        "type": "SetVariable",
+        "settings": {
+          "variable": "wwResponseStatus",
+          "value": ""
+        },
+        "conditions": []
+      },
+      {
+        "type": "SetVariable",
+        "settings": {
+          "variable": "wwassistant",
+          "value": "asst_35KLYYJka8286fJkNXQzpLFy"
+        },
+        "conditions": []
+      },
+      {
+        "type": "SetVariable",
+        "settings": {
+          "variable": "wwadditionalcontext",
+          "value": "Nome de exibição do cliente: {{contact.name}}\n\nNão dê saudações. Você está entrando no meio de uma conversa."
+        },
+        "conditions": []
+      },
+      {
+        "type": "ExecuteScript",
+        "settings": {
+          "function": "run",
+          "source": "function run(originator, identity) {\n    return originator || identity;\n}",
+          "inputVariables": [
+            "tunnel.originator",
+            "contact.identity"
+          ],
+          "outputVariable": "wwuser"
+        },
+        "conditions": []
+      },
+      {
+        "type": "ExecuteScript",
+        "settings": {
+          "function": "run",
+          "source": "function run(wwadditionalcontext) {\n    const prompt = JSON.stringify(wwadditionalcontext)    \nreturn prompt.substring(1, prompt.length - 1);\n}",
+          "inputVariables": [
+            "wwadditionalcontext"
+          ],
+          "outputVariable": "wwsanitizedadditionalcontext"
+        },
+        "conditions": []
+      },
+      {
+        "type": "ExecuteScript",
+        "settings": {
+          "function": "run",
+          "source": "function run(input) {\n    const prompt = JSON.stringify(input)    \nreturn prompt.substring(1, prompt.length - 1);\n}",
+          "inputVariables": [
+            "input.content"
+          ],
+          "outputVariable": "wwsanitizedInput"
+        },
+        "conditions": []
+      },
+      {
+        "type": "ProcessCommand",
+        "settings": {
+          "from": "{{application.identity}}",
+          "to": "postmaster@msging.net",
+          "method": "get",
+          "uri": "/buckets/wwchatgptpk",
+          "variable": "wwBucketResponse"
+        },
+        "conditions": []
+      },
+      {
+        "type": "ProcessCommand",
+        "settings": {
+          "to": "postmaster@msging.net",
+          "method": "get",
+          "uri": "/threads/{{wwuser}}",
+          "variable": "wwthreadsresponse"
+        },
+        "conditions": []
+      },
+      {
+        "type": "ExecuteScript",
+        "settings": {
+          "function": "run",
+          "source": "function messageToText(messageContent) {\n    if (typeof messageContent === 'string') {\n        return messageContent\n    } else if (messageContent.text && messageContent.options) {\n        const options = messageContent.options.map((o) => o.text).join(', ')\n        return `${messageContent.text} (${options})`\n    } else {\n        return undefined\n    }\n}\n\n/** @param {any} wwthreadsresponse */\n/** @param {string} wwthread */\n/** @param {string} wwlastmessageid */\n/** @param {string} wwassistant */\n/** @param {string} wwlastassistant */\n/** @returns {{ thread: string, skillResponse: string }} */\nfunction run(wwthreadsresponse, wwthread, wwlastmessageid, wwassistant, wwlastassistant, chatgptResponse) {\n    wwthreadsresponse = JSON.parse(wwthreadsresponse)\n\n    if (wwassistant !== wwlastassistant) {\n        return {}\n    }\n\n    if (typeof chatgptResponse === 'string') {\n        return { thread: wwthread, skillResponse: chatgptResponse }\n    }\n\n    const items = wwthreadsresponse && wwthreadsresponse.resource && wwthreadsresponse.resource.items\n    if (Array.isArray(items)) {\n        const lastItemUserMessageIndex = items.findIndex((i) => i.direction === 'received')\n        if (lastItemUserMessageIndex === -1) {\n            return { thread: wwthread }\n        } else {\n            const sentMessages = items.slice(0, lastItemUserMessageIndex)\n            if (sentMessages.length) {\n                return { thread: wwthread, skillResponse: sentMessages.map((m) => messageToText(m.content)).join('\\n') }\n            }\n        }\n    }\n\n    return { thread: wwthread }\n}\n",
+          "inputVariables": [
+            "wwthreadsresponse",
+            "wwthread",
+            "input.message.id",
+            "wwassistant",
+            "wwlastassistant",
+            "chatgptResponse"
+          ],
+          "outputVariable": "wwaux"
+        },
+        "conditions": []
+      },
+      {
+        "type": "ProcessHttp",
+        "settings": {
+          "headers": {},
+          "method": "POST",
+          "body": "{\r\n    \"botIdentifier\": \"{{application.identifier}}\",\r\n    \"publicKey\": \"{{wwBucketResponse@resource}}\",\r\n    \"assistantId\": \"{{wwassistant}}\",\r\n    \"threadId\": \"{{wwaux@thread}}\",\r\n    \"additionalContext\": \"{{wwsanitizedadditionalcontext}}\",\r\n    \"input\": \"{{wwsanitizedinput}}\",\r\n    \"user\": \"{{wwuser}}\",\r\n    \"messageId\": \"{{input.message.id}}\",\r\n    \"skillResponse\": \"{{wwaux@skillResponse}}\"\r\n}",
+          "uri": "https://southamerica-east1-ww-blip-plugins.cloudfunctions.net/chatgpt_chatAssistant",
+          "responseStatusVariable": "wwResponseStatus",
+          "responseBodyVariable": "wwResponseBody"
+        },
+        "conditions": [],
+        "continueOnError": true
+      },
+      {
+        "type": "ExecuteScript",
+        "settings": {
+          "function": "run",
+          "source": "function run(wwResponseBody, source) { wwResponseBody = JSON.parse(wwResponseBody); if (wwResponseBody.text) { if (source === '@0mn.io') { return wwResponseBody.text.trim().replace(/\\n/g, '<br/>'); } else { return wwResponseBody.text.trim(); } } return null; }",
+          "inputVariables": [
+            "wwResponseBody",
+            "contact.source"
+          ],
+          "outputVariable": "wwResponseText"
+        },
+        "conditions": [
+          {
+            "source": "context",
+            "comparison": "equals",
+            "variable": "wwResponseStatus",
+            "values": [
+              "200"
+            ]
+          }
+        ]
+      },
+      {
+        "type": "SetVariable",
+        "settings": {
+          "value": "{{wwResponseText}}",
+          "variable": "result"
+        },
+        "conditions": [
+          {
+            "source": "context",
+            "comparison": "equals",
+            "variable": "wwResponseStatus",
+            "values": [
+              "200"
+            ]
+          }
+        ]
+      },
+      {
+        "type": "SetVariable",
+        "settings": {
+          "value": "{{wwResponseBody@skill}}",
+          "variable": "skill"
+        },
+        "conditions": [
+          {
+            "source": "context",
+            "comparison": "equals",
+            "variable": "wwResponseStatus",
+            "values": [
+              "200"
+            ]
+          }
+        ]
+      },
+      {
+        "type": "SetVariable",
+        "settings": {
+          "variable": "wwthread",
+          "value": "{{wwResponseBody@thread}}"
+        },
+        "conditions": [
+          {
+            "source": "context",
+            "comparison": "equals",
+            "variable": "wwResponseStatus",
+            "values": [
+              "200"
+            ]
+          }
+        ]
+      },
+      {
+        "type": "TrackEvent",
+        "settings": {
+          "extras": {},
+          "category": "White Wall Error",
+          "action": "{{wwResponseStatus}}"
+        },
+        "conditions": [
+          {
+            "source": "context",
+            "comparison": "notEquals",
+            "variable": "wwResponseStatus",
+            "values": [
+              "200"
+            ]
+          },
+          {
+            "source": "context",
+            "comparison": "exists",
+            "values": [],
+            "variable": "wwResponseStatus"
+          }
+        ]
+      },
+      {
+        "type": "SetVariable",
+        "settings": {
+          "variable": "wwlastassistant",
+          "value": "{{wwassistant}}"
+        }
+      }
+    ],
+    "$defaultOutput": {
+      "stateId": "fallback"
+    },
+    "$title": "Processa Chat GPT",
+    "$position": {
+      "top": "492px",
+      "left": "643px"
+    }
+  },
+  "cfd373ee-a8d1-48e7-8b19-982db42555f9": {
+    "$contentActions": [
+      {
+        "input": {
+          "bypass": true
+        }
+      }
+    ],
+    "$conditionOutputs": [
+      {
+        "stateId": "ww:7d2b36ae-af53-4017-9224-229dc20106a8",
+        "typeOfStateId": "state",
+        "conditions": [
+          {
+            "source": "input",
+            "comparison": "exists",
+            "values": []
+          }
+        ]
+      }
+    ],
+    "$enteringCustomActions": [
+      {
+        "type": "TrackEvent",
+        "settings": {
+          "extras": {},
+          "category": "Skill",
+          "action": "{{skill}}"
+        },
+        "conditions": []
+      }
+    ],
+    "$leavingCustomActions": [],
+    "$defaultOutput": {
+      "stateId": "fallback"
+    },
+    "$title": "Skill: Envia formulario",
+    "$position": {
+      "top": "491px",
+      "left": "1134px"
+    }
+  },
+  "7da8d846-683f-4da9-9e82-391996178181": {
+    "$contentActions": [
+      {
+        "action": {
+          "type": "SendMessage",
+          "settings": {
+            "type": "text/plain",
+            "content": "Parece que nossa conexão com os servidores está temporariamente interrompida. \nPedimos desculpas pela inconveniência e agradecemos pela sua paciência. 🥹\n\nTente em um minuto.",
+            "metadata": {}
+          }
+        }
+      },
+      {
+        "input": {
+          "bypass": false
+        }
+      }
+    ],
+    "$conditionOutputs": [
+      {
+        "stateId": "3f03b179-90a1-4269-888d-0d9d5043032c",
+        "typeOfStateId": "state",
+        "conditions": [
+          {
+            "source": "input",
+            "comparison": "exists",
+            "values": []
+          }
+        ]
+      }
+    ],
+    "$enteringCustomActions": [
+      {
+        "type": "TrackEvent",
+        "settings": {
+          "extras": {},
+          "category": "Erro GPT",
+          "action": "Erro"
+        },
+        "conditions": []
+      }
+    ],
+    "$leavingCustomActions": [],
+    "$defaultOutput": {
+      "stateId": "fallback"
+    },
+    "$title": "Erro GPT",
+    "$position": {
+      "top": "503px",
+      "left": "413px"
+    }
+  },
+  "c3f21c05-ef03-4cf8-96e1-820ad11daacb": {
+    "$contentActions": [
+      {
+        "input": {
+          "bypass": true
+        }
+      }
+    ],
+    "$conditionOutputs": [
+      {
+        "stateId": "6e9d97ef-4730-45b5-9984-1236848bc93d",
+        "typeOfStateId": "state",
+        "conditions": [
+          {
+            "source": "input",
+            "comparison": "exists",
+            "values": []
+          }
+        ]
+      }
+    ],
+    "$enteringCustomActions": [
+      {
+        "type": "ExecuteScript",
+        "settings": {
+          "function": "run",
+          "source": "function run(result) {\n\tconst messages = result.split(/(\\n\\n)/g).filter((m) => m.trim() !== '' && m !== '. ' && m !== '? ');\n\treturn messages;\n}\n",
+          "inputVariables": [
+            "result"
+          ],
+          "outputVariable": "messages",
+          "LocalTimeZoneEnabled": false
+        },
+        "conditions": []
+      },
+      {
+        "type": "ExecuteScript",
+        "settings": {
+          "function": "run",
+          "source": "function run(gptUses) {\n\treturn Number(gptUses) + 1;\n}",
+          "inputVariables": [
+            "gptUses"
+          ],
+          "outputVariable": "gptUses",
+          "LocalTimeZoneEnabled": false
+        },
+        "conditions": []
+      }
+    ],
+    "$leavingCustomActions": [
+      {
+        "type": "TrackEvent",
+        "settings": {
+          "extras": {},
+          "category": "Resposta GPT",
+          "action": "Resposta"
+        },
+        "conditions": []
+      }
+    ],
+    "$defaultOutput": {
+      "stateId": "fallback"
+    },
+    "$title": "Resposta Chat GPT",
+    "$position": {
+      "top": "635px",
+      "left": "643px"
+    }
+  },
+  "6e9d97ef-4730-45b5-9984-1236848bc93d": {
+    "$contentActions": [
+      {
+        "action": {
+          "type": "SendMessage",
+          "settings": {
+            "type": "text/plain",
+            "content": "{{message}}",
+            "metadata": {}
+          }
+        }
+      },
+      {
+        "input": {
+          "bypass": true
+        }
+      }
+    ],
+    "$conditionOutputs": [
+      {
+        "stateId": "6e9d97ef-4730-45b5-9984-1236848bc93d",
+        "typeOfStateId": "state",
+        "conditions": [
+          {
+            "source": "context",
+            "comparison": "exists",
+            "values": [],
+            "variable": "messages"
+          }
+        ]
+      },
+      {
+        "stateId": "c5243bb1-92a9-4b05-9fea-7ced0ea8704c",
+        "typeOfStateId": "state",
+        "conditions": [
+          {
+            "source": "input",
+            "comparison": "exists",
+            "values": []
+          }
+        ]
+      }
+    ],
+    "$enteringCustomActions": [
+      {
+        "type": "ExecuteScript",
+        "settings": {
+          "function": "run",
+          "source": "function run(messages) {\n\tmessages = JSON.parse(messages)\n\treturn messages[0].trim()\n}",
+          "inputVariables": [
+            "messages"
+          ],
+          "outputVariable": "message",
+          "LocalTimeZoneEnabled": false
+        },
+        "conditions": []
+      },
+      {
+        "type": "ExecuteScript",
+        "settings": {
+          "function": "run",
+          "source": "function run(messages) {\n\tmessages = JSON.parse(messages)\n\n\tmessages.shift()\n\n\tif (messages.length === 0) {\n\t\treturn null\n\t}\n\n\treturn messages\n}",
+          "inputVariables": [
+            "messages"
+          ],
+          "outputVariable": "messages",
+          "LocalTimeZoneEnabled": false
+        },
+        "conditions": []
+      }
+    ],
+    "$leavingCustomActions": [],
+    "$defaultOutput": {
+      "stateId": "fallback"
+    },
+    "$title": "Envia mensagens",
+    "$position": {
+      "top": "794px",
+      "left": "643px"
+    }
+  },
+  "c5243bb1-92a9-4b05-9fea-7ced0ea8704c": {
+    "$contentActions": [
+      {
+        "input": {
+          "bypass": true
+        }
+      }
+    ],
+    "$conditionOutputs": [
+      {
+        "stateId": "fallback",
+        "typeOfStateId": "state",
+        "conditions": [
+          {
+            "source": "context",
+            "comparison": "greaterThan",
+            "values": [
+              "15"
+            ],
+            "variable": "gptUses"
+          }
+        ]
+      },
+      {
+        "stateId": "a5099eed-18f1-4bf5-a448-0079fe6a89b2",
+        "typeOfStateId": "state",
+        "conditions": [
+          {
+            "source": "input",
+            "comparison": "exists",
+            "values": []
+          }
+        ]
+      }
+    ],
+    "$enteringCustomActions": [],
+    "$leavingCustomActions": [],
+    "$defaultOutput": {
+      "stateId": "fallback"
+    },
+    "$title": "Volta para fluxo",
+    "$position": {
+      "top": "933px",
+      "left": "645px"
+    }
+  },
+  "a5099eed-18f1-4bf5-a448-0079fe6a89b2": {
+    "$contentActions": [
+      {
+        "input": {
+          "bypass": false,
+          "expiration": "0:30"
+        }
+      }
+    ],
+    "$conditionOutputs": [
+      {
+        "stateId": "welcome",
+        "typeOfStateId": "state",
+        "conditions": [
+          {
+            "source": "input",
+            "comparison": "equals",
+            "values": [
+              "#reiniciar"
+            ]
+          }
+        ]
+      },
+      {
+        "stateId": "599bda93-49c5-4db7-9e42-3437f8ac0f90",
+        "typeOfStateId": "state",
+        "conditions": [
+          {
+            "source": "input",
+            "comparison": "notExists",
+            "values": []
+          }
+        ]
+      },
+      {
+        "stateId": "3f03b179-90a1-4269-888d-0d9d5043032c",
+        "typeOfStateId": "state",
+        "conditions": [
+          {
+            "source": "input",
+            "comparison": "exists",
+            "values": []
+          }
+        ]
+      }
+    ],
+    "$enteringCustomActions": [],
+    "$leavingCustomActions": [],
+    "$defaultOutput": {
+      "stateId": "fallback"
+    },
+    "$title": "Recebe input",
+    "$position": {
+      "top": "367px",
+      "left": "644px"
+    }
+  },
+  "ww:7d2b36ae-af53-4017-9224-229dc20106a8": {
+    "$contentActions": [
+      {
+        "input": {
+          "bypass": true
+        }
+      }
+    ],
+    "$conditionOutputs": [
+      {
+        "stateId": "3f03b179-90a1-4269-888d-0d9d5043032c",
+        "typeOfStateId": "state",
+        "conditions": [
+          {
+            "source": "input",
+            "comparison": "exists",
+            "values": []
+          }
+        ]
+      }
+    ],
+    "$enteringCustomActions": [],
+    "$leavingCustomActions": [
+      {
+        "type": "SetVariable",
+        "settings": {
+          "value": "",
+          "variable": "done"
+        },
+        "conditions": []
+      },
+      {
+        "type": "SetVariable",
+        "settings": {
+          "variable": "wwspreadsheet",
+          "value": "1f0YHFMoqcl_o6lXCpmtmcCT1HvkJzZuplZbYIVORYlA"
+        },
+        "conditions": []
+      },
+      {
+        "type": "SetVariable",
+        "settings": {
+          "variable": "wwvalues",
+          "value": "{{contact.name}}#separator#{{phone}}#separator#{{skill@params.answer_one}}#separator#{{skill@params.answer_two}}#separator#{{skill@params.answer_three}}#separator#{{skill@params.answer_four}}"
+        },
+        "conditions": []
+      },
+      {
+        "type": "SetVariable",
+        "settings": {
+          "variable": "wwrange",
+          "value": "A:D"
+        },
+        "conditions": []
+      },
+      {
+        "type": "ExecuteScript",
+        "settings": {
+          "function": "run",
+          "source": "function run(wwvalues) {\n    return wwvalues.split('#separator#') \n}",
+          "inputVariables": [
+            "wwvalues"
+          ],
+          "outputVariable": "wwsanitizedvalues",
+          "LocalTimeZoneEnabled": false
+        },
+        "conditions": []
+      },
+      {
+        "type": "ProcessCommand",
+        "settings": {
+          "from": "{{application.identity}}",
+          "to": "postmaster@msging.net",
+          "method": "get",
+          "uri": "/buckets/wwgsheetspk",
+          "variable": "wwBucketResponse"
+        },
+        "conditions": []
+      },
+      {
+        "type": "ProcessHttp",
+        "settings": {
+          "headers": {},
+          "method": "POST",
+          "uri": "https://southamerica-east1-ww-blip-plugins.cloudfunctions.net/gsheets_append",
+          "body": "{\"spreadsheetId\":\"{{wwspreadsheet}}\",\"range\":\"{{wwrange}}\",\"values\":{{wwsanitizedvalues}},\"publicKey\":\"{{wwBucketResponse@resource}}\",\"botIdentifier\":\"{{application.identifier}}\"}",
+          "responseStatusVariable": "wwResponseStatus",
+          "responseBodyVariable": "wwResponseBody"
+        },
+        "conditions": [],
+        "continueOnError": true
+      },
+      {
+        "type": "SetVariable",
+        "settings": {
+          "value": "{{wwResponseBody@cells}}",
+          "variable": "done"
+        },
+        "conditions": [
+          {
+            "source": "context",
+            "comparison": "equals",
+            "variable": "wwResponseStatus",
+            "values": [
+              "200"
+            ]
+          }
+        ]
+      },
+      {
+        "type": "TrackEvent",
+        "settings": {
+          "extras": {},
+          "category": "White Wall Error",
+          "action": "{{wwResponseStatus}}"
+        },
+        "conditions": [
+          {
+            "source": "context",
+            "comparison": "notEquals",
+            "variable": "wwResponseStatus",
+            "values": [
+              "200"
+            ]
+          },
+          {
+            "source": "context",
+            "comparison": "exists",
+            "values": [],
+            "variable": "wwResponseStatus"
+          }
+        ]
+      }
+    ],
+    "$defaultOutput": {
+      "stateId": "fallback"
+    },
+    "$title": "Submete formulario",
+    "$position": {
+      "top": "648px",
+      "left": "1134px"
+    }
+  },
+  "fa340cd3-bc2e-4f35-8003-72fe4a17ecee": {
+    "$contentActions": [
+      {
+        "input": {
+          "bypass": true
+        }
+      }
+    ],
+    "$conditionOutputs": [
+      {
+        "stateId": "ww:98d724c5-271b-4683-88d5-b583e5c1b943",
+        "typeOfStateId": "state",
+        "conditions": [
+          {
+            "source": "input",
+            "comparison": "exists",
+            "values": []
+          }
+        ]
+      }
+    ],
+    "$enteringCustomActions": [
+      {
+        "type": "TrackEvent",
+        "settings": {
+          "extras": {},
+          "category": "Skill",
+          "action": "{{skill}}"
+        },
+        "conditions": []
+      }
+    ],
+    "$leavingCustomActions": [],
+    "$defaultOutput": {
+      "stateId": "fallback"
+    },
+    "$title": "Skill: Envia observacao",
+    "$position": {
+      "top": "495px",
+      "left": "1425px"
+    }
+  },
+  "95d1e99d-fde6-425a-899a-da7fdec71128": {
+    "$contentActions": [
+      {
+        "action": {
+          "type": "SendRawMessage",
+          "settings": {
+            "metadata": {},
+            "type": "application/vnd.lime.select+json",
+            "rawContent": "{{menu}}"
+          }
+        }
+      },
+      {
+        "input": {
+          "bypass": true
+        }
+      }
+    ],
+    "$conditionOutputs": [
+      {
+        "stateId": "a5099eed-18f1-4bf5-a448-0079fe6a89b2",
+        "typeOfStateId": "state",
+        "conditions": [
+          {
+            "source": "input",
+            "comparison": "exists",
+            "values": []
+          }
+        ]
+      }
+    ],
+    "$enteringCustomActions": [
+      {
+        "type": "ExecuteScript",
+        "settings": {
+          "function": "run",
+          "source": "function run(skill) {\n\tskill = JSON.parse(skill)\n\n\tconst buttons = [skill.params.button_one, skill.params.button_two, skill.params.button_three]\n\n\tlet options = []\n\tfor (let i = 0; i < buttons.length; i++) {\n\t\tif (buttons[i]) {\n\t\t\toptions.push({\n\t\t\t\ttext: buttons[i].trim().slice(0, 20)\n\t\t\t})\n\t\t}\n\t}\n\n\treturn {\n\t\tscope: \"immediate\",\n\t\ttext: skill.params.body,\n\t\toptions: options\n\t}\n}",
+          "inputVariables": [
+            "skill"
+          ],
+          "outputVariable": "menu",
+          "LocalTimeZoneEnabled": false
+        },
+        "conditions": []
+      }
+    ],
+    "$leavingCustomActions": [],
+    "$defaultOutput": {
+      "stateId": "fallback"
+    },
+    "$title": "Skill: Envia menu",
+    "$position": {
+      "top": "504px",
+      "left": "888px"
+    }
+  },
+  "ww:98d724c5-271b-4683-88d5-b583e5c1b943": {
+    "$contentActions": [
+      {
+        "input": {
+          "bypass": true
+        }
+      }
+    ],
+    "$conditionOutputs": [],
+    "$enteringCustomActions": [],
+    "$leavingCustomActions": [
+      {
+        "type": "SetVariable",
+        "settings": {
+          "value": "",
+          "variable": "done"
+        },
+        "conditions": []
+      },
+      {
+        "type": "SetVariable",
+        "settings": {
+          "variable": "wwspreadsheet",
+          "value": "1f0YHFMoqcl_o6lXCpmtmcCT1HvkJzZuplZbYIVORYlA"
+        },
+        "conditions": []
+      },
+      {
+        "type": "SetVariable",
+        "settings": {
+          "variable": "wwvalues",
+          "value": "{{contact.name}}#separator#{{phone}}#separator#{{skill@params.observation}}"
+        },
+        "conditions": []
+      },
+      {
+        "type": "SetVariable",
+        "settings": {
+          "variable": "wwrange",
+          "value": "PrecoValor!A:C"
+        },
+        "conditions": []
+      },
+      {
+        "type": "ExecuteScript",
+        "settings": {
+          "function": "run",
+          "source": "function run(wwvalues) {\n    return wwvalues.split('#separator#') \n}",
+          "inputVariables": [
+            "wwvalues"
+          ],
+          "outputVariable": "wwsanitizedvalues",
+          "LocalTimeZoneEnabled": false
+        },
+        "conditions": []
+      },
+      {
+        "type": "ProcessCommand",
+        "settings": {
+          "from": "{{application.identity}}",
+          "to": "postmaster@msging.net",
+          "method": "get",
+          "uri": "/buckets/wwgsheetspk",
+          "variable": "wwBucketResponse"
+        },
+        "conditions": []
+      },
+      {
+        "type": "ProcessHttp",
+        "settings": {
+          "headers": {},
+          "method": "POST",
+          "uri": "https://southamerica-east1-ww-blip-plugins.cloudfunctions.net/gsheets_append",
+          "body": "{\"spreadsheetId\":\"{{wwspreadsheet}}\",\"range\":\"{{wwrange}}\",\"values\":{{wwsanitizedvalues}},\"publicKey\":\"{{wwBucketResponse@resource}}\",\"botIdentifier\":\"{{application.identifier}}\"}",
+          "responseStatusVariable": "wwResponseStatus",
+          "responseBodyVariable": "wwResponseBody"
+        },
+        "conditions": [],
+        "continueOnError": true
+      },
+      {
+        "type": "SetVariable",
+        "settings": {
+          "value": "{{wwResponseBody@cells}}",
+          "variable": "done"
+        },
+        "conditions": [
+          {
+            "source": "context",
+            "comparison": "equals",
+            "variable": "wwResponseStatus",
+            "values": [
+              "200"
+            ]
+          }
+        ]
+      },
+      {
+        "type": "TrackEvent",
+        "settings": {
+          "extras": {},
+          "category": "White Wall Error",
+          "action": "{{wwResponseStatus}}"
+        },
+        "conditions": [
+          {
+            "source": "context",
+            "comparison": "notEquals",
+            "variable": "wwResponseStatus",
+            "values": [
+              "200"
+            ]
+          },
+          {
+            "source": "context",
+            "comparison": "exists",
+            "values": [],
+            "variable": "wwResponseStatus"
+          }
+        ]
+      }
+    ],
+    "$defaultOutput": {
+      "stateId": "fallback"
+    },
+    "$title": "Submete observacao",
+    "$position": {
+      "top": "654px",
+      "left": "1425px"
+    }
+  }
+}

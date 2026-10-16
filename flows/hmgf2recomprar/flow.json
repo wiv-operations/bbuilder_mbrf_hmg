@@ -1,0 +1,653 @@
+{
+  "onboarding": {
+    "$contentActions": [
+      {
+        "input": {
+          "bypass": false
+        }
+      }
+    ],
+    "$conditionOutputs": [
+      {
+        "stateId": "f08a3f82-982c-4d79-b0b3-3429d9e62f96",
+        "typeOfStateId": "state",
+        "conditions": [
+          {
+            "source": "input",
+            "comparison": "exists",
+            "values": []
+          }
+        ]
+      }
+    ],
+    "$enteringCustomActions": [],
+    "$leavingCustomActions": [],
+    "$defaultOutput": {
+      "stateId": "fallback"
+    },
+    "$localCustomActions": [],
+    "root": true,
+    "$title": "Início",
+    "$position": {
+      "top": "292px",
+      "left": "719px"
+    }
+  },
+  "fallback": {
+    "$contentActions": [
+      {
+        "input": {
+          "bypass": true
+        }
+      }
+    ],
+    "$conditionOutputs": [],
+    "$enteringCustomActions": [
+      {
+        "type": "TrackEvent",
+        "settings": {
+          "extras": {},
+          "category": "Inputs inesperados",
+          "action": "{{state.previous.name}} - {{input.content}}"
+        },
+        "conditions": []
+      },
+      {
+        "type": "ExecuteScript",
+        "settings": {
+          "function": "run",
+          "source": "const VARIABLES_MOCK = [\n\t'Texto qualquer'\n]\n\nfunction run(inputContent) {\n\tlet redirect = \"{{resource.redirect@recompra}}\"\n\n\tlet previous = \"{{state.previous.id}}\";\n\tlet previousSubFlow = \"{{stateSubFluxo}}\";\n\ttry {\n\t\treturn {\n\t\t\t\"origin\": redirect,\n\t\t\t\"lastState\": previousSubFlow ? previousSubFlow : previous,\n\t\t\t\"lastName\": \"{{state.previous.name}}\",\n\t\t\t\"inputType\": \"menu dinamico\",\n\t\t\tinputContent\n\t\t};\n\n\t} catch (error) {\n\t\treturn \"ERROR_FORMATTING_INPUT_CONTENT\"\n\t}\n}",
+          "inputVariables": [
+            "input.content"
+          ],
+          "outputVariable": "inputExcecoes",
+          "LocalTimeZoneEnabled": false
+        },
+        "conditions": []
+      },
+      {
+        "type": "SetVariable",
+        "settings": {
+          "variable": "stateSubFluxo",
+          "expiration": 1
+        },
+        "conditions": []
+      }
+    ],
+    "$leavingCustomActions": [
+      {
+        "type": "Redirect",
+        "settings": {
+          "context": {
+            "type": "text/plain",
+            "value": "{{inputExcecoes}}"
+          },
+          "address": "{{resource.redirect@excecao}}"
+        },
+        "conditions": []
+      }
+    ],
+    "$defaultOutput": {
+      "stateId": "onboarding"
+    },
+    "$localCustomActions": [],
+    "$title": "Exceções",
+    "$position": {
+      "top": "293px",
+      "left": "306px"
+    }
+  },
+  "4c0d6b38-1b75-4103-87fb-797cc8cce09d": {
+    "$contentActions": [
+      {
+        "action": {
+          "$description": "",
+          "type": "SendMessage",
+          "settings": {
+            "type": "application/vnd.lime.select+json",
+            "content": {
+              "text": "Não encontrei nenhum registro do seu último pedido no momento. Pode ser que ele tenha sido feito com outro CNPJ.\n\nMas, não se preocupe, <b>posso te ajudar com um novo pedido.</b>",
+              "scope": "immediate",
+              "options": [
+                {
+                  "text": "Fazer novo pedido",
+                  "previewText": "Fazer novo pedido",
+                  "value": null,
+                  "index": 0,
+                  "type": null
+                },
+                {
+                  "text": "🔥 Ver ofertas",
+                  "previewText": "🔥 Ver ofertas",
+                  "value": null,
+                  "index": 1,
+                  "type": null
+                }
+              ],
+              "quikReply": false
+            },
+            "metadata": {}
+          }
+        }
+      },
+      {
+        "input": {
+          "bypass": false
+        }
+      }
+    ],
+    "$conditionOutputs": [
+      {
+        "stateId": "e6d9f589-aa5e-421c-895d-6310f2b30b83",
+        "typeOfStateId": "state",
+        "conditions": [
+          {
+            "source": "input",
+            "comparison": "equals",
+            "values": [
+              "Fazer novo pedido"
+            ]
+          }
+        ]
+      },
+      {
+        "stateId": "e6d9f589-aa5e-421c-895d-6310f2b30b83",
+        "typeOfStateId": "state",
+        "conditions": [
+          {
+            "source": "input",
+            "comparison": "equals",
+            "values": [
+              "🔥 Ver ofertas"
+            ]
+          }
+        ]
+      }
+    ],
+    "$enteringCustomActions": [
+      {
+        "type": "SetVariable",
+        "settings": {
+          "variable": "intentAction"
+        },
+        "conditions": []
+      },
+      {
+        "type": "TrackEvent",
+        "settings": {
+          "extras": {
+            "identificador": "{{contact.identity}}",
+            "origem": "{{origem}}",
+            "canal": "{{channel}}"
+          },
+          "category": "Menu registro nao encontrado exibicao",
+          "action": "Exibicao"
+        },
+        "conditions": []
+      }
+    ],
+    "$leavingCustomActions": [
+      {
+        "type": "ExecuteScript",
+        "settings": {
+          "function": "run",
+          "source": "function run(input) {\n  try {\n    let opcoesMenu = {\n      \"1\": \"Fazer novo pedido\",\n      \"2\": \"Ver ofertas\",\n    };\n\nlet menuRegex = {\n      \"1\": /\\b(?:1|um|novo(?:\\s+pedido)?|pedido|pedir|fazer|comprar)\\b/i,\n      \"2\": /\\b(?:2|dois|ofertas?|promo[çc][õo]es|promo[çc][ãa]o|promo|ver(?:\\s+ofertas?)?)\\b/i,\n    };\n\n    input = input.trim();\n\n    for (let prop in menuRegex) {\n      if (menuRegex[prop].test(input)) {\n        return opcoesMenu[prop];\n      }\n    }\n\n    return \"Input inesperado\";\n  } catch (error) {\n    return \"Input inesperado\";\n  }\n}",
+          "inputVariables": [
+            "input.content"
+          ],
+          "outputVariable": "intentAction",
+          "LocalTimeZoneEnabled": false
+        },
+        "conditions": []
+      },
+      {
+        "type": "TrackEvent",
+        "settings": {
+          "extras": {
+            "identificador": "{{contact.identity}}",
+            "origem": "{{origem}}",
+            "canal": "{{channel}}"
+          },
+          "category": "Menu registro nao encontrado selecao",
+          "action": "{{intentAction}}"
+        },
+        "conditions": [
+          {
+            "source": "input",
+            "comparison": "exists",
+            "values": []
+          }
+        ]
+      },
+      {
+        "type": "TrackEvent",
+        "settings": {
+          "extras": {
+            "identificador": "{{contact.identity}}",
+            "origem": "{{origem}}",
+            "canal": "{{channel}}"
+          },
+          "category": "Menu registro nao encontrado input inesperado",
+          "action": "{{input.content}}"
+        },
+        "conditions": [
+          {
+            "source": "context",
+            "variable": "intentAction",
+            "comparison": "equals",
+            "values": [
+              "Input inesperado"
+            ]
+          },
+          {
+            "source": "input",
+            "comparison": "exists",
+            "values": []
+          }
+        ]
+      }
+    ],
+    "$defaultOutput": {
+      "stateId": "fallback"
+    },
+    "$localCustomActions": [],
+    "$title": "Pedido anterior não localizado",
+    "$position": {
+      "top": "723px",
+      "left": "862px"
+    }
+  },
+  "e6d9f589-aa5e-421c-895d-6310f2b30b83": {
+    "$contentActions": [
+      {
+        "input": {
+          "bypass": true
+        }
+      }
+    ],
+    "$conditionOutputs": [],
+    "$enteringCustomActions": [],
+    "$leavingCustomActions": [],
+    "$defaultOutput": {
+      "stateId": "740f2bf2-1552-47ec-a844-2aedef177ba6",
+      "typeOfStateId": "state"
+    },
+    "$localCustomActions": [],
+    "$title": "[GO TO] redirect ofertas e oportunidades - inicio",
+    "$position": {
+      "top": "966px",
+      "left": "862px"
+    },
+    "addonsSettings": {
+      "shape": "0 50% 50% 0",
+      "backgroundColor": "#ffeb3b",
+      "textColor": "#000000"
+    }
+  },
+  "740f2bf2-1552-47ec-a844-2aedef177ba6": {
+    "$contentActions": [
+      {
+        "input": {
+          "bypass": true
+        }
+      }
+    ],
+    "$conditionOutputs": [],
+    "$enteringCustomActions": [],
+    "$leavingCustomActions": [
+      {
+        "type": "Redirect",
+        "settings": {
+          "context": {
+            "type": "text/plain",
+            "value": "@redirect"
+          },
+          "address": "{{resource.redirect@oportunidades}}"
+        },
+        "conditions": []
+      }
+    ],
+    "$defaultOutput": {
+      "stateId": "onboarding",
+      "typeOfStateId": "state"
+    },
+    "$localCustomActions": [],
+    "$title": "[Redirect] Ofertas e oportunidades - Inicio",
+    "$position": {
+      "top": "389px",
+      "left": "309px"
+    }
+  },
+  "cd1ad11c-6030-4187-ac8c-197879715482": {
+    "$contentActions": [
+      {
+        "input": {
+          "bypass": true
+        }
+      }
+    ],
+    "$conditionOutputs": [],
+    "$enteringCustomActions": [],
+    "$leavingCustomActions": [],
+    "$defaultOutput": {
+      "stateId": "740f2bf2-1552-47ec-a844-2aedef177ba6",
+      "typeOfStateId": "state"
+    },
+    "$localCustomActions": [],
+    "$title": "[GO TO] redirect ofertas e oportunidades - inicio",
+    "$position": {
+      "top": "963px",
+      "left": "651px"
+    },
+    "addonsSettings": {
+      "shape": "0 50% 50% 0",
+      "backgroundColor": "#ffeb3b",
+      "textColor": "#000000"
+    }
+  },
+  "2830d37c-1a16-46cf-ae4e-b9ab40713b2d": {
+    "$contentActions": [
+      {
+        "action": {
+          "$description": "",
+          "type": "SendMessage",
+          "settings": {
+            "type": "application/vnd.lime.select+json",
+            "content": {
+              "text": "{{textoUltimaCompra}}",
+              "scope": "immediate",
+              "options": [
+                {
+                  "text": "Repetir pedido",
+                  "previewText": "Repetir pedido",
+                  "value": null,
+                  "index": 0,
+                  "type": null
+                },
+                {
+                  "text": "Fazer novo pedido",
+                  "previewText": "Fazer novo pedido",
+                  "value": null,
+                  "index": 1,
+                  "type": null
+                },
+                {
+                  "index": -1,
+                  "text": "🔥 Ver ofertas",
+                  "previewText": "🔥 Ver ofertas",
+                  "type": null,
+                  "value": null
+                }
+              ],
+              "quikReply": false
+            },
+            "metadata": {}
+          }
+        }
+      },
+      {
+        "input": {
+          "bypass": false
+        }
+      }
+    ],
+    "$conditionOutputs": [
+      {
+        "stateId": "cd1ad11c-6030-4187-ac8c-197879715482",
+        "typeOfStateId": "state",
+        "conditions": [
+          {
+            "source": "input",
+            "comparison": "equals",
+            "values": [
+              "Fazer novo pedido"
+            ]
+          }
+        ]
+      },
+      {
+        "stateId": "cd1ad11c-6030-4187-ac8c-197879715482",
+        "typeOfStateId": "state",
+        "conditions": [
+          {
+            "source": "input",
+            "comparison": "equals",
+            "values": [
+              "🔥 Ver ofertas"
+            ]
+          }
+        ]
+      },
+      {
+        "stateId": "3bdc4eab-e9d2-42a9-817d-c3c3f78c66fd",
+        "typeOfStateId": "state",
+        "conditions": [
+          {
+            "source": "input",
+            "comparison": "equals",
+            "values": [
+              "Repetir pedido"
+            ]
+          }
+        ]
+      }
+    ],
+    "$enteringCustomActions": [
+      {
+        "type": "SetVariable",
+        "settings": {
+          "variable": "intentAction"
+        },
+        "conditions": []
+      },
+      {
+        "type": "TrackEvent",
+        "settings": {
+          "extras": {
+            "identificador": "{{contact.identity}}",
+            "origem": "{{origem}}",
+            "canal": "{{channel}}"
+          },
+          "category": "Menu ultimo pedido exibicao",
+          "action": "Exibicao"
+        },
+        "conditions": []
+      },
+      {
+        "$description": "",
+        "$inputSchema": {
+          "type": "object",
+          "properties": {},
+          "required": []
+        },
+        "type": "ExecuteScript",
+        "settings": {
+          "function": "run",
+          "source": "function run(itensCarrinhoFormatado) {\n    try {\n        const dados = typeof itensCarrinhoFormatado === \"string\"\n            ? JSON.parse(itensCarrinhoFormatado)\n            : itensCarrinhoFormatado;\n\n        const pedidos = (dados && dados.pedidos) || [];\n\n        if (!pedidos.length) {\n            return \"\";\n        }\n\n        // 1234.5 -> \"1.234,50\" (sem \"R$\", porque o texto já tem o prefixo)\n        const formatarValor = v => (Math.round((Number(v) || 0) * 100) / 100)\n            .toFixed(2)\n            .replace(\".\", \",\")\n            .replace(/\\B(?=(\\d{3})+(?!\\d))/g, \".\");\n\n        const itens = pedidos.map(item =>\n            \"Item: \" + (item.produto || \"\") + \"\\n\" +\n            \"Quantidade: \" + (Number(item.quantidade) || 0) + \"\\n\" +\n            \"Preço: R$\" + formatarValor(item.valorUnitario)\n        ).join(\"\\n\\n\");\n\n        // Total com desconto; se não vier, usa o subtotal ou soma os itens\n        const somaItens = pedidos.reduce((s, i) => s + (Number(i.subtotal) || 0), 0);\n        const valorTotal = dados.total != null ? dados.total\n            : dados.subtotal != null ? dados.subtotal\n            : somaItens;\n\n        return \"Percebi que seu último pedido com a gente foi esse:\\n\\n\" +\n            itens + \"\\n\\n\" +\n            \"Total do pedido: R$\" + formatarValor(valorTotal) + \"\\n\\n\" +\n            \"*Gostaria de repetir o mesmo pedido?*\";\n\n    } catch (error) {\n        return \"\";\n    }\n}",
+          "inputVariables": [
+            "itensCarrinhoFormatado"
+          ],
+          "outputVariable": "textoUltimaCompra",
+          "LocalTimeZoneEnabled": false
+        },
+        "conditions": []
+      }
+    ],
+    "$leavingCustomActions": [
+      {
+        "type": "ExecuteScript",
+        "settings": {
+          "function": "run",
+          "source": "function run(input) {\n  try {\n    let opcoesMenu = {\n      \"1\": \"Repetir pedido\",\n      \"2\": \"Fazer novo pedido\",\n      \"3\": \"🔥 Ver ofertas\"\n    };\n    \n    let menuRegex = {\n      \"1\": /\\b(?:1|um|repetir(?:\\s+pedido)?|mesmo|igual|anterior)\\b/i,\n      \"2\": /\\b(?:2|dois|novo(?:\\s+pedido)?|pedido|pedir|fazer|comprar)\\b/i,\n      \"3\": /\\b(?:3|tr[êe]s|ofertas?|promo[çc][õo]es|promo[çc][ãa]o|promo|ver(?:\\s+ofertas?)?)\\b/i,\n    };\n\n    input = input.trim();\n\n    for (let prop in menuRegex) {\n      if (menuRegex[prop].test(input)) {\n        return opcoesMenu[prop];\n      }\n    }\n\n    return \"Input inesperado\";\n  } catch (error) {\n    return \"Input inesperado\";\n  }\n}",
+          "inputVariables": [
+            "input.content"
+          ],
+          "outputVariable": "intentAction",
+          "LocalTimeZoneEnabled": false
+        },
+        "conditions": []
+      },
+      {
+        "type": "TrackEvent",
+        "settings": {
+          "extras": {
+            "identificador": "{{contact.identity}}",
+            "origem": "{{origem}}",
+            "canal": "{{channel}}"
+          },
+          "category": "Menu ultimo pedido selecao",
+          "action": "{{intentAction}}"
+        },
+        "conditions": [
+          {
+            "source": "input",
+            "comparison": "exists",
+            "values": []
+          }
+        ]
+      },
+      {
+        "type": "TrackEvent",
+        "settings": {
+          "extras": {
+            "identificador": "{{contact.identity}}",
+            "origem": "{{origem}}",
+            "canal": "{{channel}}"
+          },
+          "category": "Menu ultimo pedido input inesperado",
+          "action": "{{input.content}}"
+        },
+        "conditions": [
+          {
+            "source": "context",
+            "variable": "intentAction",
+            "comparison": "equals",
+            "values": [
+              "Input inesperado"
+            ]
+          },
+          {
+            "source": "input",
+            "comparison": "exists",
+            "values": []
+          }
+        ]
+      }
+    ],
+    "$defaultOutput": {
+      "stateId": "fallback"
+    },
+    "$localCustomActions": [],
+    "$title": "Pedido anterior localizado",
+    "$position": {
+      "top": "726px",
+      "left": "575px"
+    }
+  },
+  "f8e3a40c-feca-4829-b796-6ef0477d0a48": {
+    "$contentActions": [
+      {
+        "input": {
+          "bypass": true
+        }
+      }
+    ],
+    "$conditionOutputs": [],
+    "$enteringCustomActions": [],
+    "$leavingCustomActions": [
+      {
+        "type": "Redirect",
+        "settings": {
+          "context": {
+            "type": "text/plain",
+            "value": "@redirect_cart"
+          },
+          "address": "{{resource.redirect@oportunidades}}"
+        },
+        "conditions": []
+      }
+    ],
+    "$defaultOutput": {
+      "stateId": "onboarding",
+      "typeOfStateId": "state"
+    },
+    "$localCustomActions": [],
+    "$title": "[Redirect] Ofertas e oportunidades - carrinho",
+    "$position": {
+      "top": "546px",
+      "left": "308px"
+    }
+  },
+  "3bdc4eab-e9d2-42a9-817d-c3c3f78c66fd": {
+    "$contentActions": [
+      {
+        "input": {
+          "bypass": true
+        }
+      }
+    ],
+    "$conditionOutputs": [],
+    "$enteringCustomActions": [],
+    "$leavingCustomActions": [],
+    "$defaultOutput": {
+      "stateId": "740f2bf2-1552-47ec-a844-2aedef177ba6",
+      "typeOfStateId": "state"
+    },
+    "$localCustomActions": [],
+    "$title": "[GO TO] redirect ofertas e oportunidades - carrinh",
+    "$position": {
+      "top": "963px",
+      "left": "465px"
+    },
+    "addonsSettings": {
+      "shape": "0 50% 50% 0",
+      "backgroundColor": "#ffeb3b",
+      "textColor": "#000000"
+    }
+  },
+  "f08a3f82-982c-4d79-b0b3-3429d9e62f96": {
+    "$contentActions": [
+      {
+        "input": {
+          "bypass": true
+        }
+      }
+    ],
+    "$conditionOutputs": [
+      {
+        "stateId": "2830d37c-1a16-46cf-ae4e-b9ab40713b2d",
+        "typeOfStateId": "state",
+        "conditions": [
+          {
+            "source": "context",
+            "comparison": "exists",
+            "values": [],
+            "variable": "contact.extras.smartsalesOrder"
+          }
+        ]
+      },
+      {
+        "stateId": "4c0d6b38-1b75-4103-87fb-797cc8cce09d",
+        "typeOfStateId": "state",
+        "conditions": [
+          {
+            "source": "input",
+            "comparison": "exists",
+            "values": []
+          }
+        ]
+      }
+    ],
+    "$enteringCustomActions": [],
+    "$leavingCustomActions": [],
+    "$defaultOutput": {
+      "stateId": "fallback"
+    },
+    "$localCustomActions": [],
+    "$title": "Buscar pedido",
+    "$position": {
+      "top": "432px",
+      "left": "719px"
+    }
+  }
+}

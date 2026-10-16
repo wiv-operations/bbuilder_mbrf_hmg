@@ -1,0 +1,13 @@
+# CODEOWNERS — define quem precisa aprovar cada mudança
+# Troque @wiv-operations/qa pelos handles reais dos times.
+
+# Alterações em flow.json e nos cenários exigem revisão de QA
+flows/                @wiv-operations/qa
+tests/                @wiv-operations/qa
+
+# Workflows de CI pedem review de infra/platform
+.github/              @wiv-operations/platform
+scripts/              @wiv-operations/platform
+
+# Documentação pode ser aprovada por qualquer um do time
+*.md                  @wiv-operations

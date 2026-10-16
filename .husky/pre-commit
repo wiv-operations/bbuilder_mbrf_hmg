@@ -1,0 +1,6 @@
+# Pre-commit: validate (contra baseline) + type-check — rápido, local, sem Blip
+set -e
+echo "→ bbuilder validate (contra baseline de .ci/validate-baseline.json)"
+node scripts/validate-against-baseline.mjs
+echo "→ npm run type-check"
+npm run type-check

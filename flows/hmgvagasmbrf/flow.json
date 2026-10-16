@@ -1,0 +1,309 @@
+{
+  "onboarding": {
+    "$contentActions": [
+      {
+        "input": {
+          "bypass": false,
+          "variable": "Initial"
+        }
+      }
+    ],
+    "$conditionOutputs": [
+      {
+        "stateId": "{{input.content@lastState}}",
+        "typeOfStateId": "variable",
+        "conditions": [
+          {
+            "source": "context",
+            "comparison": "exists",
+            "values": [],
+            "variable": "input.content@lastState"
+          }
+        ]
+      },
+      {
+        "stateId": "322b903c-b01d-4f1a-acf0-1523ad9b2648",
+        "typeOfStateId": "state",
+        "conditions": [
+          {
+            "source": "input",
+            "comparison": "exists",
+            "values": []
+          }
+        ]
+      }
+    ],
+    "$enteringCustomActions": [
+      {
+        "type": "TrackEvent",
+        "settings": {
+          "extras": {},
+          "category": "[{{application.identifier}}][{{state.name}}] Exibição",
+          "action": "Entrada"
+        },
+        "conditions": []
+      }
+    ],
+    "$leavingCustomActions": [
+      {
+        "type": "TrackEvent",
+        "settings": {
+          "extras": {},
+          "category": "[{{application.identifier}}][{{state.name}}] Exibição",
+          "action": "Saida"
+        },
+        "conditions": []
+      },
+      {
+        "type": "TrackEvent",
+        "settings": {
+          "extras": {},
+          "category": "[{{application.identifier}}][{{state.name}}] Seleção",
+          "action": "{{input.content}}"
+        },
+        "conditions": [
+          {
+            "values": [],
+            "source": "input",
+            "comparison": "exists"
+          }
+        ]
+      }
+    ],
+    "$defaultOutput": {
+      "stateId": "fallback"
+    },
+    "root": true,
+    "$title": "Início",
+    "$position": {
+      "top": "81px",
+      "left": "975px"
+    }
+  },
+  "fallback": {
+    "$contentActions": [
+      {
+        "input": {
+          "bypass": true
+        }
+      }
+    ],
+    "$conditionOutputs": [],
+    "$enteringCustomActions": [
+      {
+        "type": "TrackEvent",
+        "settings": {
+          "extras": {},
+          "category": "[{{application.identifier}}][{{state.name}}] Exibição",
+          "action": "Entrada"
+        },
+        "conditions": []
+      },
+      {
+        "type": "TrackEvent",
+        "settings": {
+          "extras": {},
+          "category": "Inputs inesperados",
+          "action": "{{state.previous.name}} - {{input.content}}"
+        },
+        "conditions": []
+      },
+      {
+        "type": "ExecuteScript",
+        "settings": {
+          "function": "run",
+          "source": "function run(inputContent) {\n\tlet redirect = \"{{resource.redirect@vagasMbrf}}\"\n\n\tlet previous = \"{{state.previous.id}}\";\n\tlet previousSubFlow = \"{{stateSubFluxo}}\";\n\ttry {\n\t\treturn {\n\t\t\t\"origin\": redirect,\n\t\t\t\"lastState\": previousSubFlow ? previousSubFlow : previous,\n\t\t\t\"lastName\": \"{{state.previous.name}}\",\n\t\t\t\"inputType\": \"menu dinamico\",\n\t\t\tinputContent\n\t\t};\n\n\t} catch (error) {\n\t\treturn \"ERROR_FORMATTING_INPUT_CONTENT\"\n\t}\n}",
+          "inputVariables": [
+            "input.content"
+          ],
+          "outputVariable": "inputExcecoes",
+          "LocalTimeZoneEnabled": false
+        },
+        "conditions": []
+      },
+      {
+        "type": "SetVariable",
+        "settings": {
+          "variable": "stateSubFluxo",
+          "expiration": 1
+        },
+        "conditions": []
+      }
+    ],
+    "$leavingCustomActions": [
+      {
+        "type": "Redirect",
+        "settings": {
+          "context": {
+            "type": "text/plain",
+            "value": "{{inputExcecoes}}"
+          },
+          "address": "{{resource.redirect@excecao}}"
+        },
+        "conditions": []
+      },
+      {
+        "type": "TrackEvent",
+        "settings": {
+          "extras": {},
+          "category": "[{{application.identifier}}][{{state.name}}] Exibição",
+          "action": "Saida"
+        },
+        "conditions": []
+      }
+    ],
+    "$defaultOutput": {
+      "stateId": "onboarding"
+    },
+    "$title": "Exceções",
+    "$position": {
+      "top": "83px",
+      "left": "679px"
+    }
+  },
+  "322b903c-b01d-4f1a-acf0-1523ad9b2648": {
+    "$contentActions": [
+      {
+        "action": {
+          "$description": "",
+          "type": "SendMessage",
+          "settings": {
+            "type": "text/plain",
+            "content": "Ficamos felizes que tenha interesse em fazer parte de nosso time! 🤩",
+            "metadata": {}
+          }
+        }
+      },
+      {
+        "input": {
+          "bypass": true
+        }
+      }
+    ],
+    "$conditionOutputs": [
+      {
+        "stateId": "bbef72a8-25f7-4e4a-aa6f-c940854f5445",
+        "typeOfStateId": "state",
+        "conditions": [
+          {
+            "source": "input",
+            "comparison": "exists",
+            "values": []
+          }
+        ]
+      }
+    ],
+    "$enteringCustomActions": [
+      {
+        "$description": "",
+        "$inputSchema": {
+          "type": "object",
+          "properties": {},
+          "required": []
+        },
+        "type": "TrackEvent",
+        "settings": {
+          "extras": {},
+          "category": "Mensagem vagas exibicao",
+          "action": "Exibicao"
+        },
+        "conditions": []
+      }
+    ],
+    "$leavingCustomActions": [],
+    "$defaultOutput": {
+      "stateId": "fallback"
+    },
+    "$localCustomActions": [],
+    "$title": "[MSG] Vagas",
+    "$position": {
+      "top": "288px",
+      "left": "975px"
+    }
+  },
+  "bbef72a8-25f7-4e4a-aa6f-c940854f5445": {
+    "$contentActions": [
+      {
+        "action": {
+          "$description": "",
+          "type": "SendRawMessage",
+          "settings": {
+            "metadata": {},
+            "type": "application/json",
+            "rawContent": "{\n  \"recipient_type\": \"individual\",\n  \"type\": \"interactive\",\n  \"interactive\": {\n    \"type\": \"cta_url\",\n    \"body\": {\n      \"text\": \"Para acompanhar vagas disponíveis por região, você pode acessar o Portal de Talentos da MBRF através do site ﻿MbrfVagas﻿. Lá, você também poderá selecionar e encontrar as vagas de seu interesse por áreas de atuação, tá bem?\n\nBoa sorte! 🍀\"\n    },\n    \"action\": {\n      \"name\": \"cta_url\",\n      \"parameters\": {\n        \"display_text\": \"Ver vagas\",\n        \"url\": \"https://www.mbrf.com/vagas/#vagas\"\n      }\n    }\n  }\n}"
+          }
+        }
+      },
+      {
+        "input": {
+          "bypass": true
+        }
+      }
+    ],
+    "$conditionOutputs": [
+      {
+        "stateId": "259d8142-c2fe-458b-a84c-a643ea62c923",
+        "typeOfStateId": "state",
+        "conditions": [
+          {
+            "source": "input",
+            "comparison": "exists",
+            "values": []
+          }
+        ]
+      }
+    ],
+    "$enteringCustomActions": [],
+    "$leavingCustomActions": [],
+    "$defaultOutput": {
+      "stateId": "259d8142-c2fe-458b-a84c-a643ea62c923",
+      "typeOfStateId": "state"
+    },
+    "$localCustomActions": [],
+    "$title": "[MSG] Acessar link",
+    "$position": {
+      "top": "442px",
+      "left": "975px"
+    }
+  },
+  "259d8142-c2fe-458b-a84c-a643ea62c923": {
+    "$contentActions": [
+      {
+        "input": {
+          "bypass": true
+        }
+      }
+    ],
+    "$conditionOutputs": [],
+    "$enteringCustomActions": [],
+    "$leavingCustomActions": [
+      {
+        "$description": "",
+        "$inputSchema": {
+          "type": "object",
+          "properties": {},
+          "required": []
+        },
+        "type": "Redirect",
+        "settings": {
+          "context": {
+            "type": "text/plain",
+            "value": "@redirect"
+          },
+          "address": "{{resource.redirect@ajudoEmAlgoMais}}"
+        },
+        "conditions": []
+      }
+    ],
+    "$defaultOutput": {
+      "stateId": "onboarding",
+      "typeOfStateId": "state"
+    },
+    "$localCustomActions": [],
+    "$title": "[REDIRECT] Ajudo em algo mais",
+    "$position": {
+      "top": "628px",
+      "left": "976px"
+    }
+  }
+}

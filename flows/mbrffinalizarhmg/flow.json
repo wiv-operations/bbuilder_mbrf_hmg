@@ -1,0 +1,1326 @@
+{
+  "onboarding": {
+    "$contentActions": [
+      {
+        "input": {
+          "bypass": false
+        }
+      }
+    ],
+    "$conditionOutputs": [
+      {
+        "stateId": "{{input.content@lastState}}",
+        "typeOfStateId": "variable",
+        "conditions": [
+          {
+            "source": "context",
+            "comparison": "exists",
+            "values": [],
+            "variable": "input.content@lastState"
+          }
+        ]
+      },
+      {
+        "stateId": "welcome",
+        "conditions": [
+          {
+            "source": "input",
+            "comparison": "matches",
+            "values": [
+              ".*"
+            ]
+          }
+        ]
+      }
+    ],
+    "$enteringCustomActions": [],
+    "$leavingCustomActions": [],
+    "$defaultOutput": {
+      "stateId": "fallback"
+    },
+    "root": true,
+    "$title": "Início",
+    "$position": {
+      "top": "287px",
+      "left": "545px"
+    }
+  },
+  "fallback": {
+    "$contentActions": [
+      {
+        "input": {
+          "bypass": true
+        }
+      }
+    ],
+    "$conditionOutputs": [],
+    "$enteringCustomActions": [
+      {
+        "type": "TrackEvent",
+        "settings": {
+          "extras": {},
+          "category": "Inputs inesperados",
+          "action": "{{state.previous.name}} - {{input.content}}"
+        },
+        "conditions": []
+      },
+      {
+        "type": "ExecuteScript",
+        "settings": {
+          "function": "run",
+          "source": "const VARIABLES_MOCK = [\n\t'Texto qualquer'\n]\n\nfunction run(inputContent) {\n\tlet redirect = \"{{resource.redirect@finalizacao}}\"\n\n\tlet previous = \"{{state.previous.id}}\";\n\tlet previousSubFlow = \"{{stateSubFluxo}}\";\n\ttry {\n\t\treturn {\n\t\t\t\"origin\": redirect,\n\t\t\t\"lastState\": previousSubFlow ? previousSubFlow : previous,\n\t\t\t\"lastName\": \"{{state.previous.name}}\",\n\t\t\t\"inputType\": \"menu dinamico\",\n\t\t\tinputContent\n\t\t};\n\n\t} catch (error) {\n\t\treturn \"ERROR_FORMATTING_INPUT_CONTENT\"\n\t}\n}",
+          "inputVariables": [
+            "input.content"
+          ],
+          "outputVariable": "inputExcecoes",
+          "LocalTimeZoneEnabled": false
+        },
+        "conditions": []
+      },
+      {
+        "type": "SetVariable",
+        "settings": {
+          "variable": "stateSubFluxo",
+          "expiration": 1
+        },
+        "conditions": []
+      }
+    ],
+    "$leavingCustomActions": [
+      {
+        "type": "Redirect",
+        "settings": {
+          "context": {
+            "type": "text/plain",
+            "value": "{{inputExcecoes}}"
+          },
+          "address": "{{resource.redirect@excecao}}"
+        },
+        "conditions": []
+      }
+    ],
+    "$defaultOutput": {
+      "stateId": "onboarding"
+    },
+    "$title": "Exceções",
+    "$position": {
+      "top": "337px",
+      "left": "1010px"
+    }
+  },
+  "welcome": {
+    "$contentActions": [
+      {
+        "action": {
+          "$description": "",
+          "type": "SendMessage",
+          "settings": {
+            "type": "application/vnd.lime.select+json",
+            "content": {
+              "text": "Você poderia avaliar o nosso atendimento?\n\n<b>É bem rapidinho!</b> 😃",
+              "scope": "immediate",
+              "options": [
+                {
+                  "text": "Sim",
+                  "previewText": "Sim",
+                  "value": null,
+                  "index": 0,
+                  "type": null
+                },
+                {
+                  "text": "Não",
+                  "previewText": "Não",
+                  "value": null,
+                  "index": 1,
+                  "type": null
+                }
+              ],
+              "quikReply": false
+            },
+            "metadata": {}
+          }
+        }
+      },
+      {
+        "input": {
+          "bypass": false,
+          "expiration": "0:15"
+        }
+      }
+    ],
+    "$conditionOutputs": [
+      {
+        "stateId": "8849db49-6616-4413-9659-050aecba1c6f",
+        "typeOfStateId": "state",
+        "conditions": [
+          {
+            "source": "input",
+            "comparison": "equals",
+            "values": [
+              "Sim"
+            ]
+          }
+        ]
+      },
+      {
+        "stateId": "5c2711ec-9744-4d3a-b717-599f79467292",
+        "typeOfStateId": "state",
+        "conditions": [
+          {
+            "source": "input",
+            "comparison": "equals",
+            "values": [
+              "Não"
+            ]
+          }
+        ]
+      }
+    ],
+    "$enteringCustomActions": [],
+    "$leavingCustomActions": [],
+    "$defaultOutput": {
+      "stateId": "fallback"
+    },
+    "$title": "Pergunta: avaliar atendimento",
+    "$position": {
+      "top": "484px",
+      "left": "517px"
+    }
+  },
+  "5c2711ec-9744-4d3a-b717-599f79467292": {
+    "$contentActions": [
+      {
+        "action": {
+          "type": "SendMessage",
+          "settings": {
+            "type": "text/plain",
+            "content": "A Central MBRF agradece o seu contato!",
+            "metadata": {}
+          }
+        }
+      },
+      {
+        "action": {
+          "type": "SendMessage",
+          "settings": {
+            "type": "text/plain",
+            "content": "É um prazer poder receber você aqui! 😊",
+            "metadata": {}
+          }
+        }
+      },
+      {
+        "input": {
+          "bypass": true
+        }
+      }
+    ],
+    "$conditionOutputs": [],
+    "$enteringCustomActions": [
+      {
+        "type": "TrackEvent",
+        "settings": {
+          "extras": {},
+          "category": "NPS Totais",
+          "action": "Não Realizado"
+        },
+        "conditions": []
+      },
+      {
+        "type": "TrackEvent",
+        "settings": {
+          "extras": {
+            "identificador": "{{contact.identity}}",
+            "origem": "{{origem}}",
+            "canal": "{{channel}}"
+          },
+          "category": "Fluxo finalizacao",
+          "action": "Encerrado"
+        },
+        "conditions": []
+      },
+      {
+        "$description": "",
+        "$inputSchema": {
+          "type": "object",
+          "properties": {},
+          "required": []
+        },
+        "type": "SetVariable",
+        "settings": {
+          "variable": "horaFim",
+          "value": "{{calendar.datetime}}"
+        },
+        "conditions": []
+      }
+    ],
+    "$leavingCustomActions": [
+      {
+        "$description": "",
+        "$inputSchema": {
+          "type": "object",
+          "properties": {},
+          "required": []
+        },
+        "type": "ExecuteScript",
+        "settings": {
+          "function": "run",
+          "source": "function run(horaEntrada, horaFim) {\n  try {\n    function parseDataGMT0(dataTexto) {\n      const [data, hora] = dataTexto.split(\" \");\n      const [mes, dia, ano] = data.split(\"/\");\n      const [hh, mm, ss] = hora.split(\":\");\n\n      return new Date(Date.UTC(ano, mes - 1, dia, hh, mm, ss));\n    }\n\n    function formatarBrasil(data) {\n      const dataBrasil = new Date(data.getTime() - 3 * 60 * 60 * 1000);\n\n      const dia = String(dataBrasil.getUTCDate()).padStart(2, \"0\");\n      const mes = String(dataBrasil.getUTCMonth() + 1).padStart(2, \"0\");\n      const ano = dataBrasil.getUTCFullYear();\n\n      const hora = String(dataBrasil.getUTCHours()).padStart(2, \"0\");\n      const minuto = String(dataBrasil.getUTCMinutes()).padStart(2, \"0\");\n\n      return {\n        data: `${dia}/${mes}/${ano}`,\n        hora: `${hora}:${minuto}`\n      };\n    }\n\n    const entrada = parseDataGMT0(horaEntrada);\n    const fim = parseDataGMT0(horaFim);\n\n    const diferencaMs = fim - entrada;\n    const totalSegundos = Math.floor(diferencaMs / 1000);\n    const totalMinutos = Math.floor(totalSegundos / 60);\n\n    const horas = Math.floor(totalMinutos / 60);\n    const minutos = totalMinutos % 60;\n    const segundos = totalSegundos % 60;\n\n    const entradaFormatada = formatarBrasil(entrada);\n    const fimFormatada = formatarBrasil(fim);\n\n    let tempoTexto = \"\";\n\n    if (horas > 0) {\n      tempoTexto += `${horas} ${horas === 1 ? \"hora\" : \"horas\"}`;\n    }\n\n    if (minutos > 0) {\n      if (tempoTexto) tempoTexto += \" e \";\n      tempoTexto += `${minutos} ${minutos === 1 ? \"minuto\" : \"minutos\"}`;\n    }\n\n    if (horas === 0 && minutos === 0) {\n      tempoTexto = `${segundos} ${segundos === 1 ? \"segundo\" : \"segundos\"}`;\n    }\n\n    return {\n      horaEntrada,\n      horaFim,\n      tempoInteracao: {\n        horas,\n        minutos,\n        segundos,\n        totalMinutos,\n        totalSegundos\n      },\n      relatorio: `Entrou às ${entradaFormatada.hora} do dia ${entradaFormatada.data} finalizou interação às ${fimFormatada.hora} do dia ${fimFormatada.data} tempo de interação de ${tempoTexto}`\n    };\n  } catch (error) {\n    return {\n      erro: \"Erro ao calcular tempo de interação\"\n    };\n  }\n}",
+          "inputVariables": [
+            "horaEntrada",
+            "horaFim"
+          ],
+          "outputVariable": "tempoInteracao",
+          "LocalTimeZoneEnabled": false
+        },
+        "conditions": []
+      },
+      {
+        "type": "TrackEvent",
+        "settings": {
+          "extras": {
+            "identificador": "{{contact.identity}}",
+            "origem": "{{origem}}",
+            "canal": "{{channel}}"
+          },
+          "category": "tempo de interacao",
+          "action": "identificador: {{contact.identity}} | {{tempoInteracao@relatorio}}"
+        },
+        "conditions": []
+      }
+    ],
+    "$defaultOutput": {
+      "stateId": "d49c2142-2229-438d-9bfb-c8991a34ce96",
+      "typeOfStateId": "state"
+    },
+    "$title": "Encerra contato",
+    "$position": {
+      "top": "492px",
+      "left": "244px"
+    }
+  },
+  "ec05d089-860e-4583-9c5e-afcab776a816": {
+    "$contentActions": [
+      {
+        "input": {
+          "bypass": true
+        }
+      }
+    ],
+    "$conditionOutputs": [
+      {
+        "stateId": "b488159c-7e44-47c1-8fe5-a557809fe1f3",
+        "typeOfStateId": "state",
+        "conditions": [
+          {
+            "source": "context",
+            "comparison": "contains",
+            "values": [
+              "2",
+              "2.0",
+              "1",
+              "1.0",
+              "outro"
+            ],
+            "variable": "nota"
+          }
+        ]
+      },
+      {
+        "stateId": "fa6857fc-6a69-45e2-8b9d-1370d9c24148",
+        "typeOfStateId": "state",
+        "conditions": [
+          {
+            "source": "context",
+            "comparison": "contains",
+            "values": [
+              "3",
+              "3.0"
+            ],
+            "variable": "nota"
+          }
+        ]
+      },
+      {
+        "stateId": "b61b6759-7ad6-431f-aa99-195d2e815ebf",
+        "typeOfStateId": "state",
+        "conditions": [
+          {
+            "source": "context",
+            "comparison": "equals",
+            "values": [
+              "4",
+              "4.0",
+              "5",
+              "5.0"
+            ],
+            "variable": "nota"
+          }
+        ]
+      }
+    ],
+    "$enteringCustomActions": [
+      {
+        "type": "ExecuteScript",
+        "settings": {
+          "function": "run",
+          "source": "const VARIABLES_MOCK = [\n\t'Texto qualquer'\n]\n\nfunction run(nps) {\n\ttry {\n\t\tif (nps.includes(\"5\") || nps.includes(\"🤩\")) return \"5\";\n\t\tif (nps.includes(\"4\") || nps.includes(\"😄\")) return \"4\";\n\t\tif (nps.includes(\"3\") || nps.includes(\"🙂\")) return \"3\";\n\t\tif (nps.includes(\"2\") || nps.includes(\"😐\")) return \"2\";\n\t\tif (nps.includes(\"1\") || nps.includes(\"😟\")) return \"1\";\n\n\t\treturn \"Outro\";\n\t} catch(e) {\n\t\treturn \"Outro\";\n\t}\n}",
+          "inputVariables": [
+            "nps"
+          ],
+          "outputVariable": "nota",
+          "LocalTimeZoneEnabled": false
+        },
+        "conditions": []
+      },
+      {
+        "type": "TrackEvent",
+        "settings": {
+          "extras": {},
+          "category": "NPS Totais",
+          "action": "Realizado"
+        },
+        "conditions": []
+      },
+      {
+        "type": "TrackEvent",
+        "settings": {
+          "extras": {},
+          "category": "NPS",
+          "action": "{{nota}}"
+        },
+        "conditions": []
+      }
+    ],
+    "$leavingCustomActions": [],
+    "$defaultOutput": {
+      "stateId": "fallback"
+    },
+    "$title": "Formata NPS",
+    "$position": {
+      "top": "1012px",
+      "left": "549px"
+    }
+  },
+  "a8be86bc-53d9-45fb-ba6b-7af9165ca541": {
+    "$contentActions": [
+      {
+        "action": {
+          "type": "SendMessage",
+          "settings": {
+            "type": "application/vnd.lime.select+json",
+            "content": {
+              "text": "De <b>1</b> a <b>5</b>, onde <b>1</b> é <b>nada satisfeito</b> e <b>5</b> é <b>totalmente satisfeito</b>, qual nota você da para esse atendimento?",
+              "options": [
+                {
+                  "text": "5 - 🤩",
+                  "previewText": "5 - 🤩",
+                  "value": null,
+                  "index": 0,
+                  "type": null
+                },
+                {
+                  "text": "4 - 😄",
+                  "previewText": "4 - 😄",
+                  "value": null,
+                  "index": 1,
+                  "type": null
+                },
+                {
+                  "text": "3 - 🙂",
+                  "previewText": "3 - 🙂",
+                  "value": null,
+                  "index": 2,
+                  "type": null
+                },
+                {
+                  "index": 3,
+                  "text": "2 - 😐",
+                  "previewText": "2 - 😐",
+                  "type": null,
+                  "value": null
+                },
+                {
+                  "index": 4,
+                  "text": "1 - 😟",
+                  "previewText": "1 - 😟",
+                  "type": null,
+                  "value": null
+                }
+              ],
+              "limitMenu": false
+            },
+            "metadata": {}
+          }
+        }
+      },
+      {
+        "input": {
+          "bypass": false,
+          "expiration": "4:0",
+          "variable": "nps"
+        }
+      }
+    ],
+    "$conditionOutputs": [
+      {
+        "stateId": "ec05d089-860e-4583-9c5e-afcab776a816",
+        "typeOfStateId": "state",
+        "conditions": [
+          {
+            "source": "input",
+            "comparison": "contains",
+            "values": [
+              "4 - 😄",
+              "5 - 🤩",
+              "4",
+              "5",
+              "🤩",
+              "😄"
+            ]
+          }
+        ]
+      },
+      {
+        "stateId": "ec05d089-860e-4583-9c5e-afcab776a816",
+        "typeOfStateId": "state",
+        "conditions": [
+          {
+            "source": "input",
+            "comparison": "contains",
+            "values": [
+              "3 - 🙂",
+              "2 - 😐",
+              "1 - 😟",
+              "1",
+              "2",
+              "3",
+              "😐",
+              "🙂",
+              "😟"
+            ]
+          }
+        ]
+      }
+    ],
+    "$enteringCustomActions": [],
+    "$leavingCustomActions": [],
+    "$defaultOutput": {
+      "stateId": "fallback"
+    },
+    "$title": "Envia NPS - BlipChat",
+    "$position": {
+      "top": "828px",
+      "left": "368px"
+    }
+  },
+  "8849db49-6616-4413-9659-050aecba1c6f": {
+    "$contentActions": [
+      {
+        "input": {
+          "bypass": true
+        }
+      }
+    ],
+    "$conditionOutputs": [
+      {
+        "stateId": "4a504780-456f-4df2-90f9-c342c43bc86d",
+        "typeOfStateId": "state",
+        "conditions": [
+          {
+            "source": "context",
+            "comparison": "contains",
+            "values": [
+              "wa.gw.msging.net"
+            ],
+            "variable": "contact.identity"
+          }
+        ]
+      },
+      {
+        "stateId": "a8be86bc-53d9-45fb-ba6b-7af9165ca541",
+        "typeOfStateId": "state",
+        "conditions": [
+          {
+            "source": "input",
+            "comparison": "exists",
+            "values": []
+          }
+        ]
+      }
+    ],
+    "$enteringCustomActions": [],
+    "$leavingCustomActions": [],
+    "$defaultOutput": {
+      "stateId": "fallback"
+    },
+    "$title": "Verifica canal de atendimento",
+    "$position": {
+      "top": "677px",
+      "left": "544px"
+    }
+  },
+  "d49c2142-2229-438d-9bfb-c8991a34ce96": {
+    "$contentActions": [
+      {
+        "input": {
+          "bypass": true
+        }
+      }
+    ],
+    "$conditionOutputs": [],
+    "$enteringCustomActions": [],
+    "$leavingCustomActions": [
+      {
+        "type": "Redirect",
+        "settings": {
+          "address": "{{resource.redirect@captacao}}"
+        },
+        "conditions": []
+      }
+    ],
+    "$defaultOutput": {
+      "stateId": "onboarding",
+      "typeOfStateId": "state"
+    },
+    "$title": "Redireciona - Captação (Encerra atendimento)",
+    "$position": {
+      "top": "331px",
+      "left": "1215px"
+    }
+  },
+  "4a504780-456f-4df2-90f9-c342c43bc86d": {
+    "$contentActions": [
+      {
+        "action": {
+          "type": "SendRawMessage",
+          "settings": {
+            "metadata": {},
+            "type": "application/json",
+            "rawContent": "{\n    \"recipient_type\": \"individual\",\n    \"type\": \"interactive\",\n    \"interactive\": {\n        \"type\": \"list\",\n        \"body\": {\n            \"text\": \"De 1 a 5, onde 1 é nada satisfeito e 5 é totalmente satisfeito, qual nota você da para esse atendimento?\"\n        },\n        \"action\": {\n            \"button\": \"Selecionar\",\n            \"sections\": [\n                {\n                    \"title\": \"Serviços\",\n                    \"rows\": [\n                        {\n                            \"id\": \"op1\",\n                            \"title\": \"5 - 🤩\",\n                            \"description\": \"Totalmente satisfeito\"\n                        },\n                        {\n                            \"id\": \"op2\",\n                            \"title\": \"4 - 😄\",\n                            \"description\": \"Parcialmente satisfeito\"\n                        },\n                        {\n                            \"id\": \"op3\",\n                            \"title\": \"3 - 🙂\",\n                            \"description\": \"Indiferente\"\n                        },\n                        {\n                            \"id\": \"op4\",\n                            \"title\": \"2 - 😐\",\n                            \"description\": \"Insatisfeito\"\n                        },\n                        {\n                            \"id\": \"op5\",\n                            \"title\": \"1 - 😟\",\n                            \"description\": \"Totalmente insatisfeito\"\n                        }\n                    ]\n                }\n            ]\n        }\n    }\n}"
+          }
+        }
+      },
+      {
+        "input": {
+          "bypass": false,
+          "expiration": "4:0",
+          "variable": "nps"
+        }
+      }
+    ],
+    "$conditionOutputs": [
+      {
+        "stateId": "ec05d089-860e-4583-9c5e-afcab776a816",
+        "typeOfStateId": "state",
+        "conditions": [
+          {
+            "source": "input",
+            "comparison": "contains",
+            "values": [
+              "4 - 😄",
+              "5 - 🤩",
+              "4",
+              "5",
+              "🤩",
+              "😄"
+            ]
+          }
+        ]
+      },
+      {
+        "stateId": "ec05d089-860e-4583-9c5e-afcab776a816",
+        "typeOfStateId": "state",
+        "conditions": [
+          {
+            "source": "input",
+            "comparison": "contains",
+            "values": [
+              "3 - 🙂",
+              "2 - 😐",
+              "1 - 😟",
+              "1",
+              "2",
+              "3",
+              "😐",
+              "🙂",
+              "😟"
+            ]
+          }
+        ]
+      }
+    ],
+    "$enteringCustomActions": [],
+    "$leavingCustomActions": [],
+    "$defaultOutput": {
+      "stateId": "fallback"
+    },
+    "$title": "Envia NPS - Whatsapp",
+    "$position": {
+      "top": "830px",
+      "left": "722px"
+    }
+  },
+  "b488159c-7e44-47c1-8fe5-a557809fe1f3": {
+    "$contentActions": [
+      {
+        "action": {
+          "type": "SendMessage",
+          "settings": {
+            "type": "text/plain",
+            "content": "Sentimos muito que sua experiência com a nossa equipe de atendimento não tenha sido positiva... 😢",
+            "metadata": {}
+          }
+        }
+      },
+      {
+        "action": {
+          "type": "SendMessage",
+          "settings": {
+            "type": "application/vnd.lime.select+json",
+            "content": {
+              "text": "Quer compartilhar comigo o que menos lhe agradou?",
+              "scope": "immediate",
+              "options": [
+                {
+                  "text": "Sim, compartilhar",
+                  "previewText": "Sim, compartilhar",
+                  "value": null,
+                  "index": 0,
+                  "type": null
+                },
+                {
+                  "text": "Não",
+                  "previewText": "Não",
+                  "value": null,
+                  "index": 1,
+                  "type": null
+                }
+              ],
+              "quikReply": false
+            },
+            "metadata": {}
+          }
+        }
+      },
+      {
+        "input": {
+          "bypass": false,
+          "expiration": "0:5",
+          "variable": "motivoNota"
+        }
+      }
+    ],
+    "$conditionOutputs": [
+      {
+        "stateId": "06dae6f5-9e5a-409e-a640-4bde4bb92ac1",
+        "typeOfStateId": "state",
+        "conditions": [
+          {
+            "source": "input",
+            "comparison": "equals",
+            "values": [
+              "Ok, compartilhar",
+              "sim",
+              "claro",
+              "Sim, quero compartilhar",
+              "Sim, compartilhar"
+            ]
+          }
+        ]
+      },
+      {
+        "stateId": "7096bba1-d714-416b-af17-4acdbfa3e0ec",
+        "typeOfStateId": "state",
+        "conditions": [
+          {
+            "source": "input",
+            "comparison": "equals",
+            "values": [
+              "Talvez em outro momento",
+              "não",
+              "nao",
+              "Não, talvez em outro momento"
+            ]
+          }
+        ]
+      },
+      {
+        "stateId": "06dae6f5-9e5a-409e-a640-4bde4bb92ac1",
+        "typeOfStateId": "state",
+        "conditions": [
+          {
+            "source": "input",
+            "comparison": "contains",
+            "values": [
+              "sim"
+            ]
+          }
+        ]
+      },
+      {
+        "stateId": "7096bba1-d714-416b-af17-4acdbfa3e0ec",
+        "typeOfStateId": "state",
+        "conditions": [
+          {
+            "source": "input",
+            "comparison": "contains",
+            "values": [
+              "não"
+            ]
+          }
+        ]
+      },
+      {
+        "stateId": "7096bba1-d714-416b-af17-4acdbfa3e0ec",
+        "typeOfStateId": "state",
+        "conditions": [
+          {
+            "source": "input",
+            "comparison": "exists",
+            "values": []
+          }
+        ]
+      },
+      {
+        "stateId": "7096bba1-d714-416b-af17-4acdbfa3e0ec",
+        "typeOfStateId": "state",
+        "conditions": [
+          {
+            "source": "input",
+            "comparison": "notExists",
+            "values": []
+          }
+        ]
+      }
+    ],
+    "$enteringCustomActions": [
+      {
+        "type": "TrackEvent",
+        "settings": {
+          "extras": {},
+          "category": "Pesquisa de Satisfação - Contato inteligente",
+          "action": "Detrator"
+        },
+        "conditions": []
+      }
+    ],
+    "$leavingCustomActions": [],
+    "$defaultOutput": {
+      "stateId": "fallback"
+    },
+    "$title": "Detratores",
+    "$position": {
+      "top": "1159px",
+      "left": "276px"
+    }
+  },
+  "fa6857fc-6a69-45e2-8b9d-1370d9c24148": {
+    "$contentActions": [
+      {
+        "action": {
+          "type": "SendMessage",
+          "settings": {
+            "type": "text/plain",
+            "content": "A nossa equipe de atendimento irá levar a sua avaliação em consideração para melhorar sua experiência.",
+            "metadata": {}
+          }
+        }
+      },
+      {
+        "action": {
+          "type": "SendMessage",
+          "settings": {
+            "type": "application/vnd.lime.select+json",
+            "content": {
+              "text": "Quer deixar um comentário? 🤔",
+              "scope": "immediate",
+              "options": [
+                {
+                  "text": "Sim",
+                  "previewText": "Sim",
+                  "value": null,
+                  "index": 0,
+                  "type": null
+                },
+                {
+                  "text": "Não",
+                  "previewText": "Não",
+                  "value": null,
+                  "index": 1,
+                  "type": null
+                }
+              ],
+              "quikReply": false
+            },
+            "metadata": {}
+          }
+        }
+      },
+      {
+        "input": {
+          "bypass": false,
+          "expiration": "0:5",
+          "variable": "motivoNota"
+        }
+      }
+    ],
+    "$conditionOutputs": [
+      {
+        "stateId": "06dae6f5-9e5a-409e-a640-4bde4bb92ac1",
+        "typeOfStateId": "state",
+        "conditions": [
+          {
+            "source": "input",
+            "comparison": "contains",
+            "values": [
+              "Sim"
+            ]
+          }
+        ]
+      },
+      {
+        "stateId": "7096bba1-d714-416b-af17-4acdbfa3e0ec",
+        "typeOfStateId": "state",
+        "conditions": [
+          {
+            "source": "input",
+            "comparison": "contains",
+            "values": [
+              "Não",
+              "nao"
+            ]
+          }
+        ]
+      },
+      {
+        "stateId": "7096bba1-d714-416b-af17-4acdbfa3e0ec",
+        "typeOfStateId": "state",
+        "conditions": [
+          {
+            "source": "input",
+            "comparison": "exists",
+            "values": []
+          }
+        ]
+      },
+      {
+        "stateId": "7096bba1-d714-416b-af17-4acdbfa3e0ec",
+        "typeOfStateId": "state",
+        "conditions": [
+          {
+            "source": "input",
+            "comparison": "notExists",
+            "values": []
+          }
+        ]
+      }
+    ],
+    "$enteringCustomActions": [
+      {
+        "type": "TrackEvent",
+        "settings": {
+          "extras": {},
+          "category": "Pesquisa de Satisfação - Contato inteligente",
+          "action": "Neutro"
+        },
+        "conditions": []
+      }
+    ],
+    "$leavingCustomActions": [],
+    "$defaultOutput": {
+      "stateId": "fallback"
+    },
+    "$title": "Neutros",
+    "$position": {
+      "top": "1227px",
+      "left": "550px"
+    }
+  },
+  "b61b6759-7ad6-431f-aa99-195d2e815ebf": {
+    "$contentActions": [
+      {
+        "action": {
+          "type": "SendMessage",
+          "settings": {
+            "type": "text/plain",
+            "content": "Que bom que a sua experiência com a nossa equipe de atendimento tenha sido positiva! 🥰",
+            "metadata": {}
+          }
+        }
+      },
+      {
+        "action": {
+          "type": "SendMessage",
+          "settings": {
+            "type": "application/vnd.lime.select+json",
+            "content": {
+              "text": "Você tem interesse em fazer um comentário sobre sua avaliação?",
+              "scope": "immediate",
+              "options": [
+                {
+                  "text": "Sim, claro",
+                  "previewText": "Sim, claro",
+                  "value": null,
+                  "index": 0,
+                  "type": null
+                },
+                {
+                  "text": "Não, obrigado",
+                  "previewText": "Não, obrigado",
+                  "value": null,
+                  "index": 1,
+                  "type": null
+                }
+              ],
+              "quikReply": false
+            },
+            "metadata": {}
+          }
+        }
+      },
+      {
+        "input": {
+          "bypass": false,
+          "expiration": "0:5",
+          "variable": "motivoNota"
+        }
+      }
+    ],
+    "$conditionOutputs": [
+      {
+        "stateId": "06dae6f5-9e5a-409e-a640-4bde4bb92ac1",
+        "typeOfStateId": "state",
+        "conditions": [
+          {
+            "source": "input",
+            "comparison": "equals",
+            "values": [
+              "Sim!",
+              "sim",
+              "Sim, claro"
+            ]
+          }
+        ]
+      },
+      {
+        "stateId": "7096bba1-d714-416b-af17-4acdbfa3e0ec",
+        "typeOfStateId": "state",
+        "conditions": [
+          {
+            "source": "input",
+            "comparison": "equals",
+            "values": [
+              "Não",
+              "nao",
+              "Não, obrigado"
+            ]
+          }
+        ]
+      },
+      {
+        "stateId": "7096bba1-d714-416b-af17-4acdbfa3e0ec",
+        "typeOfStateId": "state",
+        "conditions": [
+          {
+            "source": "input",
+            "comparison": "exists",
+            "values": []
+          }
+        ]
+      },
+      {
+        "stateId": "7096bba1-d714-416b-af17-4acdbfa3e0ec",
+        "typeOfStateId": "state",
+        "conditions": [
+          {
+            "source": "input",
+            "comparison": "notExists",
+            "values": []
+          }
+        ]
+      }
+    ],
+    "$enteringCustomActions": [
+      {
+        "type": "TrackEvent",
+        "settings": {
+          "extras": {},
+          "category": "Pesquisa de Satisfação - Contato inteligente",
+          "action": "Promotor"
+        },
+        "conditions": []
+      }
+    ],
+    "$leavingCustomActions": [],
+    "$defaultOutput": {
+      "stateId": "fallback"
+    },
+    "$title": "Promotores",
+    "$position": {
+      "top": "1148px",
+      "left": "854px"
+    }
+  },
+  "06dae6f5-9e5a-409e-a640-4bde4bb92ac1": {
+    "$contentActions": [
+      {
+        "action": {
+          "type": "SendMessage",
+          "settings": {
+            "type": "text/plain",
+            "content": "Certo, fique à vontade para enviar seu comentário em sua próxima mensagem. Vou registrar tudo!",
+            "metadata": {}
+          }
+        }
+      },
+      {
+        "input": {
+          "bypass": false,
+          "variable": "deskSurveyComment"
+        }
+      },
+      {
+        "action": {
+          "type": "SendMessage",
+          "settings": {
+            "type": "text/plain",
+            "content": "Pode ter certeza que seu comentário será levado em consideração! ✍️",
+            "metadata": {
+              "#stateName": "{{state.name}}",
+              "#stateId": "{{state.id}}",
+              "#messageId": "{{input.message@id}}",
+              "#previousStateId": "{{state.previous.id}}",
+              "#previousStateName": "{{state.previous.name}}"
+            }
+          }
+        }
+      }
+    ],
+    "$conditionOutputs": [
+      {
+        "stateId": "7096bba1-d714-416b-af17-4acdbfa3e0ec",
+        "typeOfStateId": "state",
+        "conditions": [
+          {
+            "source": "input",
+            "comparison": "exists",
+            "values": []
+          }
+        ]
+      }
+    ],
+    "$enteringCustomActions": [],
+    "$leavingCustomActions": [
+      {
+        "type": "TrackEvent",
+        "settings": {
+          "extras": {},
+          "category": "Comentários",
+          "action": "{{deskSurveyComment}}"
+        },
+        "conditions": [
+          {
+            "comparison": "exists",
+            "source": "context",
+            "values": [],
+            "variable": "motivoNota"
+          }
+        ]
+      }
+    ],
+    "$defaultOutput": {
+      "stateId": "fallback"
+    },
+    "$title": "Comentários",
+    "$position": {
+      "top": "1378px",
+      "left": "552px"
+    }
+  },
+  "7096bba1-d714-416b-af17-4acdbfa3e0ec": {
+    "$contentActions": [
+      {
+        "input": {
+          "bypass": true
+        }
+      }
+    ],
+    "$conditionOutputs": [
+      {
+        "stateId": "095edfe8-8a86-42af-9c04-0e070985fb39",
+        "typeOfStateId": "state",
+        "conditions": [
+          {
+            "source": "input",
+            "comparison": "exists",
+            "values": []
+          }
+        ]
+      }
+    ],
+    "$enteringCustomActions": [
+      {
+        "type": "TrackEvent",
+        "settings": {
+          "extras": {},
+          "category": "Pesquisa de Satisfação - Contato inteligente - Informações",
+          "action": "Identificador: {{contact.identity}} | Nome: {{contact.name}} | Email: {{contact.email}} | Telefone: {{contact.phoneNumber}} | Nota: {{nota}} | Comentário: {{deskSurveyComment}}"
+        },
+        "conditions": []
+      }
+    ],
+    "$leavingCustomActions": [],
+    "$defaultOutput": {
+      "stateId": "095edfe8-8a86-42af-9c04-0e070985fb39"
+    },
+    "$title": "Salvar Dados da Pesquisa",
+    "$position": {
+      "top": "1586px",
+      "left": "546px"
+    }
+  },
+  "095edfe8-8a86-42af-9c04-0e070985fb39": {
+    "$contentActions": [
+      {
+        "action": {
+          "type": "SendMessage",
+          "settings": {
+            "type": "text/plain",
+            "content": "A Central MBRF agradece o seu contato!",
+            "metadata": {}
+          }
+        }
+      },
+      {
+        "action": {
+          "type": "SendMessage",
+          "settings": {
+            "type": "text/plain",
+            "content": "É um prazer poder receber você aqui! 😊",
+            "metadata": {}
+          }
+        }
+      },
+      {
+        "input": {
+          "bypass": true
+        }
+      }
+    ],
+    "$conditionOutputs": [],
+    "$enteringCustomActions": [
+      {
+        "type": "SetVariable",
+        "settings": {
+          "variable": "deskSurveyInvalidSurveyResponseAttempts",
+          "value": "0",
+          "expiration": 1
+        },
+        "conditions": [
+          {
+            "values": [
+              "1"
+            ],
+            "source": "context",
+            "comparison": "greaterThanOrEquals",
+            "variable": "deskSurveyInvalidSurveyResponseAttempts"
+          }
+        ]
+      },
+      {
+        "type": "TrackEvent",
+        "settings": {
+          "extras": {},
+          "category": "Atendimento finalizado",
+          "action": "bot"
+        },
+        "conditions": []
+      },
+      {
+        "type": "TrackEvent",
+        "settings": {
+          "extras": {
+            "identificador": "{{contact.identity}}",
+            "origem": "{{origem}}",
+            "canal": "{{channel}}"
+          },
+          "category": "Fluxo finalizacao",
+          "action": "Encerrado"
+        },
+        "conditions": []
+      },
+      {
+        "$description": "",
+        "$inputSchema": {
+          "type": "object",
+          "properties": {},
+          "required": []
+        },
+        "type": "SetVariable",
+        "settings": {
+          "variable": "horaFim",
+          "value": "{{calendar.datetime}}"
+        },
+        "conditions": []
+      },
+      {
+        "$description": "",
+        "$inputSchema": {
+          "type": "object",
+          "properties": {},
+          "required": []
+        },
+        "type": "SetVariable",
+        "settings": {
+          "variable": "infoNlp"
+        },
+        "conditions": []
+      }
+    ],
+    "$leavingCustomActions": [
+      {
+        "$description": "",
+        "$inputSchema": {
+          "type": "object",
+          "properties": {},
+          "required": []
+        },
+        "type": "ExecuteScript",
+        "settings": {
+          "function": "run",
+          "source": "function run(horaEntrada, horaFim) {\n  try {\n    function parseDataGMT0(dataTexto) {\n      const [data, hora] = dataTexto.split(\" \");\n      const [mes, dia, ano] = data.split(\"/\");\n      const [hh, mm, ss] = hora.split(\":\");\n\n      return new Date(Date.UTC(ano, mes - 1, dia, hh, mm, ss));\n    }\n\n    function formatarBrasil(data) {\n      const dataBrasil = new Date(data.getTime() - 3 * 60 * 60 * 1000);\n\n      const dia = String(dataBrasil.getUTCDate()).padStart(2, \"0\");\n      const mes = String(dataBrasil.getUTCMonth() + 1).padStart(2, \"0\");\n      const ano = dataBrasil.getUTCFullYear();\n\n      const hora = String(dataBrasil.getUTCHours()).padStart(2, \"0\");\n      const minuto = String(dataBrasil.getUTCMinutes()).padStart(2, \"0\");\n\n      return {\n        data: `${dia}/${mes}/${ano}`,\n        hora: `${hora}:${minuto}`\n      };\n    }\n\n    const entrada = parseDataGMT0(horaEntrada);\n    const fim = parseDataGMT0(horaFim);\n\n    const diferencaMs = fim - entrada;\n    const totalSegundos = Math.floor(diferencaMs / 1000);\n    const totalMinutos = Math.floor(totalSegundos / 60);\n\n    const horas = Math.floor(totalMinutos / 60);\n    const minutos = totalMinutos % 60;\n    const segundos = totalSegundos % 60;\n\n    const entradaFormatada = formatarBrasil(entrada);\n    const fimFormatada = formatarBrasil(fim);\n\n    let tempoTexto = \"\";\n\n    if (horas > 0) {\n      tempoTexto += `${horas} ${horas === 1 ? \"hora\" : \"horas\"}`;\n    }\n\n    if (minutos > 0) {\n      if (tempoTexto) tempoTexto += \" e \";\n      tempoTexto += `${minutos} ${minutos === 1 ? \"minuto\" : \"minutos\"}`;\n    }\n\n    if (horas === 0 && minutos === 0) {\n      tempoTexto = `${segundos} ${segundos === 1 ? \"segundo\" : \"segundos\"}`;\n    }\n\n    return {\n      horaEntrada,\n      horaFim,\n      tempoInteracao: {\n        horas,\n        minutos,\n        segundos,\n        totalMinutos,\n        totalSegundos\n      },\n      relatorio: `Entrou às ${entradaFormatada.hora} do dia ${entradaFormatada.data} finalizou interação às ${fimFormatada.hora} do dia ${fimFormatada.data} tempo de interação de ${tempoTexto}`\n    };\n  } catch (error) {\n    return {\n      erro: \"Erro ao calcular tempo de interação\"\n    };\n  }\n}",
+          "inputVariables": [
+            "horaEntrada",
+            "horaFim"
+          ],
+          "outputVariable": "tempoInteracao",
+          "LocalTimeZoneEnabled": false
+        },
+        "conditions": []
+      },
+      {
+        "type": "TrackEvent",
+        "settings": {
+          "extras": {
+            "identificador": "{{contact.identity}}",
+            "origem": "{{origem}}",
+            "canal": "{{channel}}"
+          },
+          "category": "tempo de interacao",
+          "action": "identificador: {{contact.identity}} | {{tempoInteracao@relatorio}}"
+        },
+        "conditions": []
+      }
+    ],
+    "$defaultOutput": {
+      "stateId": "d49c2142-2229-438d-9bfb-c8991a34ce96",
+      "typeOfStateId": "state"
+    },
+    "$title": "Agradecimento pelo Contato",
+    "$position": {
+      "top": "1767px",
+      "left": "546px"
+    }
+  }
+}

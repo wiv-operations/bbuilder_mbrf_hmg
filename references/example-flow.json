@@ -1,0 +1,500 @@
+{
+  "onboarding": {
+    "$title": "Início",
+    "root": true,
+    "$position": {
+      "top": "120px",
+      "left": "120px"
+    },
+    "$enteringCustomActions": [],
+    "$contentActions": [
+      {
+        "input": {
+          "bypass": false
+        }
+      }
+    ],
+    "$leavingCustomActions": [],
+    "$conditionOutputs": [
+      {
+        "stateId": "menu",
+        "conditions": [
+          {
+            "source": "input",
+            "comparison": "exists",
+            "values": []
+          }
+        ]
+      }
+    ],
+    "$defaultOutput": {
+      "stateId": "fallback"
+    }
+  },
+  "menu": {
+    "$title": "Menu principal",
+    "$position": {
+      "top": "120px",
+      "left": "400px"
+    },
+    "$enteringCustomActions": [
+      {
+        "$title": "Track menu",
+        "type": "TrackEvent",
+        "settings": {
+          "category": "Atendimento",
+          "action": "Menu principal",
+          "extras": {}
+        }
+      }
+    ],
+    "$contentActions": [
+      {
+        "action": {
+          "type": "SendMessage",
+          "settings": {
+            "type": "application/vnd.lime.select+json",
+            "content": {
+              "text": "Olá{{contact.name}}! Como posso ajudar?",
+              "scope": "immediate",
+              "options": [
+                {
+                  "text": "Rastrear pedido"
+                },
+                {
+                  "text": "Falar com alguém"
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "input": {
+          "bypass": false,
+          "variable": "menuChoice"
+        }
+      }
+    ],
+    "$leavingCustomActions": [],
+    "$conditionOutputs": [
+      {
+        "stateId": "ask-order",
+        "conditions": [
+          {
+            "source": "input",
+            "comparison": "equals",
+            "operator": "or",
+            "values": [
+              "Rastrear pedido"
+            ]
+          }
+        ]
+      },
+      {
+        "stateId": "ask-order",
+        "conditions": [
+          {
+            "source": "input",
+            "comparison": "approximateTo",
+            "operator": "or",
+            "values": [
+              "rastrear"
+            ]
+          }
+        ]
+      },
+      {
+        "stateId": "handoff",
+        "conditions": [
+          {
+            "source": "input",
+            "comparison": "equals",
+            "operator": "or",
+            "values": [
+              "Falar com alguém"
+            ]
+          }
+        ]
+      }
+    ],
+    "$defaultOutput": {
+      "stateId": "fallback"
+    }
+  },
+  "ask-order": {
+    "$title": "Pede o número do pedido",
+    "$position": {
+      "top": "300px",
+      "left": "400px"
+    },
+    "$enteringCustomActions": [],
+    "$contentActions": [
+      {
+        "action": {
+          "type": "SendMessage",
+          "settings": {
+            "type": "text/plain",
+            "content": "Qual é o número do pedido? São 8 dígitos, como 12345678."
+          }
+        }
+      },
+      {
+        "input": {
+          "bypass": false,
+          "variable": "orderNumber",
+          "validation": {
+            "rule": "regex",
+            "regex": "^[0-9]{8}$",
+            "error": "Esse número não parece ter 8 dígitos. Pode conferir?"
+          }
+        }
+      }
+    ],
+    "$leavingCustomActions": [
+      {
+        "$title": "[GET] Process orderBody",
+        "type": "ProcessHttp",
+        "settings": {
+          "method": "GET",
+          "uri": "https://api.example.com/orders/{{orderNumber}}",
+          "headers": {
+            "Content-Type": "application/json"
+          },
+          "body": "",
+          "responseBodyVariable": "orderBody",
+          "responseStatusVariable": "orderStatus"
+        },
+        "continueOnError": true
+      }
+    ],
+    "$conditionOutputs": [
+      {
+        "stateId": "show-order",
+        "conditions": [
+          {
+            "source": "context",
+            "variable": "orderStatus",
+            "comparison": "equals",
+            "operator": "or",
+            "values": [
+              "200"
+            ]
+          }
+        ]
+      },
+      {
+        "stateId": "order-not-found",
+        "conditions": [
+          {
+            "source": "context",
+            "variable": "orderStatus",
+            "comparison": "equals",
+            "operator": "or",
+            "values": [
+              "404"
+            ]
+          }
+        ]
+      }
+    ],
+    "$defaultOutput": {
+      "stateId": "error"
+    }
+  },
+  "show-order": {
+    "$title": "Mostra o pedido",
+    "$position": {
+      "top": "480px",
+      "left": "400px"
+    },
+    "$enteringCustomActions": [
+      {
+        "$title": "Process deliveryDate",
+        "type": "ExecuteScript",
+        "settings": {
+          "function": "run",
+          "source": "function run(order) {\n    if (!order) {\n        return null\n    }\n\n    var parsed = JSON.parse(order)\n    var date = parsed.deliveryDate\n\n    return date ? date.split('-').reverse().join('/') : null\n}",
+          "inputVariables": [
+            "orderBody"
+          ],
+          "outputVariable": "deliveryDate"
+        }
+      }
+    ],
+    "$contentActions": [
+      {
+        "action": {
+          "type": "SendMessage",
+          "settings": {
+            "type": "text/plain",
+            "content": "Pedido {{orderNumber}}: {{orderBody@status}}."
+          },
+          "conditions": [
+            {
+              "source": "context",
+              "variable": "deliveryDate",
+              "comparison": "notExists",
+              "values": []
+            }
+          ]
+        }
+      },
+      {
+        "action": {
+          "type": "SendMessage",
+          "settings": {
+            "type": "text/plain",
+            "content": "Pedido {{orderNumber}}: {{orderBody@status}}. A entrega está prevista para {{deliveryDate}}."
+          },
+          "conditions": [
+            {
+              "source": "context",
+              "variable": "deliveryDate",
+              "comparison": "exists",
+              "values": []
+            }
+          ]
+        }
+      },
+      {
+        "action": {
+          "type": "SendMessage",
+          "settings": {
+            "type": "application/vnd.lime.select+json",
+            "content": {
+              "text": "Posso ajudar em algo mais?",
+              "scope": "immediate",
+              "options": [
+                {
+                  "text": "Voltar ao menu"
+                },
+                {
+                  "text": "Falar com alguém"
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "input": {
+          "bypass": false
+        }
+      }
+    ],
+    "$leavingCustomActions": [],
+    "$conditionOutputs": [
+      {
+        "stateId": "menu",
+        "conditions": [
+          {
+            "source": "input",
+            "comparison": "equals",
+            "operator": "or",
+            "values": [
+              "Voltar ao menu"
+            ]
+          }
+        ]
+      },
+      {
+        "stateId": "handoff",
+        "conditions": [
+          {
+            "source": "input",
+            "comparison": "equals",
+            "operator": "or",
+            "values": [
+              "Falar com alguém"
+            ]
+          }
+        ]
+      }
+    ],
+    "$defaultOutput": {
+      "stateId": "fallback"
+    }
+  },
+  "order-not-found": {
+    "$title": "Pedido não encontrado",
+    "$position": {
+      "top": "480px",
+      "left": "700px"
+    },
+    "$enteringCustomActions": [],
+    "$contentActions": [
+      {
+        "action": {
+          "type": "SendMessage",
+          "settings": {
+            "type": "application/vnd.lime.select+json",
+            "content": {
+              "text": "Não encontrei o pedido {{orderNumber}}. Pode ser que o número esteja diferente do que está na confirmação da compra.",
+              "scope": "immediate",
+              "options": [
+                {
+                  "text": "Tentar de novo"
+                },
+                {
+                  "text": "Falar com alguém"
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "input": {
+          "bypass": false
+        }
+      }
+    ],
+    "$leavingCustomActions": [],
+    "$conditionOutputs": [
+      {
+        "stateId": "ask-order",
+        "conditions": [
+          {
+            "source": "input",
+            "comparison": "equals",
+            "operator": "or",
+            "values": [
+              "Tentar de novo"
+            ]
+          }
+        ]
+      },
+      {
+        "stateId": "handoff",
+        "conditions": [
+          {
+            "source": "input",
+            "comparison": "equals",
+            "operator": "or",
+            "values": [
+              "Falar com alguém"
+            ]
+          }
+        ]
+      }
+    ],
+    "$defaultOutput": {
+      "stateId": "handoff"
+    }
+  },
+  "handoff": {
+    "$title": "Encaminha para atendimento",
+    "$position": {
+      "top": "300px",
+      "left": "1000px"
+    },
+    "$enteringCustomActions": [],
+    "$contentActions": [
+      {
+        "action": {
+          "type": "SendMessage",
+          "settings": {
+            "type": "text/plain",
+            "content": "Vou te transferir para uma pessoa do time. É só aguardar aqui mesmo."
+          }
+        }
+      },
+      {
+        "input": {
+          "bypass": true
+        }
+      }
+    ],
+    "$leavingCustomActions": [
+      {
+        "$title": "Set orderNumber",
+        "type": "MergeContact",
+        "settings": {
+          "extras": {
+            "ultimoPedidoConsultado": "{{orderNumber}}"
+          }
+        }
+      },
+      {
+        "$title": "Forward to desk",
+        "type": "ForwardToDesk",
+        "settings": {}
+      }
+    ],
+    "$conditionOutputs": [],
+    "$defaultOutput": {
+      "stateId": "onboarding"
+    }
+  },
+  "fallback": {
+    "$title": "Exceções",
+    "$position": {
+      "top": "120px",
+      "left": "700px"
+    },
+    "$enteringCustomActions": [],
+    "$contentActions": [
+      {
+        "action": {
+          "type": "SendMessage",
+          "settings": {
+            "type": "text/plain",
+            "content": "Não entendi. Vou te mostrar as opções de novo."
+          }
+        }
+      },
+      {
+        "input": {
+          "bypass": true
+        }
+      }
+    ],
+    "$leavingCustomActions": [],
+    "$conditionOutputs": [],
+    "$defaultOutput": {
+      "stateId": "menu"
+    }
+  },
+  "error": {
+    "$title": "Erro padrão",
+    "$position": {
+      "top": "660px",
+      "left": "700px"
+    },
+    "$enteringCustomActions": [
+      {
+        "$title": "Track Erro",
+        "type": "TrackEvent",
+        "settings": {
+          "category": "Erro",
+          "action": "Consulta de pedido",
+          "extras": {
+            "status": "{{orderStatus}}"
+          }
+        }
+      }
+    ],
+    "$contentActions": [
+      {
+        "action": {
+          "type": "SendMessage",
+          "settings": {
+            "type": "text/plain",
+            "content": "Tive um problema para consultar o pedido agora. Vou te passar para uma pessoa do time."
+          }
+        }
+      },
+      {
+        "input": {
+          "bypass": true
+        }
+      }
+    ],
+    "$leavingCustomActions": [],
+    "$conditionOutputs": [],
+    "$defaultOutput": {
+      "stateId": "handoff"
+    }
+  }
+}

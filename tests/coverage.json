@@ -1,0 +1,164 @@
+{
+  "_meta": {
+    "description": "Mapeia (subbot → stateId → lista de CTs) para o CI dizer, em cada PR, quais cenários cobrem os states que foram modificados. Cada vez que novos cenários forem adicionados em tests/jornadas.test.ts, atualizar este arquivo.",
+    "updated": "2026-10-16"
+  },
+  "coverage": {
+    "hmgf2captacao": {
+      "onboarding":                             ["CT-23","CT-25","CT-47","CT-48","smoke"],
+      "6d55bf51-91f5-4782-bd4e-b7bf6b9409cf":   ["CT-23","CT-25"],
+      "5236725b-6463-4d0c-be89-1ce1933c7763":   ["CT-23","CT-25"],
+      "088f908d-1511-4a52-899a-32459830282c":   ["CT-49"],
+      "e6212c1f-e453-423f-aa89-a8d9bafa2876":   ["CT-23","CT-25"],
+      "1cc62207-89b8-4c0d-b5fe-a07588ee329a":   ["CT-23","CT-25"],
+      "70e72d21-6ca8-4e11-acc7-671e4dec4954":   ["CT-23"],
+      "98e79a41-12ba-4bd2-b800-5351ae92b797":   ["CT-23"],
+      "d6315f94-f299-455d-9eca-aca446d15277":   ["CT-01","CT-23","CT-25"],
+      "9d883e05-4da2-450a-969f-4116c0b0b837":   ["CT-01"],
+      "af4efc18-0978-457a-a617-f957566dacfa":   ["CT-01","CT-25"],
+      "54f9150c-8c93-4da1-b4b4-aa1fcd427be6":   ["CT-25"],
+      "3a3f9751-2b1e-4d93-933f-e157860fb6c9":   ["CT-25"],
+      "203a2feb-f1a2-4f84-ad01-f225ee9a7a7c":   ["CT-01","CT-20"],
+      "dcfb2409-db47-4450-acf0-10f29e30a839":   ["CT-20"],
+      "087d1830-4554-4354-8f72-fea905b2efec":   ["CT-20"],
+      "762682cc-02e5-4374-9b2d-cbebfea35d8c":   ["CT-01"],
+      "1a571e3c-7a87-4e54-b82d-c2275a448f16":   ["CT-01"],
+      "ca616e6f-2b8a-44df-92fe-ded0042a65f8":   ["CT-01"],
+      "656989df-c8e0-4697-9ba7-16d83d8efa6c":   ["CT-01"],
+      "39a66cb2-44ce-476c-a1cc-c2cf7101ce68":   ["CT-01"],
+      "70cb08c2-9a5f-493a-afb3-51c6027350d0":   ["CT-01"],
+      "9e94a810-b692-4333-b259-5b3d6ad0df38":   ["CT-01","CT-49"],
+      "subflow:31a36d6a-d869-4078-bc06-3298d5582bc6": ["CT-49"],
+      "subflow:51bd1684-1925-4431-9081-f0fe8c1b9023": ["CT-01","CT-36","CT-37","CT-39","CT-40","CT-41","CT-42","CT-43","CT-45","CT-46","CT-50","CT-51"],
+      "d975b7a6-6c78-4da8-a9a4-d799fc52baae":   ["CT-01","CT-10"],
+      "8a6de90d-ed09-4835-84be-17d8ae9aba8f":   [],
+      "b03402d8-ff2a-483f-9635-1ad56dec61ef":   ["CT-49"],
+      "24780462-8f92-4004-9d67-4f1d060d7e3f":   ["CT-48"],
+      "9338e2ca-9fb4-4bc8-84fd-cb7f20448912":   ["CT-47"],
+      "fallback":                               ["CT-50","CT-51"]
+    },
+
+    "hmgf2ofertaseoportunida": {
+      "onboarding":                             ["CT-01","CT-10","CT-49"],
+      "e125a412-25cd-4f51-b07e-4252d5f55be1":   ["CT-01","CT-10"],
+      "f236b523-36de-4062-c18f-5363e6066cf2":   [],
+      "subflow:d182ffea-b48f-4b22-9cb6-4788e755e7b9": ["CT-01","CT-10"],
+      "a7e1c0de-e1e9-4b1d-9c3a-0e1e91b11dad":   ["CT-01","CT-10"],
+      "b8f2d1ef-f2fa-4c2e-8d4b-1f2fa2c22ebe":   ["CT-10"],
+      "c903e2f0-03ab-4d3f-9e5c-2030b3d33fcf":   [],
+      "bd0baa6f-8bba-42ff-b28c-f47cf6af6d2b":   ["CT-01"],
+      "welcome":                                ["CT-01","CT-10"],
+      "e1499a54-f065-492e-b9f8-0627dfaa1ebf":   ["CT-01"],
+      "a04f9c20-698d-44d5-8e41-e8d171567965":   ["CT-01"],
+      "a66fab48-8beb-4019-a402-09cfb90d8ae1":   ["CT-01"],
+      "a47b163e-d1b3-4712-893d-d6cfb66136d5":   ["CT-01"],
+      "0892c280-59a1-46c5-8b6e-10d81fae6b44":   ["CT-01"],
+      "fd671654-5590-42a8-a572-44e085470232":   ["CT-01"],
+      "d21cd5d2-7c8f-43a6-81dd-df4b888f4ba6":   [],
+      "b5b5fbd6-da5e-4a21-8b3a-f1aef8cb60f9":   [],
+      "e7665104-4758-4128-bc50-3114fa182e72":   [],
+      "158641a3-9de3-4a22-87bc-cf5010d8516f":   [],
+      "6c6b021a-32d0-4fb2-a430-23e2d410be47":   ["CT-45","CT-46"],
+      "fallback":                               []
+    },
+
+    "hmgf2comprarprodutos": {
+      "onboarding":                             ["CT-49"],
+      "f08a3f82-982c-4d79-b0b3-3429d9e62f96":   ["CT-49"],
+      "2830d37c-1a16-46cf-ae4e-b9ab40713b2d":   ["CT-49"],
+      "3bdc4eab-e9d2-42a9-817d-c3c3f78c66fd":   ["CT-49"],
+      "740f2bf2-1552-47ec-a844-2aedef177ba6":   ["CT-49"],
+      "f8e3a40c-feca-4829-b796-6ef0477d0a48":   []
+    },
+
+    "hmgf2recomprar": {
+      "onboarding":                             ["CT-49"],
+      "2830d37c-1a16-46cf-ae4e-b9ab40713b2d":   ["CT-49"],
+      "4c0d6b38":                               []
+    },
+
+    "hmlf1meuspedidos": {
+      "onboarding":                             ["CT-36","CT-37"],
+      "subflow:menu-meus-pedidos":              ["CT-36","CT-37"],
+      "89002669":                               ["CT-36"],
+      "subflow:informacao-cupom":               ["CT-37"],
+      "48ed89c0":                               ["CT-37"],
+      "fallback":                               []
+    },
+
+    "hmgf1financeiroo": {
+      "onboarding":                             ["CT-39","CT-40","CT-41"],
+      "subflow:menu-financeiro":                ["CT-39","CT-40","CT-41"],
+      "0cbe1daa":                               ["CT-39"],
+      "subflow:menu-informacao-credito":        ["CT-40","CT-41"],
+      "ec448e90":                               ["CT-40"],
+      "b4694c78":                               ["CT-40"],
+      "68a00fff":                               ["CT-40"],
+      "d0ab236a":                               ["CT-40"],
+      "edcb039f":                               ["CT-41"]
+    },
+
+    "hmgf1meucadastroo": {
+      "onboarding":                             ["CT-42","CT-43"],
+      "subflow:menu-meu-cadastro":              ["CT-42","CT-43"],
+      "db7dbb1c":                               ["CT-42"],
+      "556811e4":                               ["CT-43"],
+      "96f6e2b6":                               ["CT-43"]
+    },
+
+    "hmgf1ajudaesuporte": {
+      "onboarding":                             ["CT-45","CT-46"],
+      "subflow:menu-ajuda-suporte":             ["CT-45","CT-46"],
+      "37ba2d6d":                               ["CT-45"],
+      "b6304603":                               ["CT-45"],
+      "1e3bb5fc-8ca8-4796-aba8-181abd10f210":   ["CT-46"]
+    },
+
+    "hmgvagasmbrf": {
+      "onboarding":                             ["CT-47"],
+      "322b903c":                               ["CT-47"]
+    },
+
+    "hmlmbrfcomercioexterior": {
+      "onboarding":                             ["CT-48"],
+      "f95de43c-075c-41e2-a892-edc760e89769":   ["CT-48"]
+    },
+
+    "mbrfajudoemalgomaishmg": {
+      "onboarding":                             ["CT-25","CT-45","CT-52"],
+      "b253217e-bbfc-4733-a1a2-8d44084ecc04":   ["CT-45","CT-52"],
+      "3e6e3778-ba86-4b1f-a54a-71761f1294f8":   ["CT-52"],
+      "debb045e-7ea6-472d-a339-b8d397d835e2":   ["CT-45"],
+      "d4795f97-2f10-46f9-8267-9f0df759abe1":   [],
+      "e8d473a1-35e9-4d16-b949-ed1b4b6697e4":   ["CT-45","CT-52"]
+    },
+
+    "mbrfencaminhamentosophiahmg": {
+      "onboarding":                             ["CT-46"],
+      "0f43804e-632d-4eb6-a91d-d0f165593835":   ["CT-46"],
+      "685550df-158c-4e03-8899-6b8a8b49860c":   []
+    },
+
+    "mbrfexcecoeshmg": {
+      "onboarding":                             ["CT-50","CT-51"],
+      "welcome":                                ["CT-50"],
+      "326c5651":                               ["CT-50"],
+      "a3506708":                               ["CT-51"],
+      "7d987477":                               ["CT-50"],
+      "98ae267a":                               []
+    },
+
+    "mbrffinalizarhmg": {
+      "onboarding":                             ["CT-52"],
+      "welcome":                                ["CT-52"],
+      "8849db49":                               ["CT-52"],
+      "a8be86bc":                               ["CT-52"],
+      "ec05d089":                               ["CT-52"],
+      "b61b6759":                               ["CT-52"]
+    },
+
+    "mbrfathhmg":      { "_": "sem cobertura E2E (depende de atendente humano)" },
+    "mbrffalhaapihmg": { "_": "sem cobertura E2E (só com indução real de falha)" },
+    "hmgf2ofertaseopt":{ "_": "subbot local não publicado — não testável" }
+  }
+}

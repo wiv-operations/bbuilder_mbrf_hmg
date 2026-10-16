@@ -1,0 +1,12 @@
+{
+  "builder:minimumIntentScore": "0.5",
+  "builder:stateTrack": "true",
+  "builder:#localTimeZone": "E. South America Standard Time",
+  "builder:brainEditFlowPermission": "false",
+  "builder:useTunnelOwnerContext": "true",
+  "yggUrlHMG": "https://ygg-qas.mbrf.cloud",
+  "TraceTargetType": "Http",
+  "TraceMode": "All",
+  "TraceTarget": "https://take-api-beholder.cs.blip.ai/api/traces/hmgf2captacao",
+  "TraceCacheMode": 0
+}

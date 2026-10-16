@@ -1,0 +1,60 @@
+name: Suite E2E after merge
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  full-suite:
+    name: Suite E2E completa
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install deps
+        run: npm ci
+
+      - name: bbuilder validate (contra baseline)
+        run: node scripts/validate-against-baseline.mjs
+
+      - name: bbuilder login
+        env:
+          BBUILDER_ACCESS_KEY: ${{ secrets.BBUILDER_ACCESS_KEY }}
+          BBUILDER_EMAIL: ${{ secrets.BBUILDER_EMAIL }}
+        run: npx bbuilder login --email "$BBUILDER_EMAIL" --access-key "$BBUILDER_ACCESS_KEY"
+
+      - name: Suite completa (com retry para falha de infra)
+        id: suite
+        continue-on-error: true
+        env:
+          BBUILDER_ACCESS_KEY: ${{ secrets.BBUILDER_ACCESS_KEY }}
+        run: node scripts/test-with-retry.mjs --max-retries 2
+
+      - name: Upload evidências
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: evidencias-main-${{ github.run_number }}
+          path: docs/evidencias/*.log
+          if-no-files-found: ignore
+          retention-days: 30
+
+      - name: Resultado final
+        if: steps.suite.outcome != 'success'
+        run: |
+          if [ "${{ steps.suite.outputs.exit_code || '1' }}" = "2" ]; then
+            echo "::warning title=Blip infra::Infra do Blip indisponível em todas as tentativas. Suite não validada."
+            exit 0
+          fi
+          exit 1

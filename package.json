@@ -1,0 +1,18 @@
+{
+    "type": "module",
+    "scripts": {
+        "test": "bbuilder test",
+        "type-check": "tsc --noEmit",
+        "prepare": "husky",
+        "validate": "bbuilder validate",
+        "coverage-check": "node scripts/check-coverage.mjs"
+    },
+    "dependencies": {
+        "bbuilder": "0.0.13"
+    },
+    "devDependencies": {
+        "@types/node": "^26.1.2",
+        "husky": "^9.1.7",
+        "typescript": "^7.0.2"
+    }
+}

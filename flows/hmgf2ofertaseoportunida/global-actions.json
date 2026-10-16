@@ -1,0 +1,12 @@
+{
+  "global-actions": {
+    "$contentActions": [],
+    "$conditionOutputs": [],
+    "$enteringCustomActions": [],
+    "$leavingCustomActions": [],
+    "$defaultOutput": {
+      "stateId": "fallback"
+    },
+    "$localCustomActions": []
+  }
+}

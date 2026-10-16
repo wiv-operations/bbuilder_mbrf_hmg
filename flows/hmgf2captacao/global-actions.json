@@ -1,0 +1,46 @@
+{
+  "global-actions": {
+    "$contentActions": [],
+    "$conditionOutputs": [],
+    "$enteringCustomActions": [
+      {
+        "type": "TrackEvent",
+        "settings": {
+          "extras": {},
+          "category": "[{{application.identifier}}][{{state.name}}] Exibição",
+          "action": "Entrada"
+        },
+        "conditions": []
+      }
+    ],
+    "$leavingCustomActions": [
+      {
+        "type": "TrackEvent",
+        "settings": {
+          "extras": {},
+          "category": "[{{application.identifier}}][{{state.name}}] Seleção",
+          "action": "{{input.content}}"
+        },
+        "conditions": [
+          {
+            "values": [],
+            "source": "input",
+            "comparison": "exists"
+          }
+        ]
+      },
+      {
+        "type": "TrackEvent",
+        "settings": {
+          "extras": {},
+          "category": "[{{application.identifier}}][{{state.name}}] Exibição",
+          "action": "Saida"
+        },
+        "conditions": []
+      }
+    ],
+    "$defaultOutput": {
+      "stateId": "fallback"
+    }
+  }
+}
