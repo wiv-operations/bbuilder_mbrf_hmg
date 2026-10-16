@@ -33,10 +33,10 @@ const INFRA_SIGNATURES = [
 ]
 
 async function runOnce() {
-    const cmdArgs = ['test', '--purge']
+    const cmdArgs = ['--no-install', 'bbuilder', 'test', '--purge']
     if (filter) cmdArgs.push('-t', filter)
     return new Promise((resolve) => {
-        const proc = spawn('bbuilder', cmdArgs, { stdio: ['ignore', 'pipe', 'pipe'] })
+        const proc = spawn('npx', cmdArgs, { stdio: ['ignore', 'pipe', 'pipe'] })
         let stdout = ''
         let stderr = ''
         proc.stdout.on('data', chunk => { const s = chunk.toString(); process.stdout.write(s); stdout += s })
