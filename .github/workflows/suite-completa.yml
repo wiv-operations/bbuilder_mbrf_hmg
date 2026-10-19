@@ -44,10 +44,16 @@ jobs:
           fi
 
       - name: Suite E2E completa
+        id: suite
         continue-on-error: true
         env:
           BBUILDER_ACCESS_KEY: ${{ secrets.BBUILDER_ACCESS_KEY }}
-        run: node scripts/test-with-retry.mjs --max-retries 2
+        run: |
+          set +e
+          node scripts/test-with-retry.mjs --max-retries 2
+          code=$?
+          echo "exit_code=$code" >> "$GITHUB_OUTPUT"
+          exit $code
 
       - name: Upload artefatos
         if: always()
@@ -71,6 +77,17 @@ jobs:
               owner: context.repo.owner,
               repo: context.repo.repo,
               title: `Drift detectado entre repo e Blip (run #${context.runNumber})`,
-              body: 'A verificação noturna encontrou diferenças entre o `main` do repositório e o que está publicado no Blip. Isso costuma indicar edição direto pelo canvas.\n\n```\n' + drift + '\n```',
+              body: 'A verificação encontrou diferenças entre o `main` do repositório e o que está publicado no Blip. Isso costuma indicar edição direto pelo canvas.\n\n```\n' + drift + '\n```',
               labels: ['drift']
             })
+
+      - name: Resultado final
+        if: steps.suite.outcome != 'success'
+        run: |
+          code="${{ steps.suite.outputs.exit_code }}"
+          if [ "$code" = "2" ]; then
+            echo "::warning title=Blip infra::Infra do Blip indisponível em todas as tentativas. Suite não validada."
+            exit 0
+          fi
+          echo "::error title=Suite E2E falhou::Exit code $code (ver logs do step 'Suite E2E completa')"
+          exit 1
