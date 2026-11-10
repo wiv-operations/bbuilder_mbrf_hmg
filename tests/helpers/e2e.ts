@@ -179,8 +179,68 @@ export class Run {
         this.log(`SYS  extras gravados no contato: ${Object.keys(extras).join(', ')}`)
     }
 
+    async setTaxDocument(taxDocument: string) {
+        const client = this.ctx.bot.client.account
+        await client.mergeContact({ identity: this.identity as any, taxDocument })
+        this.log(`SYS  taxDocument gravado no contato: ${taxDocument}`)
+    }
+
+    async getExtras(): Promise<Record<string, string>> {
+        const contact = await this.ctx.bot.client.account.getContact(this.identity as any)
+        return (contact?.extras ?? {}) as Record<string, string>
+    }
+
+    /** Grava (ou, com `null`, apaga) a compra SmartSales do CNPJ no bucket do roteador,
+     *  no mesmo formato que ofertas grava após o pedido gerado. */
+    async setCompraBucket(taxDocument: string, quantity: number | null) {
+        const client = this.ctx.bot.client.account
+        const key = compraBucketKey(taxDocument)
+        if (quantity === null) {
+            await client.deleteBucket(key).catch(() => undefined)
+            this.log(`SYS  bucket ${key} removido`)
+            return
+        }
+        await client.setBucket(key, compraBucket(taxDocument, quantity))
+        this.log(`SYS  bucket ${key} gravado`)
+    }
+
     note(text: string) {
         this.log(`QA   ${text}`)
+    }
+}
+
+export const compraBucketKey = (taxDocument: string) => `compra-smartsales-${taxDocument}`
+
+/** CNPJ fictício (14 dígitos, começa com 99) para isolar o bucket de cada teste. */
+export function cnpjTeste(): string {
+    return '99' + String(Date.now()).slice(-9) + String(Math.floor(Math.random() * 1000)).padStart(3, '0')
+}
+
+export function compraBucket(taxDocument: string, quantity = 2) {
+    const order = smartsalesOrder(quantity)
+    const itens = {
+        status: order.status,
+        pedidos: order.cart.map(i => ({
+            produto: i.product.name,
+            sku: i.product.sku,
+            quantidade: i.quantity,
+            valorUnitario: i.product.currentValue,
+            subtotal: i.subtotal,
+            total: i.total,
+        })),
+        descontos: [],
+        subtotal: order.subtotal,
+        total: order.total,
+        atualizadoEm: order.updatedAt,
+    }
+    return {
+        smartsalesOrder: JSON.stringify(order),
+        currentCart: JSON.stringify(currentCart(quantity)),
+        itensCarrinhoFormatado: JSON.stringify(itens),
+        taxDocument,
+        accountId: '',
+        orderReferenceNumber: 'TESTE',
+        dataCompra: new Date().toISOString(),
     }
 }
 

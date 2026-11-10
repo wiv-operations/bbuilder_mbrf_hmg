@@ -9,7 +9,20 @@
     ],
     "$conditionOutputs": [
       {
-        "stateId": "e125a412-25cd-4f51-b07e-4252d5f55be1",
+        "stateId": "aa8ba061-9838-4061-8466-a3c5f7b00e6c",
+        "typeOfStateId": "state",
+        "conditions": [
+          {
+            "source": "input",
+            "comparison": "equals",
+            "values": [
+              "@redirect_cart"
+            ]
+          }
+        ]
+      },
+      {
+        "stateId": "a7e1c0de-e1e9-4b1d-9c3a-0e1e91b11dad",
         "conditions": [
           {
             "source": "input",
@@ -46,7 +59,7 @@
     "root": true,
     "$title": "Início",
     "$position": {
-      "top": "0px",
+      "top": "402px",
       "left": "1497px"
     }
   },
@@ -188,8 +201,34 @@
         "conditions": [
           {
             "source": "input",
-            "comparison": "exists",
-            "values": []
+            "comparison": "contains",
+            "values": [
+              "sim",
+              "ok",
+              "positivo",
+              "certo",
+              "yes",
+              "1",
+              "um"
+            ]
+          }
+        ]
+      },
+      {
+        "stateId": "ef984e63-b283-4108-8036-1e55d4615ba1",
+        "typeOfStateId": "state",
+        "conditions": [
+          {
+            "source": "input",
+            "comparison": "contains",
+            "values": [
+              "não",
+              "nao",
+              "negativo",
+              "no",
+              "2",
+              "dois"
+            ]
           }
         ]
       }
@@ -424,7 +463,7 @@
     "$localCustomActions": [],
     "$title": "Cria variável Smart Sales",
     "$position": {
-      "top": "1275.98px",
+      "top": "1276px",
       "left": "1497px"
     }
   },
@@ -580,8 +619,8 @@
     "$localCustomActions": [],
     "$title": "[SCRIPT] Formata produtos",
     "$position": {
-      "top": "1582px",
-      "left": "1496px"
+      "top": "1627px",
+      "left": "1492px"
     }
   },
   "b5b5fbd6-da5e-4a21-8b3a-f1aef8cb60f9": {
@@ -627,6 +666,33 @@
           "properties": {},
           "required": []
         },
+        "type": "SetVariable",
+        "settings": {
+          "variable": "segundoCarrinhoProcessado",
+          "value": "false"
+        },
+        "conditions": []
+      },
+      {
+        "$description": "",
+        "$inputSchema": {
+          "type": "object",
+          "properties": {},
+          "required": []
+        },
+        "type": "SetVariable",
+        "settings": {
+          "variable": "carrinhoEscolhido"
+        },
+        "conditions": []
+      },
+      {
+        "$description": "",
+        "$inputSchema": {
+          "type": "object",
+          "properties": {},
+          "required": []
+        },
         "type": "ExecuteScriptV2",
         "settings": {
           "function": "run",
@@ -659,7 +725,7 @@
     "$localCustomActions": [],
     "$title": "[SCRIPT] Separação de carrinho",
     "$position": {
-      "top": "2153.36px",
+      "top": "2152px",
       "left": "1496px"
     }
   },
@@ -903,8 +969,8 @@
     "$localCustomActions": [],
     "$title": "Carrinho Unico",
     "$position": {
-      "top": "2585.87px",
-      "left": "841.872px"
+      "top": "2586px",
+      "left": "842px"
     }
   },
   "54ed9a78-6df9-42c2-8cfd-f6522527d84c": {
@@ -942,7 +1008,8 @@
       },
       {
         "input": {
-          "bypass": false
+          "bypass": false,
+          "expiration": "0:15"
         }
       }
     ],
@@ -1104,7 +1171,8 @@
       },
       {
         "input": {
-          "bypass": false
+          "bypass": false,
+          "expiration": "0:15"
         }
       }
     ],
@@ -1297,7 +1365,7 @@
           "type": "SendMessage",
           "settings": {
             "type": "text/plain",
-            "content": "Tudo certo! Aqui está o valor atualizado do seu pedido:\n\n💳 <b>Forma de pagamento:</b> {{formaPagamento}}\n💰 <b>Valor total:</b> R$ {{valorPedidoAtual}}\n\nℹ️ <b>Aviso:</b> Para pagamentos realizados via <b>PIX</b> ou <b>Cartão de Crédito</b>, é aplicada uma <b>caução de 15% e 20%, respectivamente</b> Essa cobrança ocorre devido à variação de peso de alguns produtos e aos ajustes de cálculo de impostos. Após o faturamento do pedido, o valor excedente será <b>estornado em até 5 dias úteis.</b>",
+            "content": "Tudo certo! Aqui está o valor atualizado do seu pedido:\n\n💳 <b>Forma de pagamento:</b> {{formaPagamento}}\n💰 <b>Valor total:</b> {{valorPedidoAtual}}\n🪙 <b>Valor de imposto:</b> {{totalTaxAmount}}\n\nℹ️ <b>Aviso:</b> Para pagamentos realizados via <b>PIX</b> ou <b>Cartão de Crédito</b>, é aplicada uma <b>caução de 15% e 20%, respectivamente</b> Essa cobrança ocorre devido à variação de peso de alguns produtos e aos ajustes de cálculo de impostos. Após o faturamento do pedido, o valor excedente será <b>estornado em até 5 dias úteis.</b>",
             "metadata": {}
           }
         }
@@ -1358,6 +1426,25 @@
           "action": "Exibicao"
         },
         "conditions": []
+      },
+      {
+        "$description": "",
+        "$inputSchema": {
+          "type": "object",
+          "properties": {},
+          "required": []
+        },
+        "type": "ExecuteScript",
+        "settings": {
+          "function": "run",
+          "source": "function run(valor) {\n    try {\n        if (valor === null || valor === undefined || String(valor).trim() === \"\") {\n            return \"R$0,00\";\n        }\n\n        let numero = parseFloat(String(valor).replace(\",\", \".\"));\n\n        if (isNaN(numero)) {\n            return \"R$0,00\";\n        }\n\n        let negativo = numero < 0;\n        let partes = Math.abs(numero).toFixed(2).split(\".\");\n\n        let inteiro = partes[0].replace(/\\B(?=(\\d{3})+(?!\\d))/g, \".\");\n        let decimal = partes[1];\n\n        return (negativo ? \"-\" : \"\") + \"R$\" + inteiro + \",\" + decimal;\n    } catch (e) {\n        return \"R$0,00\";\n    }\n}",
+          "inputVariables": [
+            "valorPedidoAtual"
+          ],
+          "outputVariable": "valorPedidoAtual",
+          "LocalTimeZoneEnabled": false
+        },
+        "conditions": []
       }
     ],
     "$leavingCustomActions": [],
@@ -1367,8 +1454,8 @@
     "$localCustomActions": [],
     "$title": "[MSG] Forma de pagamento",
     "$position": {
-      "top": "3357.87px",
-      "left": "843.723px"
+      "top": "3358px",
+      "left": "844px"
     }
   },
   "0ba6da60-1caa-471d-b009-f5e6326358ea": {
@@ -1739,7 +1826,8 @@
     "$contentActions": [
       {
         "input": {
-          "bypass": false
+          "bypass": false,
+          "expiration": "0:15"
         }
       }
     ],
@@ -1895,7 +1983,7 @@
       "stateId": "fallback"
     },
     "$localCustomActions": [],
-    "shortNameOfSubflow": "menudedatasentregas20",
+    "shortNameOfSubflow": "menudedatasentregas22",
     "$imageUri": "",
     "$title": "Menu de datas entregas",
     "$position": {
@@ -1938,7 +2026,8 @@
       },
       {
         "input": {
-          "bypass": false
+          "bypass": false,
+          "expiration": "0:15"
         }
       }
     ],
@@ -2097,7 +2186,8 @@
     "$contentActions": [
       {
         "input": {
-          "bypass": false
+          "bypass": false,
+          "expiration": "0:15"
         }
       }
     ],
@@ -2327,7 +2417,7 @@
       "stateId": "fallback"
     },
     "$localCustomActions": [],
-    "shortNameOfSubflow": "formadepagamento23",
+    "shortNameOfSubflow": "formadepagamento25",
     "$imageUri": "",
     "$title": "Forma de pagamento",
     "$position": {
@@ -2397,7 +2487,8 @@
       },
       {
         "input": {
-          "bypass": false
+          "bypass": false,
+          "expiration": "0:15"
         }
       }
     ],
@@ -2587,14 +2678,14 @@
           "type": "SendMessage",
           "settings": {
             "type": "text/plain",
-            "content": "O seu pedido <b>{{numeroPedido}}</b> já foi <b>registrado em nosso sistema</b> e o boleto será enviado diretamente <b>para o seu e-mail cadastrado.</b> ✅\n\n📅 <b>Entrega prevista:</b> {{dataEntregaConfirmada}}\n\nEstamos cuidando de tudo para que seu pedido chegue até você. 📦",
+            "content": "O seu pedido {{orderReferenceNumber}} já foi <b>registrado em nosso sistema.</b> ✅\nAgora é só aguardar!\n\nNúmero do pedido: {{orderReferenceNumber}}\n\nEstamos cuidando de tudo para que seu pedido chegue até você. 📦",
             "metadata": {}
           }
         }
       },
       {
         "input": {
-          "bypass": false
+          "bypass": true
         }
       }
     ],
@@ -2624,6 +2715,128 @@
           "action": "Exibicao"
         },
         "conditions": []
+      },
+      {
+        "$description": "",
+        "$inputSchema": {
+          "type": "object",
+          "properties": {},
+          "required": []
+        },
+        "type": "SetVariable",
+        "settings": {
+          "variable": "recursoBucketCompra",
+          "value": ""
+        },
+        "conditions": []
+      },
+      {
+        "$description": "",
+        "$inputSchema": {
+          "type": "object",
+          "properties": {},
+          "required": []
+        },
+        "type": "SetVariable",
+        "settings": {
+          "variable": "statusSalvaBucketCompra",
+          "value": ""
+        },
+        "conditions": []
+      },
+      {
+        "$description": "",
+        "$inputSchema": {
+          "type": "object",
+          "properties": {},
+          "required": []
+        },
+        "$title": "Monta compra SmartSales para o bucket",
+        "type": "ExecuteScript",
+        "settings": {
+          "function": "run",
+          "source": "function run(smartsalesOrder, currentCart, itensCarrinhoFormatado, taxDocument, accountId, orderReferenceNumber) {\n    try {\n        if (!smartsalesOrder || !taxDocument) {\n            return \"\";\n        }\n        return JSON.stringify({\n            smartsalesOrder: smartsalesOrder,\n            currentCart: currentCart || \"\",\n            itensCarrinhoFormatado: itensCarrinhoFormatado || \"\",\n            taxDocument: taxDocument,\n            accountId: accountId || \"\",\n            orderReferenceNumber: orderReferenceNumber || \"\",\n            dataCompra: new Date().toISOString()\n        });\n    } catch (e) {\n        return \"\";\n    }\n}",
+          "inputVariables": [
+            "contact.extras.smartsalesOrder",
+            "contact.extras.currentCart",
+            "itensCarrinhoFormatado",
+            "contact.taxDocument",
+            "contact.extras.accountId",
+            "orderReferenceNumber"
+          ],
+          "outputVariable": "recursoBucketCompra",
+          "LocalTimeZoneEnabled": false
+        },
+        "conditions": []
+      },
+      {
+        "$description": "",
+        "$inputSchema": {
+          "type": "object",
+          "properties": {},
+          "required": []
+        },
+        "$title": "Salva compra SmartSales no bucket",
+        "type": "ProcessHttp",
+        "settings": {
+          "headers": {
+            "Authorization": "{{resource.routerKey}}"
+          },
+          "method": "POST",
+          "body": "{\"id\":\"{{random.guid}}\",\"to\":\"postmaster@msging.net\",\"method\":\"set\",\"uri\":\"/buckets/compra-smartsales-{{contact.taxDocument}}\",\"type\":\"application/json\",\"resource\":{{recursoBucketCompra}}}",
+          "uri": "https://mbrf.http.msging.net/commands",
+          "responseStatusVariable": "statusSalvaBucketCompra",
+          "responseBodyVariable": "salvaBucketCompraBody"
+        },
+        "conditions": [
+          {
+            "source": "context",
+            "variable": "recursoBucketCompra",
+            "comparison": "exists",
+            "values": []
+          },
+          {
+            "source": "context",
+            "variable": "contact.taxDocument",
+            "comparison": "exists",
+            "values": []
+          }
+        ],
+        "continueOnError": true
+      },
+      {
+        "$description": "",
+        "$inputSchema": {
+          "type": "object",
+          "properties": {},
+          "required": []
+        },
+        "type": "TrackEvent",
+        "settings": {
+          "extras": {
+            "identificador": "{{contact.identity}}",
+            "cnpj": "{{contact.taxDocument}}",
+            "response": "{{salvaBucketCompraBody}}"
+          },
+          "category": "Bucket compra SmartSales erro",
+          "action": "Salvar {{statusSalvaBucketCompra}}"
+        },
+        "conditions": [
+          {
+            "source": "context",
+            "variable": "recursoBucketCompra",
+            "comparison": "exists",
+            "values": []
+          },
+          {
+            "source": "context",
+            "variable": "salvaBucketCompraBody@status",
+            "comparison": "notEquals",
+            "values": [
+              "success"
+            ]
+          }
+        ]
       }
     ],
     "$leavingCustomActions": [],
@@ -2633,8 +2846,8 @@
     "$localCustomActions": [],
     "$title": "[MSG] sucesso geração pedido",
     "$position": {
-      "top": "5774.94px",
-      "left": "1479.57px"
+      "top": "5323px",
+      "left": "848px"
     }
   },
   "f01cd1a7-a6c7-429c-998a-5acf75259eee": {
@@ -2655,8 +2868,8 @@
     "$localCustomActions": [],
     "$title": "[GO TO] Algo mais",
     "$position": {
-      "top": "5708.94px",
-      "left": "1946.57px"
+      "top": "5417px",
+      "left": "1353px"
     },
     "addonsSettings": {
       "shape": "0 50% 50% 0",
@@ -2699,7 +2912,8 @@
       },
       {
         "input": {
-          "bypass": false
+          "bypass": false,
+          "expiration": "0:15"
         }
       }
     ],
@@ -2861,7 +3075,8 @@
       },
       {
         "input": {
-          "bypass": false
+          "bypass": false,
+          "expiration": "0:15"
         }
       }
     ],
@@ -3101,8 +3316,8 @@
     "$localCustomActions": [],
     "$title": "[DECISÃO] 2º pedido atingiu mínimo?",
     "$position": {
-      "top": "2752.88px",
-      "left": "2484.75px"
+      "top": "2753px",
+      "left": "2485px"
     }
   },
   "94464e7a-c23c-4ab5-b4af-7ed29a340a4b": {
@@ -3140,7 +3355,8 @@
       },
       {
         "input": {
-          "bypass": false
+          "bypass": false,
+          "expiration": "0:15"
         }
       }
     ],
@@ -3316,7 +3532,8 @@
       },
       {
         "input": {
-          "bypass": false
+          "bypass": false,
+          "expiration": "0:15"
         }
       }
     ],
@@ -3461,8 +3678,8 @@
     "$localCustomActions": [],
     "$title": "[MENU] Valor mínimo pedido 2",
     "$position": {
-      "top": "2753.88px",
-      "left": "2842.75px"
+      "top": "2754px",
+      "left": "2843px"
     }
   },
   "00588eef-ed7a-4ef0-ac58-29058c7a4df4": {
@@ -3500,7 +3717,8 @@
       },
       {
         "input": {
-          "bypass": false
+          "bypass": false,
+          "expiration": "0:15"
         }
       }
     ],
@@ -3661,6 +3879,34 @@
             "source": "context",
             "comparison": "equals",
             "values": [
+              "true"
+            ],
+            "variable": "segundoCarrinhoProcessado"
+          },
+          {
+            "source": "context",
+            "comparison": "equals",
+            "values": [
+              "200"
+            ],
+            "variable": "statusCarrinhoAtual"
+          },
+          {
+            "source": "context",
+            "comparison": "exists",
+            "values": [],
+            "variable": "cartId"
+          }
+        ]
+      },
+      {
+        "stateId": "01d6b57a-150d-413f-ba17-51b59eb89db0",
+        "typeOfStateId": "state",
+        "conditions": [
+          {
+            "source": "context",
+            "comparison": "equals",
+            "values": [
               "200"
             ],
             "variable": "statusSplit"
@@ -3738,7 +3984,7 @@
             "Authorization": "Bearer {{retornoToken@token}}"
           },
           "method": "GET",
-          "uri": "{{resource.urlBase}}/services/data/v62.0/commerce/webstores/0ZEKj000000ox4zOAA/carts/current?effectiveAccountId={{accountId}}",
+          "uri": "{{resource.urlBase}}/services/data/v63.0/commerce/webstores/0ZEKj000000ox4zOAA/carts/current?effectiveAccountId={{accountId}}",
           "responseStatusVariable": "statusCarrinhoAtual",
           "responseBodyVariable": "retornoCarrinhoAtual"
         },
@@ -3769,6 +4015,20 @@
           "properties": {},
           "required": []
         },
+        "type": "SetVariable",
+        "settings": {
+          "variable": "statusSplit",
+          "value": "0"
+        },
+        "conditions": []
+      },
+      {
+        "$description": "",
+        "$inputSchema": {
+          "type": "object",
+          "properties": {},
+          "required": []
+        },
         "type": "ProcessHttp",
         "settings": {
           "headers": {},
@@ -3778,7 +4038,16 @@
           "responseStatusVariable": "statusToken",
           "responseBodyVariable": "retornoToken"
         },
-        "conditions": []
+        "conditions": [
+          {
+            "source": "context",
+            "comparison": "notEquals",
+            "values": [
+              "true"
+            ],
+            "variable": "segundoCarrinhoProcessado"
+          }
+        ]
       },
       {
         "$description": "",
@@ -3799,7 +4068,16 @@
           "responseBodyVariable": "retornoSplit",
           "body": "{\n    \"isMarfrig\": {{carrinhoEscolhido@isMarfrig}},\n    \"isBrf\": {{carrinhoEscolhido@isBrf}}\n}"
         },
-        "conditions": []
+        "conditions": [
+          {
+            "source": "context",
+            "comparison": "notEquals",
+            "values": [
+              "true"
+            ],
+            "variable": "segundoCarrinhoProcessado"
+          }
+        ]
       },
       {
         "type": "TrackEvent",
@@ -3833,6 +4111,14 @@
               "200"
             ],
             "variable": "statusSplit"
+          },
+          {
+            "source": "context",
+            "comparison": "notEquals",
+            "values": [
+              "true"
+            ],
+            "variable": "segundoCarrinhoProcessado"
           }
         ]
       }
@@ -3883,7 +4169,8 @@
       },
       {
         "input": {
-          "bypass": false
+          "bypass": false,
+          "expiration": "0:15"
         }
       }
     ],
@@ -4474,7 +4761,7 @@
     "$localCustomActions": [],
     "$title": "[API] Condições de pagamento",
     "$position": {
-      "top": "2936px",
+      "top": "2935px",
       "left": "843px"
     }
   },
@@ -4513,7 +4800,8 @@
       },
       {
         "input": {
-          "bypass": false
+          "bypass": false,
+          "expiration": "0:15"
         }
       }
     ],
@@ -4833,7 +5121,7 @@
         "type": "ExecuteScript",
         "settings": {
           "function": "run",
-          "source": "function run(retornoJanelaEntrega, entregaEnderecoId) {\n    try {\n        let MARGEM_MINUTOS = 15;\n        let LIMITE_LINHAS = 10;\n        let FUSO_BRASILIA = \"-03:00\";\n        let DIAS = [\"Domingo\", \"Segunda-feira\", \"Terça-feira\", \"Quarta-feira\", \"Quinta-feira\", \"Sexta-feira\", \"Sábado\"];\n        let DIAS_CURTOS = [\"Dom\", \"Seg\", \"Ter\", \"Qua\", \"Qui\", \"Sex\", \"Sáb\"];\n        let MESES = [\"Janeiro\", \"Fevereiro\", \"Março\", \"Abril\", \"Maio\", \"Junho\", \"Julho\", \"Agosto\", \"Setembro\", \"Outubro\", \"Novembro\", \"Dezembro\"];\n        let dois = function (n) { return (n < 10 ? \"0\" : \"\") + n; };\n\n        let dados = typeof retornoJanelaEntrega === \"string\" ? JSON.parse(retornoJanelaEntrega) : retornoJanelaEntrega;\n        let lista = (dados && (dados.Data || dados.data)) || [];\n        let limite = Date.now() + MARGEM_MINUTOS * 60000;\n        let porData = {};\n        let enderecoAlvo = String(entregaEnderecoId || \"\").trim();\n        // compara pelos 15 primeiros caracteres para aceitar Id de 15 ou 18 posicoes\n        let mesmoEndereco = function (id) {\n            if (!enderecoAlvo) return true; // sem endereco escolhido: mantem todas as janelas\n            return String(id).substring(0, 15) === enderecoAlvo.substring(0, 15);\n        };\n\n        lista.forEach(function (cliente) {\n            (cliente.delivery_windows || []).forEach(function (janela) {\n                let enderecos = janela.addresses || {};\n                Object.keys(enderecos).filter(mesmoEndereco).forEach(function (enderecoId) {\n                    (enderecos[enderecoId] || []).forEach(function (d) {\n                        if (!d || !d.delivery_date) return;\n                        let dia = String(d.delivery_date).substring(0, 10);\n                        if (!/^\\d{4}-\\d{2}-\\d{2}$/.test(dia)) return;\n\n                        if (d.expiration_date) {\n                            let exp = String(d.expiration_date);\n                            if (!/[zZ]|[+-]\\d{2}:?\\d{2}$/.test(exp)) exp += FUSO_BRASILIA;\n                            let expMs = Date.parse(exp);\n                            if (!isNaN(expMs) && expMs < limite) return;\n                        }\n                        if (!porData[dia]) porData[dia] = { dia: dia, expiracao: d.expiration_date || \"\", enderecoId: enderecoId };\n                    });\n                });\n            });\n        });\n\n        let rows = Object.keys(porData).sort().slice(0, LIMITE_LINHAS).map(function (dia) {\n            let p = dia.split(\"-\");\n            let ano = Number(p[0]), mes = Number(p[1]), d = Number(p[2]);\n            let semana = new Date(Date.UTC(ano, mes - 1, d, 12)).getUTCDay();\n            let exp = String(porData[dia].expiracao);\n            let prazo = /^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}/.test(exp)\n                ? \"Peça até \" + exp.substring(8, 10) + \"/\" + exp.substring(5, 7) + \" às \" + exp.substring(11, 16)\n                : \"Selecionar esta data\";\n\n            return {\n                title: dois(d) + \"/\" + dois(mes) + \"/\" + ano + \" (\" + DIAS_CURTOS[semana] + \")\",\n                description: prazo,\n                deliveryDate: dia,\n                dataChave: dia.replace(/-/g, \"\"),\n                desiredDeliveryDate: dia + \"T12:00:00.000Z\",\n                dataExtenso: DIAS[semana] + \", \" + dois(d) + \" de \" + MESES[mes - 1] + \" de \" + ano,\n                enderecoId: porData[dia].enderecoId,\n                dados: true\n            };\n        });\n\n        if (!rows.length) return JSON.stringify({ temDatas: false, total: 0 });\n\n        return JSON.stringify({\n            temDatas: true,\n            total: rows.length,\n            body: \"Estamos quase finalizando! <b>Escolha a melhor data de entrega para você.</b> 😊\",\n            footer: \"Selecione uma das datas disponíveis.\",\n            button: \"Ver datas\",\n            categories: [{ title: \"Datas de entrega\", rows: rows }]\n        });\n    } catch (e) {\n        return JSON.stringify({ temDatas: false, total: 0, error: true, message: e.message });\n    }\n}",
+          "source": "function run(retornoJanelaEntrega, entregaEnderecoId) {\n    try {\n        let MARGEM_MINUTOS = 15;\n        let LIMITE_LINHAS = 10;\n        let FUSO_BRASILIA = \"-03:00\";\n        let DIAS = [\"Domingo\", \"Segunda-feira\", \"Terça-feira\", \"Quarta-feira\", \"Quinta-feira\", \"Sexta-feira\", \"Sábado\"];\n        let DIAS_CURTOS = [\"Dom\", \"Seg\", \"Ter\", \"Qua\", \"Qui\", \"Sex\", \"Sáb\"];\n        let MESES = [\"Janeiro\", \"Fevereiro\", \"Março\", \"Abril\", \"Maio\", \"Junho\", \"Julho\", \"Agosto\", \"Setembro\", \"Outubro\", \"Novembro\", \"Dezembro\"];\n        let dois = function (n) { return (n < 10 ? \"0\" : \"\") + n; };\n\n        let dados = typeof retornoJanelaEntrega === \"string\" ? JSON.parse(retornoJanelaEntrega) : retornoJanelaEntrega;\n        let lista = (dados && (dados.Data || dados.data)) || [];\n        let limite = Date.now() + MARGEM_MINUTOS * 60000;\n        let porData = {};\n        let enderecoAlvo = String(entregaEnderecoId || \"\").trim();\n        // compara pelos 15 primeiros caracteres para aceitar Id de 15 ou 18 posicoes\n        let mesmoEndereco = function (id) {\n            if (!enderecoAlvo) return true; // sem endereco escolhido: mantem todas as janelas\n            return String(id).substring(0, 15) === enderecoAlvo.substring(0, 15);\n        };\n\n        lista.forEach(function (cliente) {\n            (cliente.delivery_windows || []).forEach(function (janela) {\n                let enderecos = janela.addresses || {};\n                Object.keys(enderecos).filter(mesmoEndereco).forEach(function (enderecoId) {\n                    (enderecos[enderecoId] || []).forEach(function (d) {\n                        if (!d || !d.delivery_date) return;\n                        let dia = String(d.delivery_date).substring(0, 10);\n                        if (!/^\\d{4}-\\d{2}-\\d{2}$/.test(dia)) return;\n\n                        if (d.expiration_date) {\n                            let exp = String(d.expiration_date);\n                            if (!/[zZ]|[+-]\\d{2}:?\\d{2}$/.test(exp)) exp += FUSO_BRASILIA;\n                            let expMs = Date.parse(exp);\n                            if (!isNaN(expMs) && expMs < limite) return;\n                        }\n                        if (!porData[dia]) porData[dia] = { dia: dia, expiracao: d.expiration_date || \"\", enderecoId: enderecoId };\n                    });\n                });\n            });\n        });\n\n        let rows = Object.keys(porData).sort().slice(0, LIMITE_LINHAS).map(function (dia) {\n            let p = dia.split(\"-\");\n            let ano = Number(p[0]), mes = Number(p[1]), d = Number(p[2]);\n            let semana = new Date(Date.UTC(ano, mes - 1, d, 12)).getUTCDay();\n            let exp = String(porData[dia].expiracao);\n            let prazo = /^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}/.test(exp)\n                ? \"Peça até \" + exp.substring(8, 10) + \"/\" + exp.substring(5, 7) + \" às \" + exp.substring(11, 16)\n                : \"Selecionar esta data\";\n\n            return {\n                title: dois(d) + \"/\" + dois(mes) + \"/\" + ano + \" (\" + DIAS_CURTOS[semana] + \")\",\n                deliveryDate: dia,\n                dataChave: dia.replace(/-/g, \"\"),\n                desiredDeliveryDate: dia + \"T12:00:00.000Z\",\n                dataExtenso: DIAS[semana] + \", \" + dois(d) + \" de \" + MESES[mes - 1] + \" de \" + ano,\n                enderecoId: porData[dia].enderecoId,\n                dados: true\n            };\n        });\n\n        if (!rows.length) return JSON.stringify({ temDatas: false, total: 0 });\n\n        return JSON.stringify({\n            temDatas: true,\n            total: rows.length,\n            body: \"Estamos quase finalizando! <b>Escolha a melhor data de entrega para você.</b> 😊\",\n            footer: \"Selecione uma das datas disponíveis.\",\n            button: \"Ver datas\",\n            categories: [{ title: \"Datas de entrega\", rows: rows }]\n        });\n    } catch (e) {\n        return JSON.stringify({ temDatas: false, total: 0, error: true, message: e.message });\n    }\n}",
           "inputVariables": [
             "retornoJanelaEntrega",
             "entregaEnderecoId"
@@ -4852,7 +5140,7 @@
     "$title": "[API] Janelas de entrega",
     "$position": {
       "top": "3983px",
-      "left": "844px"
+      "left": "843px"
     }
   },
   "66f5e574-24c5-4f5e-995d-5854ede12a17": {
@@ -4862,64 +5150,41 @@
           "$description": "",
           "type": "SendMessage",
           "settings": {
-            "type": "application/vnd.lime.select+json",
-            "content": {
-              "text": "<b>Ocorreu um erro</b>\nNão conseguimos carregar as datas de entrega agora. Que tal tentar novamente?",
-              "scope": "immediate",
-              "options": [
-                {
-                  "text": "Tentar novamente",
-                  "previewText": "Tentar novamente",
-                  "value": null,
-                  "index": 0,
-                  "type": null
-                },
-                {
-                  "text": "Encerrar conversa",
-                  "previewText": "Encerrar conversa",
-                  "value": null,
-                  "index": 1,
-                  "type": null
-                }
-              ],
-              "quikReply": false
-            },
+            "type": "text/plain",
+            "content": "Não localizei nenhuma data disponível para entrega no endereço selecionado.",
             "metadata": {}
           }
         }
       },
       {
         "input": {
-          "bypass": false
+          "bypass": true
         }
       }
     ],
     "$conditionOutputs": [
       {
-        "stateId": "ae01d44d-8e09-4edf-86d2-6bc7529f3a36",
+        "stateId": "menu-enderecos-monta",
         "typeOfStateId": "state",
         "conditions": [
           {
             "source": "context",
-            "comparison": "equals",
+            "comparison": "greaterThanOrEquals",
             "values": [
-              "Tentar novamente"
+              "2"
             ],
-            "variable": "intentAction"
+            "variable": "numberAddresses"
           }
         ]
       },
       {
-        "stateId": "4dc20455-e916-4f43-a6c5-caf884d06649",
+        "stateId": "79b7ea00-0ea4-417e-a67d-773d92ab23da",
         "typeOfStateId": "state",
         "conditions": [
           {
-            "source": "context",
-            "comparison": "equals",
-            "values": [
-              "Encerrar conversa"
-            ],
-            "variable": "intentAction"
+            "source": "input",
+            "comparison": "exists",
+            "values": []
           }
         ]
       }
@@ -4942,6 +5207,25 @@
           },
           "category": "Mensagem erro API exibicao",
           "action": "Exibicao"
+        },
+        "conditions": []
+      },
+      {
+        "$description": "",
+        "$inputSchema": {
+          "type": "object",
+          "properties": {},
+          "required": []
+        },
+        "type": "ExecuteScript",
+        "settings": {
+          "function": "run",
+          "source": "function run(itensMenuDinamico) {\n    try {\n        let d = typeof itensMenuDinamico === \"string\" ? JSON.parse(itensMenuDinamico) : itensMenuDinamico;\n        if (!d || d.REDUCED) return \"0\";\n        let total = 0;\n        ((d.categories) || []).forEach(function (c) {\n            total += ((c && c.rows) || []).length;\n        });\n        return String(total);\n    } catch (e) {\n        return \"0\";\n    }\n}",
+          "inputVariables": [
+            "itensmenudinamico"
+          ],
+          "outputVariable": "numberAddresses",
+          "LocalTimeZoneEnabled": false
         },
         "conditions": []
       }
@@ -5013,8 +5297,8 @@
     "$localCustomActions": [],
     "$title": "[MSG] Erro janela de entrega",
     "$position": {
-      "top": "3986.87px",
-      "left": "607.851px"
+      "top": "3736px",
+      "left": "508px"
     }
   },
   "a0a34fab-bc3e-457f-9f70-de4f9215d2ab": {
@@ -5027,7 +5311,7 @@
     ],
     "$conditionOutputs": [
       {
-        "stateId": "17ea68a4-2414-4d97-b0d0-232ff6db36df",
+        "stateId": "garante-checkout-carrinho",
         "typeOfStateId": "state",
         "conditions": [
           {
@@ -5449,7 +5733,47 @@
         ]
       }
     ],
-    "$leavingCustomActions": [],
+    "$leavingCustomActions": [
+      {
+        "$description": "",
+        "$inputSchema": {
+          "type": "object",
+          "properties": {},
+          "required": []
+        },
+        "type": "ProcessHttp",
+        "settings": {
+          "headers": {},
+          "method": "POST",
+          "body": "{\n  \"username\": \"{{contact.email}}\",\n  \"password\": \"{{contact.extras.senha}}\"\n}",
+          "uri": "{{resource.urlBase}}/vforcesite/services/apexrest/ecommerce/login",
+          "responseStatusVariable": "statusToken",
+          "responseBodyVariable": "retornoToken"
+        },
+        "conditions": []
+      },
+      {
+        "$description": "",
+        "$inputSchema": {
+          "type": "object",
+          "properties": {},
+          "required": []
+        },
+        "type": "ProcessHttp",
+        "settings": {
+          "headers": {
+            "Authorization": "Bearer {{retornoToken@token}}",
+            "Content-Type": "application/json"
+          },
+          "method": "POST",
+          "uri": "{{resource.urlBase}}/services/data/v62.0/commerce/webstores/0ZEKj000000ox4zOAA/checkouts/active/payments?effectiveAccountId={{accountId}}",
+          "responseStatusVariable": "statusConfirmarFormaPagamento",
+          "responseBodyVariable": "RetornoConfirmarFormaPagamento",
+          "body": "{\n  \"paymentToken\": \"{{codigoCondicaoPagamento}}\",\n  \"requestType\": \"SimplePurchaseOrder\"\n}"
+        },
+        "conditions": []
+      }
+    ],
     "$defaultOutput": {
       "stateId": "5a91f3aa-017c-4131-a3c2-af3ead8552ff"
     },
@@ -5470,7 +5794,7 @@
     ],
     "$conditionOutputs": [
       {
-        "stateId": "dc6be84b-3b90-42bd-9a06-ffeb9243a175",
+        "stateId": "9854b653-4951-4b19-92d1-21fc8281944f",
         "typeOfStateId": "state",
         "conditions": [
           {
@@ -5480,20 +5804,12 @@
               "2"
             ],
             "variable": "statusCheckout"
-          }
-        ]
-      },
-      {
-        "stateId": "dc6be84b-3b90-42bd-9a06-ffeb9243a175",
-        "typeOfStateId": "state",
-        "conditions": [
+          },
           {
             "source": "context",
-            "comparison": "startsWith",
-            "values": [
-              "2"
-            ],
-            "variable": "statusCheckoutAtivo"
+            "comparison": "exists",
+            "values": [],
+            "variable": "orderReferenceNumber"
           }
         ]
       },
@@ -5517,62 +5833,6 @@
           "properties": {},
           "required": []
         },
-        "type": "SetVariable",
-        "settings": {
-          "variable": "statusCheckoutAtivo",
-          "value": "0"
-        },
-        "conditions": []
-      },
-      {
-        "$description": "",
-        "$inputSchema": {
-          "type": "object",
-          "properties": {},
-          "required": []
-        },
-        "type": "SetVariable",
-        "settings": {
-          "variable": "faseCheckout",
-          "value": "selecao"
-        },
-        "conditions": []
-      },
-      {
-        "$description": "",
-        "$inputSchema": {
-          "type": "object",
-          "properties": {},
-          "required": []
-        },
-        "type": "SetVariable",
-        "settings": {
-          "variable": "tentativasCheckout",
-          "value": "0"
-        },
-        "conditions": []
-      },
-      {
-        "$description": "",
-        "$inputSchema": {
-          "type": "object",
-          "properties": {},
-          "required": []
-        },
-        "type": "SetVariable",
-        "settings": {
-          "variable": "tentativasSelecao",
-          "value": "0"
-        },
-        "conditions": []
-      },
-      {
-        "$description": "",
-        "$inputSchema": {
-          "type": "object",
-          "properties": {},
-          "required": []
-        },
         "type": "ProcessHttp",
         "settings": {
           "headers": {},
@@ -5581,6 +5841,46 @@
           "uri": "{{resource.urlBase}}/vforcesite/services/apexrest/ecommerce/login",
           "responseStatusVariable": "statusToken",
           "responseBodyVariable": "retornoToken"
+        },
+        "conditions": []
+      },
+      {
+        "$description": "",
+        "$inputSchema": {
+          "type": "object",
+          "properties": {},
+          "required": []
+        },
+        "type": "SetVariable",
+        "settings": {
+          "variable": "statusCheckout",
+          "value": "0"
+        },
+        "conditions": []
+      },
+      {
+        "$description": "",
+        "$inputSchema": {
+          "type": "object",
+          "properties": {},
+          "required": []
+        },
+        "type": "SetVariable",
+        "settings": {
+          "variable": "orderReferenceNumber"
+        },
+        "conditions": []
+      },
+      {
+        "$description": "",
+        "$inputSchema": {
+          "type": "object",
+          "properties": {},
+          "required": []
+        },
+        "type": "SetVariable",
+        "settings": {
+          "variable": "retornoCheckout"
         },
         "conditions": []
       },
@@ -5612,44 +5912,31 @@
           "properties": {},
           "required": []
         },
-        "type": "ExecuteScript",
-        "settings": {
-          "function": "run",
-          "source": "function run(retornoCheckout) {\n    try {\n        let data = typeof retornoCheckout === \"string\" ? JSON.parse(retornoCheckout) : retornoCheckout;\n        if (Array.isArray(data)) data = data[0];\n        return (data && (data.checkoutId || data.id)) || \"active\";\n    } catch (e) {\n        return \"active\";\n    }\n}\n",
-          "inputVariables": [
-            "retornoCheckout"
-          ],
-          "outputVariable": "checkoutId",
-          "LocalTimeZoneEnabled": false
-        },
-        "conditions": []
-      },
-      {
-        "$description": "",
-        "$inputSchema": {
-          "type": "object",
-          "properties": {},
-          "required": []
-        },
         "type": "ProcessHttp",
         "settings": {
           "headers": {},
           "method": "POST",
-          "body": "{\n  \"username\": \"{{contact.email}}\",\n  \"password\": \"{{contact.extras.senha}}\"\n}",
           "uri": "{{resource.urlBase}}/vforcesite/services/apexrest/ecommerce/login",
           "responseStatusVariable": "statusToken",
-          "responseBodyVariable": "retornoToken"
+          "responseBodyVariable": "retornoToken",
+          "body": "{\n  \"username\": \"{{contact.email}}\",\n  \"password\": \"{{contact.extras.senha}}\"\n}"
         },
         "conditions": [
           {
             "source": "context",
-            "comparison": "notEquals",
+            "comparison": "equals",
             "values": [
-              "200",
-              "201",
-              "202"
+              "409"
             ],
             "variable": "statusCheckout"
+          },
+          {
+            "source": "context",
+            "comparison": "contains",
+            "values": [
+              "execu"
+            ],
+            "variable": "retornoCheckout"
           }
         ]
       },
@@ -5660,98 +5947,6 @@
           "properties": {},
           "required": []
         },
-        "type": "ProcessHttp",
-        "settings": {
-          "headers": {
-            "Authorization": "Bearer {{retornoToken@token}}",
-            "Content-Type": "application/json"
-          },
-          "method": "GET",
-          "uri": "{{resource.urlBase}}/services/data/v63.0/commerce/webstores/0ZEKj000000ox4zOAA/checkouts/active?effectiveAccountId={{accountId}}",
-          "responseStatusVariable": "statusCheckoutAtivo",
-          "responseBodyVariable": "retornoCheckoutAtivo"
-        },
-        "conditions": [
-          {
-            "source": "context",
-            "comparison": "notEquals",
-            "values": [
-              "200",
-              "201",
-              "202"
-            ],
-            "variable": "statusCheckout"
-          }
-        ]
-      },
-      {
-        "$description": "",
-        "$inputSchema": {
-          "type": "object",
-          "properties": {},
-          "required": []
-        },
-        "type": "ExecuteScript",
-        "settings": {
-          "function": "run",
-          "source": "function run(retornoCheckoutAtivo) {\n    try {\n        let data = typeof retornoCheckoutAtivo === \"string\" ? JSON.parse(retornoCheckoutAtivo) : retornoCheckoutAtivo;\n        if (Array.isArray(data)) data = data[0];\n        return (data && (data.checkoutId || data.id)) || \"active\";\n    } catch (e) {\n        return \"active\";\n    }\n}\n",
-          "inputVariables": [
-            "retornoCheckoutAtivo"
-          ],
-          "outputVariable": "checkoutId",
-          "LocalTimeZoneEnabled": false
-        },
-        "conditions": [
-          {
-            "source": "context",
-            "comparison": "startsWith",
-            "values": [
-              "2"
-            ],
-            "variable": "statusCheckoutAtivo"
-          }
-        ]
-      },
-      {
-        "$description": "Conflito sem checkout recuperavel pelo /active: deleta o checkout preso do carrinho",
-        "type": "ProcessHttp",
-        "settings": {
-          "headers": {
-            "Authorization": "Bearer {{retornoToken@token}}",
-            "Content-Type": "application/json"
-          },
-          "method": "DELETE",
-          "body": "",
-          "uri": "{{resource.urlBase}}/services/data/v63.0/commerce/webstores/0ZEKj000000ox4zOAA/checkouts/active?effectiveAccountId={{accountId}}",
-          "responseStatusVariable": "statusDeleteCheckout",
-          "responseBodyVariable": "retornoDeleteCheckout"
-        },
-        "continueOnError": true,
-        "conditions": [
-          {
-            "source": "context",
-            "comparison": "notEquals",
-            "values": [
-              "200",
-              "201",
-              "202"
-            ],
-            "variable": "statusCheckout"
-          },
-          {
-            "source": "context",
-            "comparison": "notEquals",
-            "values": [
-              "200",
-              "201",
-              "202"
-            ],
-            "variable": "statusCheckoutAtivo"
-          }
-        ]
-      },
-      {
-        "$description": "Recria o checkout apos deletar o preso",
         "type": "ProcessHttp",
         "settings": {
           "headers": {
@@ -5759,33 +5954,45 @@
             "Content-Type": "application/json"
           },
           "method": "POST",
-          "uri": "{{resource.urlBase}}/services/data/v63.0/commerce/webstores/0ZEKj000000ox4zOAA/checkouts?effectiveAccountId={{accountId}}",
+          "uri": "{{resource.urlBase}}/services/data/v63.0/commerce/webstores/0ZEKj000000ox4zOAA/checkouts/active/orders?effectiveAccountId={{accountId}}",
           "responseStatusVariable": "statusCheckout",
           "responseBodyVariable": "retornoCheckout",
           "body": "{\n  \"cartId\": \"{{cartId}}\"\n}"
         },
-        "continueOnError": true,
         "conditions": [
           {
             "source": "context",
-            "comparison": "startsWith",
+            "comparison": "equals",
             "values": [
-              "2"
+              "409"
             ],
-            "variable": "statusDeleteCheckout"
+            "variable": "statusCheckout"
+          },
+          {
+            "source": "context",
+            "comparison": "contains",
+            "values": [
+              "execu"
+            ],
+            "variable": "retornoCheckout"
           }
         ]
       },
       {
-        "$description": "Extrai o checkoutId do checkout recriado",
+        "$description": "",
+        "$inputSchema": {
+          "type": "object",
+          "properties": {},
+          "required": []
+        },
         "type": "ExecuteScript",
         "settings": {
           "function": "run",
-          "source": "function run(retornoCheckout) {\n    try {\n        let data = typeof retornoCheckout === \"string\" ? JSON.parse(retornoCheckout) : retornoCheckout;\n        if (Array.isArray(data)) data = data[0];\n        return (data && (data.checkoutId || data.id)) || \"active\";\n    } catch (e) {\n        return \"active\";\n    }\n}\n",
+          "source": "function run(retornoCheckout) {\n    try {\n        let data = typeof retornoCheckout === \"string\" ? JSON.parse(retornoCheckout) : retornoCheckout;\n        if (Array.isArray(data)) data = data[0];\n        if (!data || typeof data !== \"object\") return \"\";\n        if (Array.isArray(data.errors) && data.errors.length > 0) return \"\";\n        let ref = data.orderReferenceNumber;\n        return typeof ref === \"string\" ? ref.trim() : \"\";\n    } catch (e) {\n        return \"\";\n    }\n}",
           "inputVariables": [
             "retornoCheckout"
           ],
-          "outputVariable": "checkoutId",
+          "outputVariable": "orderReferenceNumber",
           "LocalTimeZoneEnabled": false
         },
         "conditions": [
@@ -5795,9 +6002,23 @@
             "values": [
               "2"
             ],
-            "variable": "statusDeleteCheckout"
+            "variable": "statusCheckout"
           }
         ]
+      },
+      {
+        "type": "TrackEvent",
+        "settings": {
+          "extras": {
+            "identificador": "{{contact.identity}}",
+            "origem": "{{origem}}",
+            "canal": "{{channel}}",
+            "cartId": "{{cartId}}"
+          },
+          "category": "Cria pedido status",
+          "action": "{{statusCheckout}}"
+        },
+        "conditions": []
       }
     ],
     "$leavingCustomActions": [],
@@ -5805,701 +6026,10 @@
       "stateId": "5a91f3aa-017c-4131-a3c2-af3ead8552ff"
     },
     "$localCustomActions": [],
-    "$title": "[API] Inicia checkout",
+    "$title": "[API] Cria pedido (checkout ativo)",
     "$position": {
       "top": "5114px",
       "left": "847px"
-    }
-  },
-  "dc6be84b-3b90-42bd-9a06-ffeb9243a175": {
-    "$contentActions": [
-      {
-        "input": {
-          "bypass": true
-        }
-      }
-    ],
-    "$conditionOutputs": [
-      {
-        "stateId": "bb835db0-e183-4d7d-9bd7-cd8d6f19fc15",
-        "typeOfStateId": "state",
-        "conditions": [
-          {
-            "source": "context",
-            "comparison": "equals",
-            "values": [
-              "200"
-            ],
-            "variable": "statusCheckoutGet"
-          },
-          {
-            "source": "context",
-            "comparison": "equals",
-            "values": [
-              "final"
-            ],
-            "variable": "faseCheckout"
-          },
-          {
-            "source": "context",
-            "comparison": "equals",
-            "values": [
-              "true",
-              "True"
-            ],
-            "variable": "selecaoEntrega@selecionadoCorreto"
-          }
-        ]
-      },
-      {
-        "stateId": "67c4e9f8-225f-4a3f-b0cf-8624ed525ae0",
-        "typeOfStateId": "state",
-        "conditions": [
-          {
-            "source": "context",
-            "comparison": "equals",
-            "values": [
-              "200"
-            ],
-            "variable": "statusCheckoutGet"
-          },
-          {
-            "source": "context",
-            "comparison": "equals",
-            "values": [
-              "selecao"
-            ],
-            "variable": "faseCheckout"
-          },
-          {
-            "source": "context",
-            "comparison": "equals",
-            "values": [
-              "false",
-              "False"
-            ],
-            "variable": "selecaoEntrega@dataDisponivel"
-          },
-          {
-            "source": "context",
-            "comparison": "greaterThan",
-            "values": [
-              "1"
-            ],
-            "variable": "selecaoEntrega@totalMetodos"
-          }
-        ]
-      },
-      {
-        "stateId": "8b0f3d77-84fd-459e-bcff-d2de50da8eba",
-        "typeOfStateId": "state",
-        "conditions": [
-          {
-            "source": "context",
-            "comparison": "equals",
-            "values": [
-              "200"
-            ],
-            "variable": "statusCheckoutGet"
-          },
-          {
-            "source": "context",
-            "comparison": "equals",
-            "values": [
-              "selecao"
-            ],
-            "variable": "faseCheckout"
-          },
-          {
-            "source": "context",
-            "comparison": "equals",
-            "values": [
-              "true",
-              "True"
-            ],
-            "variable": "selecaoEntrega@ok"
-          }
-        ]
-      },
-      {
-        "stateId": "36ea1cee-e308-4818-ae31-19ce36e854a0",
-        "typeOfStateId": "state",
-        "conditions": [
-          {
-            "source": "context",
-            "comparison": "equals",
-            "values": [
-              "200"
-            ],
-            "variable": "statusCheckoutGet"
-          },
-          {
-            "source": "context",
-            "comparison": "equals",
-            "values": [
-              "selecao"
-            ],
-            "variable": "faseCheckout"
-          },
-          {
-            "source": "context",
-            "comparison": "equals",
-            "values": [
-              "true",
-              "True"
-            ],
-            "variable": "selecaoEntrega@semMetodos"
-          },
-          {
-            "source": "context",
-            "comparison": "lessThanOrEquals",
-            "values": [
-              "5"
-            ],
-            "variable": "tentativasCheckout"
-          }
-        ]
-      },
-      {
-        "stateId": "67c4e9f8-225f-4a3f-b0cf-8624ed525ae0",
-        "typeOfStateId": "state",
-        "conditions": [
-          {
-            "source": "context",
-            "comparison": "equals",
-            "values": [
-              "200"
-            ],
-            "variable": "statusCheckoutGet"
-          },
-          {
-            "source": "context",
-            "comparison": "equals",
-            "values": [
-              "selecao"
-            ],
-            "variable": "faseCheckout"
-          },
-          {
-            "source": "context",
-            "comparison": "equals",
-            "values": [
-              "true",
-              "True"
-            ],
-            "variable": "selecaoEntrega@semMetodos"
-          }
-        ]
-      },
-      {
-        "stateId": "36ea1cee-e308-4818-ae31-19ce36e854a0",
-        "typeOfStateId": "state",
-        "conditions": [
-          {
-            "source": "context",
-            "comparison": "equals",
-            "values": [
-              "202"
-            ],
-            "variable": "statusCheckoutGet"
-          },
-          {
-            "source": "context",
-            "comparison": "lessThanOrEquals",
-            "values": [
-              "7"
-            ],
-            "variable": "tentativasCheckout"
-          }
-        ]
-      },
-      {
-        "stateId": "c73f3549-512f-4784-a1dc-1f0e06cc0c57",
-        "typeOfStateId": "state",
-        "conditions": [
-          {
-            "source": "input",
-            "comparison": "exists",
-            "values": []
-          }
-        ]
-      }
-    ],
-    "$enteringCustomActions": [
-      {
-        "$description": "",
-        "$inputSchema": {
-          "type": "object",
-          "properties": {},
-          "required": []
-        },
-        "type": "ExecuteScript",
-        "settings": {
-          "function": "run",
-          "source": "function run(tentativas) {\n    try{\n        let n = parseInt(tentativas, 10);\n    if (isNaN(n) || n < 0) n = 0;\n    return String(n + 1);\n    }catch(e){\n        return 1\n    }\n}\n",
-          "inputVariables": [
-            "tentativasCheckout"
-          ],
-          "outputVariable": "tentativasCheckout",
-          "LocalTimeZoneEnabled": false
-        },
-        "conditions": []
-      },
-      {
-        "$description": "",
-        "$inputSchema": {
-          "type": "object",
-          "properties": {},
-          "required": []
-        },
-        "type": "ProcessHttp",
-        "settings": {
-          "headers": {},
-          "method": "POST",
-          "body": "{\n  \"username\": \"{{contact.email}}\",\n  \"password\": \"{{contact.extras.senha}}\"\n}",
-          "uri": "{{resource.urlBase}}/vforcesite/services/apexrest/ecommerce/login",
-          "responseStatusVariable": "statusToken",
-          "responseBodyVariable": "retornoToken"
-        },
-        "conditions": []
-      },
-      {
-        "$description": "",
-        "$inputSchema": {
-          "type": "object",
-          "properties": {},
-          "required": []
-        },
-        "type": "ProcessHttp",
-        "settings": {
-          "headers": {
-            "Authorization": "Bearer {{retornoToken@token}}",
-            "Content-Type": "application/json"
-          },
-          "method": "GET",
-          "uri": "{{resource.urlBase}}/services/data/v63.0/commerce/webstores/0ZEKj000000ox4zOAA/checkouts/{{checkoutId}}?effectiveAccountId={{accountId}}",
-          "responseStatusVariable": "statusCheckoutGet",
-          "responseBodyVariable": "retornoCheckoutGet"
-        },
-        "conditions": []
-      },
-      {
-        "$description": "",
-        "$inputSchema": {
-          "type": "object",
-          "properties": {},
-          "required": []
-        },
-        "type": "ExecuteScript",
-        "settings": {
-          "function": "run",
-          "source": "function run(retornoCheckoutGet, dataEntregaISO, dataEntregaChave) {\n    try {\n    // O Blip converte strings ISO em DateTime ao ler JSON com \"@\" e devolve \"MM/dd/yyyy HH:mm:ss\".\n    // Por isso a data trafega como chave numerica (yyyyMMdd) e e normalizada aqui.\n    let dataISO = function (chave, alternativa) {\n        let dois = function (n) { n = String(n); return n.length < 2 ? \"0\" + n : n; };\n        let c = String(chave || \"\").replace(/\\D/g, \"\");\n        if (c.length === 8) return c.substring(0, 4) + \"-\" + c.substring(4, 6) + \"-\" + c.substring(6, 8);\n        let s = String(alternativa || \"\").trim();\n        let m = s.match(/^(\\d{4})-(\\d{2})-(\\d{2})/);\n        if (m) return m[1] + \"-\" + m[2] + \"-\" + m[3];\n        m = s.match(/^(\\d{1,2})\\/(\\d{1,2})\\/(\\d{4})/); // formato do Blip: MM/dd/yyyy\n        if (m) return m[3] + \"-\" + dois(m[1]) + \"-\" + dois(m[2]);\n        return \"\";\n    };\n\n        let MESES = [\"janeiro\", \"fevereiro\", \"marco\", \"abril\", \"maio\", \"junho\", \"julho\", \"agosto\", \"setembro\", \"outubro\", \"novembro\", \"dezembro\"];\n        let semAcento = function (s) {\n            return String(s || \"\").toLowerCase().normalize(\"NFD\").replace(/[\\u0300-\\u036f]/g, \"\");\n        };\n\n        // Converte o nome do método (\"Sexta-feira, 02 de Outubro de 2026\") em \"2026-10-02\"\n        let dataDoNome = function (nome) {\n            let t = semAcento(nome);\n            let m = t.match(/(\\d{1,2})\\s+de\\s+([a-z]+)\\s+de\\s+(\\d{4})/);\n            if (m) {\n                let mes = MESES.indexOf(m[2]) + 1;\n                if (mes > 0) return m[3] + \"-\" + (mes < 10 ? \"0\" : \"\") + mes + \"-\" + (m[1].length < 2 ? \"0\" : \"\") + m[1];\n            }\n            let b = t.match(/(\\d{2})\\/(\\d{2})\\/(\\d{4})/);\n            if (b) return b[3] + \"-\" + b[2] + \"-\" + b[1];\n            let iso = t.match(/(\\d{4}-\\d{2}-\\d{2})/);\n            return iso ? iso[1] : \"\";\n        };\n\n        let data = typeof retornoCheckoutGet === \"string\" ? JSON.parse(retornoCheckoutGet) : retornoCheckoutGet;\n        let grupos = (data && data.deliveryGroups && data.deliveryGroups.items) || [];\n        let grupo = grupos[0] || {};\n        let metodos = grupo.availableDeliveryMethods || [];\n        let selecionado = grupo.selectedDeliveryMethod || null;\n        let alvo = dataISO(dataEntregaChave, dataEntregaISO);\n\n        let escolhido = metodos.filter(function (m) { return dataDoNome(m.name) === alvo; })[0] || null;\n        let temGrupo = !!grupo.id;\n        let temMetodos = metodos.length > 0;\n        let temSelecionado = !!(selecionado && selecionado.id);\n\n        return JSON.stringify({\n            // ok: ha grupo e pelo menos um metodo disponivel para selecionar\n            ok: temGrupo && temMetodos,\n            // temGrupo mesmo sem metodos (ex.: aguardando precificacao/endereco)\n            temGrupo: temGrupo,\n            semMetodos: temGrupo && !temMetodos,\n            deliveryGroupId: grupo.id || \"\",\n            totalMetodos: metodos.length,\n            temSelecionado: temSelecionado,\n            primeiroMetodoId: metodos[0] ? metodos[0].id : \"\",\n            // usa o metodo da data desejada; se nao achar, cai no primeiro disponivel\n            metodoEscolhidoId: escolhido ? escolhido.id : (metodos[0] ? metodos[0].id : \"\"),\n            dataDisponivel: !!escolhido,\n            // Tolerante: se ja ha um metodo selecionado no checkout, considera correto\n            // (o metodo correto foi aplicado na fase de selecao). Nao depende do parse do name.\n            selecionadoCorreto: temSelecionado,\n            selecionadoNome: selecionado ? (selecionado.name || \"\") : \"\"\n        });\n    } catch (e) {\n        return JSON.stringify({ ok: false, error: true, semMetodos: false, temGrupo: false, message: e.message });\n    }\n}\n",
-          "inputVariables": [
-            "retornoCheckoutGet",
-            "dataEntregaISO",
-            "dataEntregaChave"
-          ],
-          "outputVariable": "selecaoEntrega",
-          "LocalTimeZoneEnabled": false
-        },
-        "conditions": []
-      }
-    ],
-    "$leavingCustomActions": [],
-    "$defaultOutput": {
-      "stateId": "5a91f3aa-017c-4131-a3c2-af3ead8552ff"
-    },
-    "$localCustomActions": [],
-    "$title": "[API] Consulta checkout",
-    "$position": {
-      "top": "5317px",
-      "left": "847px"
-    }
-  },
-  "36ea1cee-e308-4818-ae31-19ce36e854a0": {
-    "$contentActions": [
-      {
-        "input": {
-          "bypass": true
-        }
-      }
-    ],
-    "$conditionOutputs": [
-      {
-        "stateId": "dc6be84b-3b90-42bd-9a06-ffeb9243a175",
-        "typeOfStateId": "state",
-        "conditions": [
-          {
-            "source": "input",
-            "comparison": "exists",
-            "values": []
-          }
-        ]
-      }
-    ],
-    "$enteringCustomActions": [],
-    "$leavingCustomActions": [],
-    "$defaultOutput": {
-      "stateId": "dc6be84b-3b90-42bd-9a06-ffeb9243a175"
-    },
-    "$localCustomActions": [],
-    "$title": "[WAIT] Aguardando checkout",
-    "$position": {
-      "top": "5506.94px",
-      "left": "1246.57px"
-    }
-  },
-  "8b0f3d77-84fd-459e-bcff-d2de50da8eba": {
-    "$contentActions": [
-      {
-        "input": {
-          "bypass": true
-        }
-      }
-    ],
-    "$conditionOutputs": [
-      {
-        "stateId": "dc6be84b-3b90-42bd-9a06-ffeb9243a175",
-        "typeOfStateId": "state",
-        "conditions": [
-          {
-            "source": "context",
-            "comparison": "equals",
-            "values": [
-              "final"
-            ],
-            "variable": "faseCheckout"
-          },
-          {
-            "source": "context",
-            "comparison": "startsWith",
-            "values": [
-              "2"
-            ],
-            "variable": "statusMetodoEntrega"
-          }
-        ]
-      },
-      {
-        "stateId": "6c703bda-4ee7-4b43-a0dc-c073f851f688",
-        "typeOfStateId": "state",
-        "conditions": [
-          {
-            "source": "input",
-            "comparison": "exists",
-            "values": []
-          }
-        ]
-      }
-    ],
-    "$enteringCustomActions": [
-      {
-        "$description": "",
-        "$inputSchema": {
-          "type": "object",
-          "properties": {},
-          "required": []
-        },
-        "type": "ExecuteScript",
-        "settings": {
-          "function": "run",
-          "source": "function run(tentativas) {\n    try{\n        let n = parseInt(tentativas, 10);\n    if (isNaN(n) || n < 0) n = 0;\n    return String(n + 1);\n    }catch(e){ return 1}\n}\n",
-          "inputVariables": [
-            "tentativasSelecao"
-          ],
-          "outputVariable": "tentativasSelecao",
-          "LocalTimeZoneEnabled": false
-        },
-        "conditions": []
-      },
-      {
-        "$description": "",
-        "$inputSchema": {
-          "type": "object",
-          "properties": {},
-          "required": []
-        },
-        "type": "SetVariable",
-        "settings": {
-          "variable": "statusMetodoEntrega",
-          "value": "0"
-        },
-        "conditions": []
-      },
-      {
-        "$description": "",
-        "$inputSchema": {
-          "type": "object",
-          "properties": {},
-          "required": []
-        },
-        "type": "SetVariable",
-        "settings": {
-          "variable": "tentativasCheckout",
-          "value": "0"
-        },
-        "conditions": []
-      },
-      {
-        "$description": "",
-        "$inputSchema": {
-          "type": "object",
-          "properties": {},
-          "required": []
-        },
-        "type": "ProcessHttp",
-        "settings": {
-          "headers": {},
-          "method": "POST",
-          "body": "{\n  \"username\": \"{{contact.email}}\",\n  \"password\": \"{{contact.extras.senha}}\"\n}",
-          "uri": "{{resource.urlBase}}/vforcesite/services/apexrest/ecommerce/login",
-          "responseStatusVariable": "statusToken",
-          "responseBodyVariable": "retornoToken"
-        },
-        "conditions": []
-      },
-      {
-        "$description": "",
-        "$inputSchema": {
-          "type": "object",
-          "properties": {},
-          "required": []
-        },
-        "type": "ProcessHttp",
-        "settings": {
-          "headers": {
-            "Authorization": "Bearer {{retornoToken@token}}",
-            "Content-Type": "application/json"
-          },
-          "method": "PATCH",
-          "uri": "{{resource.urlBase}}/services/data/v63.0/commerce/webstores/0ZEKj000000ox4zOAA/checkouts/{{checkoutId}}?effectiveAccountId={{accountId}}",
-          "responseStatusVariable": "statusMetodoEntrega",
-          "responseBodyVariable": "retornoMetodoEntrega",
-          "body": "{\n  \"deliveryMethodId\": \"{{selecaoEntrega@metodoEscolhidoId}}\"\n}"
-        },
-        "conditions": [
-          {
-            "source": "context",
-            "comparison": "equals",
-            "values": [
-              "selecao"
-            ],
-            "variable": "faseCheckout"
-          }
-        ],
-        "continueOnError": true
-      },
-      {
-        "$description": "",
-        "$inputSchema": {
-          "type": "object",
-          "properties": {},
-          "required": []
-        },
-        "type": "SetVariable",
-        "settings": {
-          "variable": "faseCheckout",
-          "value": "final"
-        },
-        "conditions": [
-          {
-            "source": "context",
-            "comparison": "equals",
-            "values": [
-              "selecao"
-            ],
-            "variable": "faseCheckout"
-          },
-          {
-            "source": "context",
-            "comparison": "startsWith",
-            "values": [
-              "2"
-            ],
-            "variable": "statusMetodoEntrega"
-          }
-        ]
-      }
-    ],
-    "$leavingCustomActions": [],
-    "$defaultOutput": {
-      "stateId": "5a91f3aa-017c-4131-a3c2-af3ead8552ff"
-    },
-    "$localCustomActions": [],
-    "$title": "[API] Seleciona data de entrega",
-    "$position": {
-      "top": "5227.94px",
-      "left": "1243.57px"
-    }
-  },
-  "67c4e9f8-225f-4a3f-b0cf-8624ed525ae0": {
-    "$contentActions": [
-      {
-        "action": {
-          "$description": "",
-          "type": "SendMessage",
-          "settings": {
-            "type": "text/plain",
-            "content": "A data de entrega escolhida <b>não está mais disponível</b> para este pedido. 😕\nVou te mostrar as datas atualizadas para você escolher outra.",
-            "metadata": {}
-          }
-        }
-      },
-      {
-        "input": {
-          "bypass": true
-        }
-      }
-    ],
-    "$conditionOutputs": [
-      {
-        "stateId": "b42e9a26-8318-4dd9-84e1-8dfdf5502fab",
-        "typeOfStateId": "state",
-        "conditions": [
-          {
-            "source": "input",
-            "comparison": "exists",
-            "values": []
-          }
-        ]
-      }
-    ],
-    "$enteringCustomActions": [],
-    "$leavingCustomActions": [],
-    "$defaultOutput": {
-      "stateId": "ae01d44d-8e09-4edf-86d2-6bc7529f3a36"
-    },
-    "$localCustomActions": [],
-    "$title": "[MSG] Data indisponível",
-    "$position": {
-      "top": "5089.94px",
-      "left": "1247.57px"
-    }
-  },
-  "bb835db0-e183-4d7d-9bd7-cd8d6f19fc15": {
-    "$contentActions": [
-      {
-        "input": {
-          "bypass": true
-        }
-      }
-    ],
-    "$conditionOutputs": [
-      {
-        "stateId": "9854b653-4951-4b19-92d1-21fc8281944f",
-        "typeOfStateId": "state",
-        "conditions": [
-          {
-            "source": "context",
-            "comparison": "startsWith",
-            "values": [
-              "2"
-            ],
-            "variable": "statusPedido"
-          },
-          {
-            "source": "context",
-            "comparison": "exists",
-            "values": [],
-            "variable": "numeroPedido"
-          }
-        ]
-      },
-      {
-        "stateId": "4d007dd4-93ed-4f65-a2ac-b70ddf8d40d1",
-        "typeOfStateId": "state",
-        "conditions": [
-          {
-            "source": "input",
-            "comparison": "exists",
-            "values": []
-          }
-        ]
-      }
-    ],
-    "$enteringCustomActions": [
-      {
-        "$description": "",
-        "$inputSchema": {
-          "type": "object",
-          "properties": {},
-          "required": []
-        },
-        "type": "ProcessHttp",
-        "settings": {
-          "headers": {},
-          "method": "POST",
-          "body": "{\n  \"username\": \"{{contact.email}}\",\n  \"password\": \"{{contact.extras.senha}}\"\n}",
-          "uri": "{{resource.urlBase}}/vforcesite/services/apexrest/ecommerce/login",
-          "responseStatusVariable": "statusToken",
-          "responseBodyVariable": "retornoToken"
-        },
-        "conditions": []
-      },
-      {
-        "$description": "",
-        "$inputSchema": {
-          "type": "object",
-          "properties": {},
-          "required": []
-        },
-        "type": "ProcessHttp",
-        "settings": {
-          "headers": {
-            "Authorization": "Bearer {{retornoToken@token}}",
-            "Content-Type": "application/json"
-          },
-          "method": "POST",
-          "uri": "{{resource.urlBase}}/services/data/v63.0/commerce/webstores/0ZEKj000000ox4zOAA/checkouts/{{checkoutId}}/orders?effectiveAccountId={{accountId}}",
-          "responseStatusVariable": "statusPedido",
-          "responseBodyVariable": "retornoPedido",
-          "body": "{}"
-        },
-        "conditions": []
-      },
-      {
-        "$description": "",
-        "$inputSchema": {
-          "type": "object",
-          "properties": {},
-          "required": []
-        },
-        "type": "ExecuteScript",
-        "settings": {
-          "function": "run",
-          "source": "function run(retornoPedido) {\n    try {\n        let data = typeof retornoPedido === \"string\" ? JSON.parse(retornoPedido) : retornoPedido;\n        if (Array.isArray(data)) data = data[0];\n        return (data && (data.orderReferenceNumber || data.orderNumber || data.orderId)) || \"\";\n    } catch (e) {\n        return \"\";\n    }\n}\n",
-          "inputVariables": [
-            "retornoPedido"
-          ],
-          "outputVariable": "numeroPedido",
-          "LocalTimeZoneEnabled": false
-        },
-        "conditions": []
-      },
-      {
-        "$description": "",
-        "$inputSchema": {
-          "type": "object",
-          "properties": {},
-          "required": []
-        },
-        "type": "SetVariable",
-        "settings": {
-          "variable": "dataEntregaConfirmada",
-          "value": "{{selecaoEntrega@selecionadoNome}}"
-        },
-        "conditions": []
-      }
-    ],
-    "$leavingCustomActions": [],
-    "$defaultOutput": {
-      "stateId": "5a91f3aa-017c-4131-a3c2-af3ead8552ff"
-    },
-    "$localCustomActions": [],
-    "$title": "[API] Cria pedido",
-    "$position": {
-      "top": "5679.94px",
-      "left": "1245.57px"
     }
   },
   "0892c280-59a1-46c5-8b6e-10d81fae6b44": {
@@ -6756,7 +6286,7 @@
             "Content-Type": "application/json"
           },
           "method": "GET",
-          "uri": "{{resource.urlBase}}/services/data/v63.0/commerce/webstores/0ZEKj000000ox4zOAA/products?skus={{skusCarrinho}}&effectiveAccountId={{accountId}}",
+          "uri": "{{resource.urlBase}}/services/data/v63.0/commerce/webstores/0ZEKj000000ox4zOAA/products?skus={{skusCarrinho}}&effectiveAccountId={{accountId}}&fields=StockKeepingUnit&excludeMedia=true",
           "responseStatusVariable": "statusProdutos",
           "responseBodyVariable": "retornoProdutos"
         },
@@ -6772,7 +6302,7 @@
         "type": "ExecuteScript",
         "settings": {
           "function": "run",
-          "source": "function run(itensCarrinhoFormatado, retornoProdutos) {\n    try {\n        let smart = typeof itensCarrinhoFormatado === \"string\" ? JSON.parse(itensCarrinhoFormatado) : itensCarrinhoFormatado;\n        let prods = typeof retornoProdutos === \"string\" ? JSON.parse(retornoProdutos) : retornoProdutos;\n\n        // SKU -> Id do Product2 na loja\n        let idPorSku = {};\n        ((prods && prods.products) || []).forEach(function (p) {\n            if (!p || p.success === false || !p.id) return;\n            let sku = p.sku || (p.fields && (p.fields.StockKeepingUnit || p.fields.ProductCode)) || \"\";\n            if (sku) idPorSku[String(sku).trim()] = p.id;\n        });\n\n        // Soma quantidades de SKUs repetidos\n        let qtdPorSku = {}, nomePorSku = {}, ordem = [];\n        ((smart && smart.pedidos) || []).forEach(function (p) {\n            let sku = String(p.sku || \"\").trim();\n            let qtd = Number(p.quantidade) || 0;\n            if (!sku || qtd <= 0) return;\n            if (!(sku in qtdPorSku)) { qtdPorSku[sku] = 0; ordem.push(sku); }\n            qtdPorSku[sku] += qtd;\n            nomePorSku[sku] = p.produto || sku;\n        });\n\n        let batchInput = [], naoEncontrados = [];\n        ordem.forEach(function (sku) {\n            if (!idPorSku[sku]) { naoEncontrados.push(nomePorSku[sku]); return; }\n            batchInput.push({ richInput: { productId: idPorSku[sku], quantity: String(qtdPorSku[sku]), type: \"Product\" } });\n        });\n\n        return JSON.stringify({\n            ok: batchInput.length > 0 && naoEncontrados.length === 0,\n            totalItens: batchInput.length,\n            totalNaoEncontrados: naoEncontrados.length,\n            naoEncontrados: naoEncontrados.join(\", \"),\n            body: JSON.stringify({ inputs: batchInput })\n        });\n    } catch (e) {\n        return JSON.stringify({ ok: false, totalItens: 0, totalNaoEncontrados: 0, naoEncontrados: \"\", body: \"{}\", error: e.message });\n    }\n}\n",
+          "source": "function run(itensCarrinhoFormatado, retornoProdutos) {\n    function parse(v) {\n        let n = 0;\n        while (typeof v === \"string\" && n < 3) { v = JSON.parse(v); n++; }\n        return v;\n    }\n    let diag = { tipo: typeof retornoProdutos, inicio: String(retornoProdutos || \"\").substring(0, 250) };\n    try {\n        let smart = parse(itensCarrinhoFormatado);\n        let prods = parse(retornoProdutos);\n        let lista = (prods && prods.products) || [];\n        diag.ehArray = Array.isArray(prods);\n        diag.produtosRecebidos = lista.length;\n        diag.falhas = lista.filter(function (p) { return p && p.success === false; })\n            .map(function (p) { return (p.sku || \"\") + \" → \" + JSON.stringify(p.error).substring(0, 150); });\n\n        let idPorSku = {};\n        lista.forEach(function (p) {\n            if (!p || p.success === false || !p.id) return;\n            let f = p.fields || {};\n            [p.sku, f.StockKeepingUnit, f.ExternalId__c].forEach(function (k) {\n                if (k) idPorSku[String(k).trim()] = p.id;\n            });\n        });\n\n        let qtdPorSku = {}, nomePorSku = {}, ordem = [];\n        ((smart && smart.pedidos) || []).forEach(function (p) {\n            let sku = String(p.sku || \"\").trim();\n            let qtd = Number(p.quantidade) || 0;\n            if (!sku || qtd <= 0) return;\n            if (!(sku in qtdPorSku)) { qtdPorSku[sku] = 0; ordem.push(sku); }\n            qtdPorSku[sku] += qtd;\n            nomePorSku[sku] = p.produto || sku;\n        });\n\n        let batchInput = [], naoEncontrados = [];\n        ordem.forEach(function (sku) {\n            if (!idPorSku[sku]) { naoEncontrados.push(nomePorSku[sku]); return; }\n            batchInput.push({ richInput: { productId: idPorSku[sku], quantity: String(qtdPorSku[sku]), type: \"Product\" } });\n        });\n\n        return JSON.stringify({\n            ok: batchInput.length > 0 && naoEncontrados.length === 0,\n            totalItens: batchInput.length,\n            totalNaoEncontrados: naoEncontrados.length,\n            naoEncontrados: naoEncontrados.join(\", \"),\n            body: JSON.stringify({ inputs: batchInput }),\n            diag: diag\n        });\n    } catch (e) {\n        diag.erro = e.message;\n        return JSON.stringify({ ok: false, totalItens: 0, totalNaoEncontrados: 0, naoEncontrados: \"\", body: \"{}\", error: e.message, diag: diag });\n    }\n}",
           "inputVariables": [
             "itensCarrinhoFormatado",
             "retornoProdutos"
@@ -6956,6 +6486,380 @@
           "properties": {},
           "required": []
         },
+        "type": "SetVariable",
+        "settings": {
+          "variable": "statusCheckoutSync",
+          "value": "0"
+        },
+        "conditions": []
+      },
+      {
+        "$description": "",
+        "$inputSchema": {
+          "type": "object",
+          "properties": {},
+          "required": []
+        },
+        "type": "ProcessHttp",
+        "settings": {
+          "headers": {},
+          "method": "POST",
+          "uri": "{{resource.urlBase}}/vforcesite/services/apexrest/ecommerce/login",
+          "responseStatusVariable": "statusToken",
+          "responseBodyVariable": "retornoToken",
+          "body": "{\n  \"username\": \"{{contact.email}}\",\n  \"password\": \"{{contact.extras.senha}}\"\n}"
+        },
+        "conditions": [
+          {
+            "source": "context",
+            "comparison": "equals",
+            "values": [
+              "true",
+              "True"
+            ],
+            "variable": "batchCarrinhoOk"
+          }
+        ]
+      },
+      {
+        "$description": "",
+        "$inputSchema": {
+          "type": "object",
+          "properties": {},
+          "required": []
+        },
+        "type": "ProcessHttp",
+        "settings": {
+          "headers": {
+            "Authorization": "Bearer {{retornoToken@token}}",
+            "Content-Type": "application/json"
+          },
+          "method": "POST",
+          "uri": "{{resource.urlBase}}/services/data/v63.0/commerce/webstores/0ZEKj000000ox4zOAA/checkouts?effectiveAccountId={{accountId}}",
+          "responseStatusVariable": "statusCheckoutSync",
+          "responseBodyVariable": "retornoCheckoutSync",
+          "body": "{\n  \"cartId\": \"{{cartId}}\"\n}"
+        },
+        "conditions": [
+          {
+            "source": "context",
+            "comparison": "equals",
+            "values": [
+              "true",
+              "True"
+            ],
+            "variable": "batchCarrinhoOk"
+          }
+        ],
+        "continueOnError": true
+      },
+      {
+        "$description": "",
+        "$inputSchema": {
+          "type": "object",
+          "properties": {},
+          "required": []
+        },
+        "type": "ProcessHttp",
+        "settings": {
+          "headers": {},
+          "method": "POST",
+          "uri": "{{resource.urlBase}}/vforcesite/services/apexrest/ecommerce/login",
+          "responseStatusVariable": "statusToken",
+          "responseBodyVariable": "retornoToken",
+          "body": "{\n  \"username\": \"{{contact.email}}\",\n  \"password\": \"{{contact.extras.senha}}\"\n}"
+        },
+        "conditions": [
+          {
+            "source": "context",
+            "comparison": "equals",
+            "values": [
+              "true",
+              "True"
+            ],
+            "variable": "batchCarrinhoOk"
+          },
+          {
+            "source": "context",
+            "comparison": "equals",
+            "values": [
+              "409"
+            ],
+            "variable": "statusCheckoutSync"
+          },
+          {
+            "source": "context",
+            "comparison": "contains",
+            "values": [
+              "execu"
+            ],
+            "variable": "retornoCheckoutSync"
+          }
+        ]
+      },
+      {
+        "$description": "",
+        "$inputSchema": {
+          "type": "object",
+          "properties": {},
+          "required": []
+        },
+        "type": "ProcessHttp",
+        "settings": {
+          "headers": {
+            "Authorization": "Bearer {{retornoToken@token}}",
+            "Content-Type": "application/json"
+          },
+          "method": "POST",
+          "uri": "{{resource.urlBase}}/services/data/v63.0/commerce/webstores/0ZEKj000000ox4zOAA/checkouts?effectiveAccountId={{accountId}}",
+          "responseStatusVariable": "statusCheckoutSync",
+          "responseBodyVariable": "retornoCheckoutSync",
+          "body": "{\n  \"cartId\": \"{{cartId}}\"\n}"
+        },
+        "conditions": [
+          {
+            "source": "context",
+            "comparison": "equals",
+            "values": [
+              "true",
+              "True"
+            ],
+            "variable": "batchCarrinhoOk"
+          },
+          {
+            "source": "context",
+            "comparison": "equals",
+            "values": [
+              "409"
+            ],
+            "variable": "statusCheckoutSync"
+          },
+          {
+            "source": "context",
+            "comparison": "contains",
+            "values": [
+              "execu"
+            ],
+            "variable": "retornoCheckoutSync"
+          }
+        ],
+        "continueOnError": true
+      },
+      {
+        "$description": "",
+        "$inputSchema": {
+          "type": "object",
+          "properties": {},
+          "required": []
+        },
+        "type": "ProcessHttp",
+        "settings": {
+          "headers": {},
+          "method": "POST",
+          "uri": "{{resource.urlBase}}/vforcesite/services/apexrest/ecommerce/login",
+          "responseStatusVariable": "statusToken",
+          "responseBodyVariable": "retornoToken",
+          "body": "{\n  \"username\": \"{{contact.email}}\",\n  \"password\": \"{{contact.extras.senha}}\"\n}"
+        },
+        "conditions": [
+          {
+            "source": "context",
+            "comparison": "equals",
+            "values": [
+              "true",
+              "True"
+            ],
+            "variable": "batchCarrinhoOk"
+          },
+          {
+            "source": "context",
+            "comparison": "equals",
+            "values": [
+              "409"
+            ],
+            "variable": "statusCheckoutSync"
+          },
+          {
+            "source": "context",
+            "comparison": "contains",
+            "values": [
+              "execu"
+            ],
+            "variable": "retornoCheckoutSync"
+          }
+        ]
+      },
+      {
+        "$description": "",
+        "$inputSchema": {
+          "type": "object",
+          "properties": {},
+          "required": []
+        },
+        "type": "ProcessHttp",
+        "settings": {
+          "headers": {
+            "Authorization": "Bearer {{retornoToken@token}}",
+            "Content-Type": "application/json"
+          },
+          "method": "POST",
+          "uri": "{{resource.urlBase}}/services/data/v63.0/commerce/webstores/0ZEKj000000ox4zOAA/checkouts?effectiveAccountId={{accountId}}",
+          "responseStatusVariable": "statusCheckoutSync",
+          "responseBodyVariable": "retornoCheckoutSync",
+          "body": "{\n  \"cartId\": \"{{cartId}}\"\n}"
+        },
+        "conditions": [
+          {
+            "source": "context",
+            "comparison": "equals",
+            "values": [
+              "true",
+              "True"
+            ],
+            "variable": "batchCarrinhoOk"
+          },
+          {
+            "source": "context",
+            "comparison": "equals",
+            "values": [
+              "409"
+            ],
+            "variable": "statusCheckoutSync"
+          },
+          {
+            "source": "context",
+            "comparison": "contains",
+            "values": [
+              "execu"
+            ],
+            "variable": "retornoCheckoutSync"
+          }
+        ],
+        "continueOnError": true
+      },
+      {
+        "$description": "",
+        "$inputSchema": {
+          "type": "object",
+          "properties": {},
+          "required": []
+        },
+        "type": "ProcessHttp",
+        "settings": {
+          "headers": {},
+          "method": "POST",
+          "uri": "{{resource.urlBase}}/vforcesite/services/apexrest/ecommerce/login",
+          "responseStatusVariable": "statusToken",
+          "responseBodyVariable": "retornoToken",
+          "body": "{\n  \"username\": \"{{contact.email}}\",\n  \"password\": \"{{contact.extras.senha}}\"\n}"
+        },
+        "conditions": [
+          {
+            "source": "context",
+            "comparison": "equals",
+            "values": [
+              "true",
+              "True"
+            ],
+            "variable": "batchCarrinhoOk"
+          },
+          {
+            "source": "context",
+            "comparison": "equals",
+            "values": [
+              "409"
+            ],
+            "variable": "statusCheckoutSync"
+          },
+          {
+            "source": "context",
+            "comparison": "contains",
+            "values": [
+              "execu"
+            ],
+            "variable": "retornoCheckoutSync"
+          }
+        ]
+      },
+      {
+        "$description": "",
+        "$inputSchema": {
+          "type": "object",
+          "properties": {},
+          "required": []
+        },
+        "type": "ProcessHttp",
+        "settings": {
+          "headers": {
+            "Authorization": "Bearer {{retornoToken@token}}",
+            "Content-Type": "application/json"
+          },
+          "method": "POST",
+          "uri": "{{resource.urlBase}}/services/data/v63.0/commerce/webstores/0ZEKj000000ox4zOAA/checkouts?effectiveAccountId={{accountId}}",
+          "responseStatusVariable": "statusCheckoutSync",
+          "responseBodyVariable": "retornoCheckoutSync",
+          "body": "{\n  \"cartId\": \"{{cartId}}\"\n}"
+        },
+        "conditions": [
+          {
+            "source": "context",
+            "comparison": "equals",
+            "values": [
+              "true",
+              "True"
+            ],
+            "variable": "batchCarrinhoOk"
+          },
+          {
+            "source": "context",
+            "comparison": "equals",
+            "values": [
+              "409"
+            ],
+            "variable": "statusCheckoutSync"
+          },
+          {
+            "source": "context",
+            "comparison": "contains",
+            "values": [
+              "execu"
+            ],
+            "variable": "retornoCheckoutSync"
+          }
+        ],
+        "continueOnError": true
+      },
+      {
+        "type": "TrackEvent",
+        "settings": {
+          "extras": {
+            "identificador": "{{contact.identity}}",
+            "origem": "{{origem}}",
+            "canal": "{{channel}}",
+            "cartId": "{{cartId}}"
+          },
+          "category": "Sincroniza carrinho checkout",
+          "action": "{{statusCheckoutSync}}"
+        },
+        "conditions": [
+          {
+            "source": "context",
+            "comparison": "equals",
+            "values": [
+              "true",
+              "True"
+            ],
+            "variable": "batchCarrinhoOk"
+          }
+        ]
+      },
+      {
+        "$description": "",
+        "$inputSchema": {
+          "type": "object",
+          "properties": {},
+          "required": []
+        },
         "type": "ProcessHttp",
         "settings": {
           "headers": {},
@@ -7075,7 +6979,7 @@
         "type": "ExecuteScript",
         "settings": {
           "function": "run",
-          "source": "function run(sincronizacaoCarrinho, itensCarrinhoSF) {\n    let padrao = \"Não conseguimos preparar o seu carrinho agora.\";\n    try {\n        let s = typeof sincronizacaoCarrinho === \"string\" ? JSON.parse(sincronizacaoCarrinho) : sincronizacaoCarrinho;\n        if (s && Number(s.totalNaoEncontrados) > 0) return \"Alguns produtos não estão disponíveis para este endereço: \" + s.naoEncontrados + \".\";\n    } catch (e) { }\n    try {\n        let i = typeof itensCarrinhoSF === \"string\" ? JSON.parse(itensCarrinhoSF) : itensCarrinhoSF;\n        if (i && i.precoZeradoCentral) return \"Os produtos a seguir estão sem preço para este endereço: \" + i.semPrecoCentral + \".\";\n        if (i && i.motivo === \"Carrinho Salesforce sem preço calculado\") return \"Não conseguimos calcular os preços do seu carrinho agora.\";\n    } catch (e) { }\n    return padrao;\n}\n",
+          "source": "function run(sincronizacaoCarrinho, itensCarrinhoSF) {\n    let padrao = \"Não conseguimos preparar o seu carrinho agora.\";\n\n    function emLinhas(lista) {\n        let itens = Array.isArray(lista)\n            ? lista\n            : String(lista || \"\").split(/,\\s*(?=🟢)/);\n        return itens\n            .map(function (x) { return String(x).trim(); })\n            .filter(function (x) { return x; })\n            .join(\"\\n\");\n    }\n\n    try {\n        let s = typeof sincronizacaoCarrinho === \"string\" ? JSON.parse(sincronizacaoCarrinho) : sincronizacaoCarrinho;\n        if (s && Number(s.totalNaoEncontrados) > 0)\n            return \"Os produtos abaixo não estão disponíveis para este endereço:\\n\" + emLinhas(s.naoEncontrados);\n    } catch (e) { }\n    try {\n        let i = typeof itensCarrinhoSF === \"string\" ? JSON.parse(itensCarrinhoSF) : itensCarrinhoSF;\n        if (i && i.precoZeradoCentral)\n            return \"Os produtos abaixo estão sem preço para este endereço:\\n\" + emLinhas(i.semPrecoCentral);\n        if (i && i.motivo === \"Carrinho Salesforce sem preço calculado\")\n            return \"Não conseguimos calcular os preços do seu carrinho agora.\";\n    } catch (e) { }\n    return padrao;\n}",
           "inputVariables": [
             "sincronizacaoCarrinho",
             "itensCarrinhoSF"
@@ -7086,7 +6990,56 @@
         "conditions": []
       }
     ],
-    "$leavingCustomActions": [],
+    "$leavingCustomActions": [
+      {
+        "$description": "",
+        "$inputSchema": {
+          "type": "object",
+          "properties": {},
+          "required": []
+        },
+        "type": "ProcessHttp",
+        "settings": {
+          "headers": {},
+          "method": "POST",
+          "body": "{\n  \"username\": \"{{contact.email}}\",\n  \"password\": \"{{contact.extras.senha}}\"\n}",
+          "uri": "{{resource.urlBase}}/vforcesite/services/apexrest/ecommerce/login",
+          "responseStatusVariable": "statusToken",
+          "responseBodyVariable": "retornoToken"
+        },
+        "conditions": [
+          {
+            "source": "context",
+            "comparison": "equals",
+            "values": [
+              "409"
+            ],
+            "variable": "statusRecalculoSync"
+          }
+        ]
+      },
+      {
+        "$description": "",
+        "$inputSchema": {
+          "type": "object",
+          "properties": {},
+          "required": []
+        },
+        "type": "ProcessHttp",
+        "settings": {
+          "headers": {
+            "Authorization": "Bearer {{retornoToken@token}}",
+            "Content-Type": "application/json"
+          },
+          "method": "PUT",
+          "uri": "{{resource.urlBase}}/services/data/v62.0/commerce/webstores/0ZEKj000000ox4zOAA/checkouts?effectiveAccountId={{accountId}}",
+          "responseStatusVariable": "statusCriarCheckout",
+          "responseBodyVariable": "RetornoCriarCheckout",
+          "body": "{\n  \"cartId\": \"{{cartId}}\"\n}"
+        },
+        "conditions": []
+      }
+    ],
     "$defaultOutput": {
       "stateId": "fd671654-5590-42a8-a572-44e085470232"
     },
@@ -7106,7 +7059,7 @@
           "settings": {
             "type": "application/vnd.lime.select+json",
             "content": {
-              "text": "<b>Ocorreu um erro</b>\n{{mensagemErroCarrinho}} Que tal tentar novamente?",
+              "text": "<b>Ocorreu um erro</b>\n{{mensagemErroCarrinho}}\n\nQue tal tentar novamente?",
               "scope": "immediate",
               "options": [
                 {
@@ -7122,6 +7075,13 @@
                   "value": null,
                   "index": 1,
                   "type": null
+                },
+                {
+                  "index": -1,
+                  "text": "Editar carrinho",
+                  "previewText": "Editar carrinho",
+                  "type": null,
+                  "value": null
                 }
               ],
               "quikReply": false
@@ -7132,7 +7092,8 @@
       },
       {
         "input": {
-          "bypass": false
+          "bypass": false,
+          "expiration": "0:15"
         }
       }
     ],
@@ -7160,6 +7121,20 @@
             "comparison": "equals",
             "values": [
               "Encerrar conversa"
+            ],
+            "variable": "intentAction"
+          }
+        ]
+      },
+      {
+        "stateId": "9b79fb9c-deef-4548-885d-5696e527236e",
+        "typeOfStateId": "state",
+        "conditions": [
+          {
+            "source": "context",
+            "comparison": "equals",
+            "values": [
+              "Editar carrinho"
             ],
             "variable": "intentAction"
           }
@@ -7193,7 +7168,7 @@
         "type": "ExecuteScript",
         "settings": {
           "function": "run",
-          "source": "function run(input) {\n  try {\n    let opcoesMenu = {\n      \"1\": \"Tentar novamente\",\n      \"2\": \"Encerrar conversa\",\n    };\n\nlet menuRegex = {\n      \"1\": /\\b(?:1|um|tentar(?:\\s+(?:novamente|de\\s+novo))?|novamente|de\\s+novo|repetir|sim|quero|continuar)\\b/i,\n      \"2\": /\\b(?:2|dois|encerrar(?:\\s+conversa)?|cancelar|sair|parar|desistir|fim|finalizar|n[aã]o|negativo)\\b/i,\n    };\n\n    input = input.trim();\n\n    for (let prop in menuRegex) {\n      if (menuRegex[prop].test(input)) {\n        return opcoesMenu[prop];\n      }\n    }\n\n    return \"Input inesperado\";\n  } catch (error) {\n    return \"Input inesperado\";\n  }\n}",
+          "source": "function run(input) {\n  try {\n    let opcoesMenu = {\n      \"1\": \"Tentar novamente\",\n      \"2\": \"Encerrar conversa\",\n      \"3\": \"Editar carrinho\"\n    };\n\n    let menuRegex = {\n      \"1\": /\\b(?:1|um|tentar(?:\\s+(?:novamente|de\\s+novo))?|novamente|de\\s+novo|repetir|sim|quero|continuar)\\b/i,\n      \"2\": /\\b(?:2|dois|encerrar(?:\\s+conversa)?|cancelar|sair|parar|desistir|fim|finalizar|n[aã]o|negativo)\\b/i,\n      \"3\": /\\b(?:3|tr[êe]s|editar(?:\\s+(?:o\\s+)?carrinho)?|carrinho|alterar|modificar)\\b/i\n    };\n\n    input = input.trim();\n\n    for (let prop in menuRegex) {\n      if (menuRegex[prop].test(input)) {\n        return opcoesMenu[prop];\n      }\n    }\n\n    return \"Input inesperado\";\n  } catch (error) {\n    return \"Input inesperado\";\n  }\n}",
           "inputVariables": [
             "input.content"
           ],
@@ -7255,7 +7230,7 @@
     "$localCustomActions": [],
     "$title": "[MSG] Erro ao preparar carrinho",
     "$position": {
-      "top": "1872.98px",
+      "top": "1873px",
       "left": "1777px"
     }
   },
@@ -7510,6 +7485,25 @@
           "LocalTimeZoneEnabled": false
         },
         "conditions": []
+      },
+      {
+        "$description": "",
+        "$inputSchema": {
+          "type": "object",
+          "properties": {},
+          "required": []
+        },
+        "type": "ExecuteScript",
+        "settings": {
+          "function": "run",
+          "source": "function run(resposta) {\n    try {\n        // Aceita tanto string JSON quanto objeto já convertido\n        let dados = typeof resposta === \"string\" ? JSON.parse(resposta) : resposta;\n\n        if (!dados || !dados.cartSummary) {\n            return null;\n        }\n\n        let valor = parseFloat(dados.cartSummary.totalTaxAmount);\n\n        if (isNaN(valor)) {\n            return null;\n        }\n\n        return formatarReal(valor);\n    } catch (erro) {\n        return null;\n    }\n}\n\nfunction formatarReal(valor) {\n    // Formatação manual, sem depender de Intl (compatível com mais ambientes)\n    let partes = valor.toFixed(2).split(\".\");\n    let inteiro = partes[0].replace(/\\B(?=(\\d{3})+(?!\\d))/g, \".\");\n    return \"R$ \" + inteiro + \",\" + partes[1];\n}",
+          "inputVariables": [
+            "retornoItensCarrinhoSF"
+          ],
+          "outputVariable": "totalTaxAmount",
+          "LocalTimeZoneEnabled": false
+        },
+        "conditions": []
       }
     ],
     "$leavingCustomActions": [],
@@ -7628,61 +7622,11 @@
       "commentsIdList": []
     }
   },
-  "4dc20455-e916-4f43-a6c5-caf884d06649": {
-    "$contentActions": [
-      {
-        "input": {
-          "bypass": true
-        }
-      }
-    ],
-    "$conditionOutputs": [],
-    "$enteringCustomActions": [],
-    "$leavingCustomActions": [],
-    "$defaultOutput": {
-      "stateId": "6c6b021a-32d0-4fb2-a430-23e2d410be47",
-      "typeOfStateId": "state"
-    },
-    "$localCustomActions": [],
-    "$title": "[GO TO] Algo mais",
-    "$position": {
-      "top": "3994.38px",
-      "left": "386.021px"
-    },
-    "addonsSettings": {
-      "shape": "0 50% 50% 0",
-      "backgroundColor": "#ffeb3b",
-      "textColor": "#000000",
-      "commentsIdList": []
-    }
-  },
-  "b42e9a26-8318-4dd9-84e1-8dfdf5502fab": {
-    "$contentActions": [
-      {
-        "input": {
-          "bypass": true
-        }
-      }
-    ],
-    "$conditionOutputs": [],
-    "$enteringCustomActions": [],
-    "$leavingCustomActions": [],
-    "$defaultOutput": {
-      "stateId": "ae01d44d-8e09-4edf-86d2-6bc7529f3a36",
-      "typeOfStateId": "state"
-    },
-    "$localCustomActions": [],
-    "$title": "[GO TO] [API] Janelas de entrega",
-    "$position": {
-      "top": "5102px",
-      "left": "1475px"
-    }
-  },
   "seg-carrinho-decisao": {
     "$title": "[DECISÃO] Há segundo carrinho pendente?",
     "$position": {
-      "top": "5763.94px",
-      "left": "1701.57px"
+      "top": "5310px",
+      "left": "1076px"
     },
     "$enteringCustomActions": [
       {
@@ -7696,7 +7640,14 @@
           "category": "Encadeamento segundo carrinho verificacao",
           "action": "{{carrinhoEscolhido@pedidoRestanteNome}}"
         },
-        "conditions": []
+        "conditions": [
+          {
+            "source": "context",
+            "comparison": "exists",
+            "values": [],
+            "variable": "carrinhoEscolhido"
+          }
+        ]
       }
     ],
     "$contentActions": [
@@ -7757,8 +7708,8 @@
   "seg-carrinho-preparar": {
     "$title": "[PREP] Segundo carrinho automático",
     "$position": {
-      "top": "5833.94px",
-      "left": "1952.57px"
+      "top": "5247px",
+      "left": "1348px"
     },
     "$enteringCustomActions": [
       {
@@ -7843,28 +7794,6 @@
       "left": "533px"
     }
   },
-  "6c703bda-4ee7-4b43-a0dc-c073f851f688": {
-    "$contentActions": [
-      {
-        "input": {
-          "bypass": true
-        }
-      }
-    ],
-    "$conditionOutputs": [],
-    "$enteringCustomActions": [],
-    "$leavingCustomActions": [],
-    "$defaultOutput": {
-      "stateId": "5a91f3aa-017c-4131-a3c2-af3ead8552ff",
-      "typeOfStateId": "state"
-    },
-    "$localCustomActions": [],
-    "$title": "[GO TO] [MSG] Erro ao criar pedido",
-    "$position": {
-      "top": "5228px",
-      "left": "1471px"
-    }
-  },
   "57fa6d9b-0229-4f26-a3b0-76a916b83ace": {
     "$contentActions": [
       {
@@ -7895,40 +7824,6 @@
         }
       }
     ],
-    "$conditionOutputs": [
-      {
-        "stateId": "a4b0c95e-9da1-4e29-9ccb-115a791e458c",
-        "typeOfStateId": "state",
-        "conditions": [
-          {
-            "source": "input",
-            "comparison": "exists",
-            "values": []
-          }
-        ]
-      }
-    ],
-    "$enteringCustomActions": [],
-    "$leavingCustomActions": [],
-    "$defaultOutput": {
-      "stateId": "5a91f3aa-017c-4131-a3c2-af3ead8552ff",
-      "typeOfStateId": "state"
-    },
-    "$localCustomActions": [],
-    "$title": "[GO TO] [MSG] Erro ao criar pedido",
-    "$position": {
-      "top": "5173px",
-      "left": "612px"
-    }
-  },
-  "c73f3549-512f-4784-a1dc-1f0e06cc0c57": {
-    "$contentActions": [
-      {
-        "input": {
-          "bypass": true
-        }
-      }
-    ],
     "$conditionOutputs": [],
     "$enteringCustomActions": [],
     "$leavingCustomActions": [],
@@ -7939,30 +7834,8 @@
     "$localCustomActions": [],
     "$title": "[GO TO] [MSG] Erro ao criar pedido",
     "$position": {
-      "top": "5368.94px",
-      "left": "1240.57px"
-    }
-  },
-  "4d007dd4-93ed-4f65-a2ac-b70ddf8d40d1": {
-    "$contentActions": [
-      {
-        "input": {
-          "bypass": true
-        }
-      }
-    ],
-    "$conditionOutputs": [],
-    "$enteringCustomActions": [],
-    "$leavingCustomActions": [],
-    "$defaultOutput": {
-      "stateId": "5a91f3aa-017c-4131-a3c2-af3ead8552ff",
-      "typeOfStateId": "state"
-    },
-    "$localCustomActions": [],
-    "$title": "[GO TO] [MSG] Erro ao criar pedido",
-    "$position": {
-      "top": "5554.94px",
-      "left": "1469.57px"
+      "top": "5167px",
+      "left": "586px"
     }
   },
   "a7e1c0de-e1e9-4b1d-9c3a-0e1e91b11dad": {
@@ -8125,7 +7998,7 @@
         "type": "ExecuteScript",
         "settings": {
           "function": "run",
-          "source": "function run(statusConta, retornoConta, statusCredito, retornoCredito) {\n  // Status de crédito do Ygg considerados elegíveis.\n  // \"RELEASED\" é o que vem no payload de exemplo; confirmar a lista completa com o time do Ygg.\n  let STATUS_CREDITO_OK = [\"RELEASED\"];\n  let STATUS_CREDITO_BLOQUEADO = [\"BLOCKED\", \"BLOQUEADO\"]; // confirmar nomes reais\n\n  let resultado = {\n    elegivel: \"erro\",\n    motivo: \"ERRO_API\",\n    contaAtiva: null,\n    creditoStatus: null,\n    creditoBloqueado: null,\n    creditoDisponivel: null,\n    pedidoMinimo: null,\n    mensagem: \"\"\n  };\n\n  function parse(v) {\n    if (v === null || v === undefined || v === \"\") return null;\n    if (typeof v === \"object\") return v;\n    try { return JSON.parse(v); } catch (e) { return null; }\n  }\n  function isTrue(v) { return v === true || String(v).toLowerCase() === \"true\"; }\n  function toNumber(v) {\n    if (v === null || v === undefined || v === \"\") return null;\n    let n = Number(v);\n    return isNaN(n) ? null : n;\n  }\n  function fim(elegivel, motivo, mensagem) {\n    resultado.elegivel = elegivel;\n    resultado.motivo = motivo;\n    resultado.mensagem = mensagem || \"\";\n    return JSON.stringify(resultado); // string evita problemas ao salvar em variável no Blip\n  }\n\n  try {\n    // 1) Conta - GET /ecommerce/account/{accountId}\n    if (String(statusConta) !== \"200\") return fim(\"erro\", \"ERRO_API_CONTA\");\n    let conta = parse(retornoConta);\n    if (!conta) return fim(\"erro\", \"ERRO_API_CONTA\");\n    resultado.contaAtiva = isTrue(conta.active);\n\n    // 2) Crédito - POST /ecommerce/credit\n    if (String(statusCredito) !== \"200\") return fim(\"erro\", \"ERRO_API_CREDITO\");\n    let credito = parse(retornoCredito);\n    if (!credito) return fim(\"erro\", \"ERRO_API_CREDITO\");\n\n    resultado.creditoStatus = credito.status ? String(credito.status).toUpperCase() : null;\n    resultado.creditoBloqueado = isTrue(credito.blocked) ||\n      STATUS_CREDITO_BLOQUEADO.indexOf(resultado.creditoStatus) !== -1;\n    resultado.creditoDisponivel = toNumber(credito.available);\n    resultado.pedidoMinimo = toNumber(credito.minimalOrderValue);\n\n    // 3) Regras de elegibilidade\n    if (!resultado.contaAtiva) {\n      return fim(\"false\", \"CONTA_INATIVA\",\n        \"Identificamos que sua <b>conta está inativa</b> no momento, por isso não é possível seguir com o pedido por aqui.\");\n    }\n    if (resultado.creditoBloqueado) {\n      return fim(\"false\", \"CREDITO_BLOQUEADO\",\n        \"Identificamos que o <b>crédito da sua conta está bloqueado</b>, por isso não é possível seguir com o pedido por aqui.\");\n    }\n    if (STATUS_CREDITO_OK.indexOf(resultado.creditoStatus) === -1) {\n      return fim(\"false\", \"CREDITO_INATIVO\",\n        \"Identificamos que sua conta <b>não possui crédito ativo</b> no momento, por isso não é possível seguir com o pedido por aqui.\");\n    }\n    if (credito.overdue !== null && credito.overdue !== undefined && toNumber(credito.overdue) !== 0) {\n      return fim(\"false\", \"CREDITO_EM_ATRASO\",\n        \"Identificamos <b>pendências financeiras</b> na sua conta, por isso não é possível seguir com o pedido por aqui.\");\n    }\n    let minimo = resultado.pedidoMinimo || 0;\n    if (resultado.creditoDisponivel === null || resultado.creditoDisponivel < minimo || resultado.creditoDisponivel <= 0) {\n      return fim(\"false\", \"CREDITO_INSUFICIENTE\",\n        \"Identificamos que o <b>crédito disponível</b> não é suficiente para o pedido mínimo, por isso não é possível seguir com o pedido por aqui.\");\n    }\n    return fim(\"true\", \"ELEGIVEL\");\n  } catch (e) {\n    return fim(\"erro\", \"ERRO_SCRIPT\");\n  }\n}",
+          "source": "function run(statusConta, retornoConta, statusCredito, retornoCredito) {\n  // Status de crédito do Ygg considerados elegíveis.\n  let STATUS_CREDITO_OK = [\"RELEASED\"];\n\n  let resultado = {\n    elegivel: \"erro\",\n    motivo: \"ERRO_API\",\n    contaAtiva: null,\n    creditoStatus: null,\n    creditoDisponivel: null,\n    pedidoMinimo: null,\n    mensagem: \"\"\n  };\n\n  function parse(v) {\n    if (v === null || v === undefined || v === \"\") return null;\n    if (typeof v === \"object\") return v;\n    try { return JSON.parse(v); } catch (e) { return null; }\n  }\n  function isTrue(v) { return v === true || String(v).toLowerCase() === \"true\"; }\n  function toNumber(v) {\n    if (v === null || v === undefined || v === \"\") return null;\n    let n = Number(v);\n    return isNaN(n) ? null : n;\n  }\n  function fim(elegivel, motivo, mensagem) {\n    resultado.elegivel = elegivel;\n    resultado.motivo = motivo;\n    resultado.mensagem = mensagem || \"\";\n    return JSON.stringify(resultado);\n  }\n\n  try {\n    // 1) Conta - GET /ecommerce/account/{accountId}\n    if (String(statusConta) !== \"200\") return fim(\"erro\", \"ERRO_API_CONTA\");\n    let conta = parse(retornoConta);\n    if (!conta) return fim(\"erro\", \"ERRO_API_CONTA\");\n    resultado.contaAtiva = isTrue(conta.active);\n\n    // 2) Crédito - POST /ecommerce/credit\n    if (String(statusCredito) !== \"200\") return fim(\"erro\", \"ERRO_API_CREDITO\");\n    let credito = parse(retornoCredito);\n    if (!credito) return fim(\"erro\", \"ERRO_API_CREDITO\");\n\n    resultado.creditoStatus = credito.status ? String(credito.status).toUpperCase() : null;\n    // Apenas informativos (não entram na regra)\n    resultado.creditoDisponivel = toNumber(credito.available);\n    resultado.pedidoMinimo = toNumber(credito.minimalOrderValue);\n\n    // 3) Regras de elegibilidade\n    if (!resultado.contaAtiva) {\n      return fim(\"false\", \"CONTA_INATIVA\",\n        \"Identificamos que sua <b>conta está inativa</b> no momento, por isso não é possível seguir com o pedido por aqui.\");\n    }\n    if (STATUS_CREDITO_OK.indexOf(resultado.creditoStatus) === -1) {\n      return fim(\"false\", \"CREDITO_INATIVO\",\n        \"Identificamos que sua conta <b>não possui crédito ativo</b> no momento, por isso não é possível seguir com o pedido por aqui.\");\n    }\n    return fim(\"true\", \"ELEGIVEL\");\n  } catch (e) {\n    return fim(\"erro\", \"ERRO_SCRIPT\");\n  }\n}",
           "inputVariables": [
             "statusContaElegibilidade",
             "retornoContaElegibilidade",
@@ -8161,7 +8034,7 @@
     "$localCustomActions": [],
     "$title": "[API] Verifica elegibilidade",
     "$position": {
-      "top": "600px",
+      "top": "602px",
       "left": "1497px"
     }
   },
@@ -8173,7 +8046,7 @@
           "type": "SendMessage",
           "settings": {
             "type": "text/plain",
-            "content": "{{elegibilidade@mensagem}}\n\nPara regularizar, entre em contato com o seu consultor de vendas BRF.",
+            "content": "{{elegibilidade@mensagem}}\n\nPara regularizar, entre em contato com o seu consultor de vendas MBRF.",
             "metadata": {}
           }
         }
@@ -8186,7 +8059,7 @@
     ],
     "$conditionOutputs": [
       {
-        "stateId": "e125a412-25cd-4f51-b07e-4252d5f55be1",
+        "stateId": "e9ac15cf-4661-4072-8141-b07acf777f9b",
         "typeOfStateId": "state",
         "conditions": [
           {
@@ -8258,7 +8131,8 @@
       },
       {
         "input": {
-          "bypass": false
+          "bypass": false,
+          "expiration": "0:15"
         }
       }
     ],
@@ -8417,7 +8291,8 @@
     "$contentActions": [
       {
         "input": {
-          "bypass": false
+          "bypass": false,
+          "expiration": "0:15"
         }
       }
     ],
@@ -8588,12 +8463,12 @@
       "stateId": "fallback"
     },
     "$localCustomActions": [],
-    "shortNameOfSubflow": "selecionarconta5",
+    "shortNameOfSubflow": "selecionarconta7",
     "$imageUri": "",
     "$title": "Selecionar conta",
     "$position": {
-      "top": "363px",
-      "left": "1291px"
+      "top": "570px",
+      "left": "946px"
     }
   },
   "e125a412-25cd-4f51-b07e-4252d5f55be1": {
@@ -9088,8 +8963,8 @@
     "$localCustomActions": [],
     "$title": "[API] Busca contas vinculadas",
     "$position": {
-      "top": "169px",
-      "left": "1498px"
+      "top": "320px",
+      "left": "1050px"
     }
   },
   "f236b523-36de-4062-c18f-5363e6066cf2": {
@@ -9127,13 +9002,14 @@
       },
       {
         "input": {
-          "bypass": false
+          "bypass": false,
+          "expiration": "0:15"
         }
       }
     ],
     "$conditionOutputs": [
       {
-        "stateId": "e125a412-25cd-4f51-b07e-4252d5f55be1",
+        "stateId": "e9ac15cf-4661-4072-8141-b07acf777f9b",
         "typeOfStateId": "state",
         "conditions": [
           {
@@ -9250,40 +9126,8 @@
     "$localCustomActions": [],
     "$title": "[MSG] Erro ao buscar contas",
     "$position": {
-      "top": "207px",
-      "left": "1869px"
-    }
-  },
-  "a4b0c95e-9da1-4e29-9ccb-115a791e458c": {
-    "$contentActions": [
-      {
-        "action": {
-          "$description": "",
-          "type": "SendMessage",
-          "settings": {
-            "type": "text/plain",
-            "content": "Some text"
-          }
-        }
-      },
-      {
-        "input": {
-          "bypass": true
-        }
-      }
-    ],
-    "$conditionOutputs": [],
-    "$enteringCustomActions": [],
-    "$leavingCustomActions": [],
-    "$defaultOutput": {
-      "stateId": "e125a412-25cd-4f51-b07e-4252d5f55be1",
-      "typeOfStateId": "state"
-    },
-    "$localCustomActions": [],
-    "$title": "teste",
-    "$position": {
-      "top": "5262px",
-      "left": "380px"
+      "top": "598px",
+      "left": "2287px"
     }
   },
   "menu-enderecos-monta": {
@@ -9453,7 +9297,8 @@
     "$contentActions": [
       {
         "input": {
-          "bypass": false
+          "bypass": false,
+          "expiration": "0:15"
         }
       }
     ],
@@ -9618,12 +9463,12 @@
       "stateId": "fallback"
     },
     "$localCustomActions": [],
-    "shortNameOfSubflow": "menudeendereco4",
+    "shortNameOfSubflow": "menudeendereco6",
     "$imageUri": "",
     "$title": "Menu de endereco",
     "$position": {
-      "top": "3739.87px",
-      "left": "819.851px"
+      "top": "3749px",
+      "left": "816px"
     }
   },
   "17ea68a4-2414-4d97-b0d0-232ff6db36df": {
@@ -9753,7 +9598,7 @@
         "type": "ExecuteScript",
         "settings": {
           "function": "run",
-          "source": "function run(nome, rua, cidade, uf, cep, dataChave, dataDesejada) {\n    try {\n        let limpa = function (s) { return String(s || \"\").trim(); };\n    // O Blip converte strings ISO em DateTime ao ler JSON com \"@\" e devolve \"MM/dd/yyyy HH:mm:ss\".\n    // Por isso a data trafega como chave numerica (yyyyMMdd) e e normalizada aqui.\n    let dataISO = function (chave, alternativa) {\n        let dois = function (n) { n = String(n); return n.length < 2 ? \"0\" + n : n; };\n        let c = String(chave || \"\").replace(/\\D/g, \"\");\n        if (c.length === 8) return c.substring(0, 4) + \"-\" + c.substring(4, 6) + \"-\" + c.substring(6, 8);\n        let s = String(alternativa || \"\").trim();\n        let m = s.match(/^(\\d{4})-(\\d{2})-(\\d{2})/);\n        if (m) return m[1] + \"-\" + m[2] + \"-\" + m[3];\n        m = s.match(/^(\\d{1,2})\\/(\\d{1,2})\\/(\\d{4})/); // formato do Blip: MM/dd/yyyy\n        if (m) return m[3] + \"-\" + dois(m[1]) + \"-\" + dois(m[2]);\n        return \"\";\n    };\n        let corpo = {};\n        if (limpa(rua)) {\n            let digitos = limpa(cep).replace(/\\D/g, \"\");\n            corpo.DeliverToName = limpa(nome) || limpa(rua);\n            corpo.DeliverToStreet = limpa(rua);\n            corpo.DeliverToCity = limpa(cidade);\n            corpo.DeliverToStateCode = limpa(uf).toUpperCase();\n            corpo.DeliverToPostalCode = digitos.length === 8 ? digitos.substring(0, 5) + \"-\" + digitos.substring(5) : limpa(cep);\n            corpo.DeliverToCountryCode = \"BR\";\n        }\n        let dia = dataISO(dataChave, dataDesejada);\n        // meio-dia UTC = 09:00 de Brasilia, garante o mesmo dia nos dois fusos\n        if (dia) corpo.DesiredDeliveryDate = dia + \"T12:00:00.000Z\";\n        return JSON.stringify(corpo);\n    } catch (e) {\n        return \"{}\";\n    }\n}\n",
+          "source": "function run(nome, rua, cidade, uf, cep, dataChave, dataDesejada, instrucoes) {\n    try {\n        let limpa = function (s) { return String(s || \"\").trim(); };\n        // O Blip converte strings ISO em DateTime ao ler JSON com \"@\" e devolve \"MM/dd/yyyy HH:mm:ss\".\n        // Por isso a data trafega como chave numerica (yyyyMMdd) e e normalizada aqui.\n        let dataISO = function (chave, alternativa) {\n            let dois = function (n) { n = String(n); return n.length < 2 ? \"0\" + n : n; };\n            let c = String(chave || \"\").replace(/\\D/g, \"\");\n            if (c.length === 8) return c.substring(0, 4) + \"-\" + c.substring(4, 6) + \"-\" + c.substring(6, 8);\n            let s = String(alternativa || \"\").trim();\n            let m = s.match(/^(\\d{4})-(\\d{2})-(\\d{2})/);\n            if (m) return m[1] + \"-\" + m[2] + \"-\" + m[3];\n            m = s.match(/^(\\d{1,2})\\/(\\d{1,2})\\/(\\d{4})/); // formato do Blip: MM/dd/yyyy\n            if (m) return m[3] + \"-\" + dois(m[1]) + \"-\" + dois(m[2]);\n            return \"\";\n        };\n\n        let corpo = {};\n\n        if (limpa(rua)) {\n            let digitos = limpa(cep).replace(/\\D/g, \"\");\n            corpo.deliveryAddress = {\n                city: limpa(cidade).toUpperCase(),\n                country: \"BR\",\n                name: limpa(nome),\n                postalCode: digitos.length === 8 ? digitos.substring(0, 5) + \"-\" + digitos.substring(5) : limpa(cep),\n                street: limpa(rua),\n                region: limpa(uf).toUpperCase()\n            };\n        }\n\n        let dia = dataISO(dataChave, dataDesejada);\n        // meia-noite no horario de Brasilia, com offset explicito\n        if (dia) corpo.desiredDeliveryDate = dia + \"T00:00:00-03:00\";\n\n        corpo.shippingInstructions = limpa(instrucoes) || \"Sem instruções\";\n\n        return JSON.stringify(corpo);\n    } catch (e) {\n        return \"{}\";\n    }\n}",
           "inputVariables": [
             "entregaNome",
             "entregaRua",
@@ -9810,7 +9655,7 @@
             "Content-Type": "application/json"
           },
           "method": "PATCH",
-          "uri": "{{resource.urlBase}}/services/data/v63.0/sobjects/CartDeliveryGroup/{{entregaGrupo@id}}",
+          "uri": "{{resource.urlBase}}/services/data/v62.0/commerce/webstores/0ZEKj000000ox4zOAA/checkouts/active?effectiveAccountId={{accountId}}",
           "responseStatusVariable": "statusGravaEntrega",
           "responseBodyVariable": "retornoGravaEntrega",
           "body": "{{corpoDeliveryGroup}}"
@@ -9837,7 +9682,1258 @@
     "$title": "[API] Grava endereço e data no carrinho",
     "$position": {
       "top": "4689px",
-      "left": "845px"
+      "left": "844px"
+    }
+  },
+  "garante-checkout-carrinho": {
+    "$contentActions": [
+      {
+        "input": {
+          "bypass": true
+        }
+      }
+    ],
+    "$conditionOutputs": [
+      {
+        "stateId": "17ea68a4-2414-4d97-b0d0-232ff6db36df",
+        "typeOfStateId": "state",
+        "conditions": [
+          {
+            "source": "context",
+            "comparison": "equals",
+            "values": [
+              "200"
+            ],
+            "variable": "statusCarrinhoAtual"
+          },
+          {
+            "source": "context",
+            "comparison": "exists",
+            "values": [],
+            "variable": "cartId"
+          },
+          {
+            "source": "context",
+            "comparison": "startsWith",
+            "values": [
+              "2"
+            ],
+            "variable": "statusCheckoutCria"
+          }
+        ]
+      },
+      {
+        "stateId": "17ea68a4-2414-4d97-b0d0-232ff6db36df",
+        "typeOfStateId": "state",
+        "conditions": [
+          {
+            "source": "context",
+            "comparison": "equals",
+            "values": [
+              "200"
+            ],
+            "variable": "statusCarrinhoAtual"
+          },
+          {
+            "source": "context",
+            "comparison": "exists",
+            "values": [],
+            "variable": "cartId"
+          },
+          {
+            "source": "context",
+            "comparison": "startsWith",
+            "values": [
+              "2"
+            ],
+            "variable": "statusCheckoutAtivo"
+          }
+        ]
+      },
+      {
+        "stateId": "2fab7ad0-fa48-488c-a07c-137adde018ff",
+        "typeOfStateId": "state",
+        "conditions": [
+          {
+            "source": "input",
+            "comparison": "exists",
+            "values": []
+          }
+        ]
+      }
+    ],
+    "$enteringCustomActions": [
+      {
+        "$description": "",
+        "$inputSchema": {
+          "type": "object",
+          "properties": {},
+          "required": []
+        },
+        "type": "SetVariable",
+        "settings": {
+          "variable": "statusCheckoutCria",
+          "value": "0"
+        },
+        "conditions": []
+      },
+      {
+        "$description": "",
+        "$inputSchema": {
+          "type": "object",
+          "properties": {},
+          "required": []
+        },
+        "type": "SetVariable",
+        "settings": {
+          "variable": "statusCheckoutAtivo",
+          "value": "0"
+        },
+        "conditions": []
+      },
+      {
+        "$description": "",
+        "$inputSchema": {
+          "type": "object",
+          "properties": {},
+          "required": []
+        },
+        "type": "SetVariable",
+        "settings": {
+          "variable": "retornoCheckoutCria"
+        },
+        "conditions": []
+      },
+      {
+        "$description": "",
+        "$inputSchema": {
+          "type": "object",
+          "properties": {},
+          "required": []
+        },
+        "type": "SetVariable",
+        "settings": {
+          "variable": "checkoutId"
+        },
+        "conditions": []
+      },
+      {
+        "$description": "",
+        "$inputSchema": {
+          "type": "object",
+          "properties": {},
+          "required": []
+        },
+        "type": "ProcessHttp",
+        "settings": {
+          "headers": {},
+          "method": "POST",
+          "uri": "{{resource.urlBase}}/vforcesite/services/apexrest/ecommerce/login",
+          "responseStatusVariable": "statusToken",
+          "responseBodyVariable": "retornoToken",
+          "body": "{\n  \"username\": \"{{contact.email}}\",\n  \"password\": \"{{contact.extras.senha}}\"\n}"
+        },
+        "conditions": []
+      },
+      {
+        "$description": "",
+        "$inputSchema": {
+          "type": "object",
+          "properties": {},
+          "required": []
+        },
+        "type": "ProcessHttp",
+        "settings": {
+          "headers": {
+            "Authorization": "Bearer {{retornoToken@token}}",
+            "Content-Type": "application/json"
+          },
+          "method": "GET",
+          "uri": "{{resource.urlBase}}/services/data/v63.0/commerce/webstores/0ZEKj000000ox4zOAA/carts/current?effectiveAccountId={{accountId}}",
+          "responseStatusVariable": "statusCarrinhoAtual",
+          "responseBodyVariable": "retornoCarrinhoAtual"
+        },
+        "conditions": []
+      },
+      {
+        "$description": "",
+        "$inputSchema": {
+          "type": "object",
+          "properties": {},
+          "required": []
+        },
+        "type": "ExecuteScript",
+        "settings": {
+          "function": "run",
+          "source": "function run(retornoCarrinhoAtual) {\n    try {\n        let data = typeof retornoCarrinhoAtual === \"string\" ? JSON.parse(retornoCarrinhoAtual) : retornoCarrinhoAtual;\n        return (data && (data.cartId || data.id)) || \"\";\n    } catch (e) {\n        return \"\";\n    }\n}",
+          "inputVariables": [
+            "retornoCarrinhoAtual"
+          ],
+          "outputVariable": "cartId",
+          "LocalTimeZoneEnabled": false
+        },
+        "conditions": []
+      },
+      {
+        "$description": "",
+        "$inputSchema": {
+          "type": "object",
+          "properties": {},
+          "required": []
+        },
+        "type": "ProcessHttp",
+        "settings": {
+          "headers": {},
+          "method": "POST",
+          "uri": "{{resource.urlBase}}/vforcesite/services/apexrest/ecommerce/login",
+          "responseStatusVariable": "statusToken",
+          "responseBodyVariable": "retornoToken",
+          "body": "{\n  \"username\": \"{{contact.email}}\",\n  \"password\": \"{{contact.extras.senha}}\"\n}"
+        },
+        "conditions": []
+      },
+      {
+        "$description": "",
+        "$inputSchema": {
+          "type": "object",
+          "properties": {},
+          "required": []
+        },
+        "type": "ProcessHttp",
+        "settings": {
+          "headers": {
+            "Authorization": "Bearer {{retornoToken@token}}",
+            "Content-Type": "application/json"
+          },
+          "method": "POST",
+          "uri": "{{resource.urlBase}}/services/data/v63.0/commerce/webstores/0ZEKj000000ox4zOAA/checkouts?effectiveAccountId={{accountId}}",
+          "responseStatusVariable": "statusCheckoutCria",
+          "responseBodyVariable": "retornoCheckoutCria",
+          "body": "{\n  \"cartId\": \"{{cartId}}\"\n}"
+        },
+        "conditions": [],
+        "continueOnError": true
+      },
+      {
+        "$description": "",
+        "$inputSchema": {
+          "type": "object",
+          "properties": {},
+          "required": []
+        },
+        "type": "ProcessHttp",
+        "settings": {
+          "headers": {},
+          "method": "POST",
+          "uri": "{{resource.urlBase}}/vforcesite/services/apexrest/ecommerce/login",
+          "responseStatusVariable": "statusToken",
+          "responseBodyVariable": "retornoToken",
+          "body": "{\n  \"username\": \"{{contact.email}}\",\n  \"password\": \"{{contact.extras.senha}}\"\n}"
+        },
+        "conditions": [
+          {
+            "source": "context",
+            "comparison": "equals",
+            "values": [
+              "409"
+            ],
+            "variable": "statusCheckoutCria"
+          },
+          {
+            "source": "context",
+            "comparison": "contains",
+            "values": [
+              "execu"
+            ],
+            "variable": "retornoCheckoutCria"
+          }
+        ]
+      },
+      {
+        "$description": "",
+        "$inputSchema": {
+          "type": "object",
+          "properties": {},
+          "required": []
+        },
+        "type": "ProcessHttp",
+        "settings": {
+          "headers": {
+            "Authorization": "Bearer {{retornoToken@token}}",
+            "Content-Type": "application/json"
+          },
+          "method": "POST",
+          "uri": "{{resource.urlBase}}/services/data/v63.0/commerce/webstores/0ZEKj000000ox4zOAA/checkouts?effectiveAccountId={{accountId}}",
+          "responseStatusVariable": "statusCheckoutCria",
+          "responseBodyVariable": "retornoCheckoutCria",
+          "body": "{\n  \"cartId\": \"{{cartId}}\"\n}"
+        },
+        "conditions": [
+          {
+            "source": "context",
+            "comparison": "equals",
+            "values": [
+              "409"
+            ],
+            "variable": "statusCheckoutCria"
+          },
+          {
+            "source": "context",
+            "comparison": "contains",
+            "values": [
+              "execu"
+            ],
+            "variable": "retornoCheckoutCria"
+          }
+        ],
+        "continueOnError": true
+      },
+      {
+        "$description": "",
+        "$inputSchema": {
+          "type": "object",
+          "properties": {},
+          "required": []
+        },
+        "type": "ProcessHttp",
+        "settings": {
+          "headers": {},
+          "method": "POST",
+          "uri": "{{resource.urlBase}}/vforcesite/services/apexrest/ecommerce/login",
+          "responseStatusVariable": "statusToken",
+          "responseBodyVariable": "retornoToken",
+          "body": "{\n  \"username\": \"{{contact.email}}\",\n  \"password\": \"{{contact.extras.senha}}\"\n}"
+        },
+        "conditions": [
+          {
+            "source": "context",
+            "comparison": "equals",
+            "values": [
+              "409"
+            ],
+            "variable": "statusCheckoutCria"
+          },
+          {
+            "source": "context",
+            "comparison": "contains",
+            "values": [
+              "execu"
+            ],
+            "variable": "retornoCheckoutCria"
+          }
+        ]
+      },
+      {
+        "$description": "",
+        "$inputSchema": {
+          "type": "object",
+          "properties": {},
+          "required": []
+        },
+        "type": "ProcessHttp",
+        "settings": {
+          "headers": {
+            "Authorization": "Bearer {{retornoToken@token}}",
+            "Content-Type": "application/json"
+          },
+          "method": "POST",
+          "uri": "{{resource.urlBase}}/services/data/v63.0/commerce/webstores/0ZEKj000000ox4zOAA/checkouts?effectiveAccountId={{accountId}}",
+          "responseStatusVariable": "statusCheckoutCria",
+          "responseBodyVariable": "retornoCheckoutCria",
+          "body": "{\n  \"cartId\": \"{{cartId}}\"\n}"
+        },
+        "conditions": [
+          {
+            "source": "context",
+            "comparison": "equals",
+            "values": [
+              "409"
+            ],
+            "variable": "statusCheckoutCria"
+          },
+          {
+            "source": "context",
+            "comparison": "contains",
+            "values": [
+              "execu"
+            ],
+            "variable": "retornoCheckoutCria"
+          }
+        ],
+        "continueOnError": true
+      },
+      {
+        "$description": "",
+        "$inputSchema": {
+          "type": "object",
+          "properties": {},
+          "required": []
+        },
+        "type": "ProcessHttp",
+        "settings": {
+          "headers": {},
+          "method": "POST",
+          "uri": "{{resource.urlBase}}/vforcesite/services/apexrest/ecommerce/login",
+          "responseStatusVariable": "statusToken",
+          "responseBodyVariable": "retornoToken",
+          "body": "{\n  \"username\": \"{{contact.email}}\",\n  \"password\": \"{{contact.extras.senha}}\"\n}"
+        },
+        "conditions": [
+          {
+            "source": "context",
+            "comparison": "equals",
+            "values": [
+              "409"
+            ],
+            "variable": "statusCheckoutCria"
+          },
+          {
+            "source": "context",
+            "comparison": "contains",
+            "values": [
+              "execu"
+            ],
+            "variable": "retornoCheckoutCria"
+          }
+        ]
+      },
+      {
+        "$description": "",
+        "$inputSchema": {
+          "type": "object",
+          "properties": {},
+          "required": []
+        },
+        "type": "ProcessHttp",
+        "settings": {
+          "headers": {
+            "Authorization": "Bearer {{retornoToken@token}}",
+            "Content-Type": "application/json"
+          },
+          "method": "POST",
+          "uri": "{{resource.urlBase}}/services/data/v63.0/commerce/webstores/0ZEKj000000ox4zOAA/checkouts?effectiveAccountId={{accountId}}",
+          "responseStatusVariable": "statusCheckoutCria",
+          "responseBodyVariable": "retornoCheckoutCria",
+          "body": "{\n  \"cartId\": \"{{cartId}}\"\n}"
+        },
+        "conditions": [
+          {
+            "source": "context",
+            "comparison": "equals",
+            "values": [
+              "409"
+            ],
+            "variable": "statusCheckoutCria"
+          },
+          {
+            "source": "context",
+            "comparison": "contains",
+            "values": [
+              "execu"
+            ],
+            "variable": "retornoCheckoutCria"
+          }
+        ],
+        "continueOnError": true
+      },
+      {
+        "$description": "",
+        "$inputSchema": {
+          "type": "object",
+          "properties": {},
+          "required": []
+        },
+        "type": "ExecuteScript",
+        "settings": {
+          "function": "run",
+          "source": "function run(retorno) {\n    try {\n        let data = typeof retorno === \"string\" ? JSON.parse(retorno) : retorno;\n        if (Array.isArray(data)) data = data[0];\n        return (data && (data.checkoutId || data.id)) || \"\";\n    } catch (e) {\n        return \"\";\n    }\n}",
+          "inputVariables": [
+            "retornoCheckoutCria"
+          ],
+          "outputVariable": "checkoutId",
+          "LocalTimeZoneEnabled": false
+        },
+        "conditions": [
+          {
+            "source": "context",
+            "comparison": "startsWith",
+            "values": [
+              "2"
+            ],
+            "variable": "statusCheckoutCria"
+          }
+        ]
+      },
+      {
+        "$description": "",
+        "$inputSchema": {
+          "type": "object",
+          "properties": {},
+          "required": []
+        },
+        "type": "ProcessHttp",
+        "settings": {
+          "headers": {},
+          "method": "POST",
+          "uri": "{{resource.urlBase}}/vforcesite/services/apexrest/ecommerce/login",
+          "responseStatusVariable": "statusToken",
+          "responseBodyVariable": "retornoToken",
+          "body": "{\n  \"username\": \"{{contact.email}}\",\n  \"password\": \"{{contact.extras.senha}}\"\n}"
+        },
+        "conditions": [
+          {
+            "source": "context",
+            "comparison": "notEquals",
+            "values": [
+              "200",
+              "201",
+              "202"
+            ],
+            "variable": "statusCheckoutCria"
+          }
+        ]
+      },
+      {
+        "$description": "",
+        "$inputSchema": {
+          "type": "object",
+          "properties": {},
+          "required": []
+        },
+        "type": "ProcessHttp",
+        "settings": {
+          "headers": {
+            "Authorization": "Bearer {{retornoToken@token}}",
+            "Content-Type": "application/json"
+          },
+          "method": "GET",
+          "uri": "{{resource.urlBase}}/services/data/v63.0/commerce/webstores/0ZEKj000000ox4zOAA/checkouts/active?effectiveAccountId={{accountId}}",
+          "responseStatusVariable": "statusCheckoutAtivo",
+          "responseBodyVariable": "retornoCheckoutAtivo"
+        },
+        "conditions": [
+          {
+            "source": "context",
+            "comparison": "notEquals",
+            "values": [
+              "200",
+              "201",
+              "202"
+            ],
+            "variable": "statusCheckoutCria"
+          }
+        ],
+        "continueOnError": true
+      },
+      {
+        "$description": "",
+        "$inputSchema": {
+          "type": "object",
+          "properties": {},
+          "required": []
+        },
+        "type": "ExecuteScript",
+        "settings": {
+          "function": "run",
+          "source": "function run(retorno) {\n    try {\n        let data = typeof retorno === \"string\" ? JSON.parse(retorno) : retorno;\n        if (Array.isArray(data)) data = data[0];\n        return (data && (data.checkoutId || data.id)) || \"\";\n    } catch (e) {\n        return \"\";\n    }\n}",
+          "inputVariables": [
+            "retornoCheckoutAtivo"
+          ],
+          "outputVariable": "checkoutId",
+          "LocalTimeZoneEnabled": false
+        },
+        "conditions": [
+          {
+            "source": "context",
+            "comparison": "startsWith",
+            "values": [
+              "2"
+            ],
+            "variable": "statusCheckoutAtivo"
+          }
+        ]
+      },
+      {
+        "type": "TrackEvent",
+        "settings": {
+          "extras": {
+            "identificador": "{{contact.identity}}",
+            "origem": "{{origem}}",
+            "canal": "{{channel}}",
+            "cartId": "{{cartId}}"
+          },
+          "category": "Garante checkout status",
+          "action": "{{statusCheckoutCria}} / {{statusCheckoutAtivo}}"
+        },
+        "conditions": []
+      }
+    ],
+    "$leavingCustomActions": [],
+    "$defaultOutput": {
+      "stateId": "2fab7ad0-fa48-488c-a07c-137adde018ff",
+      "typeOfStateId": "state"
+    },
+    "$localCustomActions": [],
+    "$title": "[API] Garante checkout do carrinho",
+    "$position": {
+      "top": "4566px",
+      "left": "1090px"
+    }
+  },
+  "aa8ba061-9838-4061-8466-a3c5f7b00e6c": {
+    "$contentActions": [
+      {
+        "input": {
+          "bypass": true
+        }
+      }
+    ],
+    "$conditionOutputs": [],
+    "$enteringCustomActions": [],
+    "$leavingCustomActions": [],
+    "$defaultOutput": {
+      "stateId": "recompra-restaura-bucket",
+      "typeOfStateId": "state"
+    },
+    "$localCustomActions": [],
+    "$title": "[GO TO] mudar status do pedido",
+    "$position": {
+      "top": "369px",
+      "left": "1765px"
+    }
+  },
+  "ef984e63-b283-4108-8036-1e55d4615ba1": {
+    "$contentActions": [
+      {
+        "action": {
+          "$description": "",
+          "type": "SendMessage",
+          "settings": {
+            "type": "application/vnd.lime.select+json",
+            "content": {
+              "text": "Certo! Como você gostaria de seguir?",
+              "scope": "immediate",
+              "options": [
+                {
+                  "text": "Alterar pedido",
+                  "previewText": "Alterar pedido",
+                  "value": null,
+                  "index": 0,
+                  "type": null
+                },
+                {
+                  "text": "Voltar ao menu",
+                  "previewText": "Voltar ao menu",
+                  "value": null,
+                  "index": 1,
+                  "type": null
+                },
+                {
+                  "index": -1,
+                  "text": "Encerrar conversa",
+                  "previewText": "Encerrar conversa",
+                  "type": null,
+                  "value": null
+                }
+              ],
+              "quikReply": false
+            },
+            "metadata": {}
+          }
+        }
+      },
+      {
+        "input": {
+          "bypass": false,
+          "expiration": "0:15"
+        }
+      }
+    ],
+    "$conditionOutputs": [
+      {
+        "stateId": "0a3bda27-d3b1-42ac-b935-db8a54578b5e",
+        "typeOfStateId": "state",
+        "conditions": [
+          {
+            "source": "context",
+            "comparison": "equals",
+            "values": [
+              "Alterar pedido"
+            ],
+            "variable": "intentAction"
+          }
+        ]
+      },
+      {
+        "stateId": "c6a95a05-9dc4-4bd3-a989-8ced84b19607",
+        "typeOfStateId": "state",
+        "conditions": [
+          {
+            "source": "context",
+            "comparison": "equals",
+            "values": [
+              "Voltar ao menu"
+            ],
+            "variable": "intentAction"
+          }
+        ]
+      },
+      {
+        "stateId": "75908956-0211-41ae-a9b7-f9d68e9680e5",
+        "typeOfStateId": "state",
+        "conditions": [
+          {
+            "source": "context",
+            "comparison": "equals",
+            "values": [
+              "Encerrar conversa"
+            ],
+            "variable": "intentAction"
+          }
+        ]
+      }
+    ],
+    "$enteringCustomActions": [
+      {
+        "type": "SetVariable",
+        "settings": {
+          "variable": "intentAction"
+        },
+        "conditions": []
+      },
+      {
+        "type": "TrackEvent",
+        "settings": {
+          "extras": {
+            "identificador": "{{contact.identity}}",
+            "origem": "{{origem}}",
+            "canal": "{{channel}}"
+          },
+          "category": "Menu como seguir exibicao",
+          "action": "Exibicao"
+        },
+        "conditions": []
+      }
+    ],
+    "$leavingCustomActions": [
+      {
+        "type": "ExecuteScript",
+        "settings": {
+          "function": "run",
+          "source": "function run(input) {\n  try {\n    let opcoesMenu = {\n      \"1\": \"Alterar pedido\",\n      \"2\": \"Voltar ao menu\",\n      \"3\": \"Encerrar conversa\"\n    };\n\n    let menuRegex = {\n      \"1\": /\\b(?:1|um|alterar(?:\\s+pedido)?|mudar|trocar|modificar|editar|corrigir)\\b/i,\n      \"2\": /\\b(?:2|dois|voltar(?:\\s+ao\\s+menu)?|menu|in[ií]cio|principal|retornar)\\b/i,\n      \"3\": /\\b(?:3|tr[eê]s|encerrar(?:\\s+conversa)?|sair|parar|cancelar|fim|terminar|tchau)\\b/i\n    };\n\n    input = input.trim();\n\n    for (let prop in menuRegex) {\n      if (menuRegex[prop].test(input)) {\n        return opcoesMenu[prop];\n      }\n    }\n\n    return \"Input inesperado\";\n  } catch (error) {\n    return \"Input inesperado\";\n  }\n}",
+          "inputVariables": [
+            "input.content"
+          ],
+          "outputVariable": "intentAction",
+          "LocalTimeZoneEnabled": false
+        },
+        "conditions": []
+      },
+      {
+        "type": "TrackEvent",
+        "settings": {
+          "extras": {
+            "identificador": "{{contact.identity}}",
+            "origem": "{{origem}}",
+            "canal": "{{channel}}"
+          },
+          "category": "Menu como seguir selecao",
+          "action": "{{intentAction}}"
+        },
+        "conditions": [
+          {
+            "source": "input",
+            "comparison": "exists",
+            "values": []
+          }
+        ]
+      },
+      {
+        "type": "TrackEvent",
+        "settings": {
+          "extras": {
+            "identificador": "{{contact.identity}}",
+            "origem": "{{origem}}",
+            "canal": "{{channel}}"
+          },
+          "category": "Menu como seguir inesperado",
+          "action": "{{input.content}}"
+        },
+        "conditions": [
+          {
+            "source": "context",
+            "variable": "intentAction",
+            "comparison": "equals",
+            "values": [
+              "Input inesperado"
+            ]
+          },
+          {
+            "source": "input",
+            "comparison": "exists",
+            "values": []
+          }
+        ]
+      }
+    ],
+    "$defaultOutput": {
+      "stateId": "fallback"
+    },
+    "$localCustomActions": [],
+    "$title": "Como deseja seguir",
+    "$position": {
+      "top": "1238px",
+      "left": "1275px"
+    }
+  },
+  "c6a95a05-9dc4-4bd3-a989-8ced84b19607": {
+    "$contentActions": [
+      {
+        "input": {
+          "bypass": true
+        }
+      }
+    ],
+    "$conditionOutputs": [],
+    "$enteringCustomActions": [],
+    "$leavingCustomActions": [],
+    "$defaultOutput": {
+      "stateId": "fallback"
+    },
+    "$localCustomActions": [],
+    "$title": "[GO TO] voltar ao menu",
+    "$position": {
+      "top": "1199px",
+      "left": "926.667px"
+    }
+  },
+  "2d772ddf-6eb2-4fca-8b9c-5b339e9705ad": {
+    "$contentActions": [
+      {
+        "input": {
+          "bypass": true
+        }
+      }
+    ],
+    "$conditionOutputs": [],
+    "$enteringCustomActions": [],
+    "$leavingCustomActions": [
+      {
+        "$description": "",
+        "$inputSchema": {
+          "type": "object",
+          "properties": {},
+          "required": []
+        },
+        "type": "Redirect",
+        "settings": {
+          "context": {
+            "type": "text/plain",
+            "value": "@redirectMenu"
+          },
+          "address": "{{resource.redirect@captacao}}"
+        },
+        "conditions": []
+      }
+    ],
+    "$defaultOutput": {
+      "stateId": "onboarding",
+      "typeOfStateId": "state"
+    },
+    "$localCustomActions": [],
+    "$title": "[Redirect] Menu",
+    "$position": {
+      "top": "328px",
+      "left": "726px"
+    }
+  },
+  "9b79fb9c-deef-4548-885d-5696e527236e": {
+    "$contentActions": [
+      {
+        "input": {
+          "bypass": true
+        }
+      }
+    ],
+    "$conditionOutputs": [],
+    "$enteringCustomActions": [],
+    "$leavingCustomActions": [],
+    "$defaultOutput": {
+      "stateId": "0a3bda27-d3b1-42ac-b935-db8a54578b5e",
+      "typeOfStateId": "state"
+    },
+    "$localCustomActions": [],
+    "$title": "[GO TO] mudar status do carrinho",
+    "$position": {
+      "top": "1750px",
+      "left": "2001px"
+    }
+  },
+  "79b7ea00-0ea4-417e-a67d-773d92ab23da": {
+    "$contentActions": [
+      {
+        "input": {
+          "bypass": true
+        }
+      }
+    ],
+    "$conditionOutputs": [],
+    "$enteringCustomActions": [],
+    "$leavingCustomActions": [],
+    "$defaultOutput": {
+      "stateId": "6c6b021a-32d0-4fb2-a430-23e2d410be47",
+      "typeOfStateId": "state"
+    },
+    "$localCustomActions": [],
+    "$title": "[GO TO] Algo mais",
+    "$position": {
+      "top": "3473px",
+      "left": "357px"
+    }
+  },
+  "e9ac15cf-4661-4072-8141-b07acf777f9b": {
+    "$contentActions": [
+      {
+        "input": {
+          "bypass": true
+        }
+      }
+    ],
+    "$conditionOutputs": [],
+    "$enteringCustomActions": [],
+    "$leavingCustomActions": [],
+    "$defaultOutput": {
+      "stateId": "73d371c4-f403-41a1-b1f3-eaca2ee8a5a8",
+      "typeOfStateId": "state"
+    },
+    "$localCustomActions": [],
+    "$title": "[GO TO] redirect [API] buscar contas vinculadas",
+    "$position": {
+      "top": "500px",
+      "left": "2024px"
+    }
+  },
+  "73d371c4-f403-41a1-b1f3-eaca2ee8a5a8": {
+    "$contentActions": [
+      {
+        "input": {
+          "bypass": true
+        }
+      }
+    ],
+    "$conditionOutputs": [],
+    "$enteringCustomActions": [],
+    "$leavingCustomActions": [
+      {
+        "$description": "",
+        "$inputSchema": {
+          "type": "object",
+          "properties": {},
+          "required": []
+        },
+        "type": "Redirect",
+        "settings": {
+          "context": {
+            "type": "text/plain",
+            "value": "@redirecBuscarContasVinculadas"
+          },
+          "address": "{{resource.redirect@captacao}}"
+        },
+        "conditions": []
+      }
+    ],
+    "$defaultOutput": {
+      "stateId": "onboarding",
+      "typeOfStateId": "state"
+    },
+    "$localCustomActions": [],
+    "$title": "[Redirect] Captação [bucar contas vinculadas]",
+    "$position": {
+      "top": "419px",
+      "left": "728px"
+    }
+  },
+  "recompra-restaura-bucket": {
+    "$contentActions": [
+      {
+        "input": {
+          "bypass": true
+        }
+      }
+    ],
+    "$conditionOutputs": [
+      {
+        "stateId": "a66fab48-8beb-4019-a402-09cfb90d8ae1",
+        "typeOfStateId": "state",
+        "conditions": [
+          {
+            "source": "context",
+            "variable": "statusBucketCompra",
+            "comparison": "equals",
+            "values": [
+              "200"
+            ]
+          },
+          {
+            "source": "context",
+            "variable": "bucketCompraBody@status",
+            "comparison": "equals",
+            "values": [
+              "success"
+            ]
+          },
+          {
+            "source": "context",
+            "variable": "statusDraft",
+            "comparison": "exists",
+            "values": []
+          }
+        ]
+      },
+      {
+        "stateId": "0a3bda27-d3b1-42ac-b935-db8a54578b5e",
+        "typeOfStateId": "state",
+        "conditions": [
+          {
+            "source": "input",
+            "comparison": "exists",
+            "values": []
+          }
+        ]
+      }
+    ],
+    "$enteringCustomActions": [
+      {
+        "$description": "",
+        "$inputSchema": {
+          "type": "object",
+          "properties": {},
+          "required": []
+        },
+        "type": "SetVariable",
+        "settings": {
+          "variable": "statusBucketCompra",
+          "value": ""
+        },
+        "conditions": []
+      },
+      {
+        "$description": "",
+        "$inputSchema": {
+          "type": "object",
+          "properties": {},
+          "required": []
+        },
+        "type": "SetVariable",
+        "settings": {
+          "variable": "bucketCompraBody",
+          "value": ""
+        },
+        "conditions": []
+      },
+      {
+        "$description": "",
+        "$inputSchema": {
+          "type": "object",
+          "properties": {},
+          "required": []
+        },
+        "$title": "Busca compra SmartSales no bucket",
+        "type": "ProcessHttp",
+        "settings": {
+          "headers": {
+            "Authorization": "{{resource.routerKey}}"
+          },
+          "method": "POST",
+          "body": "{\"id\":\"{{random.guid}}\",\"to\":\"postmaster@msging.net\",\"method\":\"get\",\"uri\":\"/buckets/compra-smartsales-{{contact.taxDocument}}\"}",
+          "uri": "https://mbrf.http.msging.net/commands",
+          "responseStatusVariable": "statusBucketCompra",
+          "responseBodyVariable": "bucketCompraBody"
+        },
+        "conditions": [
+          {
+            "source": "context",
+            "variable": "contact.taxDocument",
+            "comparison": "exists",
+            "values": []
+          }
+        ],
+        "continueOnError": true
+      },
+      {
+        "$description": "",
+        "$inputSchema": {
+          "type": "object",
+          "properties": {},
+          "required": []
+        },
+        "type": "SetVariable",
+        "settings": {
+          "variable": "statusDraft",
+          "value": ""
+        },
+        "conditions": []
+      },
+      {
+        "$description": "",
+        "$inputSchema": {
+          "type": "object",
+          "properties": {},
+          "required": []
+        },
+        "type": "SetVariable",
+        "settings": {
+          "variable": "currentCartRecompra",
+          "value": ""
+        },
+        "conditions": []
+      },
+      {
+        "$description": "",
+        "$inputSchema": {
+          "type": "object",
+          "properties": {},
+          "required": []
+        },
+        "$title": "Pedido do bucket em draft",
+        "type": "ExecuteScript",
+        "settings": {
+          "function": "run",
+          "source": "function run(bucketCompraBody) {\n    try {\n        var body = typeof bucketCompraBody === \"string\" ? JSON.parse(bucketCompraBody) : bucketCompraBody;\n        if (!body || body.status !== \"success\" || !body.resource || !body.resource.smartsalesOrder) {\n            return \"\";\n        }\n        var pedido = body.resource.smartsalesOrder;\n        var data = typeof pedido === \"string\" ? JSON.parse(pedido) : pedido;\n        data.status = \"draft\";\n        return JSON.stringify(data);\n    } catch (e) {\n        return \"\";\n    }\n}",
+          "inputVariables": [
+            "bucketCompraBody"
+          ],
+          "outputVariable": "statusDraft",
+          "LocalTimeZoneEnabled": false
+        },
+        "conditions": [
+          {
+            "source": "context",
+            "variable": "statusBucketCompra",
+            "comparison": "equals",
+            "values": [
+              "200"
+            ]
+          },
+          {
+            "source": "context",
+            "variable": "bucketCompraBody@status",
+            "comparison": "equals",
+            "values": [
+              "success"
+            ]
+          }
+        ]
+      },
+      {
+        "$description": "",
+        "$inputSchema": {
+          "type": "object",
+          "properties": {},
+          "required": []
+        },
+        "$title": "Carrinho do bucket",
+        "type": "ExecuteScript",
+        "settings": {
+          "function": "run",
+          "source": "function run(bucketCompraBody) {\n    try {\n        var body = typeof bucketCompraBody === \"string\" ? JSON.parse(bucketCompraBody) : bucketCompraBody;\n        if (!body || body.status !== \"success\" || !body.resource) {\n            return \"\";\n        }\n        var valor = body.resource.currentCart;\n        if (valor === undefined || valor === null) {\n            return \"\";\n        }\n        return typeof valor === \"string\" ? valor : JSON.stringify(valor);\n    } catch (e) {\n        return \"\";\n    }\n}",
+          "inputVariables": [
+            "bucketCompraBody"
+          ],
+          "outputVariable": "currentCartRecompra",
+          "LocalTimeZoneEnabled": false
+        },
+        "conditions": [
+          {
+            "source": "context",
+            "variable": "statusBucketCompra",
+            "comparison": "equals",
+            "values": [
+              "200"
+            ]
+          },
+          {
+            "source": "context",
+            "variable": "bucketCompraBody@status",
+            "comparison": "equals",
+            "values": [
+              "success"
+            ]
+          }
+        ]
+      },
+      {
+        "$description": "",
+        "$inputSchema": {
+          "type": "object",
+          "properties": {},
+          "required": []
+        },
+        "type": "SetVariable",
+        "settings": {
+          "variable": "statusDraftSmartSales",
+          "value": "{{statusDraft}}"
+        },
+        "conditions": [
+          {
+            "source": "context",
+            "variable": "statusDraft",
+            "comparison": "exists",
+            "values": []
+          }
+        ]
+      }
+    ],
+    "$leavingCustomActions": [
+      {
+        "$description": "",
+        "$inputSchema": {
+          "type": "object",
+          "properties": {},
+          "required": []
+        },
+        "type": "MergeContact",
+        "settings": {
+          "extras": {
+            "smartsalesOrder": "{{statusDraft}}",
+            "currentCart": "{{currentCartRecompra}}"
+          }
+        },
+        "conditions": [
+          {
+            "source": "context",
+            "variable": "statusBucketCompra",
+            "comparison": "equals",
+            "values": [
+              "200"
+            ]
+          },
+          {
+            "source": "context",
+            "variable": "bucketCompraBody@status",
+            "comparison": "equals",
+            "values": [
+              "success"
+            ]
+          },
+          {
+            "source": "context",
+            "variable": "statusDraft",
+            "comparison": "exists",
+            "values": []
+          }
+        ]
+      }
+    ],
+    "$defaultOutput": {
+      "stateId": "0a3bda27-d3b1-42ac-b935-db8a54578b5e",
+      "typeOfStateId": "state"
+    },
+    "$localCustomActions": [],
+    "$title": "[API] Restaura compra do bucket (recompra)",
+    "$position": {
+      "top": "369px",
+      "left": "2005px"
     }
   }
 }
