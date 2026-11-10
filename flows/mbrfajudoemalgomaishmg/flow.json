@@ -22,7 +22,7 @@
         ]
       },
       {
-        "stateId": "b253217e-bbfc-4733-a1a2-8d44084ecc04",
+        "stateId": "0aa60ef9-c638-42e2-949d-13dc13a01f2b",
         "typeOfStateId": "state",
         "conditions": [
           {
@@ -108,7 +108,7 @@
       "left": "482px"
     }
   },
-  "b253217e-bbfc-4733-a1a2-8d44084ecc04": {
+  "0aa60ef9-c638-42e2-949d-13dc13a01f2b": {
     "$contentActions": [
       {
         "action": {
@@ -150,7 +150,7 @@
     ],
     "$conditionOutputs": [
       {
-        "stateId": "3e6e3778-ba86-4b1f-a54a-71761f1294f8",
+        "stateId": "3505a7e3-2c03-4326-b19b-28bd3c190a7f",
         "typeOfStateId": "state",
         "conditions": [
           {
@@ -164,7 +164,7 @@
         ]
       },
       {
-        "stateId": "debb045e-7ea6-472d-a339-b8d397d835e2",
+        "stateId": "c3b64f7d-95c3-4de1-b17c-84ad38c6cf81",
         "typeOfStateId": "state",
         "conditions": [
           {
@@ -246,6 +246,11 @@
             "values": [
               "Input inesperado"
             ]
+          },
+          {
+            "source": "input",
+            "comparison": "exists",
+            "values": []
           }
         ]
       }
@@ -256,11 +261,11 @@
     "$localCustomActions": [],
     "$title": "[MSG] Posso apoiar em algo mais",
     "$position": {
-      "top": "218px",
-      "left": "707px"
+      "top": "195.34px",
+      "left": "707.213px"
     }
   },
-  "3e6e3778-ba86-4b1f-a54a-71761f1294f8": {
+  "3505a7e3-2c03-4326-b19b-28bd3c190a7f": {
     "$contentActions": [
       {
         "action": {
@@ -273,18 +278,25 @@
               "scope": "immediate",
               "options": [
                 {
-                  "text": "Menu inicial",
-                  "previewText": "Menu inicial",
+                  "text": "Consultar nova conta",
+                  "previewText": "Consultar nova conta",
                   "value": null,
                   "index": 0,
                   "type": null
                 },
                 {
-                  "text": "Encerrar conversa",
-                  "previewText": "Encerrar conversa",
+                  "text": "Menu inicial",
+                  "previewText": "Menu inicial",
                   "value": null,
                   "index": 1,
                   "type": null
+                },
+                {
+                  "index": -1,
+                  "text": "Encerrar conversa",
+                  "previewText": "Encerrar conversa",
+                  "type": null,
+                  "value": null
                 }
               ],
               "quikReply": false
@@ -302,28 +314,44 @@
     ],
     "$conditionOutputs": [
       {
-        "stateId": "d4795f97-2f10-46f9-8267-9f0df759abe1",
+        "stateId": "d399f7d6-06ce-4d94-84ad-d0554d908d39",
         "typeOfStateId": "state",
         "conditions": [
           {
-            "source": "input",
+            "source": "context",
             "comparison": "equals",
             "values": [
               "Menu inicial"
-            ]
+            ],
+            "variable": "intentAction"
           }
         ]
       },
       {
-        "stateId": "e8d473a1-35e9-4d16-b949-ed1b4b6697e4",
+        "stateId": "214b2257-8677-4d49-8338-301931fbd6d5",
         "typeOfStateId": "state",
         "conditions": [
           {
-            "source": "input",
+            "source": "context",
             "comparison": "equals",
             "values": [
               "Encerrar conversa"
-            ]
+            ],
+            "variable": "intentAction"
+          }
+        ]
+      },
+      {
+        "stateId": "4fcc7bd0-21aa-4362-8094-69619f7a36a3",
+        "typeOfStateId": "state",
+        "conditions": [
+          {
+            "source": "context",
+            "comparison": "equals",
+            "values": [
+              "Consultar nova conta"
+            ],
+            "variable": "intentAction"
           }
         ]
       }
@@ -355,7 +383,7 @@
         "type": "ExecuteScript",
         "settings": {
           "function": "run",
-          "source": "function run(input) {\n  try {\n    let opcoesMenu = {\n      \"1\": \"Menu inicial\",\n      \"2\": \"Encerrar conversa\",\n    };\n\n    let menuRegex = {\n      \"1\": /\\b(?:menu\\s*inicial|inicio|come[cç]ar|voltar|retornar|menu|continuar|sim|ok|okay|claro|quero)\\b/i,\n\n      \"2\": /\\b(?:encerrar\\s*conversa|encerrar|finalizar|sair|parar|cancelar|tchau|não|nao)\\b/i,\n    };\n\n    input = input.trim();\n\n    for (let prop in menuRegex) {\n      if (menuRegex[prop].test(input)) {\n        return opcoesMenu[prop];\n      }\n    }\n\n    return \"Input inesperado\";\n  } catch (error) {\n    return \"Input inesperado\";\n  }\n}",
+          "source": "function run(input) {\n  try {\n    let opcoesMenu = {\n      \"1\": \"Consultar nova conta\",\n      \"2\": \"Menu inicial\",\n      \"3\": \"Encerrar conversa\",\n    };\n\n    let menuRegex = {\n      \"1\": /\\b(?:1|um|consultar(?:\\s*nova\\s*conta)?|nova\\s*conta|conta)\\b/i,\n      \"2\": /\\b(?:2|dois|menu\\s*inicial|in[íi]cio|come[cç]ar|voltar|retornar|menu|continuar|sim|ok|okay|claro|quero)\\b/i,\n      \"3\": /\\b(?:3|tr[êe]s|encerrar(?:\\s*conversa)?|finalizar|sair|parar|cancelar|tchau|n[ãa]o)\\b/i,\n    };\n\n    input = input.trim();\n\n    for (let prop in menuRegex) {\n      if (menuRegex[prop].test(input)) {\n        return opcoesMenu[prop];\n      }\n    }\n\n    return \"Input inesperado\";\n  } catch (error) {\n    return \"Input inesperado\";\n  }\n}",
           "inputVariables": [
             "input.content"
           ],
@@ -396,6 +424,11 @@
             "values": [
               "Input inesperado"
             ]
+          },
+          {
+            "source": "input",
+            "comparison": "exists",
+            "values": []
           }
         ]
       }
@@ -406,58 +439,11 @@
     "$localCustomActions": [],
     "$title": "[MSG] Selecionou SIM",
     "$position": {
-      "top": "413px",
-      "left": "428px"
+      "top": "390.34px",
+      "left": "428.213px"
     }
   },
-  "debb045e-7ea6-472d-a339-b8d397d835e2": {
-    "$contentActions": [
-      {
-        "action": {
-          "$description": "",
-          "type": "SendMessage",
-          "settings": {
-            "type": "text/plain",
-            "content": "Fico feliz em ter te ajudado!\n\nSempre que precisar, pode contar comigo! 🤝",
-            "metadata": {}
-          }
-        }
-      },
-      {
-        "input": {
-          "bypass": true
-        }
-      }
-    ],
-    "$conditionOutputs": [],
-    "$enteringCustomActions": [
-      {
-        "type": "TrackEvent",
-        "settings": {
-          "extras": {
-            "identificador": "{{contact.identity}}",
-            "origem": "{{origem}}",
-            "canal": "{{channel}}"
-          },
-          "category": "Fluxo finalizacao",
-          "action": "Exibicao"
-        },
-        "conditions": []
-      }
-    ],
-    "$leavingCustomActions": [],
-    "$defaultOutput": {
-      "stateId": "e8d473a1-35e9-4d16-b949-ed1b4b6697e4",
-      "typeOfStateId": "state"
-    },
-    "$localCustomActions": [],
-    "$title": "[MSG] Selecionou NÃO",
-    "$position": {
-      "top": "407px",
-      "left": "1018px"
-    }
-  },
-  "d4795f97-2f10-46f9-8267-9f0df759abe1": {
+  "d399f7d6-06ce-4d94-84ad-d0554d908d39": {
     "$contentActions": [
       {
         "input": {
@@ -524,11 +510,11 @@
     "$localCustomActions": [],
     "$title": "[REDIRECT] Menu inicial",
     "$position": {
-      "top": "231px",
-      "left": "115px"
+      "top": "335.34px",
+      "left": "178.213px"
     }
   },
-  "e8d473a1-35e9-4d16-b949-ed1b4b6697e4": {
+  "214b2257-8677-4d49-8338-301931fbd6d5": {
     "$contentActions": [
       {
         "input": {
@@ -564,8 +550,573 @@
     "$localCustomActions": [],
     "$title": "[REDIRECT] Finalizacao",
     "$position": {
-      "top": "563px",
-      "left": "110px"
+      "top": "474.34px",
+      "left": "174.213px"
+    }
+  },
+  "c3b64f7d-95c3-4de1-b17c-84ad38c6cf81": {
+    "$contentActions": [
+      {
+        "action": {
+          "$description": "",
+          "type": "SendMessage",
+          "settings": {
+            "type": "text/plain",
+            "content": "Fico feliz em ter te ajudado!\n\nSempre que precisar, pode contar comigo! 🤝",
+            "metadata": {}
+          }
+        }
+      },
+      {
+        "input": {
+          "bypass": true
+        }
+      }
+    ],
+    "$conditionOutputs": [],
+    "$enteringCustomActions": [
+      {
+        "type": "TrackEvent",
+        "settings": {
+          "extras": {
+            "identificador": "{{contact.identity}}",
+            "origem": "{{origem}}",
+            "canal": "{{channel}}"
+          },
+          "category": "Fluxo finalizacao",
+          "action": "Exibicao"
+        },
+        "conditions": []
+      }
+    ],
+    "$leavingCustomActions": [],
+    "$defaultOutput": {
+      "stateId": "214b2257-8677-4d49-8338-301931fbd6d5",
+      "typeOfStateId": "state"
+    },
+    "$localCustomActions": [],
+    "$title": "[MSG] Selecionou NÃO",
+    "$position": {
+      "top": "384.34px",
+      "left": "1018.21px"
+    }
+  },
+  "4fcc7bd0-21aa-4362-8094-69619f7a36a3": {
+    "$contentActions": [
+      {
+        "input": {
+          "bypass": true
+        }
+      }
+    ],
+    "$conditionOutputs": [
+      {
+        "stateId": "e8404fe7-4dca-481c-9f7c-187328e8b319",
+        "typeOfStateId": "state",
+        "conditions": [
+          {
+            "source": "context",
+            "comparison": "equals",
+            "values": [
+              "true"
+            ],
+            "variable": "contact.extras.userAuth"
+          },
+          {
+            "source": "context",
+            "variable": "contact.taxDocument",
+            "comparison": "exists",
+            "values": []
+          },
+          {
+            "source": "context",
+            "variable": "contact.extras.accountId",
+            "comparison": "exists",
+            "values": []
+          },
+          {
+            "source": "input",
+            "comparison": "exists",
+            "values": []
+          }
+        ]
+      },
+      {
+        "stateId": "1f1c0916-de4b-46c6-89ec-69766b25694b",
+        "typeOfStateId": "state",
+        "conditions": [
+          {
+            "source": "input",
+            "comparison": "exists",
+            "values": []
+          }
+        ]
+      }
+    ],
+    "$enteringCustomActions": [
+      {
+        "type": "TrackEvent",
+        "settings": {
+          "extras": {
+            "identificador": "{{contact.identity}}",
+            "origem": "{{origem}}",
+            "canal": "{{channel}}"
+          },
+          "category": "Retorno resultado",
+          "action": "cliente autenticado"
+        },
+        "conditions": [
+          {
+            "source": "context",
+            "variable": "contact.taxDocument",
+            "comparison": "exists",
+            "values": []
+          },
+          {
+            "source": "context",
+            "variable": "contact.extras.accountId",
+            "comparison": "exists",
+            "values": []
+          },
+          {
+            "source": "context",
+            "variable": "contact.extras.userAuth",
+            "comparison": "equals",
+            "values": [
+              "true"
+            ]
+          }
+        ]
+      },
+      {
+        "type": "TrackEvent",
+        "settings": {
+          "extras": {
+            "identificador": "{{contact.identity}}",
+            "origem": "{{origem}}",
+            "canal": "{{channel}}"
+          },
+          "category": "Retorno resultado",
+          "action": "cliente nao autenticado"
+        },
+        "conditions": [
+          {
+            "source": "context",
+            "variable": "contact.taxDocument",
+            "comparison": "notExists",
+            "values": []
+          },
+          {
+            "source": "context",
+            "variable": "contact.extras.accountId",
+            "comparison": "notExists",
+            "values": []
+          },
+          {
+            "source": "context",
+            "variable": "contact.extras.userAuth",
+            "comparison": "notEquals",
+            "values": [
+              "true"
+            ]
+          }
+        ]
+      }
+    ],
+    "$leavingCustomActions": [],
+    "$defaultOutput": {
+      "stateId": "fallback"
+    },
+    "$localCustomActions": [],
+    "$title": "Consultar nova conta",
+    "$position": {
+      "top": "609.34px",
+      "left": "428.213px"
+    }
+  },
+  "e8404fe7-4dca-481c-9f7c-187328e8b319": {
+    "$contentActions": [
+      {
+        "input": {
+          "bypass": true
+        }
+      }
+    ],
+    "$conditionOutputs": [],
+    "$enteringCustomActions": [],
+    "$leavingCustomActions": [],
+    "$defaultOutput": {
+      "typeOfStateId": "state",
+      "stateId": "d934f41f-9fe7-4669-86e9-4d37eb680ca1"
+    },
+    "$localCustomActions": [],
+    "$title": "[GO TO] redirect menu contas vinculadas",
+    "$position": {
+      "top": "820.66px",
+      "left": "339px"
+    }
+  },
+  "1f1c0916-de4b-46c6-89ec-69766b25694b": {
+    "$contentActions": [
+      {
+        "action": {
+          "$description": "",
+          "type": "SendMessage",
+          "settings": {
+            "type": "application/vnd.lime.select+json",
+            "content": {
+              "text": "🔒 Para falar sobre sua conta é necessário estar autenticado com o login e senha.\n\nComo gostaria de prosseguir?",
+              "scope": "immediate",
+              "options": [
+                {
+                  "text": "Me autenticar",
+                  "previewText": "Me autenticar",
+                  "value": null,
+                  "index": 0,
+                  "type": null
+                },
+                {
+                  "text": "Não sou cliente",
+                  "previewText": "Não sou cliente",
+                  "value": null,
+                  "index": 1,
+                  "type": null
+                },
+                {
+                  "index": -1,
+                  "text": "Encerrar conversa",
+                  "previewText": "Encerrar conversa",
+                  "type": null,
+                  "value": null
+                }
+              ],
+              "quikReply": false
+            },
+            "metadata": {}
+          }
+        }
+      },
+      {
+        "input": {
+          "bypass": false
+        }
+      }
+    ],
+    "$conditionOutputs": [
+      {
+        "stateId": "6576b999-d000-49d6-be94-990d38d8a59a",
+        "typeOfStateId": "state",
+        "conditions": [
+          {
+            "source": "context",
+            "comparison": "equals",
+            "values": [
+              "Me autenticar"
+            ],
+            "variable": "intentAction"
+          }
+        ]
+      },
+      {
+        "stateId": "ff379605-00be-4f7b-b616-7e21f8da3ccb",
+        "typeOfStateId": "state",
+        "conditions": [
+          {
+            "source": "context",
+            "comparison": "equals",
+            "values": [
+              "Não sou cliente"
+            ],
+            "variable": "intentAction"
+          }
+        ]
+      },
+      {
+        "stateId": "4268404b-dce3-4ed8-8775-e1fbf88937a3",
+        "typeOfStateId": "state",
+        "conditions": [
+          {
+            "source": "context",
+            "comparison": "equals",
+            "values": [
+              "Encerrar conversa"
+            ],
+            "variable": "intentAction"
+          }
+        ]
+      }
+    ],
+    "$enteringCustomActions": [
+      {
+        "type": "SetVariable",
+        "settings": {
+          "variable": "intentAction"
+        },
+        "conditions": []
+      },
+      {
+        "type": "TrackEvent",
+        "settings": {
+          "extras": {
+            "identificador": "{{contact.identity}}",
+            "origem": "{{origem}}",
+            "canal": "{{channel}}"
+          },
+          "category": "menu conta nao autenticada exibicao",
+          "action": "Exibicao"
+        },
+        "conditions": []
+      }
+    ],
+    "$leavingCustomActions": [
+      {
+        "type": "ExecuteScript",
+        "settings": {
+          "function": "run",
+          "source": "function run(input) {\n  try {\n    let opcoesMenu = {\n      \"1\": \"Me autenticar\",\n      \"2\": \"Não sou cliente\",\n      \"3\": \"Encerrar conversa\",\n    };\n\n    let menuRegex = {\n      \"1\": /\\b(?:1|um|autenticar|autentica[çc][ãa]o|entrar|login|logar|acessar|(?:j[áa]\\s*)?sou\\s*cliente)\\b/i,\n      \"2\": /\\b(?:2|dois|n[ãa]o\\s*sou(?:\\s*cliente)?|n[ãa]o\\s*tenho(?:\\s*conta)?|novo|cadastro|abrir\\s*conta|registrar)\\b/i,\n      \"3\": /\\b(?:3|tr[êe]s|encerrar(?:\\s*conversa)?|finalizar|sair|parar|cancelar|tchau)\\b/i,\n    };\n\n    input = input.trim();\n\n    for (let prop in menuRegex) {\n      if (menuRegex[prop].test(input)) {\n        return opcoesMenu[prop];\n      }\n    }\n\n    return \"Input inesperado\";\n  } catch (error) {\n    return \"Input inesperado\";\n  }\n}",
+          "inputVariables": [
+            "input.content"
+          ],
+          "outputVariable": "intentAction",
+          "LocalTimeZoneEnabled": false
+        },
+        "conditions": []
+      },
+      {
+        "type": "TrackEvent",
+        "settings": {
+          "extras": {
+            "identificador": "{{contact.identity}}",
+            "origem": "{{origem}}",
+            "canal": "{{channel}}"
+          },
+          "category": "menu conta nao autenticada selecao",
+          "action": "{{intentAction}}"
+        },
+        "conditions": []
+      },
+      {
+        "type": "TrackEvent",
+        "settings": {
+          "extras": {
+            "identificador": "{{contact.identity}}",
+            "origem": "{{origem}}",
+            "canal": "{{channel}}"
+          },
+          "category": "como posso te ajudar menu input",
+          "action": "{{input.content}}"
+        },
+        "conditions": [
+          {
+            "source": "context",
+            "variable": "intentAction",
+            "comparison": "equals",
+            "values": [
+              "Input inesperado"
+            ]
+          },
+          {
+            "source": "input",
+            "comparison": "exists",
+            "values": []
+          }
+        ]
+      }
+    ],
+    "$defaultOutput": {
+      "stateId": "fallback"
+    },
+    "$localCustomActions": [],
+    "$title": "Usuario não autenticado",
+    "$position": {
+      "top": "817.298px",
+      "left": "524.128px"
+    }
+  },
+  "6576b999-d000-49d6-be94-990d38d8a59a": {
+    "$contentActions": [
+      {
+        "input": {
+          "bypass": true
+        }
+      }
+    ],
+    "$conditionOutputs": [],
+    "$enteringCustomActions": [],
+    "$leavingCustomActions": [],
+    "$defaultOutput": {
+      "stateId": "2d14694c-0915-4b42-87c3-3502cedc7f3a",
+      "typeOfStateId": "state"
+    },
+    "$localCustomActions": [],
+    "$title": "[GO TO] redirect me autenticar",
+    "$position": {
+      "top": "701.34px",
+      "left": "884.213px"
+    }
+  },
+  "4268404b-dce3-4ed8-8775-e1fbf88937a3": {
+    "$contentActions": [
+      {
+        "input": {
+          "bypass": true
+        }
+      }
+    ],
+    "$conditionOutputs": [],
+    "$enteringCustomActions": [],
+    "$leavingCustomActions": [],
+    "$defaultOutput": {
+      "stateId": "214b2257-8677-4d49-8338-301931fbd6d5",
+      "typeOfStateId": "state"
+    },
+    "$localCustomActions": [],
+    "$title": "[GO TO] redirect finalizacao",
+    "$position": {
+      "top": "816.34px",
+      "left": "881.213px"
+    }
+  },
+  "ff379605-00be-4f7b-b616-7e21f8da3ccb": {
+    "$contentActions": [
+      {
+        "input": {
+          "bypass": true
+        }
+      }
+    ],
+    "$conditionOutputs": [],
+    "$enteringCustomActions": [],
+    "$leavingCustomActions": [],
+    "$defaultOutput": {
+      "stateId": "b1bd38eb-b26d-4858-a048-d6b3dfa7ec6d",
+      "typeOfStateId": "state"
+    },
+    "$localCustomActions": [],
+    "$title": "[GO TO] redirect Não sou cliente",
+    "$position": {
+      "top": "930.34px",
+      "left": "884.213px"
+    }
+  },
+  "d934f41f-9fe7-4669-86e9-4d37eb680ca1": {
+    "$contentActions": [
+      {
+        "input": {
+          "bypass": true
+        }
+      }
+    ],
+    "$conditionOutputs": [],
+    "$enteringCustomActions": [],
+    "$leavingCustomActions": [
+      {
+        "$description": "",
+        "$inputSchema": {
+          "type": "object",
+          "properties": {},
+          "required": []
+        },
+        "type": "Redirect",
+        "settings": {
+          "context": {
+            "type": "text/plain",
+            "value": "@redirecBuscarContasVinculadas"
+          },
+          "address": "{{resource.redirect@captacao}}"
+        },
+        "conditions": []
+      }
+    ],
+    "$defaultOutput": {
+      "stateId": "onboarding",
+      "typeOfStateId": "state"
+    },
+    "$localCustomActions": [],
+    "$title": "redirect menu contas vinculadas",
+    "$position": {
+      "top": "814.404px",
+      "left": "41.4043px"
+    }
+  },
+  "b1bd38eb-b26d-4858-a048-d6b3dfa7ec6d": {
+    "$contentActions": [
+      {
+        "input": {
+          "bypass": true
+        }
+      }
+    ],
+    "$conditionOutputs": [],
+    "$enteringCustomActions": [],
+    "$leavingCustomActions": [
+      {
+        "$description": "",
+        "$inputSchema": {
+          "type": "object",
+          "properties": {},
+          "required": []
+        },
+        "type": "Redirect",
+        "settings": {
+          "context": {
+            "type": "text/plain",
+            "value": "@redirectNaoSouCliente"
+          },
+          "address": "{{resource.redirect@captacao}}"
+        },
+        "conditions": []
+      }
+    ],
+    "$defaultOutput": {
+      "stateId": "onboarding",
+      "typeOfStateId": "state"
+    },
+    "$localCustomActions": [],
+    "$title": "redirect não sou cliente",
+    "$position": {
+      "top": "959.404px",
+      "left": "38.4043px"
+    }
+  },
+  "2d14694c-0915-4b42-87c3-3502cedc7f3a": {
+    "$contentActions": [
+      {
+        "input": {
+          "bypass": true
+        }
+      }
+    ],
+    "$conditionOutputs": [],
+    "$enteringCustomActions": [],
+    "$leavingCustomActions": [
+      {
+        "$description": "",
+        "$inputSchema": {
+          "type": "object",
+          "properties": {},
+          "required": []
+        },
+        "type": "Redirect",
+        "settings": {
+          "context": {
+            "type": "text/plain",
+            "value": "@redirectMeAutenticar"
+          },
+          "address": "{{resource.redirect@captacao}}"
+        },
+        "conditions": []
+      }
+    ],
+    "$defaultOutput": {
+      "stateId": "onboarding",
+      "typeOfStateId": "state"
+    },
+    "$localCustomActions": [],
+    "$title": "redirect me autenticar",
+    "$position": {
+      "top": "677.404px",
+      "left": "37.4043px"
     }
   }
 }

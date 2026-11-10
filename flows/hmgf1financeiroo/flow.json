@@ -22,7 +22,7 @@
         ]
       },
       {
-        "stateId": "subflow:f3b0f881-35cd-492f-bca3-4aec289bbad2",
+        "stateId": "955f3fdf-0ee4-4846-8ee3-8250e5fef525",
         "typeOfStateId": "state",
         "conditions": [
           {
@@ -87,6 +87,102 @@
           "action": "exibicao"
         },
         "conditions": []
+      },
+      {
+        "$description": "",
+        "$inputSchema": {
+          "type": "object",
+          "properties": {},
+          "required": []
+        },
+        "type": "ProcessHttp",
+        "settings": {
+          "headers": {
+            "client_id": "{{resource.clientIdYgg}}",
+            "client_secret": "{{resource.clientSecretYgg}}",
+            "Content-Type": "application/x-www-form-urlencoded"
+          },
+          "method": "POST",
+          "body": "grant_type=client_credentials&client_id=operation&client_secret={{resource.clientSecretYgg}}&scope=openid",
+          "uri": "{{resource.yggUrl}}/token",
+          "responseStatusVariable": "statusApiTokenYgg",
+          "responseBodyVariable": "apiTokenYgg"
+        },
+        "conditions": []
+      },
+      {
+        "$description": "",
+        "$inputSchema": {
+          "type": "object",
+          "properties": {},
+          "required": []
+        },
+        "type": "ProcessHttp",
+        "settings": {
+          "headers": {
+            "Authorization": "Bearer {{apiTokenYgg@access_token}}"
+          },
+          "method": "POST",
+          "body": "{\n  \"query\": \"query MyQuery { get_person_customer(filters: { documents: { document_value: \\\"{{contact.taxDocument}}\\\" } }) { items { active shared_id description email contact_group creation_date updated_at mi1_shared_id schema_version addresses { city complements federative_unit country latitude longitude neighborhood street_number street type zip_code } contacts { type description country_number area_number } documents { document_id type document_additional_info { expedition_date expedition_organization } } taxes { contributor_icms industrial_sector substitution_group } sales_informations { active activity_sector condition_exped_code currency group_team icon_terms_code minimum_order_value office_code organization_code region_code sales_region tactical_targeting distribution { center channel } payment_conditions { conditions } price_information { group list_category } staff_member_seller { person_staffmember_portfolio shared_id_person_staffmember } partners { partner_function partner_shared_id addresses { complements city country federative_unit latitude longitude street neighborhood type street_number zip_code } } } } } }\"\n}",
+          "uri": "{{resource.yggUrl}}/person/customer/search",
+          "responseStatusVariable": "statusApiCustomer",
+          "responseBodyVariable": "apiCustomer"
+        },
+        "conditions": []
+      },
+      {
+        "$description": "",
+        "$inputSchema": {
+          "type": "object",
+          "properties": {},
+          "required": []
+        },
+        "type": "ExecuteScript",
+        "settings": {
+          "function": "run",
+          "source": "function run(input) {\n  try {\n    const data = typeof input === \"string\" ? JSON.parse(input) : input;\n\n    // Cliente não existe\n    if (\n      !data ||\n      !data.data ||\n      !data.data.get_person_customer ||\n      !Array.isArray(data.data.get_person_customer.items) ||\n      data.data.get_person_customer.items.length === 0\n    ) {\n      return false;\n    }\n\n    const item = data.data.get_person_customer.items[0];\n\n    // Formata nome:\n    // VALDIR ZIMMERMANN KAIST\n    // -> Valdir Zimmermann Kaist\n    function formatarNome(nome) {\n      if (!nome) {\n        return null;\n      }\n\n      return String(nome)\n        .trim()\n        .toLowerCase()\n        .split(/\\s+/)\n        .map(function (parte) {\n          return parte.charAt(0).toUpperCase() + parte.slice(1);\n        })\n        .join(\" \");\n    }\n\n    const shared_id = item.shared_id || null;\n\n    const document_id =\n      item.documents &&\n      item.documents.length > 0 &&\n      item.documents[0].document_id\n        ? item.documents[0].document_id\n        : null;\n\n    // Nome completo formatado\n    const Name = formatarNome(item.description);\n\n    // Primeiro nome\n    const FirstName =\n      Name\n        ? Name.split(/\\s+/)[0]\n        : null;\n\n    // E-mail\n    const Email = item.email\n      ? String(item.email).trim()\n      : null;\n\n    const salesInfo = Array.isArray(item.sales_informations)\n      ? item.sales_informations\n      : [];\n\n    // Procura shipping_code com endereço\n    for (let i = 0; i < salesInfo.length; i++) {\n      const partners = Array.isArray(salesInfo[i].partners)\n        ? salesInfo[i].partners\n        : [];\n\n      for (let j = 0; j < partners.length; j++) {\n        const partner = partners[j];\n\n        if (\n          partner &&\n          partner.partner_function === \"shipping_code\" &&\n          Array.isArray(partner.addresses) &&\n          partner.addresses.length > 0\n        ) {\n          return {\n            shared_id: shared_id,\n            document_id: document_id,\n\n            FirstName: FirstName,\n            Name: Name,\n            Email: Email,\n\n            partner_function: partner.partner_function,\n            addresses: partner.addresses[0]\n          };\n        }\n      }\n    }\n\n    // Não encontrou shipping_code\n    return {\n      shared_id: shared_id,\n      document_id: document_id,\n\n      FirstName: FirstName,\n      Name: Name,\n      Email: Email,\n\n      partner_function: \"shipping_code\",\n      addresses: false\n    };\n\n  } catch (e) {\n    return false;\n  }\n}",
+          "inputVariables": [
+            "apiCustomer"
+          ],
+          "outputVariable": "retornoCliente",
+          "LocalTimeZoneEnabled": false
+        },
+        "conditions": []
+      },
+      {
+        "$description": "",
+        "$inputSchema": {
+          "type": "object",
+          "properties": {},
+          "required": []
+        },
+        "type": "MergeContact",
+        "settings": {
+          "extras": {
+            "sharedId": "{{retornoCliente@shared_id}}",
+            "complements": "{{retornoCliente@addresses.complements}}",
+            "country": "{{retornoCliente@addresses.country}}",
+            "federativeUnit": "{{retornoCliente@addresses.federative_unit}}",
+            "latitude": "{{retornoCliente@addresses.latitude}}",
+            "longitude": "{{retornoCliente@addresses.longitude}}",
+            "neighborhood": "{{retornoCliente@addresses.neighborhood}}",
+            "street": "{{retornoCliente@addresses.street}}",
+            "streetNumber": "{{retornoCliente@addresses.street_number}}",
+            "type": "{{retornoCliente@addresses.type}}",
+            "zipCode": "{{retornoCliente@addresses.zip_code}}",
+            "addresses": "{{retornoCliente@addresses}}"
+          }
+        },
+        "conditions": [
+          {
+            "source": "context",
+            "variable": "retornoCliente",
+            "comparison": "notEquals",
+            "values": [
+              "false"
+            ]
+          }
+        ]
       }
     ],
     "$defaultOutput": {
@@ -95,8 +191,8 @@
     "root": true,
     "$title": "Início",
     "$position": {
-      "top": "204px",
-      "left": "940px"
+      "top": "154px",
+      "left": "1175px"
     }
   },
   "fallback": {
@@ -502,7 +598,22 @@
       }
     ],
     "$conditionOutputs": [],
-    "$enteringCustomActions": [],
+    "$enteringCustomActions": [
+      {
+        "$description": "",
+        "$inputSchema": {
+          "type": "object",
+          "properties": {},
+          "required": []
+        },
+        "type": "SetVariable",
+        "settings": {
+          "variable": "tipoServico",
+          "value": "Financeiro - Ver limite crédito"
+        },
+        "conditions": []
+      }
+    ],
     "$leavingCustomActions": [],
     "$defaultOutput": {
       "stateId": "cd90300c-5856-4081-b985-a0bb8a9967be",
@@ -528,7 +639,22 @@
       }
     ],
     "$conditionOutputs": [],
-    "$enteringCustomActions": [],
+    "$enteringCustomActions": [
+      {
+        "$description": "",
+        "$inputSchema": {
+          "type": "object",
+          "properties": {},
+          "required": []
+        },
+        "type": "SetVariable",
+        "settings": {
+          "variable": "tipoServico",
+          "value": "Financeiro - Aumentar limite"
+        },
+        "conditions": []
+      }
+    ],
     "$leavingCustomActions": [],
     "$defaultOutput": {
       "stateId": "d45d792d-d8e4-44af-923f-57cc794a36f6",
@@ -537,8 +663,8 @@
     "$localCustomActions": [],
     "$title": "Go to - Aumentar limite",
     "$position": {
-      "top": "1556px",
-      "left": "3978px"
+      "top": "1576px",
+      "left": "3985.5px"
     },
     "addonsSettings": {
       "backgroundColor": "#263238",
@@ -720,7 +846,7 @@
           },
           "method": "POST",
           "body": "grant_type=client_credentials&client_id=operation&client_secret=lyd5u0UYmsbQhFIiTwGjf4Uk0vSZhPGy&scope=openid",
-          "uri": "{{resource.yggUrlHMG}}/token",
+          "uri": "{{resource.yggUrl}}/token",
           "responseStatusVariable": "statusApiTokenYgg",
           "responseBodyVariable": "apiTokenYgg"
         },
@@ -740,7 +866,7 @@
           },
           "method": "POST",
           "body": "{\n  \"query\": \"{ get_person_credit(filters: { shared_id: [\\\"{{contact.extras.sharedId}}\\\"] }) { items { available credit_area consumed customer_shared_id minimal_order_value overdue status total } } }\"\n}",
-          "uri": "{{resource.yggUrlHMG}}/person/credit/search",
+          "uri": "{{resource.yggUrl}}/person/credit/search",
           "responseStatusVariable": "statusApiCredit",
           "responseBodyVariable": "apiCredit"
         },
@@ -856,7 +982,7 @@
     "$localCustomActions": [],
     "$title": "[API] Busca informações de credito",
     "$position": {
-      "top": "2703px",
+      "top": "2702px",
       "left": "4265px"
     }
   },
@@ -1561,7 +1687,7 @@
           },
           "method": "POST",
           "body": "grant_type=client_credentials&client_id=operation&client_secret=lyd5u0UYmsbQhFIiTwGjf4Uk0vSZhPGy&scope=openid",
-          "uri": "{{resource.yggUrlHMG}}/token",
+          "uri": "{{resource.yggUrl}}/token",
           "responseStatusVariable": "statusApiTokenYgg",
           "responseBodyVariable": "apiTokenYgg"
         },
@@ -1581,7 +1707,7 @@
           },
           "method": "POST",
           "body": "{\n  \"query\": \"query { get_person_customer(filters: { pagination_filter: { limit: 1, offset: 0 }, buyer_codes: \\\"{{contact.extras.sharedId}}\\\" }) { items { shared_id documents { document_id } sales_informations { active organization_code office_code sales_region distribution { center channel } staff_member_seller { person_staffmember_portfolio shared_id_person_staffmember } partners { partner_function partner_shared_id } } } } }\"\n}",
-          "uri": "{{resource.yggUrlHMG}}/person/customer/search",
+          "uri": "{{resource.yggUrl}}/person/customer/search",
           "responseStatusVariable": "statusDadosClienteYgg",
           "responseBodyVariable": "responseDadosClienteYgg"
         },
@@ -1619,7 +1745,7 @@
           },
           "method": "POST",
           "body": "{\n  \"query\": \"{ get_person_credit(filters: { shared_id: [\\\"{{contact.extras.sharedId}}\\\"] }) { items { available credit_area consumed customer_shared_id minimal_order_value overdue status total } } }\"\n}",
-          "uri": "{{resource.yggUrlHMG}}/person/credit/search",
+          "uri": "{{resource.yggUrl}}/person/credit/search",
           "responseStatusVariable": "statusApiCredit",
           "responseBodyVariable": "apiCredit"
         },
@@ -3380,7 +3506,22 @@
         ]
       }
     ],
-    "$enteringCustomActions": [],
+    "$enteringCustomActions": [
+      {
+        "$description": "",
+        "$inputSchema": {
+          "type": "object",
+          "properties": {},
+          "required": []
+        },
+        "type": "SetVariable",
+        "settings": {
+          "variable": "tipoServico",
+          "value": "Financeiro - Falar sobre crédito"
+        },
+        "conditions": []
+      }
+    ],
     "$leavingCustomActions": [],
     "$defaultOutput": {
       "stateId": "subflow:44055130-3bd0-468c-b43e-82027ead70ba",
@@ -3389,8 +3530,8 @@
     "$localCustomActions": [],
     "$title": "[FLUXO] Falar sobre credito",
     "$position": {
-      "top": "1351.33px",
-      "left": "4282.33px"
+      "top": "1351px",
+      "left": "4282px"
     },
     "addonsSettings": {
       "backgroundColor": "#cfd8dc",
@@ -3418,7 +3559,22 @@
         ]
       }
     ],
-    "$enteringCustomActions": [],
+    "$enteringCustomActions": [
+      {
+        "$description": "",
+        "$inputSchema": {
+          "type": "object",
+          "properties": {},
+          "required": []
+        },
+        "type": "SetVariable",
+        "settings": {
+          "variable": "tipoServico",
+          "value": "Financeiro - 2º via de NF"
+        },
+        "conditions": []
+      }
+    ],
     "$leavingCustomActions": [],
     "$defaultOutput": {
       "stateId": "subflow:178746de-f07f-400c-9475-8099aa3ea3ec",
@@ -3925,7 +4081,22 @@
       }
     ],
     "$conditionOutputs": [],
-    "$enteringCustomActions": [],
+    "$enteringCustomActions": [
+      {
+        "$description": "",
+        "$inputSchema": {
+          "type": "object",
+          "properties": {},
+          "required": []
+        },
+        "type": "SetVariable",
+        "settings": {
+          "variable": "tipoServico",
+          "value": "Financeiro - Últimos pedidos"
+        },
+        "conditions": []
+      }
+    ],
     "$leavingCustomActions": [],
     "$defaultOutput": {
       "stateId": "8f1d9558-d568-4f13-add9-2255b472716d",
@@ -4122,7 +4293,22 @@
       }
     ],
     "$conditionOutputs": [],
-    "$enteringCustomActions": [],
+    "$enteringCustomActions": [
+      {
+        "$description": "",
+        "$inputSchema": {
+          "type": "object",
+          "properties": {},
+          "required": []
+        },
+        "type": "SetVariable",
+        "settings": {
+          "variable": "tipoServico",
+          "value": "Financeiro - Consultar pedido"
+        },
+        "conditions": []
+      }
+    ],
     "$leavingCustomActions": [],
     "$defaultOutput": {
       "stateId": "8c6e95f8-f9b0-4a65-b579-c39c661358da",
@@ -4350,7 +4536,7 @@
           },
           "method": "POST",
           "body": "grant_type=client_credentials&client_id=operation&client_secret=lyd5u0UYmsbQhFIiTwGjf4Uk0vSZhPGy&scope=openid",
-          "uri": "{{resource.yggUrlHMG}}/token",
+          "uri": "{{resource.yggUrl}}/token",
           "responseStatusVariable": "statusApiTokenYgg",
           "responseBodyVariable": "apiTokenYgg"
         },
@@ -4429,7 +4615,7 @@
           },
           "method": "POST",
           "body": "{\n  \"query\": \"query MyQuery {\\n  get_orders(\\n    filters: {\\n      customer_document_number: [\\\"{{contact.taxDocument}}\\\"]\\n      created_date_initial: \\\"{{periodoPedidos@dataInicial}}\\\"\\n      created_date_final: \\\"{{periodoPedidos@dataFinal}}\\\"\\n      offset: 0\\n      limit: 50\\n    }\\n    partner_key: \\\"aa4e8c78-21cc-43b0-bde7-cc3aa0843d9a\\\"\\n  ) {\\n    orders {\\n      additional_info\\n      billing_documents {\\n        billing_date\\n        billing_document\\n        billing_itens {\\n          invoice_items {\\n            discount_value\\n            document_item_number\\n            material_number\\n            net_value\\n            net_value_others\\n            quantity\\n            tax_items {\\n              tax_value\\n              tax_type\\n            }\\n          }\\n          billing_item\\n          invoiced_quantity\\n          material_number\\n          net_weight\\n          sales_doc\\n          sales_doc_item\\n          sales_item_cat\\n          sales_unit\\n          weight_unit\\n          price\\n        }\\n        billing_type\\n        company\\n        customer_purchase_type\\n        created_on\\n        customer_purchase_nr\\n        document_number\\n        distribution_channel\\n        invoice_discount_val\\n        invoice_original_value\\n        sales_district\\n        nr_doc_cond\\n        ref_doc_nr\\n        sales_doc_type\\n        sales_document\\n        sales_organization\\n        sales_status\\n        sold_to_party\\n        terms_payment\\n        total_value\\n        tax_number\\n      }\\n      channel\\n      created_date\\n      customer {\\n        document_number\\n        order_number\\n        partners {\\n          function\\n          code\\n          salesman\\n        }\\n        payment_method\\n        receiving_customer_code\\n      }\\n      delivery\\n      delivery_date\\n      items {\\n        additional_info\\n        fifo_category\\n        price {\\n          promotion\\n          currency\\n          unit\\n          value\\n        }\\n        quantity\\n        sku\\n        status\\n        unit_of_measurement\\n      }\\n      messages\\n      order_id\\n      order_sap\\n      partner\\n      sales_organization\\n      salesman {\\n        document_number\\n      }\\n      shipping_type\\n      status_list {\\n        status\\n        updated_time\\n      }\\n      sub_total\\n      taxes\\n      timestamp\\n      total\\n      type\\n      url_callback\\n    }\\n    page_info {\\n      page\\n      page_number\\n      total_count\\n    }\\n  }\\n}\",\n  \"variables\": {}\n}",
-          "uri": "{{resource.yggUrlHMG}}/operation/order/search",
+          "uri": "{{resource.yggUrl}}/operation/order/search",
           "responseBodyVariable": "responseYggUltimosPedidos",
           "responseStatusVariable": "statusYggUltimosPedidos"
         },
@@ -4445,12 +4631,13 @@
         "type": "ExecuteScriptV2",
         "settings": {
           "function": "run",
-          "source": "async function run(tokenInput, taxDocument, dataInicial, dataFinal) {\n    try {\n\n        // ==========================================\n        // CONVERTER DATA PARA ISO\n        // Entrada:\n        // 05/21/2026 00:00:00\n        //\n        // Saída:\n        // 2026-05-21T00:00:00\n        // ==========================================\n\n        function converterDataParaIso(valor) {\n\n            if (!valor) {\n                return \"\";\n            }\n\n            var texto = String(valor).trim();\n\n            // Caso já esteja em formato ISO\n            if (/^\\d{4}-\\d{2}-\\d{2}T/.test(texto)) {\n                return texto;\n            }\n\n            var match = texto.match(\n                /^(\\d{2})\\/(\\d{2})\\/(\\d{4})\\s+(\\d{2}):(\\d{2}):(\\d{2})$/\n            );\n\n            if (!match) {\n                return \"\";\n            }\n\n            var mes = match[1];\n            var dia = match[2];\n            var ano = match[3];\n\n            var hora = match[4];\n            var minuto = match[5];\n            var segundo = match[6];\n\n            return (\n                ano +\n                \"-\" +\n                mes +\n                \"-\" +\n                dia +\n                \"T\" +\n                hora +\n                \":\" +\n                minuto +\n                \":\" +\n                segundo\n            );\n        }\n\n\n        var dataInicialIso =\n            converterDataParaIso(dataInicial);\n\n        var dataFinalIso =\n            converterDataParaIso(dataFinal);\n\n\n        if (!dataInicialIso || !dataFinalIso) {\n            return JSON.stringify({\n                etapa: \"ERRO_DATA\",\n                dataInicialRecebida: dataInicial,\n                dataFinalRecebida: dataFinal,\n                dataInicialConvertida: dataInicialIso,\n                dataFinalConvertida: dataFinalIso\n            });\n        }\n\n\n        // ==========================================\n        // TOKEN\n        // ==========================================\n\n        var tokenData = tokenInput;\n\n        if (typeof tokenData === \"string\") {\n            try {\n                tokenData = JSON.parse(tokenData);\n            } catch (e) {\n                // mantém como string\n            }\n        }\n\n        var accessToken = \"\";\n\n        if (\n            tokenData &&\n            typeof tokenData === \"object\" &&\n            tokenData.access_token\n        ) {\n            accessToken =\n                String(tokenData.access_token);\n\n        } else if (\n            typeof tokenData === \"string\" &&\n            tokenData.length > 20\n        ) {\n            accessToken = tokenData;\n        }\n\n        if (!accessToken) {\n            return JSON.stringify({\n                etapa: \"ERRO_TOKEN\",\n                mensagem: \"Access token não encontrado\"\n            });\n        }\n\n\n        // ==========================================\n        // URL\n        // ==========================================\n\n        var url =\n            \"https://ygg-qas.brf.cloud/operation/order/search\";\n\n\n        // ==========================================\n        // GRAPHQL\n        // ==========================================\n\n        var query =\n            \"query MyQuery {\" +\n            \" get_orders(\" +\n            \"   filters: {\" +\n\n            \"     customer_document_number: [\" +\n                    JSON.stringify(String(taxDocument)) +\n            \"]\" +\n\n            \"     created_date_initial: \" +\n                    JSON.stringify(dataInicialIso) +\n\n            \"     created_date_final: \" +\n                    JSON.stringify(dataFinalIso) +\n\n            \"     offset: 0\" +\n            \"     limit: 50\" +\n\n            \"   }\" +\n\n            \"   partner_key: \\\"aa4e8c78-21cc-43b0-bde7-cc3aa0843d9a\\\"\" +\n\n            \" ) {\" +\n\n            \"   orders {\" +\n            \"     created_date\" +\n            \"     order_sap\" +\n            \"     total\" +\n\n            \"     customer {\" +\n            \"       order_number\" +\n            \"     }\" +\n\n            \"     status_list {\" +\n            \"       status\" +\n            \"       updated_time\" +\n            \"     }\" +\n\n            \"   }\" +\n\n            \" }\" +\n            \"}\";\n\n\n        var body = {\n            query: query,\n            variables: {}\n        };\n\n\n        // ==========================================\n        // REQUISIÇÃO\n        // ==========================================\n\n        var response =\n            await request.fetchAsync(\n                url,\n                {\n                    method: \"POST\",\n                    headers: {\n                        \"Content-Type\": \"application/json\",\n                        \"Authorization\":\n                            \"Bearer \" + accessToken\n                    },\n                    body: JSON.stringify(body)\n                }\n            );\n\n\n        // ==========================================\n        // ERRO HTTP\n        // ==========================================\n\n        if (!response || !response.success) {\n\n            return JSON.stringify({\n                etapa: \"ERRO_HTTP\",\n\n                status:\n                    response\n                        ? response.status\n                        : null,\n\n                dataInicialOriginal:\n                    dataInicial,\n\n                dataFinalOriginal:\n                    dataFinal,\n\n                dataInicialEnviada:\n                    dataInicialIso,\n\n                dataFinalEnviada:\n                    dataFinalIso,\n\n                body:\n                    response && response.body\n                        ? String(response.body)\n                            .substring(0, 1500)\n                        : \"\"\n            });\n        }\n\n\n        // ==========================================\n        // RESPOSTA\n        // ==========================================\n\n        var data =\n            await response.jsonAsync();\n\n\n        if (data && data.errors) {\n\n            return JSON.stringify({\n                etapa: \"ERRO_GRAPHQL\",\n                errors: data.errors\n            });\n        }\n\n\n        var orders =\n            data &&\n            data.data &&\n            data.data.get_orders &&\n            Array.isArray(\n                data.data.get_orders.orders\n            )\n                ? data.data.get_orders.orders\n                : [];\n\n\n        // ==========================================\n        // FORMATAR DATA DO MENU\n        // ==========================================\n\n        function formatarData(dataIso) {\n\n            if (!dataIso) {\n                return \"\";\n            }\n\n            var texto =\n                String(dataIso).substring(0, 10);\n\n            var partes =\n                texto.split(\"-\");\n\n            if (partes.length !== 3) {\n                return \"\";\n            }\n\n            return (\n                partes[2] +\n                \"/\" +\n                partes[1] +\n                \"/\" +\n                partes[0]\n            );\n        }\n\n\n        // ==========================================\n        // VALOR\n        // ==========================================\n\n        function formatarValor(valor) {\n\n            var numero =\n                Number(valor);\n\n            if (!isFinite(numero)) {\n                numero = 0;\n            }\n\n            return \"R$ \" +\n                numero\n                    .toFixed(2)\n                    .replace(\".\", \",\")\n                    .replace(\n                        /\\B(?=(\\d{3})+(?!\\d))/g,\n                        \".\"\n                    );\n        }\n\n\n        // ==========================================\n        // STATUS\n        // ==========================================\n\n        function traduzirStatus(status) {\n\n            if (!status) {\n                return \"Sem status\";\n            }\n\n            var statusNormalizado =\n                String(status)\n                    .trim()\n                    .toLowerCase();\n\n            var traducoes = {\n                \"pending\": \"Pendente\",\n                \"created\": \"Criado\",\n                \"released\": \"Liberado\",\n                \"blocked\": \"Bloqueado\",\n                \"error\": \"Erro\",\n                \"reject\": \"Recusado\",\n                \"refused\": \"Recusado\",\n                \"updated order\": \"Pedido atualizado\",\n                \"in shipment\": \"Em transporte\",\n                \"on route\": \"Em rota\",\n                \"conference ok\": \"Conferência OK\",\n                \"delivered\": \"Entregue\",\n                \"cancelled\": \"Cancelado\",\n                \"canceled\": \"Cancelado\",\n                \"processing\": \"Em processamento\",\n                \"invoiced\": \"Faturado\",\n                \"completed\": \"Concluído\"\n            };\n\n            return (\n                traducoes[statusNormalizado] ||\n                status\n            );\n        }\n\n\n        function obterStatusAtual(statusList) {\n\n            if (\n                !Array.isArray(statusList) ||\n                statusList.length === 0\n            ) {\n                return {\n                    status: \"Sem status\",\n                    updated_time: null\n                };\n            }\n\n            var lista =\n                statusList.slice();\n\n            lista.sort(function (a, b) {\n\n                var dataA =\n                    a && a.updated_time\n                        ? Date.parse(a.updated_time)\n                        : 0;\n\n                var dataB =\n                    b && b.updated_time\n                        ? Date.parse(b.updated_time)\n                        : 0;\n\n                if (!isFinite(dataA)) {\n                    dataA = 0;\n                }\n\n                if (!isFinite(dataB)) {\n                    dataB = 0;\n                }\n\n                return dataB - dataA;\n            });\n\n            return lista[0];\n        }\n\n\n        // ==========================================\n        // 6 PEDIDOS MAIS RECENTES\n        // ==========================================\n\n        var ultimosPedidos =\n            orders\n                .slice()\n                .sort(function (a, b) {\n\n                    var dataA =\n                        a && a.created_date\n                            ? Date.parse(a.created_date)\n                            : 0;\n\n                    var dataB =\n                        b && b.created_date\n                            ? Date.parse(b.created_date)\n                            : 0;\n\n                    return dataB - dataA;\n                })\n                .slice(0, 6);\n\n\n        var rows = [];\n\n\n        ultimosPedidos.forEach(\n            function (pedido) {\n\n                var statusAtual =\n                    obterStatusAtual(\n                        pedido.status_list\n                    );\n\n                var numeroPedido =\n                    pedido &&\n                    pedido.customer &&\n                    pedido.customer.order_number\n                        ? pedido.customer.order_number\n                        : pedido.order_sap ||\n                          \"Sem número\";\n\n\n                rows.push({\n\n                    title:\n                        formatarData(\n                            pedido.created_date\n                        ),\n\n                    description:\n                        numeroPedido +\n                        \" | \" +\n                        traduzirStatus(\n                            statusAtual.status\n                        ) +\n                        \" | \" +\n                        formatarValor(\n                            pedido.total\n                        ),\n\n                    dados: true\n                });\n            }\n        );\n\n\n        // ==========================================\n        // OPÇÕES FIXAS\n        // ==========================================\n\n        rows.push(\n            {\n                title: \"Não encontrei\",\n                description:\n                    \"Não encontrei o meu pedido e preciso de ajuda\",\n                dados: true\n            },\n            {\n                title: \"Menu anterior\",\n                description:\n                    \"Desejo voltar ao menu anterior\",\n                dados: true\n            },\n            {\n                title: \"Menu inicial\",\n                description:\n                    \"Voltar para as opções principais de atendimento.\",\n                dados: true\n            },\n            {\n                title: \"Encerrar atendimento\",\n                description:\n                    \"Desejo encerrar essa conversa\",\n                dados: true\n            }\n        );\n\n\n        return JSON.stringify(rows);\n\n\n    } catch (e) {\n\n        return JSON.stringify({\n            etapa: \"EXCEPTION\",\n            erro: e.message,\n            stack: e.stack || \"\"\n        });\n    }\n}",
+          "source": "\nfunction run(apiTokenYgg, taxDocument, dataInicial, dataFinal, responseYggUltimosPedidos) {\n    try {\n        // ==========================================\n        // CONVERTER DATAS\n        // ==========================================\n\n        function converterDataParaIso(valor) {\n            if (!valor) return \"\";\n\n            var texto = String(valor).trim();\n\n            if (/^\\d{4}-\\d{2}-\\d{2}T/.test(texto)) {\n                return texto;\n            }\n\n            var match = texto.match(\n                /^(\\d{2})\\/(\\d{2})\\/(\\d{4})\\s+(\\d{2}):(\\d{2}):(\\d{2})$/\n            );\n\n            if (!match) return \"\";\n\n            return match[3] + \"-\" + match[1] + \"-\" +\n                match[2] + \"T\" + match[4] + \":\" +\n                match[5] + \":\" + match[6];\n        }\n\n        var dataInicialIso = converterDataParaIso(dataInicial);\n        var dataFinalIso = converterDataParaIso(dataFinal);\n\n        if (!dataInicialIso || !dataFinalIso) {\n            return JSON.stringify({\n                etapa: \"ERRO_DATA\",\n                dataInicialRecebida: dataInicial,\n                dataFinalRecebida: dataFinal,\n                dataInicialConvertida: dataInicialIso,\n                dataFinalConvertida: dataFinalIso\n            });\n        }\n\n        // ==========================================\n        // VALIDAR TOKEN ORIGINAL\n        // ==========================================\n\n        function parseIfJson(valor) {\n            if (typeof valor !== \"string\") return valor;\n\n            try {\n                return JSON.parse(valor);\n            } catch (e) {\n                return valor;\n            }\n        }\n\n        var tokenData = parseIfJson(apiTokenYgg);\n        var accessToken = \"\";\n\n        if (tokenData && typeof tokenData === \"object\" &&\n            tokenData.access_token) {\n            accessToken = String(tokenData.access_token);\n        } else if (typeof tokenData === \"string\" &&\n            tokenData.length > 20) {\n            accessToken = tokenData;\n        }\n\n        if (!accessToken) {\n            return JSON.stringify({\n                etapa: \"ERRO_TOKEN\",\n                mensagem: \"Access token não encontrado\"\n            });\n        }\n\n        // ==========================================\n        // RECEBER RESPOSTA VIA PARÂMETRO\n        // ==========================================\n\n        var data = parseIfJson(responseYggUltimosPedidos);\n\n        // Desencapsular possíveis wrappers\n        for (var i = 0; i < 5; i++) {\n            data = parseIfJson(data);\n\n            if (!data || typeof data !== \"object\") {\n                break;\n            }\n\n            if (data.get_orders ||\n                (data.data && data.data.get_orders) ||\n                Array.isArray(data.orders)) {\n                break;\n            }\n\n            if (data.body !== undefined && data.body !== null) {\n                data = data.body;\n            } else if (data.response !== undefined &&\n                       data.response !== null) {\n                data = data.response;\n            } else if (data.resource !== undefined &&\n                       data.resource !== null) {\n                data = data.resource;\n            } else if (data.value !== undefined &&\n                       data.value !== null) {\n                data = data.value;\n            } else {\n                break;\n            }\n        }\n\n        data = parseIfJson(data);\n\n        if (!data || typeof data !== \"object\") {\n            return JSON.stringify({\n                etapa: \"ERRO_ENTRADA\",\n                mensagem: \"Resposta da API inválida ou vazia\"\n            });\n        }\n\n        // ==========================================\n        // VERIFICAR ERROS GRAPHQL\n        // ==========================================\n\n        if (data.errors && data.errors.length) {\n            return JSON.stringify({\n                etapa: \"ERRO_GRAPHQL\",\n                errors: data.errors\n            });\n        }\n\n        // ==========================================\n        // EXTRAIR PEDIDOS\n        // ==========================================\n\n        var orders = null;\n\n        if (data.data && data.data.get_orders &&\n            Array.isArray(data.data.get_orders.orders)) {\n\n            orders = data.data.get_orders.orders;\n\n        } else if (data.get_orders &&\n                   Array.isArray(data.get_orders.orders)) {\n\n            orders = data.get_orders.orders;\n\n        } else if (Array.isArray(data.orders)) {\n\n            orders = data.orders;\n        }\n\n        if (!orders) {\n            return JSON.stringify({\n                etapa: \"ERRO_ESTRUTURA\",\n                mensagem: \"Array de pedidos não encontrado\",\n                chavesRecebidas: Object.keys(data),\n                chavesData: data.data &&\n                    typeof data.data === \"object\"\n                    ? Object.keys(data.data)\n                    : []\n            });\n        }\n\n        // ==========================================\n        // FORMATAR DATA\n        // ==========================================\n\n        function formatarData(dataIso) {\n            if (!dataIso) return \"\";\n\n            var partes = String(dataIso)\n                .substring(0, 10)\n                .split(\"-\");\n\n            if (partes.length !== 3) return \"\";\n\n            return partes[2] + \"/\" +\n                partes[1] + \"/\" + partes[0];\n        }\n\n        // ==========================================\n        // FORMATAR VALOR\n        // ==========================================\n\n        function formatarValor(valor) {\n            if (valor === null ||\n                valor === undefined ||\n                valor === \"\") {\n                return \"Não informado\";\n            }\n\n            var numero = Number(valor);\n\n            if (!isFinite(numero)) {\n                return \"Não informado\";\n            }\n\n            return \"R$ \" +\n                numero.toFixed(2)\n                    .replace(\".\", \",\")\n                    .replace(\n                        /\\B(?=(\\d{3})+(?!\\d))/g,\n                        \".\"\n                    );\n        }\n\n        // ==========================================\n        // TRADUZIR STATUS\n        // ==========================================\n\n        function traduzirStatus(status) {\n            if (!status) return \"Sem status\";\n\n            var chave = String(status)\n                .trim()\n                .toLowerCase();\n\n            var traducoes = {\n                \"pending\": \"Pendente\",\n                \"created\": \"Criado\",\n                \"released\": \"Liberado\",\n                \"blocked\": \"Bloqueado\",\n                \"error\": \"Erro\",\n                \"reject\": \"Recusado\",\n                \"refused\": \"Recusado\",\n                \"updated order\": \"Pedido atualizado\",\n                \"in shipment\": \"Em transporte\",\n                \"on route\": \"Em rota\",\n                \"conference ok\": \"Conferência OK\",\n                \"delivered\": \"Entregue\",\n                \"cancelled\": \"Cancelado\",\n                \"canceled\": \"Cancelado\",\n                \"processing\": \"Em processamento\",\n                \"invoiced\": \"Faturado\",\n                \"completed\": \"Concluído\"\n            };\n\n            return traducoes[chave] || status;\n        }\n\n        // ==========================================\n        // OBTER STATUS ATUAL\n        // ==========================================\n\n        function obterStatusAtual(statusList) {\n            if (!Array.isArray(statusList) ||\n                statusList.length === 0) {\n                return {\n                    status: \"Sem status\",\n                    updated_time: null\n                };\n            }\n\n            var lista = statusList.slice();\n\n            lista.sort(function(a, b) {\n                var dataA = a && a.updated_time\n                    ? Date.parse(a.updated_time) : 0;\n\n                var dataB = b && b.updated_time\n                    ? Date.parse(b.updated_time) : 0;\n\n                if (!isFinite(dataA)) dataA = 0;\n                if (!isFinite(dataB)) dataB = 0;\n\n                return dataB - dataA;\n            });\n\n            return lista[0] || {\n                status: \"Sem status\",\n                updated_time: null\n            };\n        }\n\n        // ==========================================\n        // ORDENAR E LIMITAR A 6 PEDIDOS\n        // ==========================================\n\n        var ultimosPedidos = orders\n            .slice()\n            .sort(function(a, b) {\n                var dataA = a && a.created_date\n                    ? Date.parse(a.created_date) : 0;\n\n                var dataB = b && b.created_date\n                    ? Date.parse(b.created_date) : 0;\n\n                if (!isFinite(dataA)) dataA = 0;\n                if (!isFinite(dataB)) dataB = 0;\n\n                return dataB - dataA;\n            })\n            .slice(0, 6);\n\n        // ==========================================\n        // MONTAR MENU\n        // ==========================================\n\n        var rows = [];\n\n        ultimosPedidos.forEach(function(pedido) {\n            if (!pedido) return;\n\n            var statusAtual = obterStatusAtual(\n                pedido.status_list\n            );\n\n            var numeroPedido =\n                pedido.customer &&\n                pedido.customer.order_number\n                    ? String(pedido.customer.order_number)\n                    : pedido.order_sap\n                        ? String(pedido.order_sap)\n                        : \"Sem número\";\n\n            rows.push({\n                title: formatarData(pedido.created_date),\n                description:\n                    numeroPedido + \" | \" +\n                    traduzirStatus(statusAtual.status) +\n                    \" | \" +\n                    formatarValor(pedido.total),\n                dados: true\n            });\n        });\n\n        // ==========================================\n        // OPÇÕES FIXAS\n        // ==========================================\n\n        rows.push(\n            {\n                title: \"Não encontrei\",\n                description: \"Não encontrei o meu pedido e preciso de ajuda\",\n                dados: true\n            },\n            {\n                title: \"Menu anterior\",\n                description: \"Desejo voltar ao menu anterior\",\n                dados: true\n            },\n            {\n                title: \"Menu inicial\",\n                description: \"Voltar para as opções principais de atendimento.\",\n                dados: true\n            },\n            {\n                title: \"Encerrar atendimento\",\n                description: \"Desejo encerrar essa conversa\",\n                dados: true\n            }\n        );\n\n        return JSON.stringify(rows);\n\n    } catch (e) {\n        return JSON.stringify({\n            etapa: \"EXCEPTION\",\n            erro: e.message || String(e),\n            stack: e.stack || \"\"\n        });\n    }\n}\n",
           "inputVariables": [
             "apiTokenYgg",
             "contact.taxDocument",
             "dataInicial",
-            "dataFinal"
+            "dataFinal",
+            "responseYggUltimosPedidos"
           ],
           "outputVariable": "rowsUltimosPedidos"
         },
@@ -5145,7 +5332,7 @@
           },
           "method": "POST",
           "body": "grant_type=client_credentials&client_id=operation&client_secret=lyd5u0UYmsbQhFIiTwGjf4Uk0vSZhPGy&scope=openid",
-          "uri": "{{resource.yggUrlHMG}}/token",
+          "uri": "{{resource.yggUrl}}/token",
           "responseStatusVariable": "statusApiTokenYgg",
           "responseBodyVariable": "apiTokenYgg"
         },
@@ -5166,7 +5353,7 @@
           },
           "method": "POST",
           "body": "{\n  \"query\": \"query StatusPedido($customerOrderNumber: [String!], $offset: Int!, $limit: Int!) { get_orders(filters: { customer_order_number: $customerOrderNumber, offset: $offset, limit: $limit }, partner_key: \\\"aa4e8c78-21cc-43b0-bde7-cc3aa0843d9a\\\") { orders { order_id order_sap created_date delivery delivery_date total customer { document_number order_number payment_method } status_list { status updated_time } } page_info { page page_number total_count } } }\",\n  \"variables\": {\n    \"customerOrderNumber\": [\n      \"{{numeroPedidoSelecionado}}\"\n    ],\n    \"offset\": 0,\n    \"limit\": 10\n  }\n}",
-          "uri": "{{resource.yggUrlHMG}}/operation/order/search",
+          "uri": "{{resource.yggUrl}}/operation/order/search",
           "responseBodyVariable": "responseYggStatusPedidoSelecionado",
           "responseStatusVariable": "statusYggStatusPedidoSelecionado"
         },
@@ -5535,7 +5722,7 @@
           },
           "method": "POST",
           "body": "grant_type=client_credentials&client_id=operation&client_secret=lyd5u0UYmsbQhFIiTwGjf4Uk0vSZhPGy&scope=openid",
-          "uri": "{{resource.yggUrlHMG}}/token",
+          "uri": "{{resource.yggUrl}}/token",
           "responseStatusVariable": "statusApiTokenYgg",
           "responseBodyVariable": "apiTokenYgg"
         },
@@ -5556,7 +5743,7 @@
           },
           "method": "POST",
           "body": "{\n  \"query\": \"query ConsultarPedido($numeroPedido: [String!], $offset: Int!, $limit: Int!) { get_orders(filters: { customer_order_number: $numeroPedido, offset: $offset, limit: $limit }, partner_key: \\\"aa4e8c78-21cc-43b0-bde7-cc3aa0843d9a\\\") { orders { order_id order_sap created_date delivery delivery_date total customer { document_number order_number payment_method } status_list { status updated_time } billing_documents { billing_date billing_document document_number sales_document sales_status total_value tax_number } } page_info { page page_number total_count } } }\",\n  \"variables\": {\n    \"numeroPedido\": [\n      \"{{numeroPedidoSelecionado}}\"\n    ],\n    \"offset\": 0,\n    \"limit\": 10\n  }\n}",
-          "uri": "{{resource.yggUrlHMG}}/operation/order/search",
+          "uri": "{{resource.yggUrl}}/operation/order/search",
           "responseBodyVariable": "responseYggConsultarPedido",
           "responseStatusVariable": "statusYggConsultarPedido"
         },
@@ -6868,7 +7055,7 @@
           },
           "method": "POST",
           "body": "grant_type=client_credentials&client_id=operation&client_secret=lyd5u0UYmsbQhFIiTwGjf4Uk0vSZhPGy&scope=openid",
-          "uri": "{{resource.yggUrlHMG}}/token",
+          "uri": "{{resource.yggUrl}}/token",
           "responseStatusVariable": "statusApiTokenYgg",
           "responseBodyVariable": "apiTokenYgg"
         },
@@ -6887,8 +7074,8 @@
             "Authorization": "Bearer {{apiTokenYgg@access_token}}"
           },
           "method": "POST",
-          "body": "{\n  \"shared_id\": \"{{dadosCustomerCredito@shared_id}}\",\n  \"sales_organization\": \"{{dadosCustomerCredito@sales_organization}}\",\n  \"company\": \"2500\",\n  \"requested_credit\": \"{{novoLimiteCredito}}\",\n  \"requester\": \"{{dadosCustomerCredito@requester}}\",\n  \"reason\": \"Solicitação de aumento de crédito via chatbot\"\n}",
-          "uri": "{{resource.yggUrlHMG}}/person/credit/",
+          "body": "{\n  \"shared_id\": \"{{dadosCustomerCredito@shared_id}}\",\n  \"sales_organization\": \"{{dadosCustomerCredito@sales_organization}}\",\n  \"company\": \"2500\",\n  \"requested_credit\": \"{{novoLimiteCredito}}\",\n  \"requester\": \"{{dadosCustomerCredito@requester}}\",\n  \"reason\": \"Site BRF\"\n}",
+          "uri": "{{resource.yggUrl}}/person/credit/",
           "responseStatusVariable": "statusSolicitarAumentoCredito",
           "responseBodyVariable": "responseSolicitarAumentoCredito"
         },
@@ -9060,6 +9247,20 @@
           "action": "exibicao"
         },
         "conditions": []
+      },
+      {
+        "$description": "",
+        "$inputSchema": {
+          "type": "object",
+          "properties": {},
+          "required": []
+        },
+        "type": "SetVariable",
+        "settings": {
+          "variable": "tipoServico",
+          "value": "Financeiro - 2ª via de Boleto"
+        },
+        "conditions": []
       }
     ],
     "$leavingCustomActions": [],
@@ -9071,6 +9272,39 @@
     "$position": {
       "top": "454px",
       "left": "655px"
+    }
+  },
+  "955f3fdf-0ee4-4846-8ee3-8250e5fef525": {
+    "$contentActions": [
+      {
+        "input": {
+          "bypass": true
+        }
+      }
+    ],
+    "$conditionOutputs": [
+      {
+        "stateId": "subflow:f3b0f881-35cd-492f-bca3-4aec289bbad2",
+        "typeOfStateId": "state",
+        "conditions": [
+          {
+            "source": "input",
+            "comparison": "exists",
+            "values": []
+          }
+        ]
+      }
+    ],
+    "$enteringCustomActions": [],
+    "$leavingCustomActions": [],
+    "$defaultOutput": {
+      "stateId": "fallback"
+    },
+    "$localCustomActions": [],
+    "$title": "Novo bloco",
+    "$position": {
+      "top": "165px",
+      "left": "938px"
     }
   }
 }

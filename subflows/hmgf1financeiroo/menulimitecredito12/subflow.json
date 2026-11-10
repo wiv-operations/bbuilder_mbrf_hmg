@@ -1,0 +1,15 @@
+{
+  "subflowId": 247682,
+  "shortName": "menulimitecredito12",
+  "tenantId": "mbrf",
+  "name": "Menu limite credito",
+  "description": "",
+  "image": "",
+  "userIdentity": "vinicius.alves@whitewall.dev",
+  "creationDate": "2026-10-07T13:19:35.631Z",
+  "flowCounter": 1,
+  "isShared": false,
+  "isActive": true,
+  "useSubflowInDeskAction": false,
+  "watermark": "9c4bb369-233a-49fd-9c25-7e4dfd451b21"
+}

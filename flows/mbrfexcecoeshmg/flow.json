@@ -306,20 +306,6 @@
         ]
       },
       {
-        "stateId": "72636692-8450-49af-9623-fe9f9c2f30a1",
-        "typeOfStateId": "state",
-        "conditions": [
-          {
-            "source": "context",
-            "comparison": "equals",
-            "values": [
-              "Pergunta CNPJ NEW"
-            ],
-            "variable": "inputExcecoes@lastName"
-          }
-        ]
-      },
-      {
         "stateId": "70416489-7f2c-4eac-99ce-6616c4d906a2",
         "typeOfStateId": "state",
         "conditions": [
@@ -335,6 +321,20 @@
             "values": [
               "0.60"
             ]
+          }
+        ]
+      },
+      {
+        "stateId": "72636692-8450-49af-9623-fe9f9c2f30a1",
+        "typeOfStateId": "state",
+        "conditions": [
+          {
+            "source": "context",
+            "comparison": "equals",
+            "values": [
+              "Pergunta CNPJ NEW"
+            ],
+            "variable": "inputExcecoes@lastName"
           }
         ]
       },
@@ -466,12 +466,12 @@
         "type": "ProcessHttp",
         "settings": {
           "headers": {
-            "Authorization": "Key bWJyZnJvdXRlcmhtZzpHUGZlQXRaMlFiQnJIZzRuZEpvNg==",
+            "Authorization": "{{config.routerKey}}",
             "Content-Type": "application/json"
           },
           "method": "POST",
           "body": "{\n  \"id\": \"{{$guid}}\",\n  \"to\": \"postmaster@ai.msging.net\",\n  \"method\": \"set\",\n  \"uri\": \"/analysis\",\n  \"type\": \"application/vnd.iris.ai.analysis-request+json\",\n  \"resource\": {\n    \"text\":\"{{inputNlp}}\"\n   \n  }\n}",
-          "uri": "https://mbrf.http.msging.net/commands",
+          "uri": "{{resource.blipUrl}}",
           "responseStatusVariable": "statusAnaliseSentencaNpl",
           "responseBodyVariable": "responseAnaliseSentencaNpl"
         },
@@ -502,8 +502,8 @@
     },
     "$title": "Cascata de exceções",
     "$position": {
-      "top": "624.774px",
-      "left": "852.355px"
+      "top": "625px",
+      "left": "852px"
     }
   },
   "98ae267a-36bb-451f-8d7c-471cba094aee": {
@@ -774,8 +774,8 @@
     },
     "$title": "Atendimento Humano",
     "$position": {
-      "top": "304.839px",
-      "left": "84.9355px"
+      "top": "305px",
+      "left": "87px"
     }
   },
   "2158b6d6-75e4-4822-a246-547ff908d227": {
@@ -882,7 +882,7 @@
           "type": "SendMessage",
           "settings": {
             "type": "text/plain",
-            "content": "<b>Estou finalizando a nossa conversa por aqui.</b>\n\nQuando quiser falar novamente, <b>é só mandar um \"Oi\" para mim.</b> 😊\n\n<b>A Centrl MBRF agradece o seu contato.</b> 👋",
+            "content": "<b>Estou finalizando a nossa conversa por aqui.</b>\n\nQuando quiser falar novamente, <b>é só mandar um \"Oi\" para mim.</b> 😊\n\n<b>A Central MBRF agradece o seu contato.</b> 👋",
             "metadata": {}
           }
         }
@@ -1999,8 +1999,8 @@
     "$localCustomActions": [],
     "$title": "NLP",
     "$position": {
-      "top": "585.774px",
-      "left": "1217.35px"
+      "top": "586px",
+      "left": "1217px"
     }
   },
   "b6e4cab1-a507-4cfd-84be-450792cfecd8": {
@@ -2316,6 +2316,90 @@
             "variable": "infoNlp@name"
           }
         ]
+      },
+      {
+        "stateId": "0f4ba3fe-b197-49a2-a8d9-c0b4362ad5cb",
+        "typeOfStateId": "state",
+        "conditions": [
+          {
+            "source": "context",
+            "comparison": "equals",
+            "values": [
+              "ATENDIMENTO HUMANO"
+            ],
+            "variable": "infoNlp@name"
+          }
+        ]
+      },
+      {
+        "stateId": "700406c1-626e-4695-9b21-02c0361dd424",
+        "typeOfStateId": "state",
+        "conditions": [
+          {
+            "source": "context",
+            "comparison": "equals",
+            "values": [
+              "INFORMACOES CUPOM FIXO"
+            ],
+            "variable": "infoNlp@name"
+          }
+        ]
+      },
+      {
+        "stateId": "45e8f372-9a61-49ae-b6fe-f55f22517fe6",
+        "typeOfStateId": "state",
+        "conditions": [
+          {
+            "source": "context",
+            "comparison": "equals",
+            "values": [
+              "URGENCIA FRUSTRACAO"
+            ],
+            "variable": "infoNlp@name"
+          }
+        ]
+      },
+      {
+        "stateId": "a53fc649-63dc-4295-a22b-29c02e8281aa",
+        "typeOfStateId": "state",
+        "conditions": [
+          {
+            "source": "context",
+            "comparison": "equals",
+            "values": [
+              "APLICATIVO CENTRAL MBRF"
+            ],
+            "variable": "infoNlp@name"
+          }
+        ]
+      },
+      {
+        "stateId": "535d06e6-370c-40bf-8f28-6260990b7075",
+        "typeOfStateId": "state",
+        "conditions": [
+          {
+            "source": "context",
+            "comparison": "equals",
+            "values": [
+              "PROBLEMAS APP OU SITE"
+            ],
+            "variable": "infoNlp@name"
+          }
+        ]
+      },
+      {
+        "stateId": "5c2530f2-18e0-4918-942a-ce28d3601521",
+        "typeOfStateId": "state",
+        "conditions": [
+          {
+            "source": "context",
+            "comparison": "equals",
+            "values": [
+              "DUVIDAS GERAIS"
+            ],
+            "variable": "infoNlp@name"
+          }
+        ]
       }
     ],
     "$enteringCustomActions": [
@@ -2343,12 +2427,12 @@
         "type": "ProcessHttp",
         "settings": {
           "headers": {
-            "Authorization": "Key bWJyZnJvdXRlcmhtZzpHUGZlQXRaMlFiQnJIZzRuZEpvNg==",
+            "Authorization": "{{config.routerKey}}",
             "Content-Type": "application/json"
           },
           "method": "POST",
           "body": "{\n  \"id\": \"{{$guid}}\",\n  \"to\": \"postmaster@ai.msging.net\",\n  \"method\": \"set\",\n  \"uri\": \"/analysis\",\n  \"type\": \"application/vnd.iris.ai.analysis-request+json\",\n  \"resource\": {\n    \"text\":\"{{inputNlp}}\"\n   \n  }\n}",
-          "uri": "https://mbrf.http.msging.net/commands",
+          "uri": "{{resource.blipUrl}}",
           "responseStatusVariable": "statusAnaliseSentencaNpl",
           "responseBodyVariable": "responseAnaliseSentencaNpl"
         },
@@ -2380,8 +2464,8 @@
     "$localCustomActions": [],
     "$title": "[Verificação] NLP",
     "$position": {
-      "top": "594.129px",
-      "left": "3691px"
+      "top": "594px",
+      "left": "3693px"
     }
   },
   "c6b5f86b-0508-4e92-bdb8-11bc55bad477": {
@@ -2578,8 +2662,8 @@
     "$localCustomActions": [],
     "$title": "GO TO - Ajudo em algo mais",
     "$position": {
-      "top": "45.3871px",
-      "left": "4261.55px"
+      "top": "46px",
+      "left": "4228px"
     }
   },
   "031c7119-df4d-4f08-92a2-704e32fd0fbd": {
@@ -2591,7 +2675,21 @@
       }
     ],
     "$conditionOutputs": [],
-    "$enteringCustomActions": [],
+    "$enteringCustomActions": [
+      {
+        "$description": "",
+        "$inputSchema": {
+          "type": "object",
+          "properties": {},
+          "required": []
+        },
+        "type": "SetVariable",
+        "settings": {
+          "variable": "infoNlp"
+        },
+        "conditions": []
+      }
+    ],
     "$leavingCustomActions": [
       {
         "$description": "",
@@ -3200,8 +3298,8 @@
     "$localCustomActions": [],
     "$title": "GO TO - Inatividade",
     "$position": {
-      "top": "47px",
-      "left": "4431px"
+      "top": "149px",
+      "left": "4699px"
     }
   },
   "61af3cdb-9410-4615-afb8-c9c39cf89197": {
@@ -3361,8 +3459,8 @@
     "$localCustomActions": [],
     "$title": "GO TO - CREDITO DIVERGENTE",
     "$position": {
-      "top": "165px",
-      "left": "4013px"
+      "top": "99px",
+      "left": "4009px"
     }
   },
   "e47e476c-3016-4090-83dc-0707fba76fa1": {
@@ -3500,8 +3598,8 @@
     "$localCustomActions": [],
     "$title": "ALTERACAO EMAIL",
     "$position": {
-      "top": "87px",
-      "left": "6658.67px"
+      "top": "90.3333px",
+      "left": "6659px"
     }
   },
   "5ba00bb0-7f66-46cb-b276-1059fda8a3d6": {
@@ -3576,8 +3674,8 @@
     "$localCustomActions": [],
     "$title": "Autenticado - GO TO Meu cadastro - Alterar email",
     "$position": {
-      "top": "409px",
-      "left": "6471.67px"
+      "top": "412.333px",
+      "left": "6472px"
     }
   },
   "ba692f9c-faa6-40af-b700-369638dddc52": {
@@ -3624,8 +3722,8 @@
     "$localCustomActions": [],
     "$title": "[Verificação] Autenticado III",
     "$position": {
-      "top": "248.667px",
-      "left": "6663.67px"
+      "top": "252.333px",
+      "left": "6664px"
     }
   },
   "5318c81b-e4e2-4342-98b1-7df6abf65d3b": {
@@ -3646,8 +3744,8 @@
     "$localCustomActions": [],
     "$title": "GO TO - Ajudo em algo mais II",
     "$position": {
-      "top": "110.667px",
-      "left": "6456.67px"
+      "top": "114.333px",
+      "left": "6457px"
     }
   },
   "3f834f5f-26bc-45fc-88df-136e3d54c816": {
@@ -3854,7 +3952,7 @@
     "$localCustomActions": [],
     "$title": "Não autenticado II",
     "$position": {
-      "top": "404px",
+      "top": "407.333px",
       "left": "6861px"
     }
   },
@@ -3952,8 +4050,8 @@
     "$localCustomActions": [],
     "$title": "[MSG] Cadastro I",
     "$position": {
-      "top": "399.667px",
-      "left": "7091.67px"
+      "top": "403.333px",
+      "left": "7092px"
     }
   },
   "64c447b2-19ea-4b37-be8e-7b4dab04aab8": {
@@ -3985,8 +4083,8 @@
     "$localCustomActions": [],
     "$title": "GO TO - Encerramento II",
     "$position": {
-      "top": "551.667px",
-      "left": "7073.67px"
+      "top": "555.333px",
+      "left": "7074px"
     }
   },
   "c210a93c-c41d-4e63-8029-6df5851e0469": {
@@ -4115,8 +4213,8 @@
     "$localCustomActions": [],
     "$title": "GO TO - Inatividade III",
     "$position": {
-      "top": "113.667px",
-      "left": "6862.67px"
+      "top": "117.333px",
+      "left": "6863px"
     }
   },
   "b3f36240-b458-455b-a246-890d6994db52": {
@@ -6707,7 +6805,7 @@
     "$title": "SOLICITACAO ESTORNO",
     "$position": {
       "top": "1459px",
-      "left": "5787px"
+      "left": "5789px"
     }
   },
   "a0676a50-9f83-4ab3-a23d-66bf2a15517c": {
@@ -8057,8 +8155,8 @@
     "$localCustomActions": [],
     "$title": "GO TO - ERRO FINALIZACAO PEDIDO",
     "$position": {
-      "top": "281.571px",
-      "left": "3318.86px"
+      "top": "218px",
+      "left": "3391px"
     }
   },
   "9f17cde2-fd2d-473a-a20e-a97215479be3": {
@@ -10055,7 +10153,7 @@
     "$title": "GO TO - Inatividade III [Duplicate]",
     "$position": {
       "top": "76px",
-      "left": "5752.67px"
+      "left": "5753px"
     }
   },
   "ebadc07d-f070-4f51-ae20-99b7b58fcc06": {
@@ -12057,8 +12155,3261 @@
     "$localCustomActions": [],
     "$title": "[Redirect] Autenticado - GO TO Ajuda e suporte",
     "$position": {
-      "top": "1401px",
-      "left": "4009px"
+      "top": "1174.33px",
+      "left": "4349px"
+    }
+  },
+  "0f4ba3fe-b197-49a2-a8d9-c0b4362ad5cb": {
+    "$contentActions": [
+      {
+        "input": {
+          "bypass": true
+        }
+      }
+    ],
+    "$conditionOutputs": [],
+    "$enteringCustomActions": [],
+    "$leavingCustomActions": [],
+    "$defaultOutput": {
+      "stateId": "1e84c30f-4c90-4b25-a69e-c54786758335",
+      "typeOfStateId": "state"
+    },
+    "$localCustomActions": [],
+    "$title": "GO TO - ATENDIMENTO HUMANO",
+    "$position": {
+      "top": "1188px",
+      "left": "3382px"
+    }
+  },
+  "1e84c30f-4c90-4b25-a69e-c54786758335": {
+    "$contentActions": [
+      {
+        "action": {
+          "$description": "",
+          "type": "SendMessage",
+          "settings": {
+            "type": "text/plain",
+            "content": "Este canal é exclusivo para autoatendimento digital! 🤖✨\n\nNo momento, <b>não realizamos atendimento humano direto por este chat.</b>\n\nPara falar com a nossa equipe, você pode:\n\n💼 Entrar em contato direto com o seu vendedor MBRF\n📞 Ligar para o nosso SAC: 0800 702 3311\n\nSe quiser tentar outro serviço por aqui, é só me mandar uma mensagem! 😉",
+            "metadata": {}
+          }
+        }
+      },
+      {
+        "input": {
+          "bypass": true
+        }
+      }
+    ],
+    "$conditionOutputs": [],
+    "$enteringCustomActions": [
+      {
+        "type": "TrackEvent",
+        "settings": {
+          "extras": {
+            "identificador": "{{contact.identity}}",
+            "origem": "{{origem}}",
+            "canal": "{{channel}}"
+          },
+          "category": "Nlp intencao identificada",
+          "action": "Falar com atendente"
+        },
+        "conditions": []
+      }
+    ],
+    "$leavingCustomActions": [],
+    "$defaultOutput": {
+      "stateId": "031c7119-df4d-4f08-92a2-704e32fd0fbd",
+      "typeOfStateId": "state"
+    },
+    "$localCustomActions": [],
+    "$title": "ATENDIMENTO HUMANO",
+    "$position": {
+      "top": "2151px",
+      "left": "7303px"
+    }
+  },
+  "fb1bf7cb-5637-4dd9-aba2-0a0be6de7f1d": {
+    "$contentActions": [
+      {
+        "input": {
+          "bypass": true
+        }
+      }
+    ],
+    "$conditionOutputs": [],
+    "$enteringCustomActions": [],
+    "$leavingCustomActions": [],
+    "$defaultOutput": {
+      "stateId": "031c7119-df4d-4f08-92a2-704e32fd0fbd",
+      "typeOfStateId": "state"
+    },
+    "$localCustomActions": [],
+    "$title": "GO TO - Ajudo em algo mais Xi",
+    "$position": {
+      "top": "2895.33px",
+      "left": "4205.33px"
+    }
+  },
+  "265f4bba-c81b-4c7b-a2ad-e725f800d038": {
+    "$contentActions": [
+      {
+        "action": {
+          "$description": "",
+          "type": "SendMessage",
+          "settings": {
+            "type": "text/plain",
+            "content": "Quer garantir aquele desconto extra no seu pedido? Com os nossos <b>Cupons,</b> economizar na Central MBRF é muito simples! 💰\n\n📌 <b>Como aproveitar seu cupom fixo:</b>\n\n1. Adicione os produtos desejados ao seu carrinho de compras.\n2. No momento do checkout/fechamento do pedido, insira o código do seu cupom no campo indicado. \n3. O desconto será aplicado automaticamente no valor final dos itens elegíveis!\n\n💡 Dica de Ouro: Os cupons possuem regras de vigência e não são cumulativos com outras promoções automáticas. Se quiser consultar as regras ou cupons disponíveis para o seu CNPJ, digite <b>Meus Pedidos >  Informação Cupom</b> ou acesse o seu carrinho no app",
+            "metadata": {}
+          }
+        }
+      },
+      {
+        "action": {
+          "$description": "",
+          "type": "SendMessage",
+          "settings": {
+            "type": "application/vnd.lime.select+json",
+            "content": {
+              "text": "Gostaria de tratar sobre algum problema que teve com o seu cupom?",
+              "scope": "immediate",
+              "options": [
+                {
+                  "text": "Sim",
+                  "previewText": "Sim",
+                  "value": null,
+                  "index": 0,
+                  "type": null
+                },
+                {
+                  "text": "Não",
+                  "previewText": "Não",
+                  "value": null,
+                  "index": 1,
+                  "type": null
+                }
+              ],
+              "quikReply": false
+            },
+            "metadata": {}
+          }
+        }
+      },
+      {
+        "input": {
+          "bypass": false,
+          "expiration": "0:15"
+        }
+      }
+    ],
+    "$conditionOutputs": [
+      {
+        "stateId": "8739b90c-2946-4422-9de6-f958618bef1d",
+        "typeOfStateId": "state",
+        "conditions": [
+          {
+            "source": "context",
+            "comparison": "equals",
+            "values": [
+              "Sim"
+            ],
+            "variable": "intentAction"
+          }
+        ]
+      },
+      {
+        "stateId": "fb1bf7cb-5637-4dd9-aba2-0a0be6de7f1d",
+        "typeOfStateId": "state",
+        "conditions": [
+          {
+            "source": "context",
+            "comparison": "equals",
+            "values": [
+              "Não"
+            ],
+            "variable": "intentAction"
+          }
+        ]
+      },
+      {
+        "stateId": "2a570117-4c3d-4bd2-9a75-b2a595c0bd60",
+        "typeOfStateId": "state",
+        "conditions": [
+          {
+            "source": "input",
+            "comparison": "notExists",
+            "values": []
+          }
+        ]
+      }
+    ],
+    "$enteringCustomActions": [
+      {
+        "type": "TrackEvent",
+        "settings": {
+          "extras": {
+            "identificador": "{{contact.identity}}",
+            "origem": "{{origem}}",
+            "canal": "{{channel}}"
+          },
+          "category": "Nlp intencao identificada",
+          "action": "Informações de Cupom Fixo"
+        },
+        "conditions": []
+      },
+      {
+        "type": "SetVariable",
+        "settings": {
+          "variable": "intentAction"
+        },
+        "conditions": []
+      }
+    ],
+    "$leavingCustomActions": [
+      {
+        "type": "ExecuteScript",
+        "settings": {
+          "function": "run",
+          "source": "function run(input) {\n  try {\n    let opcoesMenu = {\n      \"1\": \"Sim\",\n      \"2\": \"Não\",\n    };\n\n    let menuRegex = {\n      \"1\": /\\b(?:sim|claro|confirmo|positivo|ok|okay|pode\\s+ser|aceito|quero|continuar)\\b/i,\n\n      \"2\": /\\b(?:n[aã]o|negativo|cancelar|desistir|prefiro\\s+n[aã]o|sair|encerrar|parar)\\b/i,\n    };\n\n    input = input.trim();\n\n    for (let prop in menuRegex) {\n      if (menuRegex[prop].test(input)) {\n        return opcoesMenu[prop];\n      }\n    }\n\n    return \"Input inesperado\";\n  } catch (error) {\n    return \"Input inesperado\";\n  }\n}",
+          "inputVariables": [
+            "input.content"
+          ],
+          "outputVariable": "intentAction",
+          "LocalTimeZoneEnabled": false
+        },
+        "conditions": []
+      }
+    ],
+    "$defaultOutput": {
+      "stateId": "fallback"
+    },
+    "$localCustomActions": [],
+    "$title": "INFORMACOES CUPOM FIXO",
+    "$position": {
+      "top": "2878.33px",
+      "left": "4436.67px"
+    }
+  },
+  "2a570117-4c3d-4bd2-9a75-b2a595c0bd60": {
+    "$contentActions": [
+      {
+        "input": {
+          "bypass": true
+        }
+      }
+    ],
+    "$conditionOutputs": [],
+    "$enteringCustomActions": [],
+    "$leavingCustomActions": [],
+    "$defaultOutput": {
+      "stateId": "2158b6d6-75e4-4822-a246-547ff908d227",
+      "typeOfStateId": "state"
+    },
+    "$localCustomActions": [],
+    "$title": "GO TO - Inatividade Xi",
+    "$position": {
+      "top": "2883.33px",
+      "left": "4663.33px"
+    }
+  },
+  "fee40f0d-d142-46e2-bad6-d6cb2c0e0f60": {
+    "$contentActions": [
+      {
+        "input": {
+          "bypass": true
+        }
+      }
+    ],
+    "$conditionOutputs": [],
+    "$enteringCustomActions": [
+      {
+        "type": "TrackEvent",
+        "settings": {
+          "extras": {
+            "identificador": "{{contact.identity}}",
+            "origem": "{{origem}}",
+            "canal": "{{channel}}"
+          },
+          "category": "cliente autenticado nlp resultado",
+          "action": "Sim"
+        },
+        "conditions": []
+      }
+    ],
+    "$leavingCustomActions": [
+      {
+        "$description": "",
+        "$inputSchema": {
+          "type": "object",
+          "properties": {},
+          "required": []
+        },
+        "type": "Redirect",
+        "settings": {
+          "context": {
+            "type": "text/plain",
+            "value": "{ \"lastState\": \"subflow:f54de3b1-f8b1-4ab8-8a2f-ae7f4063290d\" }"
+          },
+          "address": "Meus Pedidos"
+        },
+        "conditions": []
+      }
+    ],
+    "$defaultOutput": {
+      "stateId": "onboarding",
+      "typeOfStateId": "state"
+    },
+    "$localCustomActions": [],
+    "$title": "Autenticado - GO TO  Meus Pedidos",
+    "$position": {
+      "top": "3187.33px",
+      "left": "4197.33px"
+    }
+  },
+  "81512fff-4783-4579-b0f9-1f2b494fe629": {
+    "$contentActions": [
+      {
+        "action": {
+          "$description": "",
+          "type": "SendMessage",
+          "settings": {
+            "type": "application/vnd.lime.select+json",
+            "content": {
+              "text": "🔒 Para <b>abertura de chamado via WhatsApp é necessário fazer a</b> autenticação de segurança.\n\n<i>Como gostaria de prosseguir?</i>",
+              "scope": "immediate",
+              "options": [
+                {
+                  "text": "Me autenticar",
+                  "previewText": "Me autenticar",
+                  "value": null,
+                  "index": 0,
+                  "type": null
+                },
+                {
+                  "text": "Não sou cliente",
+                  "previewText": "Não sou cliente",
+                  "value": null,
+                  "index": 1,
+                  "type": null
+                },
+                {
+                  "index": -1,
+                  "text": "Encerrar conversa",
+                  "previewText": "Encerrar conversa",
+                  "type": null,
+                  "value": null
+                }
+              ],
+              "quikReply": false
+            },
+            "metadata": {}
+          }
+        }
+      },
+      {
+        "input": {
+          "bypass": false,
+          "expiration": "0:15"
+        }
+      }
+    ],
+    "$conditionOutputs": [
+      {
+        "stateId": "36f949ac-5978-4b71-a3da-d41c125da0c8",
+        "typeOfStateId": "state",
+        "conditions": [
+          {
+            "source": "context",
+            "comparison": "equals",
+            "values": [
+              "Me autenticar"
+            ],
+            "variable": "intentAction"
+          }
+        ]
+      },
+      {
+        "stateId": "45c1c019-8d10-4283-93a0-cfe3739f6161",
+        "typeOfStateId": "state",
+        "conditions": [
+          {
+            "source": "context",
+            "comparison": "equals",
+            "values": [
+              "Não sou cliente"
+            ],
+            "variable": "intentAction"
+          }
+        ]
+      },
+      {
+        "stateId": "c732013a-1363-4dde-bc24-2f1eb8ec338f",
+        "typeOfStateId": "state",
+        "conditions": [
+          {
+            "source": "context",
+            "comparison": "equals",
+            "values": [
+              "Encerrar conversa"
+            ],
+            "variable": "intentAction"
+          }
+        ]
+      },
+      {
+        "stateId": "2a570117-4c3d-4bd2-9a75-b2a595c0bd60",
+        "typeOfStateId": "state",
+        "conditions": [
+          {
+            "source": "input",
+            "comparison": "notExists",
+            "values": []
+          }
+        ]
+      }
+    ],
+    "$enteringCustomActions": [
+      {
+        "type": "TrackEvent",
+        "settings": {
+          "extras": {
+            "identificador": "{{contact.identity}}",
+            "origem": "{{origem}}",
+            "canal": "{{channel}}"
+          },
+          "category": "cliente autenticado nlp resultado",
+          "action": "Nao"
+        },
+        "conditions": []
+      },
+      {
+        "type": "SetVariable",
+        "settings": {
+          "variable": "intentAction"
+        },
+        "conditions": []
+      },
+      {
+        "type": "TrackEvent",
+        "settings": {
+          "extras": {
+            "identificador": "{{contact.identity}}",
+            "origem": "{{origem}}",
+            "canal": "{{channel}}"
+          },
+          "category": "autenticacao chamado menu exibicao",
+          "action": "Exibicao"
+        },
+        "conditions": []
+      }
+    ],
+    "$leavingCustomActions": [
+      {
+        "type": "ExecuteScript",
+        "settings": {
+          "function": "run",
+          "source": "function run(input) {\n  try {\n    const opcoesMenu = {\n      \"1\": \"Me autenticar\",\n      \"2\": \"Não sou cliente\",\n      \"3\": \"Encerrar conversa\"\n    };\n\n    const menuRegex = {\n      \"1\": /\\b(?:me\\s+autenticar|autenticar|autentica[cç][aã]o|quero\\s+me\\s+autenticar|sim|continuar)\\b/i,\n\n      \"2\": /\\b(?:n[aã]o\\s+sou\\s+cliente|n[aã]o\\s+sou\\s+um\\s+cliente|n[aã]o\\s+sou\\s+cliente\\s+unimed|n[aã]o\\s+cliente)\\b/i,\n\n      \"3\": /\\b(?:encerrar\\s+conversa|encerrar|sair|finalizar|fechar|terminar|parar|quero\\s+sair|finalizar\\s+atendimento)\\b/i\n    };\n\n    input = String(input || \"\").trim();\n\n    // Aceita também a resposta numérica\n    if (input === \"1\") {\n      return opcoesMenu[\"1\"];\n    }\n\n    if (input === \"2\") {\n      return opcoesMenu[\"2\"];\n    }\n\n    if (input === \"3\") {\n      return opcoesMenu[\"3\"];\n    }\n\n    for (const prop in menuRegex) {\n      if (menuRegex[prop].test(input)) {\n        return opcoesMenu[prop];\n      }\n    }\n\n    return \"Input inesperado\";\n\n  } catch (error) {\n    return \"Input inesperado\";\n  }\n}",
+          "inputVariables": [
+            "input.content"
+          ],
+          "outputVariable": "intentAction",
+          "LocalTimeZoneEnabled": false
+        },
+        "conditions": []
+      },
+      {
+        "type": "TrackEvent",
+        "settings": {
+          "extras": {
+            "identificador": "{{contact.identity}}",
+            "origem": "{{origem}}",
+            "canal": "{{channel}}"
+          },
+          "category": "autenticacao chamado menu selecao",
+          "action": "{{intentAction}}"
+        },
+        "conditions": [
+          {
+            "source": "input",
+            "comparison": "exists",
+            "values": []
+          }
+        ]
+      },
+      {
+        "type": "TrackEvent",
+        "settings": {
+          "extras": {
+            "identificador": "{{contact.identity}}",
+            "origem": "{{origem}}",
+            "canal": "{{channel}}"
+          },
+          "category": "autenticacao chamado menu input",
+          "action": "{{input.content}}"
+        },
+        "conditions": [
+          {
+            "source": "context",
+            "variable": "intentAction",
+            "comparison": "equals",
+            "values": [
+              "Input inesperado"
+            ]
+          },
+          {
+            "source": "input",
+            "comparison": "exists",
+            "values": []
+          }
+        ]
+      }
+    ],
+    "$defaultOutput": {
+      "stateId": "fallback"
+    },
+    "$localCustomActions": [],
+    "$title": "Não autenticado XI",
+    "$position": {
+      "top": "3215.33px",
+      "left": "4608.33px"
+    }
+  },
+  "36f949ac-5978-4b71-a3da-d41c125da0c8": {
+    "$contentActions": [
+      {
+        "input": {
+          "bypass": true
+        }
+      }
+    ],
+    "$conditionOutputs": [],
+    "$enteringCustomActions": [],
+    "$leavingCustomActions": [
+      {
+        "$description": "",
+        "$inputSchema": {
+          "type": "object",
+          "properties": {},
+          "required": []
+        },
+        "type": "Redirect",
+        "settings": {
+          "context": {
+            "type": "text/plain",
+            "value": "@MenuInicial"
+          },
+          "address": "{{resource.redirect@captacao}}"
+        },
+        "conditions": []
+      }
+    ],
+    "$defaultOutput": {
+      "stateId": "onboarding",
+      "typeOfStateId": "state"
+    },
+    "$localCustomActions": [],
+    "$title": "GO TO - Fluxo autenticação XI",
+    "$position": {
+      "top": "3058.33px",
+      "left": "4874.33px"
+    }
+  },
+  "45c1c019-8d10-4283-93a0-cfe3739f6161": {
+    "$contentActions": [
+      {
+        "action": {
+          "$description": "",
+          "type": "SendRawMessage",
+          "settings": {
+            "metadata": {},
+            "type": "application/json",
+            "rawContent": "{\n  \"recipient_type\": \"individual\",\n  \"type\": \"interactive\",\n  \"interactive\": {\n    \"type\": \"cta_url\",\n    \"body\": {\n      \"text\": \"Sem problemas! Você pode se cadastrar de forma rápida *clicando em “cadastrar agora”.*\\n\\nApós o cadastro, é só retornar para continuarmos o seu atendimento. 💛\"\n    },\n    \"action\": {\n      \"name\": \"cta_url\",\n      \"parameters\": {\n        \"display_text\": \"Cadastrar Agora\",\n        \"url\": \"https://www.centralmbrf.com.br/SelfRegister\"\n      }\n    }\n  }\n}"
+          }
+        }
+      },
+      {
+        "input": {
+          "bypass": true
+        }
+      }
+    ],
+    "$conditionOutputs": [
+      {
+        "stateId": "7997b8cd-001c-423f-9e80-c8a330b4147b",
+        "typeOfStateId": "state",
+        "conditions": [
+          {
+            "source": "input",
+            "comparison": "exists",
+            "values": []
+          }
+        ]
+      }
+    ],
+    "$enteringCustomActions": [
+      {
+        "type": "TrackEvent",
+        "settings": {
+          "extras": {
+            "identificador": "{{contact.identity}}",
+            "origem": "{{origem}}",
+            "canal": "{{channel}}"
+          },
+          "category": "mensagem nao cliente exibicao",
+          "action": "Exibicao"
+        },
+        "conditions": []
+      }
+    ],
+    "$leavingCustomActions": [],
+    "$defaultOutput": {
+      "stateId": "fallback"
+    },
+    "$localCustomActions": [],
+    "$title": "[MSG] Cadastro VIII",
+    "$position": {
+      "top": "3194.33px",
+      "left": "4871.33px"
+    }
+  },
+  "c732013a-1363-4dde-bc24-2f1eb8ec338f": {
+    "$contentActions": [
+      {
+        "action": {
+          "$description": "",
+          "type": "SendMessage",
+          "settings": {
+            "type": "text/plain",
+            "content": "Fico feliz em ter te ajudado!\n\nSempre que precisar, pode contar comigo! 🤝 ",
+            "metadata": {}
+          }
+        }
+      },
+      {
+        "input": {
+          "bypass": true
+        }
+      }
+    ],
+    "$conditionOutputs": [],
+    "$enteringCustomActions": [],
+    "$leavingCustomActions": [],
+    "$defaultOutput": {
+      "stateId": "5c76a2e0-b239-43ce-8f72-ad278cfaa22f",
+      "typeOfStateId": "state"
+    },
+    "$localCustomActions": [],
+    "$title": "GO TO - Encerramento XI",
+    "$position": {
+      "top": "3346.33px",
+      "left": "4870.33px"
+    }
+  },
+  "7997b8cd-001c-423f-9e80-c8a330b4147b": {
+    "$contentActions": [
+      {
+        "action": {
+          "$description": "",
+          "type": "SendMessage",
+          "settings": {
+            "type": "text/plain",
+            "content": "A Central MBRF agradece o seu contato!",
+            "metadata": {}
+          }
+        }
+      },
+      {
+        "input": {
+          "bypass": true
+        }
+      }
+    ],
+    "$conditionOutputs": [],
+    "$enteringCustomActions": [
+      {
+        "type": "TrackEvent",
+        "settings": {
+          "extras": {
+            "identificador": "{{contact.identity}}",
+            "origem": "{{origem}}",
+            "canal": "{{channel}}"
+          },
+          "category": "Fluxo finalizacao",
+          "action": "Encerrado"
+        },
+        "conditions": []
+      },
+      {
+        "$description": "",
+        "$inputSchema": {
+          "type": "object",
+          "properties": {},
+          "required": []
+        },
+        "type": "SetVariable",
+        "settings": {
+          "variable": "horaFim",
+          "value": "{{calendar.datetime}}"
+        },
+        "conditions": []
+      }
+    ],
+    "$leavingCustomActions": [
+      {
+        "$description": "",
+        "$inputSchema": {
+          "type": "object",
+          "properties": {},
+          "required": []
+        },
+        "type": "ExecuteScript",
+        "settings": {
+          "function": "run",
+          "source": "function run(horaEntrada, horaFim) {\n  try {\n    function parseDataGMT0(dataTexto) {\n      const [data, hora] = dataTexto.split(\" \");\n      const [mes, dia, ano] = data.split(\"/\");\n      const [hh, mm, ss] = hora.split(\":\");\n\n      return new Date(Date.UTC(ano, mes - 1, dia, hh, mm, ss));\n    }\n\n    function formatarBrasil(data) {\n      const dataBrasil = new Date(data.getTime() - 3 * 60 * 60 * 1000);\n\n      const dia = String(dataBrasil.getUTCDate()).padStart(2, \"0\");\n      const mes = String(dataBrasil.getUTCMonth() + 1).padStart(2, \"0\");\n      const ano = dataBrasil.getUTCFullYear();\n\n      const hora = String(dataBrasil.getUTCHours()).padStart(2, \"0\");\n      const minuto = String(dataBrasil.getUTCMinutes()).padStart(2, \"0\");\n\n      return {\n        data: `${dia}/${mes}/${ano}`,\n        hora: `${hora}:${minuto}`\n      };\n    }\n\n    const entrada = parseDataGMT0(horaEntrada);\n    const fim = parseDataGMT0(horaFim);\n\n    const diferencaMs = fim - entrada;\n    const totalSegundos = Math.floor(diferencaMs / 1000);\n    const totalMinutos = Math.floor(totalSegundos / 60);\n\n    const horas = Math.floor(totalMinutos / 60);\n    const minutos = totalMinutos % 60;\n    const segundos = totalSegundos % 60;\n\n    const entradaFormatada = formatarBrasil(entrada);\n    const fimFormatada = formatarBrasil(fim);\n\n    let tempoTexto = \"\";\n\n    if (horas > 0) {\n      tempoTexto += `${horas} ${horas === 1 ? \"hora\" : \"horas\"}`;\n    }\n\n    if (minutos > 0) {\n      if (tempoTexto) tempoTexto += \" e \";\n      tempoTexto += `${minutos} ${minutos === 1 ? \"minuto\" : \"minutos\"}`;\n    }\n\n    if (horas === 0 && minutos === 0) {\n      tempoTexto = `${segundos} ${segundos === 1 ? \"segundo\" : \"segundos\"}`;\n    }\n\n    return {\n      horaEntrada,\n      horaFim,\n      tempoInteracao: {\n        horas,\n        minutos,\n        segundos,\n        totalMinutos,\n        totalSegundos\n      },\n      relatorio: `Entrou às ${entradaFormatada.hora} do dia ${entradaFormatada.data} finalizou interação às ${fimFormatada.hora} do dia ${fimFormatada.data} tempo de interação de ${tempoTexto}`\n    };\n  } catch (error) {\n    return {\n      erro: \"Erro ao calcular tempo de interação\"\n    };\n  }\n}",
+          "inputVariables": [
+            "horaEntrada",
+            "horaFim"
+          ],
+          "outputVariable": "tempoInteracao",
+          "LocalTimeZoneEnabled": false
+        },
+        "conditions": []
+      },
+      {
+        "type": "TrackEvent",
+        "settings": {
+          "extras": {
+            "identificador": "{{contact.identity}}",
+            "origem": "{{origem}}",
+            "canal": "{{channel}}"
+          },
+          "category": "tempo de interacao",
+          "action": "identificador: {{contact.identity}} | {{tempoInteracao@relatorio}}"
+        },
+        "conditions": []
+      },
+      {
+        "$description": "",
+        "$inputSchema": {
+          "type": "object",
+          "properties": {},
+          "required": []
+        },
+        "type": "SetVariable",
+        "settings": {
+          "variable": "infoNlp"
+        },
+        "conditions": []
+      }
+    ],
+    "$defaultOutput": {
+      "stateId": "ba691b8a-f6c1-4ca0-ae64-d9d7dce553fb",
+      "typeOfStateId": "state"
+    },
+    "$localCustomActions": [],
+    "$title": "[MSG] Central MBRF agradece o contato VIII",
+    "$position": {
+      "top": "3179.33px",
+      "left": "5101.33px"
+    }
+  },
+  "8739b90c-2946-4422-9de6-f958618bef1d": {
+    "$contentActions": [
+      {
+        "input": {
+          "bypass": true
+        }
+      }
+    ],
+    "$conditionOutputs": [
+      {
+        "stateId": "fee40f0d-d142-46e2-bad6-d6cb2c0e0f60",
+        "typeOfStateId": "state",
+        "conditions": [
+          {
+            "source": "context",
+            "comparison": "equals",
+            "values": [
+              "autenticado"
+            ],
+            "variable": "contact.extras.clienteIdentificado"
+          }
+        ]
+      },
+      {
+        "stateId": "81512fff-4783-4579-b0f9-1f2b494fe629",
+        "typeOfStateId": "state",
+        "conditions": [
+          {
+            "source": "context",
+            "comparison": "notExists",
+            "values": [],
+            "variable": "contact.extras.clienteIdentificado"
+          }
+        ]
+      }
+    ],
+    "$enteringCustomActions": [],
+    "$leavingCustomActions": [],
+    "$defaultOutput": {
+      "stateId": "fallback"
+    },
+    "$localCustomActions": [],
+    "$title": "[Verificação] Autenticado XI",
+    "$position": {
+      "top": "3059.33px",
+      "left": "4435.33px"
+    }
+  },
+  "700406c1-626e-4695-9b21-02c0361dd424": {
+    "$contentActions": [
+      {
+        "input": {
+          "bypass": true
+        }
+      }
+    ],
+    "$conditionOutputs": [],
+    "$enteringCustomActions": [],
+    "$leavingCustomActions": [],
+    "$defaultOutput": {
+      "stateId": "265f4bba-c81b-4c7b-a2ad-e725f800d038",
+      "typeOfStateId": "state"
+    },
+    "$localCustomActions": [],
+    "$title": "GO TO - INFORMACOES CUPOM FIXO",
+    "$position": {
+      "top": "1172.33px",
+      "left": "4001.67px"
+    }
+  },
+  "771f6bc5-b144-4343-aac0-468b48ef328c": {
+    "$contentActions": [
+      {
+        "input": {
+          "bypass": true
+        }
+      }
+    ],
+    "$conditionOutputs": [],
+    "$enteringCustomActions": [],
+    "$leavingCustomActions": [],
+    "$defaultOutput": {
+      "stateId": "031c7119-df4d-4f08-92a2-704e32fd0fbd",
+      "typeOfStateId": "state"
+    },
+    "$localCustomActions": [],
+    "$title": "GO TO - Ajudo em algo mais XII",
+    "$position": {
+      "top": "2881px",
+      "left": "5433px"
+    }
+  },
+  "39f273d7-f167-4280-b9ea-de1cec15d807": {
+    "$contentActions": [
+      {
+        "action": {
+          "$description": "",
+          "type": "SendMessage",
+          "settings": {
+            "type": "text/plain",
+            "content": "Você pode seguir por um destes caminhos para resolver o que precisa:\n\n📋 <b>Problemas ou dúvidas com pedidos:</b>\nAbra um chamado direto pelo nosso portal e nossa equipe analisará seu caso em até 5 dias úteis.\n\n💬 <b>Atendimento com a Sophia:</b>\nPara um suporte especializado, converse com a Sophia, nossa assistente virtual! É só clicar no link abaixo:\n\n👉 🔗https://wa.me/+558007028800\n\n📞 <b>SAC MBRF:</b>\nSe preferir ligar, fale com nosso time pelo 0800 702 3311.\n\nEstamos aqui para te ajudar! 💛",
+            "metadata": {}
+          }
+        }
+      },
+      {
+        "action": {
+          "$description": "",
+          "type": "SendMessage",
+          "settings": {
+            "type": "application/vnd.lime.select+json",
+            "content": {
+              "text": "Gostaria de <b>abrir um chamado</b> em nossa central? ",
+              "scope": "immediate",
+              "options": [
+                {
+                  "text": "Sim",
+                  "previewText": "Sim",
+                  "value": null,
+                  "index": 0,
+                  "type": null
+                },
+                {
+                  "text": "Não",
+                  "previewText": "Não",
+                  "value": null,
+                  "index": 1,
+                  "type": null
+                }
+              ],
+              "quikReply": false
+            },
+            "metadata": {}
+          }
+        }
+      },
+      {
+        "input": {
+          "bypass": false,
+          "expiration": "0:15"
+        }
+      }
+    ],
+    "$conditionOutputs": [
+      {
+        "stateId": "b67bc6b3-20e7-44c9-ae3a-59c7023f5fb6",
+        "typeOfStateId": "state",
+        "conditions": [
+          {
+            "source": "context",
+            "comparison": "equals",
+            "values": [
+              "Sim"
+            ],
+            "variable": "intentAction"
+          }
+        ]
+      },
+      {
+        "stateId": "771f6bc5-b144-4343-aac0-468b48ef328c",
+        "typeOfStateId": "state",
+        "conditions": [
+          {
+            "source": "context",
+            "comparison": "equals",
+            "values": [
+              "Não"
+            ],
+            "variable": "intentAction"
+          }
+        ]
+      },
+      {
+        "stateId": "828cb80b-bae0-4254-a918-f954e9b585c7",
+        "typeOfStateId": "state",
+        "conditions": [
+          {
+            "source": "input",
+            "comparison": "notExists",
+            "values": []
+          }
+        ]
+      }
+    ],
+    "$enteringCustomActions": [
+      {
+        "type": "TrackEvent",
+        "settings": {
+          "extras": {
+            "identificador": "{{contact.identity}}",
+            "origem": "{{origem}}",
+            "canal": "{{channel}}"
+          },
+          "category": "Nlp intencao identificada",
+          "action": "Atendimento urgente"
+        },
+        "conditions": []
+      },
+      {
+        "type": "SetVariable",
+        "settings": {
+          "variable": "intentAction"
+        },
+        "conditions": []
+      }
+    ],
+    "$leavingCustomActions": [
+      {
+        "type": "ExecuteScript",
+        "settings": {
+          "function": "run",
+          "source": "function run(input) {\n  try {\n    let opcoesMenu = {\n      \"1\": \"Sim\",\n      \"2\": \"Não\",\n    };\n\n    let menuRegex = {\n      \"1\": /\\b(?:sim|claro|confirmo|positivo|ok|okay|pode\\s+ser|aceito|quero|continuar)\\b/i,\n\n      \"2\": /\\b(?:n[aã]o|negativo|cancelar|desistir|prefiro\\s+n[aã]o|sair|encerrar|parar)\\b/i,\n    };\n\n    input = input.trim();\n\n    for (let prop in menuRegex) {\n      if (menuRegex[prop].test(input)) {\n        return opcoesMenu[prop];\n      }\n    }\n\n    return \"Input inesperado\";\n  } catch (error) {\n    return \"Input inesperado\";\n  }\n}",
+          "inputVariables": [
+            "input.content"
+          ],
+          "outputVariable": "intentAction",
+          "LocalTimeZoneEnabled": false
+        },
+        "conditions": []
+      }
+    ],
+    "$defaultOutput": {
+      "stateId": "fallback"
+    },
+    "$localCustomActions": [],
+    "$title": "URGENCIA FRUSTRACAO",
+    "$position": {
+      "top": "2879px",
+      "left": "5657px"
+    }
+  },
+  "b67bc6b3-20e7-44c9-ae3a-59c7023f5fb6": {
+    "$contentActions": [
+      {
+        "input": {
+          "bypass": true
+        }
+      }
+    ],
+    "$conditionOutputs": [
+      {
+        "stateId": "f03d4102-8aec-47df-a3d4-5df3c92d858d",
+        "typeOfStateId": "state",
+        "conditions": [
+          {
+            "source": "context",
+            "comparison": "equals",
+            "values": [
+              "autenticado"
+            ],
+            "variable": "contact.extras.clienteIdentificado"
+          }
+        ]
+      },
+      {
+        "stateId": "aa074e6d-bcba-487b-bd02-b7b389d04911",
+        "typeOfStateId": "state",
+        "conditions": [
+          {
+            "source": "context",
+            "comparison": "notExists",
+            "values": [],
+            "variable": "contact.extras.clienteIdentificado"
+          }
+        ]
+      }
+    ],
+    "$enteringCustomActions": [],
+    "$leavingCustomActions": [],
+    "$defaultOutput": {
+      "stateId": "fallback"
+    },
+    "$localCustomActions": [],
+    "$title": "[Verificação] Autenticado XII",
+    "$position": {
+      "top": "3060px",
+      "left": "5656px"
+    }
+  },
+  "f03d4102-8aec-47df-a3d4-5df3c92d858d": {
+    "$contentActions": [
+      {
+        "input": {
+          "bypass": true
+        }
+      }
+    ],
+    "$conditionOutputs": [],
+    "$enteringCustomActions": [
+      {
+        "type": "TrackEvent",
+        "settings": {
+          "extras": {
+            "identificador": "{{contact.identity}}",
+            "origem": "{{origem}}",
+            "canal": "{{channel}}"
+          },
+          "category": "cliente autenticado nlp resultado",
+          "action": "Sim"
+        },
+        "conditions": []
+      }
+    ],
+    "$leavingCustomActions": [
+      {
+        "$description": "",
+        "$inputSchema": {
+          "type": "object",
+          "properties": {},
+          "required": []
+        },
+        "type": "Redirect",
+        "settings": {
+          "context": {
+            "type": "text/plain",
+            "value": "{ \"lastState\": \"fc628d92-fb1a-4047-82a9-928dd083c6b2\" }"
+          },
+          "address": "Ajuda e suporte"
+        },
+        "conditions": []
+      }
+    ],
+    "$defaultOutput": {
+      "stateId": "onboarding",
+      "typeOfStateId": "state"
+    },
+    "$localCustomActions": [],
+    "$title": "Autenticado - GO TO  Ajuda e suporte - outros",
+    "$position": {
+      "top": "3188px",
+      "left": "5418px"
+    }
+  },
+  "aa074e6d-bcba-487b-bd02-b7b389d04911": {
+    "$contentActions": [
+      {
+        "action": {
+          "$description": "",
+          "type": "SendMessage",
+          "settings": {
+            "type": "application/vnd.lime.select+json",
+            "content": {
+              "text": "🔒 Para <b>abertura de chamado via WhatsApp é necessário fazer a</b> autenticação de segurança.\n\n<i>Como gostaria de prosseguir?</i>",
+              "scope": "immediate",
+              "options": [
+                {
+                  "text": "Me autenticar",
+                  "previewText": "Me autenticar",
+                  "value": null,
+                  "index": 0,
+                  "type": null
+                },
+                {
+                  "text": "Não sou cliente",
+                  "previewText": "Não sou cliente",
+                  "value": null,
+                  "index": 1,
+                  "type": null
+                },
+                {
+                  "index": -1,
+                  "text": "Encerrar conversa",
+                  "previewText": "Encerrar conversa",
+                  "type": null,
+                  "value": null
+                }
+              ],
+              "quikReply": false
+            },
+            "metadata": {}
+          }
+        }
+      },
+      {
+        "input": {
+          "bypass": false,
+          "expiration": "0:15"
+        }
+      }
+    ],
+    "$conditionOutputs": [
+      {
+        "stateId": "b2376d31-e47c-478e-b147-67b523aba7ee",
+        "typeOfStateId": "state",
+        "conditions": [
+          {
+            "source": "context",
+            "comparison": "equals",
+            "values": [
+              "Me autenticar"
+            ],
+            "variable": "intentAction"
+          }
+        ]
+      },
+      {
+        "stateId": "8ad63260-8234-427f-82bf-1c5f0dc800c1",
+        "typeOfStateId": "state",
+        "conditions": [
+          {
+            "source": "context",
+            "comparison": "equals",
+            "values": [
+              "Não sou cliente"
+            ],
+            "variable": "intentAction"
+          }
+        ]
+      },
+      {
+        "stateId": "efb826fc-b4e6-4277-a104-5aaaa635e541",
+        "typeOfStateId": "state",
+        "conditions": [
+          {
+            "source": "context",
+            "comparison": "equals",
+            "values": [
+              "Encerrar conversa"
+            ],
+            "variable": "intentAction"
+          }
+        ]
+      },
+      {
+        "stateId": "828cb80b-bae0-4254-a918-f954e9b585c7",
+        "typeOfStateId": "state",
+        "conditions": [
+          {
+            "source": "input",
+            "comparison": "notExists",
+            "values": []
+          }
+        ]
+      }
+    ],
+    "$enteringCustomActions": [
+      {
+        "type": "TrackEvent",
+        "settings": {
+          "extras": {
+            "identificador": "{{contact.identity}}",
+            "origem": "{{origem}}",
+            "canal": "{{channel}}"
+          },
+          "category": "cliente autenticado nlp resultado",
+          "action": "Nao"
+        },
+        "conditions": []
+      },
+      {
+        "type": "SetVariable",
+        "settings": {
+          "variable": "intentAction"
+        },
+        "conditions": []
+      },
+      {
+        "type": "TrackEvent",
+        "settings": {
+          "extras": {
+            "identificador": "{{contact.identity}}",
+            "origem": "{{origem}}",
+            "canal": "{{channel}}"
+          },
+          "category": "autenticacao chamado menu exibicao",
+          "action": "Exibicao"
+        },
+        "conditions": []
+      }
+    ],
+    "$leavingCustomActions": [
+      {
+        "type": "ExecuteScript",
+        "settings": {
+          "function": "run",
+          "source": "function run(input) {\n  try {\n    const opcoesMenu = {\n      \"1\": \"Me autenticar\",\n      \"2\": \"Não sou cliente\",\n      \"3\": \"Encerrar conversa\"\n    };\n\n    const menuRegex = {\n      \"1\": /\\b(?:me\\s+autenticar|autenticar|autentica[cç][aã]o|quero\\s+me\\s+autenticar|sim|continuar)\\b/i,\n\n      \"2\": /\\b(?:n[aã]o\\s+sou\\s+cliente|n[aã]o\\s+sou\\s+um\\s+cliente|n[aã]o\\s+sou\\s+cliente\\s+unimed|n[aã]o\\s+cliente)\\b/i,\n\n      \"3\": /\\b(?:encerrar\\s+conversa|encerrar|sair|finalizar|fechar|terminar|parar|quero\\s+sair|finalizar\\s+atendimento)\\b/i\n    };\n\n    input = String(input || \"\").trim();\n\n    // Aceita também a resposta numérica\n    if (input === \"1\") {\n      return opcoesMenu[\"1\"];\n    }\n\n    if (input === \"2\") {\n      return opcoesMenu[\"2\"];\n    }\n\n    if (input === \"3\") {\n      return opcoesMenu[\"3\"];\n    }\n\n    for (const prop in menuRegex) {\n      if (menuRegex[prop].test(input)) {\n        return opcoesMenu[prop];\n      }\n    }\n\n    return \"Input inesperado\";\n\n  } catch (error) {\n    return \"Input inesperado\";\n  }\n}",
+          "inputVariables": [
+            "input.content"
+          ],
+          "outputVariable": "intentAction",
+          "LocalTimeZoneEnabled": false
+        },
+        "conditions": []
+      },
+      {
+        "type": "TrackEvent",
+        "settings": {
+          "extras": {
+            "identificador": "{{contact.identity}}",
+            "origem": "{{origem}}",
+            "canal": "{{channel}}"
+          },
+          "category": "autenticacao chamado menu selecao",
+          "action": "{{intentAction}}"
+        },
+        "conditions": [
+          {
+            "source": "input",
+            "comparison": "exists",
+            "values": []
+          }
+        ]
+      },
+      {
+        "type": "TrackEvent",
+        "settings": {
+          "extras": {
+            "identificador": "{{contact.identity}}",
+            "origem": "{{origem}}",
+            "canal": "{{channel}}"
+          },
+          "category": "autenticacao chamado menu input",
+          "action": "{{input.content}}"
+        },
+        "conditions": [
+          {
+            "source": "context",
+            "variable": "intentAction",
+            "comparison": "equals",
+            "values": [
+              "Input inesperado"
+            ]
+          },
+          {
+            "source": "input",
+            "comparison": "exists",
+            "values": []
+          }
+        ]
+      }
+    ],
+    "$defaultOutput": {
+      "stateId": "fallback"
+    },
+    "$localCustomActions": [],
+    "$title": "Não autenticado XII",
+    "$position": {
+      "top": "3216px",
+      "left": "5829px"
+    }
+  },
+  "b2376d31-e47c-478e-b147-67b523aba7ee": {
+    "$contentActions": [
+      {
+        "input": {
+          "bypass": true
+        }
+      }
+    ],
+    "$conditionOutputs": [],
+    "$enteringCustomActions": [],
+    "$leavingCustomActions": [
+      {
+        "$description": "",
+        "$inputSchema": {
+          "type": "object",
+          "properties": {},
+          "required": []
+        },
+        "type": "Redirect",
+        "settings": {
+          "context": {
+            "type": "text/plain",
+            "value": "@MenuInicial"
+          },
+          "address": "{{resource.redirect@captacao}}"
+        },
+        "conditions": []
+      }
+    ],
+    "$defaultOutput": {
+      "stateId": "onboarding",
+      "typeOfStateId": "state"
+    },
+    "$localCustomActions": [],
+    "$title": "GO TO - Fluxo autenticação XII",
+    "$position": {
+      "top": "3059px",
+      "left": "6095px"
+    }
+  },
+  "8ad63260-8234-427f-82bf-1c5f0dc800c1": {
+    "$contentActions": [
+      {
+        "action": {
+          "$description": "",
+          "type": "SendRawMessage",
+          "settings": {
+            "metadata": {},
+            "type": "application/json",
+            "rawContent": "{\n  \"recipient_type\": \"individual\",\n  \"type\": \"interactive\",\n  \"interactive\": {\n    \"type\": \"cta_url\",\n    \"body\": {\n      \"text\": \"Sem problemas! Você pode se cadastrar de forma rápida *clicando em “cadastrar agora”.*\\n\\nApós o cadastro, é só retornar para continuarmos o seu atendimento. 💛\"\n    },\n    \"action\": {\n      \"name\": \"cta_url\",\n      \"parameters\": {\n        \"display_text\": \"Cadastrar Agora\",\n        \"url\": \"https://www.centralmbrf.com.br/SelfRegister\"\n      }\n    }\n  }\n}"
+          }
+        }
+      },
+      {
+        "input": {
+          "bypass": true
+        }
+      }
+    ],
+    "$conditionOutputs": [
+      {
+        "stateId": "0c4e2f19-829f-4156-8e84-2a54a102bf5b",
+        "typeOfStateId": "state",
+        "conditions": [
+          {
+            "source": "input",
+            "comparison": "exists",
+            "values": []
+          }
+        ]
+      }
+    ],
+    "$enteringCustomActions": [
+      {
+        "type": "TrackEvent",
+        "settings": {
+          "extras": {
+            "identificador": "{{contact.identity}}",
+            "origem": "{{origem}}",
+            "canal": "{{channel}}"
+          },
+          "category": "mensagem nao cliente exibicao",
+          "action": "Exibicao"
+        },
+        "conditions": []
+      }
+    ],
+    "$leavingCustomActions": [],
+    "$defaultOutput": {
+      "stateId": "fallback"
+    },
+    "$localCustomActions": [],
+    "$title": "[MSG] Cadastro IX",
+    "$position": {
+      "top": "3195px",
+      "left": "6092px"
+    }
+  },
+  "0c4e2f19-829f-4156-8e84-2a54a102bf5b": {
+    "$contentActions": [
+      {
+        "action": {
+          "$description": "",
+          "type": "SendMessage",
+          "settings": {
+            "type": "text/plain",
+            "content": "A Central MBRF agradece o seu contato!",
+            "metadata": {}
+          }
+        }
+      },
+      {
+        "input": {
+          "bypass": true
+        }
+      }
+    ],
+    "$conditionOutputs": [],
+    "$enteringCustomActions": [
+      {
+        "type": "TrackEvent",
+        "settings": {
+          "extras": {
+            "identificador": "{{contact.identity}}",
+            "origem": "{{origem}}",
+            "canal": "{{channel}}"
+          },
+          "category": "Fluxo finalizacao",
+          "action": "Encerrado"
+        },
+        "conditions": []
+      },
+      {
+        "$description": "",
+        "$inputSchema": {
+          "type": "object",
+          "properties": {},
+          "required": []
+        },
+        "type": "SetVariable",
+        "settings": {
+          "variable": "horaFim",
+          "value": "{{calendar.datetime}}"
+        },
+        "conditions": []
+      }
+    ],
+    "$leavingCustomActions": [
+      {
+        "$description": "",
+        "$inputSchema": {
+          "type": "object",
+          "properties": {},
+          "required": []
+        },
+        "type": "ExecuteScript",
+        "settings": {
+          "function": "run",
+          "source": "function run(horaEntrada, horaFim) {\n  try {\n    function parseDataGMT0(dataTexto) {\n      const [data, hora] = dataTexto.split(\" \");\n      const [mes, dia, ano] = data.split(\"/\");\n      const [hh, mm, ss] = hora.split(\":\");\n\n      return new Date(Date.UTC(ano, mes - 1, dia, hh, mm, ss));\n    }\n\n    function formatarBrasil(data) {\n      const dataBrasil = new Date(data.getTime() - 3 * 60 * 60 * 1000);\n\n      const dia = String(dataBrasil.getUTCDate()).padStart(2, \"0\");\n      const mes = String(dataBrasil.getUTCMonth() + 1).padStart(2, \"0\");\n      const ano = dataBrasil.getUTCFullYear();\n\n      const hora = String(dataBrasil.getUTCHours()).padStart(2, \"0\");\n      const minuto = String(dataBrasil.getUTCMinutes()).padStart(2, \"0\");\n\n      return {\n        data: `${dia}/${mes}/${ano}`,\n        hora: `${hora}:${minuto}`\n      };\n    }\n\n    const entrada = parseDataGMT0(horaEntrada);\n    const fim = parseDataGMT0(horaFim);\n\n    const diferencaMs = fim - entrada;\n    const totalSegundos = Math.floor(diferencaMs / 1000);\n    const totalMinutos = Math.floor(totalSegundos / 60);\n\n    const horas = Math.floor(totalMinutos / 60);\n    const minutos = totalMinutos % 60;\n    const segundos = totalSegundos % 60;\n\n    const entradaFormatada = formatarBrasil(entrada);\n    const fimFormatada = formatarBrasil(fim);\n\n    let tempoTexto = \"\";\n\n    if (horas > 0) {\n      tempoTexto += `${horas} ${horas === 1 ? \"hora\" : \"horas\"}`;\n    }\n\n    if (minutos > 0) {\n      if (tempoTexto) tempoTexto += \" e \";\n      tempoTexto += `${minutos} ${minutos === 1 ? \"minuto\" : \"minutos\"}`;\n    }\n\n    if (horas === 0 && minutos === 0) {\n      tempoTexto = `${segundos} ${segundos === 1 ? \"segundo\" : \"segundos\"}`;\n    }\n\n    return {\n      horaEntrada,\n      horaFim,\n      tempoInteracao: {\n        horas,\n        minutos,\n        segundos,\n        totalMinutos,\n        totalSegundos\n      },\n      relatorio: `Entrou às ${entradaFormatada.hora} do dia ${entradaFormatada.data} finalizou interação às ${fimFormatada.hora} do dia ${fimFormatada.data} tempo de interação de ${tempoTexto}`\n    };\n  } catch (error) {\n    return {\n      erro: \"Erro ao calcular tempo de interação\"\n    };\n  }\n}",
+          "inputVariables": [
+            "horaEntrada",
+            "horaFim"
+          ],
+          "outputVariable": "tempoInteracao",
+          "LocalTimeZoneEnabled": false
+        },
+        "conditions": []
+      },
+      {
+        "type": "TrackEvent",
+        "settings": {
+          "extras": {
+            "identificador": "{{contact.identity}}",
+            "origem": "{{origem}}",
+            "canal": "{{channel}}"
+          },
+          "category": "tempo de interacao",
+          "action": "identificador: {{contact.identity}} | {{tempoInteracao@relatorio}}"
+        },
+        "conditions": []
+      },
+      {
+        "$description": "",
+        "$inputSchema": {
+          "type": "object",
+          "properties": {},
+          "required": []
+        },
+        "type": "SetVariable",
+        "settings": {
+          "variable": "infoNlp"
+        },
+        "conditions": []
+      }
+    ],
+    "$defaultOutput": {
+      "stateId": "ba691b8a-f6c1-4ca0-ae64-d9d7dce553fb",
+      "typeOfStateId": "state"
+    },
+    "$localCustomActions": [],
+    "$title": "[MSG] Central MBRF agradece o contato IX",
+    "$position": {
+      "top": "3180px",
+      "left": "6322px"
+    }
+  },
+  "efb826fc-b4e6-4277-a104-5aaaa635e541": {
+    "$contentActions": [
+      {
+        "action": {
+          "$description": "",
+          "type": "SendMessage",
+          "settings": {
+            "type": "text/plain",
+            "content": "Fico feliz em ter te ajudado!\n\nSempre que precisar, pode contar comigo! 🤝 ",
+            "metadata": {}
+          }
+        }
+      },
+      {
+        "input": {
+          "bypass": true
+        }
+      }
+    ],
+    "$conditionOutputs": [],
+    "$enteringCustomActions": [],
+    "$leavingCustomActions": [],
+    "$defaultOutput": {
+      "stateId": "5c76a2e0-b239-43ce-8f72-ad278cfaa22f",
+      "typeOfStateId": "state"
+    },
+    "$localCustomActions": [],
+    "$title": "GO TO - Encerramento XII",
+    "$position": {
+      "top": "3347px",
+      "left": "6091px"
+    }
+  },
+  "828cb80b-bae0-4254-a918-f954e9b585c7": {
+    "$contentActions": [
+      {
+        "input": {
+          "bypass": true
+        }
+      }
+    ],
+    "$conditionOutputs": [],
+    "$enteringCustomActions": [],
+    "$leavingCustomActions": [],
+    "$defaultOutput": {
+      "stateId": "2158b6d6-75e4-4822-a246-547ff908d227",
+      "typeOfStateId": "state"
+    },
+    "$localCustomActions": [],
+    "$title": "GO TO - Inatividade XII",
+    "$position": {
+      "top": "2884px",
+      "left": "5884px"
+    }
+  },
+  "45e8f372-9a61-49ae-b6fe-f55f22517fe6": {
+    "$contentActions": [
+      {
+        "input": {
+          "bypass": true
+        }
+      }
+    ],
+    "$conditionOutputs": [],
+    "$enteringCustomActions": [],
+    "$leavingCustomActions": [],
+    "$defaultOutput": {
+      "stateId": "39f273d7-f167-4280-b9ea-de1cec15d807",
+      "typeOfStateId": "state"
+    },
+    "$localCustomActions": [],
+    "$title": "GO TO - URGENCIA FRUSTRACAO",
+    "$position": {
+      "top": "1315.33px",
+      "left": "4002.67px"
+    }
+  },
+  "4ee22659-50f4-4df0-b254-b58bebb81ef1": {
+    "$contentActions": [
+      {
+        "action": {
+          "$description": "",
+          "type": "SendMessage",
+          "settings": {
+            "type": "text/plain",
+            "content": "Já conhece o <b>App da Central MBRF?</b> Ele foi feito sob medida para facilitar a\n rotina de compras do seu comércio! 📲✨\n\nCom o app, você tem:\n✅ <b>Agilidade:</b> Faça seus pedidos em poucos minutos, de onde estiver.\n✅ <b>Ofertas na palma da mão:</b> Acesso rápido a lançamentos, promoções e\ncupons exclusivos.\n✅ <b>Autonomia total:</b> Acompanhe o status de entrega, limites e boletos em\ntempo real.\n\nBaixe agora mesmo e tenha a Central MBRF sempre com você:\n🔗  Google Play - \nhttps://play.google.com/store/apps/details?id=com.kobe.centralbrf\nApp Store - ‎https://apps.apple.com/br/app/central-mbrf/id6736713145",
+            "metadata": {}
+          }
+        }
+      },
+      {
+        "input": {
+          "bypass": true
+        }
+      }
+    ],
+    "$conditionOutputs": [],
+    "$enteringCustomActions": [
+      {
+        "type": "TrackEvent",
+        "settings": {
+          "extras": {
+            "identificador": "{{contact.identity}}",
+            "origem": "{{origem}}",
+            "canal": "{{channel}}"
+          },
+          "category": "Nlp intencao identificada",
+          "action": "Aplicativo Central MBRF"
+        },
+        "conditions": []
+      }
+    ],
+    "$leavingCustomActions": [],
+    "$defaultOutput": {
+      "stateId": "031c7119-df4d-4f08-92a2-704e32fd0fbd",
+      "typeOfStateId": "state"
+    },
+    "$localCustomActions": [],
+    "$title": "APLICATIVO CENTRAL MBRF",
+    "$position": {
+      "top": "2150px",
+      "left": "7547px"
+    }
+  },
+  "a53fc649-63dc-4295-a22b-29c02e8281aa": {
+    "$contentActions": [
+      {
+        "input": {
+          "bypass": true
+        }
+      }
+    ],
+    "$conditionOutputs": [],
+    "$enteringCustomActions": [],
+    "$leavingCustomActions": [],
+    "$defaultOutput": {
+      "stateId": "4ee22659-50f4-4df0-b254-b58bebb81ef1",
+      "typeOfStateId": "state"
+    },
+    "$localCustomActions": [],
+    "$title": "GO TO - APLICATIVO CENTRAL MBRF",
+    "$position": {
+      "top": "1329px",
+      "left": "3383px"
+    }
+  },
+  "87f7ccd3-c0f4-4e03-b904-43c17386b8f5": {
+    "$contentActions": [
+      {
+        "action": {
+          "$description": "",
+          "type": "SendMessage",
+          "settings": {
+            "type": "application/vnd.lime.select+json",
+            "content": {
+              "text": "Entendi que você pode estar enfrentando algum problema com o aplicativo ou site da Central MBRF. Você gostaria de relatar um problema relacionado ao aplicativo?",
+              "scope": "immediate",
+              "options": [
+                {
+                  "text": "Sim",
+                  "previewText": "Sim",
+                  "value": null,
+                  "index": 0,
+                  "type": null
+                },
+                {
+                  "text": "Não",
+                  "previewText": "Não",
+                  "value": null,
+                  "index": 1,
+                  "type": null
+                }
+              ],
+              "quikReply": false
+            },
+            "metadata": {}
+          }
+        }
+      },
+      {
+        "input": {
+          "bypass": false,
+          "expiration": "0:15"
+        }
+      }
+    ],
+    "$conditionOutputs": [
+      {
+        "stateId": "c7649eb8-48bc-4245-8362-7a59b3ed9f8b",
+        "typeOfStateId": "state",
+        "conditions": [
+          {
+            "source": "context",
+            "comparison": "equals",
+            "values": [
+              "Sim"
+            ],
+            "variable": "intentAction"
+          }
+        ]
+      },
+      {
+        "stateId": "f9e4f427-e5c3-4d74-af25-0d00ddff7703",
+        "typeOfStateId": "state",
+        "conditions": [
+          {
+            "source": "context",
+            "comparison": "equals",
+            "values": [
+              "Não"
+            ],
+            "variable": "intentAction"
+          }
+        ]
+      },
+      {
+        "stateId": "ff7ba76e-4218-4038-bb87-0615b50602f1",
+        "typeOfStateId": "state",
+        "conditions": [
+          {
+            "source": "input",
+            "comparison": "notExists",
+            "values": []
+          }
+        ]
+      }
+    ],
+    "$enteringCustomActions": [
+      {
+        "type": "TrackEvent",
+        "settings": {
+          "extras": {
+            "identificador": "{{contact.identity}}",
+            "origem": "{{origem}}",
+            "canal": "{{channel}}"
+          },
+          "category": "Nlp intencao identificada",
+          "action": "Problemas App ou Site"
+        },
+        "conditions": []
+      },
+      {
+        "type": "SetVariable",
+        "settings": {
+          "variable": "intentAction"
+        },
+        "conditions": []
+      }
+    ],
+    "$leavingCustomActions": [
+      {
+        "type": "ExecuteScript",
+        "settings": {
+          "function": "run",
+          "source": "function run(input) {\n  try {\n    let opcoesMenu = {\n      \"1\": \"Sim\",\n      \"2\": \"Não\",\n    };\n\n    let menuRegex = {\n      \"1\": /\\b(?:sim|claro|confirmo|positivo|ok|okay|pode\\s+ser|aceito|quero|continuar)\\b/i,\n\n      \"2\": /\\b(?:n[aã]o|negativo|cancelar|desistir|prefiro\\s+n[aã]o|sair|encerrar|parar)\\b/i,\n    };\n\n    input = input.trim();\n\n    for (let prop in menuRegex) {\n      if (menuRegex[prop].test(input)) {\n        return opcoesMenu[prop];\n      }\n    }\n\n    return \"Input inesperado\";\n  } catch (error) {\n    return \"Input inesperado\";\n  }\n}",
+          "inputVariables": [
+            "input.content"
+          ],
+          "outputVariable": "intentAction",
+          "LocalTimeZoneEnabled": false
+        },
+        "conditions": []
+      }
+    ],
+    "$defaultOutput": {
+      "stateId": "fallback"
+    },
+    "$localCustomActions": [],
+    "$title": "PROBLEMAS APP OU SITE",
+    "$position": {
+      "top": "2863px",
+      "left": "6955px"
+    }
+  },
+  "f9e4f427-e5c3-4d74-af25-0d00ddff7703": {
+    "$contentActions": [
+      {
+        "input": {
+          "bypass": true
+        }
+      }
+    ],
+    "$conditionOutputs": [],
+    "$enteringCustomActions": [],
+    "$leavingCustomActions": [],
+    "$defaultOutput": {
+      "stateId": "031c7119-df4d-4f08-92a2-704e32fd0fbd",
+      "typeOfStateId": "state"
+    },
+    "$localCustomActions": [],
+    "$title": "GO TO - Ajudo em algo mais XIII",
+    "$position": {
+      "top": "2853px",
+      "left": "6729px"
+    }
+  },
+  "c7649eb8-48bc-4245-8362-7a59b3ed9f8b": {
+    "$contentActions": [
+      {
+        "input": {
+          "bypass": true
+        }
+      }
+    ],
+    "$conditionOutputs": [
+      {
+        "stateId": "2ad531cd-4f6a-4fa3-9b28-2f809d30e451",
+        "typeOfStateId": "state",
+        "conditions": [
+          {
+            "source": "context",
+            "comparison": "equals",
+            "values": [
+              "autenticado"
+            ],
+            "variable": "contact.extras.clienteIdentificado"
+          }
+        ]
+      },
+      {
+        "stateId": "03d2f62f-d500-4617-b563-ba691698d903",
+        "typeOfStateId": "state",
+        "conditions": [
+          {
+            "source": "context",
+            "comparison": "notExists",
+            "values": [],
+            "variable": "contact.extras.clienteIdentificado"
+          }
+        ]
+      }
+    ],
+    "$enteringCustomActions": [],
+    "$leavingCustomActions": [],
+    "$defaultOutput": {
+      "stateId": "fallback"
+    },
+    "$localCustomActions": [],
+    "$title": "[Verificação] Autenticado XIII",
+    "$position": {
+      "top": "3044px",
+      "left": "6954px"
+    }
+  },
+  "2ad531cd-4f6a-4fa3-9b28-2f809d30e451": {
+    "$contentActions": [
+      {
+        "input": {
+          "bypass": true
+        }
+      }
+    ],
+    "$conditionOutputs": [],
+    "$enteringCustomActions": [
+      {
+        "type": "TrackEvent",
+        "settings": {
+          "extras": {
+            "identificador": "{{contact.identity}}",
+            "origem": "{{origem}}",
+            "canal": "{{channel}}"
+          },
+          "category": "cliente autenticado nlp resultado",
+          "action": "Sim"
+        },
+        "conditions": []
+      }
+    ],
+    "$leavingCustomActions": [
+      {
+        "$description": "",
+        "$inputSchema": {
+          "type": "object",
+          "properties": {},
+          "required": []
+        },
+        "type": "Redirect",
+        "settings": {
+          "context": {
+            "type": "text/plain",
+            "value": "{ \"lastState\": \"a764d2bc-6d9f-4461-a3b7-630ef015644d\" }"
+          },
+          "address": "Ajuda e suporte"
+        },
+        "conditions": []
+      }
+    ],
+    "$defaultOutput": {
+      "stateId": "onboarding",
+      "typeOfStateId": "state"
+    },
+    "$localCustomActions": [],
+    "$title": "Autenticado - GO TO  Ajuda e suporte - problema si",
+    "$position": {
+      "top": "3172px",
+      "left": "6716px"
+    }
+  },
+  "03d2f62f-d500-4617-b563-ba691698d903": {
+    "$contentActions": [
+      {
+        "action": {
+          "$description": "",
+          "type": "SendMessage",
+          "settings": {
+            "type": "application/vnd.lime.select+json",
+            "content": {
+              "text": "🔒 Para <b>abertura de chamado via WhatsApp é necessário fazer a</b> autenticação de segurança.\n\n<i>Como gostaria de prosseguir?</i>",
+              "scope": "immediate",
+              "options": [
+                {
+                  "text": "Me autenticar",
+                  "previewText": "Me autenticar",
+                  "value": null,
+                  "index": 0,
+                  "type": null
+                },
+                {
+                  "text": "Não sou cliente",
+                  "previewText": "Não sou cliente",
+                  "value": null,
+                  "index": 1,
+                  "type": null
+                },
+                {
+                  "index": -1,
+                  "text": "Encerrar conversa",
+                  "previewText": "Encerrar conversa",
+                  "type": null,
+                  "value": null
+                }
+              ],
+              "quikReply": false
+            },
+            "metadata": {}
+          }
+        }
+      },
+      {
+        "input": {
+          "bypass": false,
+          "expiration": "0:15"
+        }
+      }
+    ],
+    "$conditionOutputs": [
+      {
+        "stateId": "4f28b228-8789-4c8b-8051-ee4aff176280",
+        "typeOfStateId": "state",
+        "conditions": [
+          {
+            "source": "context",
+            "comparison": "equals",
+            "values": [
+              "Me autenticar"
+            ],
+            "variable": "intentAction"
+          }
+        ]
+      },
+      {
+        "stateId": "a3c3f55b-c9f5-4ed1-ad1f-1e8790a4a518",
+        "typeOfStateId": "state",
+        "conditions": [
+          {
+            "source": "context",
+            "comparison": "equals",
+            "values": [
+              "Não sou cliente"
+            ],
+            "variable": "intentAction"
+          }
+        ]
+      },
+      {
+        "stateId": "18de55ed-1729-4b58-a8ef-c66757a7cdb4",
+        "typeOfStateId": "state",
+        "conditions": [
+          {
+            "source": "context",
+            "comparison": "equals",
+            "values": [
+              "Encerrar conversa"
+            ],
+            "variable": "intentAction"
+          }
+        ]
+      },
+      {
+        "stateId": "ff7ba76e-4218-4038-bb87-0615b50602f1",
+        "typeOfStateId": "state",
+        "conditions": [
+          {
+            "source": "input",
+            "comparison": "notExists",
+            "values": []
+          }
+        ]
+      }
+    ],
+    "$enteringCustomActions": [
+      {
+        "type": "TrackEvent",
+        "settings": {
+          "extras": {
+            "identificador": "{{contact.identity}}",
+            "origem": "{{origem}}",
+            "canal": "{{channel}}"
+          },
+          "category": "cliente autenticado nlp resultado",
+          "action": "Nao"
+        },
+        "conditions": []
+      },
+      {
+        "type": "SetVariable",
+        "settings": {
+          "variable": "intentAction"
+        },
+        "conditions": []
+      },
+      {
+        "type": "TrackEvent",
+        "settings": {
+          "extras": {
+            "identificador": "{{contact.identity}}",
+            "origem": "{{origem}}",
+            "canal": "{{channel}}"
+          },
+          "category": "autenticacao chamado menu exibicao",
+          "action": "Exibicao"
+        },
+        "conditions": []
+      }
+    ],
+    "$leavingCustomActions": [
+      {
+        "type": "ExecuteScript",
+        "settings": {
+          "function": "run",
+          "source": "function run(input) {\n  try {\n    const opcoesMenu = {\n      \"1\": \"Me autenticar\",\n      \"2\": \"Não sou cliente\",\n      \"3\": \"Encerrar conversa\"\n    };\n\n    const menuRegex = {\n      \"1\": /\\b(?:me\\s+autenticar|autenticar|autentica[cç][aã]o|quero\\s+me\\s+autenticar|sim|continuar)\\b/i,\n\n      \"2\": /\\b(?:n[aã]o\\s+sou\\s+cliente|n[aã]o\\s+sou\\s+um\\s+cliente|n[aã]o\\s+sou\\s+cliente\\s+unimed|n[aã]o\\s+cliente)\\b/i,\n\n      \"3\": /\\b(?:encerrar\\s+conversa|encerrar|sair|finalizar|fechar|terminar|parar|quero\\s+sair|finalizar\\s+atendimento)\\b/i\n    };\n\n    input = String(input || \"\").trim();\n\n    // Aceita também a resposta numérica\n    if (input === \"1\") {\n      return opcoesMenu[\"1\"];\n    }\n\n    if (input === \"2\") {\n      return opcoesMenu[\"2\"];\n    }\n\n    if (input === \"3\") {\n      return opcoesMenu[\"3\"];\n    }\n\n    for (const prop in menuRegex) {\n      if (menuRegex[prop].test(input)) {\n        return opcoesMenu[prop];\n      }\n    }\n\n    return \"Input inesperado\";\n\n  } catch (error) {\n    return \"Input inesperado\";\n  }\n}",
+          "inputVariables": [
+            "input.content"
+          ],
+          "outputVariable": "intentAction",
+          "LocalTimeZoneEnabled": false
+        },
+        "conditions": []
+      },
+      {
+        "type": "TrackEvent",
+        "settings": {
+          "extras": {
+            "identificador": "{{contact.identity}}",
+            "origem": "{{origem}}",
+            "canal": "{{channel}}"
+          },
+          "category": "autenticacao chamado menu selecao",
+          "action": "{{intentAction}}"
+        },
+        "conditions": [
+          {
+            "source": "input",
+            "comparison": "exists",
+            "values": []
+          }
+        ]
+      },
+      {
+        "type": "TrackEvent",
+        "settings": {
+          "extras": {
+            "identificador": "{{contact.identity}}",
+            "origem": "{{origem}}",
+            "canal": "{{channel}}"
+          },
+          "category": "autenticacao chamado menu input",
+          "action": "{{input.content}}"
+        },
+        "conditions": [
+          {
+            "source": "context",
+            "variable": "intentAction",
+            "comparison": "equals",
+            "values": [
+              "Input inesperado"
+            ]
+          },
+          {
+            "source": "input",
+            "comparison": "exists",
+            "values": []
+          }
+        ]
+      }
+    ],
+    "$defaultOutput": {
+      "stateId": "fallback"
+    },
+    "$localCustomActions": [],
+    "$title": "Não autenticado XIII",
+    "$position": {
+      "top": "3200px",
+      "left": "7127px"
+    }
+  },
+  "4f28b228-8789-4c8b-8051-ee4aff176280": {
+    "$contentActions": [
+      {
+        "input": {
+          "bypass": true
+        }
+      }
+    ],
+    "$conditionOutputs": [],
+    "$enteringCustomActions": [],
+    "$leavingCustomActions": [
+      {
+        "$description": "",
+        "$inputSchema": {
+          "type": "object",
+          "properties": {},
+          "required": []
+        },
+        "type": "Redirect",
+        "settings": {
+          "context": {
+            "type": "text/plain",
+            "value": "@MenuInicial"
+          },
+          "address": "{{resource.redirect@captacao}}"
+        },
+        "conditions": []
+      }
+    ],
+    "$defaultOutput": {
+      "stateId": "onboarding",
+      "typeOfStateId": "state"
+    },
+    "$localCustomActions": [],
+    "$title": "GO TO - Fluxo autenticação XIII",
+    "$position": {
+      "top": "3043px",
+      "left": "7393px"
+    }
+  },
+  "a3c3f55b-c9f5-4ed1-ad1f-1e8790a4a518": {
+    "$contentActions": [
+      {
+        "action": {
+          "$description": "",
+          "type": "SendRawMessage",
+          "settings": {
+            "metadata": {},
+            "type": "application/json",
+            "rawContent": "{\n  \"recipient_type\": \"individual\",\n  \"type\": \"interactive\",\n  \"interactive\": {\n    \"type\": \"cta_url\",\n    \"body\": {\n      \"text\": \"Sem problemas! Você pode se cadastrar de forma rápida *clicando em “cadastrar agora”.*\\n\\nApós o cadastro, é só retornar para continuarmos o seu atendimento. 💛\"\n    },\n    \"action\": {\n      \"name\": \"cta_url\",\n      \"parameters\": {\n        \"display_text\": \"Cadastrar Agora\",\n        \"url\": \"https://www.centralmbrf.com.br/SelfRegister\"\n      }\n    }\n  }\n}"
+          }
+        }
+      },
+      {
+        "input": {
+          "bypass": true
+        }
+      }
+    ],
+    "$conditionOutputs": [
+      {
+        "stateId": "2998209b-4e0f-4e93-97bb-08f912d5d5c4",
+        "typeOfStateId": "state",
+        "conditions": [
+          {
+            "source": "input",
+            "comparison": "exists",
+            "values": []
+          }
+        ]
+      }
+    ],
+    "$enteringCustomActions": [
+      {
+        "type": "TrackEvent",
+        "settings": {
+          "extras": {
+            "identificador": "{{contact.identity}}",
+            "origem": "{{origem}}",
+            "canal": "{{channel}}"
+          },
+          "category": "mensagem nao cliente exibicao",
+          "action": "Exibicao"
+        },
+        "conditions": []
+      }
+    ],
+    "$leavingCustomActions": [],
+    "$defaultOutput": {
+      "stateId": "fallback"
+    },
+    "$localCustomActions": [],
+    "$title": "[MSG] Cadastro X",
+    "$position": {
+      "top": "3179px",
+      "left": "7390px"
+    }
+  },
+  "2998209b-4e0f-4e93-97bb-08f912d5d5c4": {
+    "$contentActions": [
+      {
+        "action": {
+          "$description": "",
+          "type": "SendMessage",
+          "settings": {
+            "type": "text/plain",
+            "content": "A Central MBRF agradece o seu contato!",
+            "metadata": {}
+          }
+        }
+      },
+      {
+        "input": {
+          "bypass": true
+        }
+      }
+    ],
+    "$conditionOutputs": [],
+    "$enteringCustomActions": [
+      {
+        "type": "TrackEvent",
+        "settings": {
+          "extras": {
+            "identificador": "{{contact.identity}}",
+            "origem": "{{origem}}",
+            "canal": "{{channel}}"
+          },
+          "category": "Fluxo finalizacao",
+          "action": "Encerrado"
+        },
+        "conditions": []
+      },
+      {
+        "$description": "",
+        "$inputSchema": {
+          "type": "object",
+          "properties": {},
+          "required": []
+        },
+        "type": "SetVariable",
+        "settings": {
+          "variable": "horaFim",
+          "value": "{{calendar.datetime}}"
+        },
+        "conditions": []
+      }
+    ],
+    "$leavingCustomActions": [
+      {
+        "$description": "",
+        "$inputSchema": {
+          "type": "object",
+          "properties": {},
+          "required": []
+        },
+        "type": "ExecuteScript",
+        "settings": {
+          "function": "run",
+          "source": "function run(horaEntrada, horaFim) {\n  try {\n    function parseDataGMT0(dataTexto) {\n      const [data, hora] = dataTexto.split(\" \");\n      const [mes, dia, ano] = data.split(\"/\");\n      const [hh, mm, ss] = hora.split(\":\");\n\n      return new Date(Date.UTC(ano, mes - 1, dia, hh, mm, ss));\n    }\n\n    function formatarBrasil(data) {\n      const dataBrasil = new Date(data.getTime() - 3 * 60 * 60 * 1000);\n\n      const dia = String(dataBrasil.getUTCDate()).padStart(2, \"0\");\n      const mes = String(dataBrasil.getUTCMonth() + 1).padStart(2, \"0\");\n      const ano = dataBrasil.getUTCFullYear();\n\n      const hora = String(dataBrasil.getUTCHours()).padStart(2, \"0\");\n      const minuto = String(dataBrasil.getUTCMinutes()).padStart(2, \"0\");\n\n      return {\n        data: `${dia}/${mes}/${ano}`,\n        hora: `${hora}:${minuto}`\n      };\n    }\n\n    const entrada = parseDataGMT0(horaEntrada);\n    const fim = parseDataGMT0(horaFim);\n\n    const diferencaMs = fim - entrada;\n    const totalSegundos = Math.floor(diferencaMs / 1000);\n    const totalMinutos = Math.floor(totalSegundos / 60);\n\n    const horas = Math.floor(totalMinutos / 60);\n    const minutos = totalMinutos % 60;\n    const segundos = totalSegundos % 60;\n\n    const entradaFormatada = formatarBrasil(entrada);\n    const fimFormatada = formatarBrasil(fim);\n\n    let tempoTexto = \"\";\n\n    if (horas > 0) {\n      tempoTexto += `${horas} ${horas === 1 ? \"hora\" : \"horas\"}`;\n    }\n\n    if (minutos > 0) {\n      if (tempoTexto) tempoTexto += \" e \";\n      tempoTexto += `${minutos} ${minutos === 1 ? \"minuto\" : \"minutos\"}`;\n    }\n\n    if (horas === 0 && minutos === 0) {\n      tempoTexto = `${segundos} ${segundos === 1 ? \"segundo\" : \"segundos\"}`;\n    }\n\n    return {\n      horaEntrada,\n      horaFim,\n      tempoInteracao: {\n        horas,\n        minutos,\n        segundos,\n        totalMinutos,\n        totalSegundos\n      },\n      relatorio: `Entrou às ${entradaFormatada.hora} do dia ${entradaFormatada.data} finalizou interação às ${fimFormatada.hora} do dia ${fimFormatada.data} tempo de interação de ${tempoTexto}`\n    };\n  } catch (error) {\n    return {\n      erro: \"Erro ao calcular tempo de interação\"\n    };\n  }\n}",
+          "inputVariables": [
+            "horaEntrada",
+            "horaFim"
+          ],
+          "outputVariable": "tempoInteracao",
+          "LocalTimeZoneEnabled": false
+        },
+        "conditions": []
+      },
+      {
+        "type": "TrackEvent",
+        "settings": {
+          "extras": {
+            "identificador": "{{contact.identity}}",
+            "origem": "{{origem}}",
+            "canal": "{{channel}}"
+          },
+          "category": "tempo de interacao",
+          "action": "identificador: {{contact.identity}} | {{tempoInteracao@relatorio}}"
+        },
+        "conditions": []
+      },
+      {
+        "$description": "",
+        "$inputSchema": {
+          "type": "object",
+          "properties": {},
+          "required": []
+        },
+        "type": "SetVariable",
+        "settings": {
+          "variable": "infoNlp"
+        },
+        "conditions": []
+      }
+    ],
+    "$defaultOutput": {
+      "stateId": "ba691b8a-f6c1-4ca0-ae64-d9d7dce553fb",
+      "typeOfStateId": "state"
+    },
+    "$localCustomActions": [],
+    "$title": "[MSG] Central MBRF agradece o contato X",
+    "$position": {
+      "top": "3164px",
+      "left": "7620px"
+    }
+  },
+  "18de55ed-1729-4b58-a8ef-c66757a7cdb4": {
+    "$contentActions": [
+      {
+        "action": {
+          "$description": "",
+          "type": "SendMessage",
+          "settings": {
+            "type": "text/plain",
+            "content": "Fico feliz em ter te ajudado!\n\nSempre que precisar, pode contar comigo! 🤝 ",
+            "metadata": {}
+          }
+        }
+      },
+      {
+        "input": {
+          "bypass": true
+        }
+      }
+    ],
+    "$conditionOutputs": [],
+    "$enteringCustomActions": [],
+    "$leavingCustomActions": [],
+    "$defaultOutput": {
+      "stateId": "5c76a2e0-b239-43ce-8f72-ad278cfaa22f",
+      "typeOfStateId": "state"
+    },
+    "$localCustomActions": [],
+    "$title": "GO TO - Encerramento XIII",
+    "$position": {
+      "top": "3331px",
+      "left": "7389px"
+    }
+  },
+  "ff7ba76e-4218-4038-bb87-0615b50602f1": {
+    "$contentActions": [
+      {
+        "input": {
+          "bypass": true
+        }
+      }
+    ],
+    "$conditionOutputs": [],
+    "$enteringCustomActions": [],
+    "$leavingCustomActions": [],
+    "$defaultOutput": {
+      "stateId": "2158b6d6-75e4-4822-a246-547ff908d227",
+      "typeOfStateId": "state"
+    },
+    "$localCustomActions": [],
+    "$title": "GO TO - Inatividade XIII",
+    "$position": {
+      "top": "2864px",
+      "left": "7171px"
+    }
+  },
+  "535d06e6-370c-40bf-8f28-6260990b7075": {
+    "$contentActions": [
+      {
+        "input": {
+          "bypass": true
+        }
+      }
+    ],
+    "$conditionOutputs": [],
+    "$enteringCustomActions": [],
+    "$leavingCustomActions": [],
+    "$defaultOutput": {
+      "stateId": "87f7ccd3-c0f4-4e03-b904-43c17386b8f5",
+      "typeOfStateId": "state"
+    },
+    "$localCustomActions": [],
+    "$title": "GO TO - PROBLEMAS APP OU SITE",
+    "$position": {
+      "top": "1465px",
+      "left": "3377px"
+    }
+  },
+  "80497928-00e7-45f4-bf53-dfc605101cef": {
+    "$contentActions": [
+      {
+        "input": {
+          "bypass": true
+        }
+      }
+    ],
+    "$conditionOutputs": [
+      {
+        "stateId": "e0945679-7b0a-4c7d-ba92-e4678df02194",
+        "typeOfStateId": "state",
+        "conditions": [
+          {
+            "source": "context",
+            "comparison": "equals",
+            "values": [
+              "autenticado"
+            ],
+            "variable": "contact.extras.clienteIdentificado"
+          }
+        ]
+      },
+      {
+        "stateId": "d16cc399-c189-492b-99e4-36d17fd71abb",
+        "typeOfStateId": "state",
+        "conditions": [
+          {
+            "source": "context",
+            "comparison": "notExists",
+            "values": [],
+            "variable": "contact.extras.clienteIdentificado"
+          }
+        ]
+      }
+    ],
+    "$enteringCustomActions": [],
+    "$leavingCustomActions": [],
+    "$defaultOutput": {
+      "stateId": "fallback"
+    },
+    "$localCustomActions": [],
+    "$title": "[Verificação] Autenticado XIV",
+    "$position": {
+      "top": "3007.57px",
+      "left": "8312px"
+    }
+  },
+  "e0945679-7b0a-4c7d-ba92-e4678df02194": {
+    "$contentActions": [
+      {
+        "input": {
+          "bypass": true
+        }
+      }
+    ],
+    "$conditionOutputs": [],
+    "$enteringCustomActions": [
+      {
+        "type": "TrackEvent",
+        "settings": {
+          "extras": {
+            "identificador": "{{contact.identity}}",
+            "origem": "{{origem}}",
+            "canal": "{{channel}}"
+          },
+          "category": "cliente autenticado nlp resultado",
+          "action": "Sim"
+        },
+        "conditions": []
+      }
+    ],
+    "$leavingCustomActions": [
+      {
+        "$description": "",
+        "$inputSchema": {
+          "type": "object",
+          "properties": {},
+          "required": []
+        },
+        "type": "Redirect",
+        "settings": {
+          "context": {
+            "type": "text/plain",
+            "value": "{ \"lastState\": \"5f9a807c-5463-4c8e-abe7-e46f9f63ac02\" }"
+          },
+          "address": "Meus Pedidos"
+        },
+        "conditions": []
+      }
+    ],
+    "$defaultOutput": {
+      "stateId": "onboarding",
+      "typeOfStateId": "state"
+    },
+    "$localCustomActions": [],
+    "$title": "Autenticado - GO TO  Meus pedidos - como fazer ped",
+    "$position": {
+      "top": "3133px",
+      "left": "8078px"
+    }
+  },
+  "d16cc399-c189-492b-99e4-36d17fd71abb": {
+    "$contentActions": [
+      {
+        "action": {
+          "$description": "",
+          "type": "SendMessage",
+          "settings": {
+            "type": "application/vnd.lime.select+json",
+            "content": {
+              "text": "🔒 Para <b>abertura de chamado via WhatsApp é necessário fazer a</b> autenticação de segurança.\n\n<i>Como gostaria de prosseguir?</i>",
+              "scope": "immediate",
+              "options": [
+                {
+                  "text": "Me autenticar",
+                  "previewText": "Me autenticar",
+                  "value": null,
+                  "index": 0,
+                  "type": null
+                },
+                {
+                  "text": "Não sou cliente",
+                  "previewText": "Não sou cliente",
+                  "value": null,
+                  "index": 1,
+                  "type": null
+                },
+                {
+                  "index": -1,
+                  "text": "Encerrar conversa",
+                  "previewText": "Encerrar conversa",
+                  "type": null,
+                  "value": null
+                }
+              ],
+              "quikReply": false
+            },
+            "metadata": {}
+          }
+        }
+      },
+      {
+        "input": {
+          "bypass": false,
+          "expiration": "0:15"
+        }
+      }
+    ],
+    "$conditionOutputs": [
+      {
+        "stateId": "45c7e4ea-6bef-4fca-a596-d23c28b06c42",
+        "typeOfStateId": "state",
+        "conditions": [
+          {
+            "source": "context",
+            "comparison": "equals",
+            "values": [
+              "Me autenticar"
+            ],
+            "variable": "intentAction"
+          }
+        ]
+      },
+      {
+        "stateId": "5658a7e0-8cdf-493f-9796-a3b17152d283",
+        "typeOfStateId": "state",
+        "conditions": [
+          {
+            "source": "context",
+            "comparison": "equals",
+            "values": [
+              "Não sou cliente"
+            ],
+            "variable": "intentAction"
+          }
+        ]
+      },
+      {
+        "stateId": "c1153e16-785b-46aa-a94c-3d0f626db76d",
+        "typeOfStateId": "state",
+        "conditions": [
+          {
+            "source": "context",
+            "comparison": "equals",
+            "values": [
+              "Encerrar conversa"
+            ],
+            "variable": "intentAction"
+          }
+        ]
+      },
+      {
+        "stateId": "a8b2d058-fd24-4e48-ae4d-62b726272d91",
+        "typeOfStateId": "state",
+        "conditions": [
+          {
+            "source": "input",
+            "comparison": "notExists",
+            "values": []
+          }
+        ]
+      }
+    ],
+    "$enteringCustomActions": [
+      {
+        "type": "TrackEvent",
+        "settings": {
+          "extras": {
+            "identificador": "{{contact.identity}}",
+            "origem": "{{origem}}",
+            "canal": "{{channel}}"
+          },
+          "category": "cliente autenticado nlp resultado",
+          "action": "Nao"
+        },
+        "conditions": []
+      },
+      {
+        "type": "SetVariable",
+        "settings": {
+          "variable": "intentAction"
+        },
+        "conditions": []
+      },
+      {
+        "type": "TrackEvent",
+        "settings": {
+          "extras": {
+            "identificador": "{{contact.identity}}",
+            "origem": "{{origem}}",
+            "canal": "{{channel}}"
+          },
+          "category": "autenticacao chamado menu exibicao",
+          "action": "Exibicao"
+        },
+        "conditions": []
+      }
+    ],
+    "$leavingCustomActions": [
+      {
+        "type": "ExecuteScript",
+        "settings": {
+          "function": "run",
+          "source": "function run(input) {\n  try {\n    const opcoesMenu = {\n      \"1\": \"Me autenticar\",\n      \"2\": \"Não sou cliente\",\n      \"3\": \"Encerrar conversa\"\n    };\n\n    const menuRegex = {\n      \"1\": /\\b(?:me\\s+autenticar|autenticar|autentica[cç][aã]o|quero\\s+me\\s+autenticar|sim|continuar)\\b/i,\n\n      \"2\": /\\b(?:n[aã]o\\s+sou\\s+cliente|n[aã]o\\s+sou\\s+um\\s+cliente|n[aã]o\\s+sou\\s+cliente\\s+unimed|n[aã]o\\s+cliente)\\b/i,\n\n      \"3\": /\\b(?:encerrar\\s+conversa|encerrar|sair|finalizar|fechar|terminar|parar|quero\\s+sair|finalizar\\s+atendimento)\\b/i\n    };\n\n    input = String(input || \"\").trim();\n\n    // Aceita também a resposta numérica\n    if (input === \"1\") {\n      return opcoesMenu[\"1\"];\n    }\n\n    if (input === \"2\") {\n      return opcoesMenu[\"2\"];\n    }\n\n    if (input === \"3\") {\n      return opcoesMenu[\"3\"];\n    }\n\n    for (const prop in menuRegex) {\n      if (menuRegex[prop].test(input)) {\n        return opcoesMenu[prop];\n      }\n    }\n\n    return \"Input inesperado\";\n\n  } catch (error) {\n    return \"Input inesperado\";\n  }\n}",
+          "inputVariables": [
+            "input.content"
+          ],
+          "outputVariable": "intentAction",
+          "LocalTimeZoneEnabled": false
+        },
+        "conditions": []
+      },
+      {
+        "type": "TrackEvent",
+        "settings": {
+          "extras": {
+            "identificador": "{{contact.identity}}",
+            "origem": "{{origem}}",
+            "canal": "{{channel}}"
+          },
+          "category": "autenticacao chamado menu selecao",
+          "action": "{{intentAction}}"
+        },
+        "conditions": [
+          {
+            "source": "input",
+            "comparison": "exists",
+            "values": []
+          }
+        ]
+      },
+      {
+        "type": "TrackEvent",
+        "settings": {
+          "extras": {
+            "identificador": "{{contact.identity}}",
+            "origem": "{{origem}}",
+            "canal": "{{channel}}"
+          },
+          "category": "autenticacao chamado menu input",
+          "action": "{{input.content}}"
+        },
+        "conditions": [
+          {
+            "source": "context",
+            "variable": "intentAction",
+            "comparison": "equals",
+            "values": [
+              "Input inesperado"
+            ]
+          },
+          {
+            "source": "input",
+            "comparison": "exists",
+            "values": []
+          }
+        ]
+      }
+    ],
+    "$defaultOutput": {
+      "stateId": "fallback"
+    },
+    "$localCustomActions": [],
+    "$title": "Não autenticado XIV",
+    "$position": {
+      "top": "2998.14px",
+      "left": "8712.14px"
+    }
+  },
+  "a8b2d058-fd24-4e48-ae4d-62b726272d91": {
+    "$contentActions": [
+      {
+        "input": {
+          "bypass": true
+        }
+      }
+    ],
+    "$conditionOutputs": [],
+    "$enteringCustomActions": [],
+    "$leavingCustomActions": [],
+    "$defaultOutput": {
+      "stateId": "2158b6d6-75e4-4822-a246-547ff908d227",
+      "typeOfStateId": "state"
+    },
+    "$localCustomActions": [],
+    "$title": "GO TO - Inatividade XIII [Duplicate]",
+    "$position": {
+      "top": "2762px",
+      "left": "8714px"
+    }
+  },
+  "45c7e4ea-6bef-4fca-a596-d23c28b06c42": {
+    "$contentActions": [
+      {
+        "input": {
+          "bypass": true
+        }
+      }
+    ],
+    "$conditionOutputs": [],
+    "$enteringCustomActions": [],
+    "$leavingCustomActions": [
+      {
+        "$description": "",
+        "$inputSchema": {
+          "type": "object",
+          "properties": {},
+          "required": []
+        },
+        "type": "Redirect",
+        "settings": {
+          "context": {
+            "type": "text/plain",
+            "value": "@MenuInicial"
+          },
+          "address": "{{resource.redirect@captacao}}"
+        },
+        "conditions": []
+      }
+    ],
+    "$defaultOutput": {
+      "stateId": "onboarding",
+      "typeOfStateId": "state"
+    },
+    "$localCustomActions": [],
+    "$title": "GO TO - Fluxo autenticação XIV",
+    "$position": {
+      "top": "2876.29px",
+      "left": "8961.14px"
+    }
+  },
+  "5658a7e0-8cdf-493f-9796-a3b17152d283": {
+    "$contentActions": [
+      {
+        "action": {
+          "$description": "",
+          "type": "SendRawMessage",
+          "settings": {
+            "metadata": {},
+            "type": "application/json",
+            "rawContent": "{\n  \"recipient_type\": \"individual\",\n  \"type\": \"interactive\",\n  \"interactive\": {\n    \"type\": \"cta_url\",\n    \"body\": {\n      \"text\": \"Sem problemas! Você pode se cadastrar de forma rápida *clicando em “cadastrar agora”.*\\n\\nApós o cadastro, é só retornar para continuarmos o seu atendimento. 💛\"\n    },\n    \"action\": {\n      \"name\": \"cta_url\",\n      \"parameters\": {\n        \"display_text\": \"Cadastrar Agora\",\n        \"url\": \"https://www.centralmbrf.com.br/SelfRegister\"\n      }\n    }\n  }\n}"
+          }
+        }
+      },
+      {
+        "input": {
+          "bypass": true
+        }
+      }
+    ],
+    "$conditionOutputs": [
+      {
+        "stateId": "549c2a95-8176-4f63-ba0a-4a771625ccbf",
+        "typeOfStateId": "state",
+        "conditions": [
+          {
+            "source": "input",
+            "comparison": "exists",
+            "values": []
+          }
+        ]
+      }
+    ],
+    "$enteringCustomActions": [
+      {
+        "type": "TrackEvent",
+        "settings": {
+          "extras": {
+            "identificador": "{{contact.identity}}",
+            "origem": "{{origem}}",
+            "canal": "{{channel}}"
+          },
+          "category": "mensagem nao cliente exibicao",
+          "action": "Exibicao"
+        },
+        "conditions": []
+      }
+    ],
+    "$leavingCustomActions": [],
+    "$defaultOutput": {
+      "stateId": "fallback"
+    },
+    "$localCustomActions": [],
+    "$title": "[MSG] Cadastro XI",
+    "$position": {
+      "top": "2997px",
+      "left": "8966.57px"
+    }
+  },
+  "549c2a95-8176-4f63-ba0a-4a771625ccbf": {
+    "$contentActions": [
+      {
+        "action": {
+          "$description": "",
+          "type": "SendMessage",
+          "settings": {
+            "type": "text/plain",
+            "content": "A Central MBRF agradece o seu contato!",
+            "metadata": {}
+          }
+        }
+      },
+      {
+        "input": {
+          "bypass": true
+        }
+      }
+    ],
+    "$conditionOutputs": [],
+    "$enteringCustomActions": [
+      {
+        "type": "TrackEvent",
+        "settings": {
+          "extras": {
+            "identificador": "{{contact.identity}}",
+            "origem": "{{origem}}",
+            "canal": "{{channel}}"
+          },
+          "category": "Fluxo finalizacao",
+          "action": "Encerrado"
+        },
+        "conditions": []
+      },
+      {
+        "$description": "",
+        "$inputSchema": {
+          "type": "object",
+          "properties": {},
+          "required": []
+        },
+        "type": "SetVariable",
+        "settings": {
+          "variable": "horaFim",
+          "value": "{{calendar.datetime}}"
+        },
+        "conditions": []
+      }
+    ],
+    "$leavingCustomActions": [
+      {
+        "$description": "",
+        "$inputSchema": {
+          "type": "object",
+          "properties": {},
+          "required": []
+        },
+        "type": "ExecuteScript",
+        "settings": {
+          "function": "run",
+          "source": "function run(horaEntrada, horaFim) {\n  try {\n    function parseDataGMT0(dataTexto) {\n      const [data, hora] = dataTexto.split(\" \");\n      const [mes, dia, ano] = data.split(\"/\");\n      const [hh, mm, ss] = hora.split(\":\");\n\n      return new Date(Date.UTC(ano, mes - 1, dia, hh, mm, ss));\n    }\n\n    function formatarBrasil(data) {\n      const dataBrasil = new Date(data.getTime() - 3 * 60 * 60 * 1000);\n\n      const dia = String(dataBrasil.getUTCDate()).padStart(2, \"0\");\n      const mes = String(dataBrasil.getUTCMonth() + 1).padStart(2, \"0\");\n      const ano = dataBrasil.getUTCFullYear();\n\n      const hora = String(dataBrasil.getUTCHours()).padStart(2, \"0\");\n      const minuto = String(dataBrasil.getUTCMinutes()).padStart(2, \"0\");\n\n      return {\n        data: `${dia}/${mes}/${ano}`,\n        hora: `${hora}:${minuto}`\n      };\n    }\n\n    const entrada = parseDataGMT0(horaEntrada);\n    const fim = parseDataGMT0(horaFim);\n\n    const diferencaMs = fim - entrada;\n    const totalSegundos = Math.floor(diferencaMs / 1000);\n    const totalMinutos = Math.floor(totalSegundos / 60);\n\n    const horas = Math.floor(totalMinutos / 60);\n    const minutos = totalMinutos % 60;\n    const segundos = totalSegundos % 60;\n\n    const entradaFormatada = formatarBrasil(entrada);\n    const fimFormatada = formatarBrasil(fim);\n\n    let tempoTexto = \"\";\n\n    if (horas > 0) {\n      tempoTexto += `${horas} ${horas === 1 ? \"hora\" : \"horas\"}`;\n    }\n\n    if (minutos > 0) {\n      if (tempoTexto) tempoTexto += \" e \";\n      tempoTexto += `${minutos} ${minutos === 1 ? \"minuto\" : \"minutos\"}`;\n    }\n\n    if (horas === 0 && minutos === 0) {\n      tempoTexto = `${segundos} ${segundos === 1 ? \"segundo\" : \"segundos\"}`;\n    }\n\n    return {\n      horaEntrada,\n      horaFim,\n      tempoInteracao: {\n        horas,\n        minutos,\n        segundos,\n        totalMinutos,\n        totalSegundos\n      },\n      relatorio: `Entrou às ${entradaFormatada.hora} do dia ${entradaFormatada.data} finalizou interação às ${fimFormatada.hora} do dia ${fimFormatada.data} tempo de interação de ${tempoTexto}`\n    };\n  } catch (error) {\n    return {\n      erro: \"Erro ao calcular tempo de interação\"\n    };\n  }\n}",
+          "inputVariables": [
+            "horaEntrada",
+            "horaFim"
+          ],
+          "outputVariable": "tempoInteracao",
+          "LocalTimeZoneEnabled": false
+        },
+        "conditions": []
+      },
+      {
+        "type": "TrackEvent",
+        "settings": {
+          "extras": {
+            "identificador": "{{contact.identity}}",
+            "origem": "{{origem}}",
+            "canal": "{{channel}}"
+          },
+          "category": "tempo de interacao",
+          "action": "identificador: {{contact.identity}} | {{tempoInteracao@relatorio}}"
+        },
+        "conditions": []
+      },
+      {
+        "$description": "",
+        "$inputSchema": {
+          "type": "object",
+          "properties": {},
+          "required": []
+        },
+        "type": "SetVariable",
+        "settings": {
+          "variable": "infoNlp"
+        },
+        "conditions": []
+      }
+    ],
+    "$defaultOutput": {
+      "stateId": "ba691b8a-f6c1-4ca0-ae64-d9d7dce553fb",
+      "typeOfStateId": "state"
+    },
+    "$localCustomActions": [],
+    "$title": "[MSG] Central MBRF agradece o contato XI",
+    "$position": {
+      "top": "2962.71px",
+      "left": "9195px"
+    }
+  },
+  "c1153e16-785b-46aa-a94c-3d0f626db76d": {
+    "$contentActions": [
+      {
+        "action": {
+          "$description": "",
+          "type": "SendMessage",
+          "settings": {
+            "type": "text/plain",
+            "content": "Fico feliz em ter te ajudado!\n\nSempre que precisar, pode contar comigo! 🤝 ",
+            "metadata": {}
+          }
+        }
+      },
+      {
+        "input": {
+          "bypass": true
+        }
+      }
+    ],
+    "$conditionOutputs": [],
+    "$enteringCustomActions": [],
+    "$leavingCustomActions": [],
+    "$defaultOutput": {
+      "stateId": "5c76a2e0-b239-43ce-8f72-ad278cfaa22f",
+      "typeOfStateId": "state"
+    },
+    "$localCustomActions": [],
+    "$title": "GO TO - Encerramento XIV",
+    "$position": {
+      "top": "3122px",
+      "left": "8961px"
+    }
+  },
+  "subflow:98e4dfb0-caa7-4e0a-9e63-031fcfbec230": {
+    "$contentActions": [
+      {
+        "input": {
+          "bypass": false
+        }
+      }
+    ],
+    "$conditionOutputs": [
+      {
+        "stateId": "c8bc3d48-43d7-49c7-bc9d-3e34a3a258b6",
+        "typeOfStateId": "state",
+        "conditions": [
+          {
+            "source": "context",
+            "comparison": "equals",
+            "values": [
+              "Ofertas Black Friday"
+            ],
+            "variable": "ItemEscolhido@value"
+          }
+        ]
+      },
+      {
+        "stateId": "4c989d30-b469-4b06-a078-6f2eabca5d1b",
+        "typeOfStateId": "state",
+        "conditions": [
+          {
+            "source": "context",
+            "comparison": "equals",
+            "values": [
+              "Vantagens Compra App"
+            ],
+            "variable": "ItemEscolhido@value"
+          }
+        ]
+      },
+      {
+        "stateId": "ca0050f3-8c58-4e6d-a4c0-9c649a9029c1",
+        "typeOfStateId": "state",
+        "conditions": [
+          {
+            "source": "context",
+            "comparison": "equals",
+            "values": [
+              "Cupons de Desconto"
+            ],
+            "variable": "ItemEscolhido@value"
+          }
+        ]
+      },
+      {
+        "stateId": "80497928-00e7-45f4-bf53-dfc605101cef",
+        "typeOfStateId": "state",
+        "conditions": [
+          {
+            "source": "context",
+            "comparison": "equals",
+            "values": [
+              "Fazer Pedido Agora"
+            ],
+            "variable": "ItemEscolhido@value"
+          }
+        ]
+      },
+      {
+        "stateId": "a8b2d058-fd24-4e48-ae4d-62b726272d91",
+        "typeOfStateId": "state",
+        "conditions": [
+          {
+            "source": "input",
+            "comparison": "notExists",
+            "values": []
+          }
+        ]
+      }
+    ],
+    "$enteringCustomActions": [
+      {
+        "$description": "",
+        "$inputSchema": {
+          "type": "object",
+          "properties": {},
+          "required": []
+        },
+        "type": "TrackEvent",
+        "settings": {
+          "category": "subflow:98e4dfb0-caa7-4e0a-9e63-031fcfbec230",
+          "action": "Entering subflow - subflow:98e4dfb0-caa7-4e0a-9e63-031fcfbec230",
+          "subflowDefaultAction": true
+        }
+      },
+      {
+        "$description": "",
+        "$inputSchema": {
+          "type": "object",
+          "properties": {},
+          "required": []
+        },
+        "type": "MergeContact",
+        "settings": {
+          "extras": {
+            "subflowId": "subflow:98e4dfb0-caa7-4e0a-9e63-031fcfbec230"
+          },
+          "subflowDefaultAction": true
+        }
+      },
+      {
+        "type": "TrackEvent",
+        "settings": {
+          "category": "subflow:31a36d6a-d869-4078-bc06-3298d5582bc6",
+          "action": "Entering subflow - subflow:31a36d6a-d869-4078-bc06-3298d5582bc6",
+          "subflowDefaultAction": true
+        }
+      },
+      {
+        "type": "MergeContact",
+        "settings": {
+          "extras": {
+            "subflowId": "subflow:31a36d6a-d869-4078-bc06-3298d5582bc6"
+          },
+          "subflowDefaultAction": true
+        }
+      },
+      {
+        "type": "TrackEvent",
+        "settings": {
+          "category": "subflow:4293aeac-aff6-4876-a88a-4be9c93e74c3",
+          "action": "Entering subflow - subflow:4293aeac-aff6-4876-a88a-4be9c93e74c3",
+          "subflowDefaultAction": true
+        }
+      },
+      {
+        "type": "MergeContact",
+        "settings": {
+          "extras": {
+            "subflowId": "subflow:4293aeac-aff6-4876-a88a-4be9c93e74c3"
+          },
+          "subflowDefaultAction": true
+        }
+      },
+      {
+        "type": "ExecuteScript",
+        "settings": {
+          "function": "run",
+          "source": "function run() {\n\ttry {\n\t\treturn JSON.stringify({\n\t\t\tbody: \"Olá! Na Central MBRF, seu negócio compra com mais economia e agilidade todos os dias! Escolha uma opção para saber mais:\",\n\t\t\tfooter: \"Basta clicar em 'selecionar assunto' para escolher uma opção\",\n\t\t\tbutton: \"Selecionar assunto\",\n\t\t\tcategories: [\n\t\t\t\t{\n\t\t\t\t\ttitle: \"Categoria\",\n\t\t\t\t\trows: [\n\t\t\t\t\t\t{\n\t\t\t\t\t\t\ttitle: \"Ofertas Black Friday\",\n\t\t\t\t\t\t\tdescription: \"\",\n\t\t\t\t\t\t\tdados: true\n\t\t\t\t\t\t},\n\t\t\t\t\t\t{\n\t\t\t\t\t\t\ttitle: \"Vantagens Compra App\",\n\t\t\t\t\t\t\tdescription: \"Vantagens de comprar pelo aplicativo\",\n\t\t\t\t\t\t\tdados: true\n\t\t\t\t\t\t},\n\t\t\t\t\t\t{\n\t\t\t\t\t\t\ttitle: \"Cupons de Desconto\",\n\t\t\t\t\t\t\tdescription: \"Como usar Cupons de Desconto\",\n\t\t\t\t\t\t\tdados: true\n\t\t\t\t\t\t},\n\t\t\t\t\t\t{\n\t\t\t\t\t\t\ttitle: \"Fazer Pedido Agora\",\n\t\t\t\t\t\t\tdescription: \"\",\n\t\t\t\t\t\t\tdados: true\n\t\t\t\t\t\t}\n\t\t\t\t\t]\n\t\t\t\t}\n\t\t\t],\n\t\t})\n\n\t} catch (e) {\n\t\treturn \"{}\"\n\t}\n}",
+          "inputVariables": [],
+          "outputVariable": "itensMenuDinamico",
+          "LocalTimeZoneEnabled": false
+        },
+        "conditions": []
+      },
+      {
+        "type": "SetVariable",
+        "settings": {
+          "variable": "stateSubFluxo",
+          "value": "{{state.id}}"
+        },
+        "conditions": []
+      },
+      {
+        "type": "SetVariable",
+        "settings": {
+          "variable": "tituloSubFluxo",
+          "value": "{{state.name}}"
+        },
+        "conditions": []
+      },
+      {
+        "type": "TrackEvent",
+        "settings": {
+          "extras": {
+            "identificador": "{{contact.identity}}",
+            "origem": "{{origem}}",
+            "canal": "{{channel}}"
+          },
+          "category": "Nlp intencao identificada",
+          "action": "Dúvidas gerais sobre vantagens e promoções"
+        },
+        "conditions": []
+      }
+    ],
+    "$leavingCustomActions": [
+      {
+        "type": "SetVariable",
+        "settings": {
+          "variable": "stateSubFluxo",
+          "value": "{{state.id}}",
+          "expiration": 5
+        },
+        "conditions": []
+      }
+    ],
+    "$defaultOutput": {
+      "stateId": "fallback"
+    },
+    "$localCustomActions": [],
+    "shortNameOfSubflow": "duvidasgerais3",
+    "$imageUri": "",
+    "$title": "DUVIDAS GERAIS",
+    "$position": {
+      "top": "2730.78px",
+      "left": "8285.89px"
+    }
+  },
+  "c8bc3d48-43d7-49c7-bc9d-3e34a3a258b6": {
+    "$contentActions": [
+      {
+        "input": {
+          "bypass": true
+        }
+      }
+    ],
+    "$conditionOutputs": [],
+    "$enteringCustomActions": [],
+    "$leavingCustomActions": [],
+    "$defaultOutput": {
+      "stateId": "b3f36240-b458-455b-a246-890d6994db52",
+      "typeOfStateId": "state"
+    },
+    "$localCustomActions": [],
+    "$title": "GO TO - Ofertas Black Friday",
+    "$position": {
+      "top": "2622.57px",
+      "left": "7997.29px"
+    }
+  },
+  "4c989d30-b469-4b06-a078-6f2eabca5d1b": {
+    "$contentActions": [
+      {
+        "input": {
+          "bypass": true
+        }
+      }
+    ],
+    "$conditionOutputs": [],
+    "$enteringCustomActions": [],
+    "$leavingCustomActions": [],
+    "$defaultOutput": {
+      "stateId": "4ee22659-50f4-4df0-b254-b58bebb81ef1",
+      "typeOfStateId": "state"
+    },
+    "$localCustomActions": [],
+    "$title": "GO TO - Vantagens Compra App",
+    "$position": {
+      "top": "2762px",
+      "left": "8003.86px"
+    }
+  },
+  "ca0050f3-8c58-4e6d-a4c0-9c649a9029c1": {
+    "$contentActions": [
+      {
+        "input": {
+          "bypass": true
+        }
+      }
+    ],
+    "$conditionOutputs": [],
+    "$enteringCustomActions": [],
+    "$leavingCustomActions": [],
+    "$defaultOutput": {
+      "stateId": "265f4bba-c81b-4c7b-a2ad-e725f800d038",
+      "typeOfStateId": "state"
+    },
+    "$localCustomActions": [],
+    "$title": "GO TO - Cupons de Desconto",
+    "$position": {
+      "top": "2915.43px",
+      "left": "7998.86px"
+    }
+  },
+  "5c2530f2-18e0-4918-942a-ce28d3601521": {
+    "$contentActions": [
+      {
+        "input": {
+          "bypass": true
+        }
+      }
+    ],
+    "$conditionOutputs": [],
+    "$enteringCustomActions": [],
+    "$leavingCustomActions": [],
+    "$defaultOutput": {
+      "stateId": "subflow:98e4dfb0-caa7-4e0a-9e63-031fcfbec230",
+      "typeOfStateId": "state"
+    },
+    "$localCustomActions": [],
+    "$title": "GO TO - DUVIDAS GERAIS",
+    "$position": {
+      "top": "1456.86px",
+      "left": "4002.86px"
     }
   }
 }

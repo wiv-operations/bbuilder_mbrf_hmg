@@ -1,0 +1,5 @@
+{
+  "builder:minimumIntentScore": "0.5",
+  "builder:stateTrack": "false",
+  "builder:#localTimeZone": "E.South America Standard Time"
+}

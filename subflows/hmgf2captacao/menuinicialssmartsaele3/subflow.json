@@ -1,0 +1,15 @@
+{
+  "subflowId": 247159,
+  "shortName": "menuinicialssmartsaele3",
+  "tenantId": "mbrf",
+  "name": "Menu inicial - S/ Smart Saele",
+  "description": "",
+  "image": "",
+  "userIdentity": "vinicius.alves@whitewall.dev",
+  "creationDate": "2026-10-01T22:44:44.414Z",
+  "flowCounter": 1,
+  "isShared": false,
+  "isActive": true,
+  "useSubflowInDeskAction": false,
+  "watermark": "9c4bb369-233a-49fd-9c25-7e4dfd451b21"
+}

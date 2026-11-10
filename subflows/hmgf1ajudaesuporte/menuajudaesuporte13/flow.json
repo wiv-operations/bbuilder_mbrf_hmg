@@ -1,0 +1,2339 @@
+{
+  "onboarding": {
+    "$contentActions": [
+      {
+        "input": {
+          "bypass": true,
+          "$cardContent": {
+            "document": {
+              "id": "6315cbfd-3c74-44d8-b315-fc69e2e7c0e0",
+              "type": "text/plain",
+              "content": "Entrada do usuário"
+            },
+            "editable": false,
+            "deletable": false,
+            "position": "right",
+            "editing": false
+          },
+          "$invalid": false
+        },
+        "$invalid": false
+      }
+    ],
+    "$conditionOutputs": [
+      {
+        "stateId": "welcome",
+        "conditions": [
+          {
+            "source": "input",
+            "comparison": "matches",
+            "values": [
+              ".*"
+            ]
+          }
+        ],
+        "$id": "a583ab5a-b365-4f06-8368-29a4a514d84a",
+        "$connId": "con_3",
+        "$invalid": false
+      },
+      {
+        "stateId": "welcome",
+        "typeOfStateId": "state",
+        "$connId": "con_8",
+        "$id": "292e55b2-7ead-47c8-a856-7c7d6d1f4fa1",
+        "conditions": [
+          {
+            "source": "input",
+            "comparison": "exists",
+            "values": []
+          }
+        ],
+        "$invalid": false
+      }
+    ],
+    "$enteringCustomActions": [],
+    "$leavingCustomActions": [
+      {
+        "$id": "b583d7c1-a93b-424f-b88d-367cf6206f4c",
+        "$typeOfContent": "",
+        "type": "SetVariable",
+        "$title": "Definir variável",
+        "$invalid": false,
+        "settings": {
+          "variable": "exceptionInicioSub",
+          "value": "{{state.previous.id}}"
+        },
+        "conditions": []
+      },
+      {
+        "$id": "6fa21980-9849-4739-81ca-30b7ebf9d046",
+        "$typeOfContent": "",
+        "type": "SetVariable",
+        "$title": "Definir variável",
+        "$invalid": false,
+        "settings": {
+          "variable": "exceptionInicioSubName",
+          "value": "{{state.previous.name}}"
+        },
+        "conditions": []
+      }
+    ],
+    "$inputSuggestions": [],
+    "$defaultOutput": {
+      "stateId": "welcome",
+      "$invalid": false,
+      "typeOfStateId": "state"
+    },
+    "isAiGenerated": false,
+    "$tags": [
+      {
+        "id": "blip-tag-209d0519-2998-4bc2-9902-746da513852c",
+        "label": "SetVariable",
+        "background": "#FF4A1E",
+        "canChangeBackground": false
+      }
+    ],
+    "id": "onboarding",
+    "root": true,
+    "$title": "Início",
+    "$position": {
+      "top": "98px",
+      "left": "492px"
+    },
+    "$invalidContentActions": false,
+    "$invalidOutputs": false,
+    "$invalidCustomActions": false,
+    "$invalid": false
+  },
+  "fallback": {
+    "$contentActions": [
+      {
+        "input": {
+          "bypass": true,
+          "$cardContent": {
+            "document": {
+              "id": "585e9564-4326-4a8c-914c-f58a0c9d3892",
+              "type": "text/plain",
+              "content": "Entrada do usuário"
+            },
+            "editable": false,
+            "deletable": true,
+            "position": "right",
+            "editing": false
+          },
+          "$invalid": false
+        },
+        "$invalid": false
+      }
+    ],
+    "$conditionOutputs": [
+      {
+        "stateId": "d52f47b9-775f-4f25-97ea-900ec5c96fa8",
+        "conditions": [
+          {
+            "source": "input",
+            "comparison": "matches",
+            "values": [
+              ".*"
+            ]
+          }
+        ],
+        "$id": "346ab7c0-dbd5-4a73-b0ad-ae12ada0f81b",
+        "$connId": "con_13",
+        "$invalid": false
+      },
+      {
+        "stateId": "d52f47b9-775f-4f25-97ea-900ec5c96fa8",
+        "typeOfStateId": "state",
+        "$connId": "con_18",
+        "$id": "f86d3669-4317-4f93-b76f-dd562d44f30d",
+        "conditions": [
+          {
+            "source": "input",
+            "comparison": "exists",
+            "values": []
+          }
+        ],
+        "$invalid": false
+      },
+      {
+        "stateId": "d52f47b9-775f-4f25-97ea-900ec5c96fa8",
+        "typeOfStateId": "state",
+        "$connId": "con_23",
+        "$id": "30b96bdd-9bbf-4186-8c55-a1f527a90771",
+        "conditions": [
+          {
+            "source": "input",
+            "comparison": "notExists",
+            "values": []
+          }
+        ],
+        "$invalid": false
+      }
+    ],
+    "$enteringCustomActions": [],
+    "$leavingCustomActions": [],
+    "$inputSuggestions": [],
+    "$defaultOutput": {
+      "stateId": "d52f47b9-775f-4f25-97ea-900ec5c96fa8",
+      "$invalid": false,
+      "typeOfStateId": "state"
+    },
+    "isAiGenerated": false,
+    "$tags": [],
+    "id": "fallback",
+    "$title": "Exceções",
+    "$position": {
+      "top": "274px",
+      "left": "738px"
+    },
+    "$invalidContentActions": false,
+    "$invalidOutputs": false,
+    "$invalidCustomActions": false,
+    "$invalid": false
+  },
+  "end": {
+    "$contentActions": [
+      {
+        "input": {
+          "bypass": true,
+          "$cardContent": {
+            "document": {
+              "id": "5c6eb3af-d528-49c5-b1da-76ee616a1418",
+              "type": "text/plain",
+              "content": "Entrada do usuário"
+            },
+            "editable": false,
+            "deletable": true,
+            "position": "right",
+            "editing": false
+          },
+          "$invalid": false
+        },
+        "$invalid": false
+      }
+    ],
+    "$conditionOutputs": [],
+    "$enteringCustomActions": [],
+    "$leavingCustomActions": [],
+    "$inputSuggestions": [],
+    "$defaultOutput": {
+      "stateId": "fallback",
+      "$invalid": false
+    },
+    "isAiGenerated": false,
+    "$tags": [],
+    "id": "end",
+    "end": true,
+    "$title": "Fim",
+    "$position": {
+      "top": "121px",
+      "left": "975px"
+    },
+    "$invalidContentActions": false,
+    "$invalidOutputs": false,
+    "$invalidCustomActions": false,
+    "$invalid": false
+  },
+  "welcome": {
+    "$contentActions": [
+      {
+        "input": {
+          "bypass": true,
+          "$cardContent": {
+            "document": {
+              "id": "0a4593aa-85a0-4cef-a4c0-b1374416abcf",
+              "type": "text/plain",
+              "content": "Entrada do usuário"
+            },
+            "editable": false,
+            "deletable": true,
+            "position": "right",
+            "editing": false
+          },
+          "$invalid": false
+        },
+        "$invalid": false
+      }
+    ],
+    "$conditionOutputs": [
+      {
+        "stateId": "66639379-f272-456d-bb09-73177d8202ea",
+        "typeOfStateId": "state",
+        "$connId": "con_28",
+        "$id": "89dfe572-946d-4aa4-9d70-d3330c1fcf05",
+        "conditions": [
+          {
+            "source": "input",
+            "comparison": "exists",
+            "values": []
+          }
+        ],
+        "$invalid": false
+      }
+    ],
+    "$enteringCustomActions": [
+      {
+        "$id": "9e409796-594d-486a-9680-d462c3dfe474",
+        "$typeOfContent": "",
+        "type": "TrackEvent",
+        "$title": "Exibição - Entrada",
+        "$invalid": false,
+        "settings": {
+          "extras": {
+            "Identificador": "{{contact.identity}}",
+            "Nome": "{{contact.name}}",
+            "Telefone": "{{contact.phoneNumber}}",
+            "Email": "{{contact.email}}"
+          },
+          "action": "Entrada",
+          "category": "[{{application.identifier}}][{{tituloSubFluxo}}] Exibição"
+        },
+        "conditions": []
+      }
+    ],
+    "$leavingCustomActions": [],
+    "$inputSuggestions": [],
+    "$defaultOutput": {
+      "stateId": "fallback",
+      "$invalid": false
+    },
+    "isAiGenerated": false,
+    "$tags": [
+      {
+        "id": "blip-tag-4d9fd088-1a37-4172-9e95-452f1b5c4f84",
+        "label": "TrackEvent",
+        "background": "#61D36F",
+        "canChangeBackground": false
+      }
+    ],
+    "id": "welcome",
+    "$title": "[Entrou SUBFLUXO Menu Dinamico]",
+    "$position": {
+      "top": "236px",
+      "left": "491px"
+    },
+    "$invalidContentActions": false,
+    "$invalidOutputs": false,
+    "$invalidCustomActions": false,
+    "$invalid": false
+  },
+  "6613a7b5-749e-4043-a041-660a6d23e1af": {
+    "$contentActions": [
+      {
+        "action": {
+          "$id": "ea0524fe-6ed6-43e8-b095-23a7c0e422f3",
+          "$typeOfContent": "chat-state",
+          "type": "SendMessage",
+          "settings": {
+            "id": "cea249d1-f72f-4f21-a625-133c971b5245",
+            "type": "application/vnd.lime.chatstate+json",
+            "content": {
+              "state": "composing",
+              "interval": 1000
+            }
+          },
+          "$cardContent": {
+            "document": {
+              "id": "cea249d1-f72f-4f21-a625-133c971b5245",
+              "type": "application/vnd.lime.chatstate+json",
+              "content": {
+                "state": "composing",
+                "interval": 1000
+              }
+            },
+            "editable": true,
+            "deletable": true,
+            "position": "left"
+          }
+        },
+        "$invalid": false
+      },
+      {
+        "action": {
+          "$id": "104fd588-b8a6-45aa-a9d4-516dc94875ae",
+          "$typeOfContent": "raw-content",
+          "type": "SendRawMessage",
+          "settings": {
+            "metadata": {},
+            "type": "application/vnd.lime.select+json",
+            "rawContent": "{\n        \"text\":\"{{textoCorpo}}\",\n        \"options\":{{itensFormatadoMenu}}\n }"
+          }
+        },
+        "$invalid": false
+      },
+      {
+        "input": {
+          "bypass": false,
+          "$cardContent": {
+            "document": {
+              "id": "588034ce-c022-4f50-ae4c-c5a8d1200e42",
+              "type": "text/plain",
+              "textContent": "Entrada do usuário",
+              "content": "ItemEscolhidoNotFormatted"
+            },
+            "editable": false,
+            "deletable": true,
+            "position": "right",
+            "editing": false
+          },
+          "$invalid": false,
+          "variable": "ItemEscolhidoNotFormatted",
+          "expiration": "0:15"
+        },
+        "$invalid": false
+      }
+    ],
+    "$conditionOutputs": [
+      {
+        "stateId": "d52f47b9-775f-4f25-97ea-900ec5c96fa8",
+        "typeOfStateId": "state",
+        "$connId": "con_33",
+        "$id": "b9feb7ea-e9d2-4b12-a85c-e272854f0203",
+        "conditions": [
+          {
+            "source": "context",
+            "comparison": "equals",
+            "values": [
+              "-1",
+              "-1.0"
+            ],
+            "variable": "context.contadorPagina"
+          },
+          {
+            "values": [
+              "false"
+            ],
+            "source": "context",
+            "comparison": "notEquals",
+            "variable": "itemEscolhidoObjeto"
+          }
+        ],
+        "$invalid": false
+      },
+      {
+        "stateId": "d5b0ac5f-0ce1-45cc-8762-ab38a9999df0",
+        "typeOfStateId": "state",
+        "$connId": "con_38",
+        "$id": "eeaf384c-04af-4741-89bb-de32511d77ae",
+        "conditions": [
+          {
+            "source": "context",
+            "comparison": "exists",
+            "values": [],
+            "variable": "context.contadorPagina"
+          },
+          {
+            "values": [],
+            "source": "input",
+            "comparison": "exists"
+          },
+          {
+            "values": [
+              "false"
+            ],
+            "source": "context",
+            "variable": "itemEscolhidoObjeto",
+            "comparison": "notEquals"
+          }
+        ],
+        "$invalid": false
+      },
+      {
+        "stateId": "d52f47b9-775f-4f25-97ea-900ec5c96fa8",
+        "typeOfStateId": "state",
+        "$connId": "con_43",
+        "$id": "b3fa96ac-676e-48e7-8122-604097b1c74f",
+        "conditions": [
+          {
+            "source": "input",
+            "comparison": "equals",
+            "values": [
+              "Falar com atendente"
+            ]
+          }
+        ],
+        "$invalid": false
+      },
+      {
+        "stateId": "d52f47b9-775f-4f25-97ea-900ec5c96fa8",
+        "typeOfStateId": "state",
+        "$connId": "con_48",
+        "$id": "05fa8031-b97a-4e1b-a288-174826a28cc3",
+        "conditions": [
+          {
+            "source": "input",
+            "comparison": "equals",
+            "values": [
+              "Menu principal"
+            ]
+          }
+        ],
+        "$invalid": false
+      }
+    ],
+    "$enteringCustomActions": [
+      {
+        "$id": "1e3ec7b7-5c12-4559-b2b1-9d13e74e24fc",
+        "$typeOfContent": "",
+        "type": "ExecuteScript",
+        "$title": "textoCorpo",
+        "$invalid": false,
+        "settings": {
+          "function": "run",
+          "source": "function run() {\n\tlet output = \"\";\n\n\tlet header = \"{{itensMenuDinamico@header}}\";\n\tlet body = \"{{itensMenuDinamico@body}}\";\n\tlet footer = \"{{itensMenuDinamico@footer}}\";\n\n\n\tif(header) output += `<b>${header}</b> \\n \\n`\n\tif(body) output += `${body} \\n \\n `\n\tif(footer) output += `<i>${footer}</i>`;\n\n\treturn output;\n}",
+          "inputVariables": [],
+          "outputVariable": "textoCorpo",
+          "LocalTimeZoneEnabled": false
+        },
+        "conditions": []
+      }
+    ],
+    "$leavingCustomActions": [
+      {
+        "$id": "4c202a9d-d910-47f6-8cb8-771f4c3013ad",
+        "$typeOfContent": "",
+        "type": "ExecuteScript",
+        "$title": "Formata ItemEscolhido",
+        "$invalid": false,
+        "settings": {
+          "function": "run",
+          "source": "function run(siteConsegnadoItemEscolhido) {\n\tlet output = siteConsegnadoItemEscolhido.includes(\"value\") ? JSON.parse(siteConsegnadoItemEscolhido) : {};\n\n\tif (!output.value) output = { value: siteConsegnadoItemEscolhido };\n\n\treturn output;\n}",
+          "inputVariables": [
+            "ItemEscolhidoNotFormatted"
+          ],
+          "outputVariable": "ItemEscolhido",
+          "LocalTimeZoneEnabled": false
+        },
+        "conditions": []
+      },
+      {
+        "$id": "fc5bbba2-6b48-4531-849e-b69fb994dcc8",
+        "$typeOfContent": "",
+        "type": "ExecuteScript",
+        "$title": "paginaMenu",
+        "$invalid": false,
+        "settings": {
+          "function": "run",
+          "source": "function run(contadorPagina, itemEscolhido, itensFormatadoMenu) {\n\ttry {\n\t\titemEscolhido = JSON.parse(itemEscolhido);\n\t\titensFormatadoMenu = JSON.parse(itensFormatadoMenu);\n\t\tcontadorPagina = contadorPagina ? Number(contadorPagina) : 0;\n\n\t\tif (itemEscolhido.value.toLowerCase().includes(\"ver mais\") || itensFormatadoMenu.some((opt) => opt.order === Number(itemEscolhido.value) && opt.text.toLowerCase().includes(\"ver mais\"))) {\n\t\t\tcontadorPagina += 1;\n\t\t\treturn contadorPagina;\n\t\t}\n\t\tif (itemEscolhido.value.toLowerCase().includes(\"voltar\") || itensFormatadoMenu.some((opt) => opt.order === Number(itemEscolhido.value) && opt.text.toLowerCase().includes(\"voltar\"))) {\n\t\t\tcontadorPagina -= 1;\n\t\t\treturn contadorPagina;\t\t\t\n\t\t}\n\t\treturn\t-1;\n\t} catch (e) {\n\t\treturn 0;\n\t}\n}\t",
+          "inputVariables": [
+            "context.contadorPagina",
+            "ItemEscolhido",
+            "itensFormatadoMenu"
+          ],
+          "outputVariable": "paginaMenu",
+          "LocalTimeZoneEnabled": false
+        },
+        "conditions": []
+      },
+      {
+        "$id": "b79f144d-4df4-492e-bad9-efe0931911b6",
+        "$typeOfContent": "",
+        "type": "SetVariable",
+        "$title": "contadorPagina",
+        "$invalid": false,
+        "settings": {
+          "variable": "contadorPagina",
+          "value": "{{paginaMenu}}"
+        },
+        "conditions": []
+      },
+      {
+        "$id": "2b253848-700a-4a60-b4bd-5535b1013849",
+        "$typeOfContent": "",
+        "type": "ExecuteScript",
+        "$title": "itemEscolhidoObjeto",
+        "$invalid": false,
+        "settings": {
+          "function": "run",
+          "source": "function run(itemEscolhido, itensFaqs, itensFormatadoMenu) {\n\ttry {\n\t\titensFaqs = JSON.parse(itensFaqs);\n\t\tlet itemsTotal = [];\n\t\titensFaqs.map((item) => { itemsTotal = [].concat(itemsTotal, item.rows) });\n\n\t\titemEscolhido = JSON.parse(itemEscolhido);\n\t\titensFormatadoMenu = JSON.parse(itensFormatadoMenu);\n\n\t\tlet itensFormatadoMenuTotal = [];\n\t\titensFormatadoMenu.map((item) => { itensFormatadoMenuTotal = [].concat(itensFormatadoMenuTotal, item) });\n\t\t\n\t\tconst opcoes = [\n\t\t\t{ title: \"Ver mais opções\" },\n\t\t\t{ title: \"Voltar\" },\n\t\t]\n\n\t\treturn itemsTotal.concat(opcoes).find((conv, index) => \n\t\t\tconv.title.toString().toUpperCase() === itemEscolhido.value.toString().toUpperCase() ||\n\t\t\tconv.title.toString().toUpperCase().includes(itemEscolhido.value.toString().toUpperCase()) ||\n\t\t\titemEscolhido.value.toString().toUpperCase().includes(conv.title.toString().toUpperCase()) ||\n\t\t\titensFormatadoMenuTotal.some((itemMenu) => \n\t\t\t\titemMenu.order === Number(itemEscolhido.value) && (\n\t\t\t\t\tconv.title.toString().toUpperCase() === itemMenu.text.toString().toUpperCase() ||\n\t\t\t\t\tconv.title.toString().toUpperCase().includes(itemMenu.text.toString().toUpperCase()) ||\n\t\t\t\t\titemMenu.text.toString().toUpperCase().includes(conv.title.toString().toUpperCase())\n\t\t\t\t)\n\t\t\t)\n\t\t) || false;\n\t} catch (e) {\n\t\treturn false;\n\t}\n}",
+          "inputVariables": [
+            "ItemEscolhido",
+            "itensFaqs",
+            "itensFormatadoMenu"
+          ],
+          "outputVariable": "itemEscolhidoObjeto",
+          "LocalTimeZoneEnabled": false
+        },
+        "conditions": []
+      }
+    ],
+    "$inputSuggestions": [],
+    "$defaultOutput": {
+      "stateId": "fallback",
+      "$invalid": false
+    },
+    "isAiGenerated": false,
+    "$tags": [
+      {
+        "background": "#FFEC03",
+        "label": "script",
+        "id": "blip-tag-ae3a595a-b66c-81cc-e3fd-8b0da4e7cc88",
+        "canChangeBackground": false
+      },
+      {
+        "id": "blip-tag-f6615326-4403-4ad4-a1d4-3ca9e3f65f35",
+        "label": "ExecuteScript",
+        "background": "#FF961E",
+        "canChangeBackground": false
+      },
+      {
+        "id": "blip-tag-574f372f-ef3a-4425-bbec-22d2f047fa3b",
+        "label": "SetVariable",
+        "background": "#FF4A1E",
+        "canChangeBackground": false
+      },
+      {
+        "id": "blip-tag-c82981d4-24e6-425e-8991-440b8d5782bf",
+        "label": "SendMessage",
+        "background": "#EE82EE",
+        "canChangeBackground": false
+      },
+      {
+        "id": "blip-tag-6c073004-8460-45da-8a05-312828a3f110",
+        "label": "UserInput",
+        "background": "#000000",
+        "canChangeBackground": false
+      }
+    ],
+    "id": "6613a7b5-749e-4043-a041-660a6d23e1af",
+    "root": false,
+    "$title": "Menu - Dinamico",
+    "$position": {
+      "top": "437px",
+      "left": "987px"
+    },
+    "$invalidContentActions": false,
+    "$invalidOutputs": false,
+    "$invalidCustomActions": false,
+    "$invalid": false,
+    "invalidOutputs": true
+  },
+  "d5b0ac5f-0ce1-45cc-8762-ab38a9999df0": {
+    "$contentActions": [
+      {
+        "input": {
+          "bypass": true,
+          "$cardContent": {
+            "document": {
+              "id": "e2cb7eaf-b95b-4398-b01b-c5a3c4832cc9",
+              "type": "text/plain",
+              "textContent": "Entrada do usuário",
+              "content": "Entrada do usuário"
+            },
+            "editable": false,
+            "deletable": true,
+            "position": "right",
+            "editing": false
+          },
+          "$invalid": false
+        },
+        "$invalid": false
+      }
+    ],
+    "$conditionOutputs": [
+      {
+        "stateId": "32e7a8a7-adb8-4ae1-9a17-362de1fd2564",
+        "typeOfStateId": "state",
+        "$connId": "con_53",
+        "$id": "484e0145-5926-4254-aa8c-99bc326ea3e4",
+        "conditions": [
+          {
+            "source": "context",
+            "comparison": "equals",
+            "values": [
+              "Erro ao formatar menu de sites de consignacão"
+            ],
+            "variable": "sitesConsignacaoFormatado"
+          }
+        ],
+        "$invalid": false
+      },
+      {
+        "typeOfStateId": "state",
+        "$connId": "con_58",
+        "$id": "70b2fbbb-37ee-4443-9255-b2ace7e59294",
+        "conditions": [
+          {
+            "source": "input",
+            "comparison": "exists",
+            "values": []
+          }
+        ],
+        "$invalid": false,
+        "stateId": "6613a7b5-749e-4043-a041-660a6d23e1af"
+      }
+    ],
+    "$enteringCustomActions": [
+      {
+        "$id": "4bbe19c4-0a00-4b77-aaef-4e7eae71f98d",
+        "$typeOfContent": "",
+        "type": "ExecuteScript",
+        "$title": "FormatadoMenu",
+        "$invalid": false,
+        "settings": {
+          "function": "run",
+          "source": "function run(page, conveniosFormatados) {\n\ttry {\n\t\tconveniosFormatados = JSON.parse(conveniosFormatados);\n\t\tlet counter = conveniosFormatados[page].length;\n\n\t\tconst opcoesFormatadas = conveniosFormatados[page].map((opcao, index) => ({\n\t\t\torder: index + 1,\n\t\t\ttext:\topcao,\n\t\t\ttype: \"application/json\",\n\t\t\tvalue: { value: opcao }\n\t\t}));\n\n\t\tif (conveniosFormatados[Number(page) + 1]) {\n\t\t\topcoesFormatadas.push({\n\t\t\t\torder: counter + 1,\n\t\t\t\ttext:\t'Ver mais opções',\n\t\t\t\ttype: \"application/json\",\n\t\t        value:{ value: \"Ver mais opções\" }\n\t\t\t})\n\t\t\tcounter += 1;\n\t\t}\n\n\t\tif (Number(page) !== 0) opcoesFormatadas.push({\n\t\t\torder: counter + 1,\n\t\t\ttext:\t\"Voltar\",\n\t\t\ttype: \"application/json\",\n\t\t\tvalue:{ value: \"Voltar\" },\n\t\t});\n\n\t\treturn opcoesFormatadas;\t\t\n\t} catch (err) {\n\t\treturn 'Erro ao formatar menu de sites de consignacão';\n\t}\n}",
+          "inputVariables": [
+            "paginaMenu",
+            "itensFormatados"
+          ],
+          "outputVariable": "itensFormatadoMenu",
+          "LocalTimeZoneEnabled": false
+        },
+        "conditions": []
+      }
+    ],
+    "$leavingCustomActions": [],
+    "$inputSuggestions": [],
+    "$defaultOutput": {
+      "stateId": "fallback",
+      "$invalid": false
+    },
+    "isAiGenerated": false,
+    "$tags": [
+      {
+        "background": "#FFEC03",
+        "label": "script",
+        "id": "blip-tag-ae3a595a-b66c-81cc-e3fd-8b0da4e7cc88",
+        "canChangeBackground": false
+      },
+      {
+        "id": "blip-tag-1ff7d8fd-e0d5-4823-b67f-7684cecb0b19",
+        "label": "ExecuteScript",
+        "background": "#FF961E",
+        "canChangeBackground": false
+      }
+    ],
+    "id": "d5b0ac5f-0ce1-45cc-8762-ab38a9999df0",
+    "root": false,
+    "$title": "Altera pagina menu",
+    "$position": {
+      "top": "394px",
+      "left": "1214px"
+    },
+    "$invalidContentActions": false,
+    "$invalidOutputs": false,
+    "$invalidCustomActions": false,
+    "$invalid": false,
+    "invalidOutputs": true
+  },
+  "32e7a8a7-adb8-4ae1-9a17-362de1fd2564": {
+    "$contentActions": [
+      {
+        "input": {
+          "bypass": true,
+          "$cardContent": {
+            "document": {
+              "id": "ff364fa9-291d-4564-830d-3a7ade1251b0",
+              "type": "text/plain",
+              "textContent": "Entrada do usuário",
+              "content": "Entrada do usuário"
+            },
+            "editable": false,
+            "deletable": true,
+            "position": "right",
+            "editing": false
+          },
+          "$invalid": false
+        },
+        "$invalid": false
+      }
+    ],
+    "$conditionOutputs": [
+      {
+        "typeOfStateId": "state",
+        "$connId": "con_63",
+        "$id": "0ab9a7b2-91be-4495-afbc-134c8dad0134",
+        "conditions": [
+          {
+            "source": "input",
+            "comparison": "exists",
+            "values": []
+          }
+        ],
+        "$invalid": false,
+        "stateId": "6613a7b5-749e-4043-a041-660a6d23e1af"
+      }
+    ],
+    "$enteringCustomActions": [
+      {
+        "$id": "ca50ffbc-36a6-4df1-a60b-9fac236a6a3b",
+        "$typeOfContent": "",
+        "type": "ExecuteScript",
+        "$title": "itensFormatados",
+        "$invalid": false,
+        "settings": {
+          "function": "run",
+          "source": "function formatterTitle(str) {\n\tlet titleStyle = \"{{itensMenuDinamico@titleStyle}}\";\n\n\tif(!titleStyle) titleStyle = \"none\";\n\ttitleStyle = titleStyle.toLowerCase();\n\n\tswitch (titleStyle) {\n\t\tcase \"capitalize\": {\n\t\t\treturn str.split(\" \").map((str2) => str2.charAt(0).toUpperCase() + str2.slice(1).toLowerCase()).join(\" \");\n\t\t}\n\t\tcase \"lowercase\": {\n\t\t\treturn str.toLowerCase();\n\t\t}\n\t\tcase \"uppercase\": {\n\t\t\treturn str.toUpperCase();\n\t\t}\n\t\tcase \"normal\": {\n\t\t\treturn str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();\n\t\t}\n\t\tdefault: {\n\t\t\treturn str;\n\t\t}\n\t}\n    \n}\n\nfunction run(items) {\n\ttry {\n\t\titems = JSON.parse(items);\n\t\tlet itemsFiltered = [];\n\n\t\tObject.values(items).map((item) => { itemsFiltered = [].concat(itemsFiltered, item.rows) });\n\n\t\tif (itemsFiltered.length === 0) return false;\n\n\t\tconst itemsMenu = [];\n\t\tlet page = [];\n\t\t\n\t\titemsFiltered.forEach((info, index, array) => {\n\t\t\tconst item = formatterTitle(info.title.toString());\n\t\t\tpage.push(item)\n\t\t\tif (((index + 1) % 8 === 0 && array.length > 10) || index === itemsFiltered.length - 1) {\n\t\t\t\titemsMenu.push(page);\n\t\t\t\tpage = [];\n\t\t\t}\n\t\t})\n\n\t\treturn itemsMenu;\n\t} catch (e) {\n\t\treturn false;\n\t}\n}",
+          "inputVariables": [
+            "itensFaqs"
+          ],
+          "outputVariable": "itensFormatados",
+          "LocalTimeZoneEnabled": false
+        },
+        "conditions": []
+      },
+      {
+        "$id": "a844dd41-2c00-4c91-8ed8-5a6ba0703629",
+        "$typeOfContent": "",
+        "type": "ExecuteScript",
+        "$title": "Formata para menu",
+        "$invalid": false,
+        "settings": {
+          "function": "run",
+          "source": "function run(itensMenu) {\n\ttry {\n\t\titensMenu = JSON.parse(itensMenu);\n\n\t\tconst opcoesFormatadas = itensMenu[0].map((opcao, index) => ({\n\t\t\torder: index + 1,\n\t\t\ttext:\topcao,\n\t\t\ttype: \"application/json\",\n\t\t\tvalue: { value: opcao }\n\t\t}))\n\n\t\tif(itensMenu[1]) opcoesFormatadas.push({\n\t\t\torder: itensMenu[0].length + 1,\n\t\t\ttext:\t'Ver mais opções',\n\t\t\ttype: \"application/json\",\n\t\t\tvalue: { value: \"Ver mais opções\" }\n\t\t})\n\n\t\treturn opcoesFormatadas;\t\t\n\t} catch (err) {\n\t\treturn [\n\t\t\t{\n\t\t\t\torder: 1,\n\t\t\t\ttext:\t'Menu principal',\n\t\t\t\ttype: \"application/json\",\n\t\t\t\tvalue: { value: \"Menu principal\" }\n\t\t\t},\n\t\t];\n\t}\n}",
+          "inputVariables": [
+            "itensFormatados"
+          ],
+          "outputVariable": "itensFormatadoMenu",
+          "LocalTimeZoneEnabled": false
+        },
+        "conditions": []
+      },
+      {
+        "$id": "8ae77eaf-df2a-4df7-9274-c0a3fcc39c6b",
+        "$typeOfContent": "",
+        "type": "SetVariable",
+        "$title": "Definir variável",
+        "$invalid": false,
+        "settings": {
+          "variable": "contadorPagina",
+          "value": "0"
+        },
+        "conditions": []
+      }
+    ],
+    "$leavingCustomActions": [],
+    "$inputSuggestions": [],
+    "$defaultOutput": {
+      "stateId": "fallback",
+      "$invalid": false
+    },
+    "isAiGenerated": false,
+    "$tags": [
+      {
+        "background": "#FFEC03",
+        "label": "script",
+        "id": "blip-tag-ae3a595a-b66c-81cc-e3fd-8b0da4e7cc88",
+        "canChangeBackground": false
+      },
+      {
+        "id": "blip-tag-52a92666-052a-43e0-9f4f-0de68a6f945f",
+        "label": "ExecuteScript",
+        "background": "#FF961E",
+        "canChangeBackground": false
+      },
+      {
+        "id": "blip-tag-0e6955ae-e70e-41b8-a345-77e79d5d552a",
+        "label": "SetVariable",
+        "background": "#FF4A1E",
+        "canChangeBackground": false
+      }
+    ],
+    "id": "32e7a8a7-adb8-4ae1-9a17-362de1fd2564",
+    "root": false,
+    "$title": "Itens do menu dinamico",
+    "$position": {
+      "top": "407px",
+      "left": "746px"
+    },
+    "$invalidContentActions": false,
+    "$invalidOutputs": false,
+    "$invalidCustomActions": false,
+    "$invalid": false,
+    "invalidOutputs": true
+  },
+  "debad41c-6f9f-4c25-b520-258c7eacc3b5": {
+    "$contentActions": [
+      {
+        "action": {
+          "$id": "ea0524fe-6ed6-43e8-b095-23a7c0e422f3",
+          "$typeOfContent": "chat-state",
+          "type": "SendMessage",
+          "settings": {
+            "id": "cea249d1-f72f-4f21-a625-133c971b5245",
+            "type": "application/vnd.lime.chatstate+json",
+            "content": {
+              "state": "composing",
+              "interval": 1000
+            }
+          },
+          "$cardContent": {
+            "document": {
+              "id": "cea249d1-f72f-4f21-a625-133c971b5245",
+              "type": "application/vnd.lime.chatstate+json",
+              "content": {
+                "state": "composing",
+                "interval": 1000
+              }
+            },
+            "editable": true,
+            "deletable": true,
+            "position": "left"
+          }
+        },
+        "$invalid": false
+      },
+      {
+        "action": {
+          "$id": "104fd588-b8a6-45aa-a9d4-516dc94875ae",
+          "$typeOfContent": "raw-content",
+          "type": "SendRawMessage",
+          "settings": {
+            "metadata": {},
+            "type": "application/json",
+            "rawContent": "{{corpoMenuDinamicoWhatsapp}}"
+          }
+        },
+        "$invalid": false
+      },
+      {
+        "input": {
+          "bypass": false,
+          "$cardContent": {
+            "document": {
+              "id": "588034ce-c022-4f50-ae4c-c5a8d1200e42",
+              "type": "text/plain",
+              "textContent": "Entrada do usuário",
+              "content": "ItemEscolhidoNotFormatted"
+            },
+            "editable": false,
+            "deletable": true,
+            "position": "right",
+            "editing": false
+          },
+          "$invalid": false,
+          "variable": "ItemEscolhidoNotFormatted",
+          "expiration": "0:15"
+        },
+        "$invalid": false
+      }
+    ],
+    "$conditionOutputs": [
+      {
+        "stateId": "d52f47b9-775f-4f25-97ea-900ec5c96fa8",
+        "typeOfStateId": "state",
+        "$connId": "con_68",
+        "$id": "b9feb7ea-e9d2-4b12-a85c-e272854f0203",
+        "conditions": [
+          {
+            "source": "context",
+            "comparison": "equals",
+            "values": [
+              "-1",
+              "-1.0"
+            ],
+            "variable": "context.contadorPagina"
+          },
+          {
+            "values": [
+              "false"
+            ],
+            "source": "context",
+            "comparison": "notEquals",
+            "variable": "itemEscolhidoObjeto"
+          }
+        ],
+        "$invalid": false
+      },
+      {
+        "stateId": "b437bea0-3344-4159-b0b8-489bf9ce4511",
+        "typeOfStateId": "state",
+        "$connId": "con_73",
+        "$id": "eeaf384c-04af-4741-89bb-de32511d77ae",
+        "conditions": [
+          {
+            "source": "context",
+            "comparison": "exists",
+            "values": [],
+            "variable": "context.contadorPagina"
+          },
+          {
+            "values": [],
+            "source": "input",
+            "comparison": "exists"
+          },
+          {
+            "values": [
+              "false"
+            ],
+            "source": "context",
+            "variable": "itemEscolhidoObjeto",
+            "comparison": "notEquals"
+          }
+        ],
+        "$invalid": false
+      },
+      {
+        "stateId": "d52f47b9-775f-4f25-97ea-900ec5c96fa8",
+        "typeOfStateId": "state",
+        "$connId": "con_78",
+        "$id": "b3fa96ac-676e-48e7-8122-604097b1c74f",
+        "conditions": [
+          {
+            "source": "input",
+            "comparison": "equals",
+            "values": [
+              "Falar com atendente"
+            ]
+          }
+        ],
+        "$invalid": false
+      },
+      {
+        "stateId": "d52f47b9-775f-4f25-97ea-900ec5c96fa8",
+        "typeOfStateId": "state",
+        "$connId": "con_83",
+        "$id": "05fa8031-b97a-4e1b-a288-174826a28cc3",
+        "conditions": [
+          {
+            "source": "input",
+            "comparison": "equals",
+            "values": [
+              "Menu principal"
+            ]
+          }
+        ],
+        "$invalid": false
+      }
+    ],
+    "$enteringCustomActions": [
+      {
+        "$id": "b24e5b73-55aa-46b8-a373-2660b79998b8",
+        "$typeOfContent": "",
+        "type": "ExecuteScript",
+        "$title": "corpoMenuDinamicoWhatsapp",
+        "settings": {
+          "function": "run",
+          "source": "function formatterTags(text) {\n\tconst regexNegrito = /(<b>|<.b>)/g\n\tconst regexItalico = /(<i>|<.i>)/g\n\tconst regexTachado = /(<s>|<strike>|<.s>|<.strike>)/g\n\tconst regexMonoespacado = /(<tt>|<.tt>)/g\n\n\treturn text\n\t\t.replace(regexNegrito, \"*\")\n\t\t.replace(regexItalico, \"_\")\n\t\t.replace(regexTachado, \"~\")\n\t\t.replace(regexMonoespacado, \"```\")\n}\n\nfunction run(itensFormatadoMenu) {\n\titensFormatadoMenu = JSON.parse(itensFormatadoMenu);\n\tconst header = \"{{itensMenuDinamico@header}}\";\n\tconst body = \"{{itensMenuDinamico@body}}\";\n\tconst footer = \"{{itensMenuDinamico@footer}}\";\n\tlet button = \"{{itensMenuDinamico@button}}\";\n\n\tconst output = {\n\t\t\"recipient_type\": \"individual\",\n\t\t\"type\": \"interactive\",\n\t\t\"interactive\": {\n\t\t\t\"type\": \"list\",\n\t\t\t\n\t\t}\n\t}\n\n\tif (header) output.interactive.header = { type: \"text\", text: header };\n\tif (body) output.interactive.body = { text: formatterTags(body) };\n\tif (footer) output.interactive.footer = { text: footer };\n\n\tif(!button) button = \"Selecionar Assunto\"\n\n\toutput.interactive.action = {\n\t\t\t\t\"button\": button,\n\t\t\t\t\"sections\": itensFormatadoMenu\n\t\t\t}\n\n\treturn output;\n}",
+          "inputVariables": [
+            "itensFormatadoMenu"
+          ],
+          "outputVariable": "corpoMenuDinamicoWhatsapp",
+          "LocalTimeZoneEnabled": false
+        },
+        "$invalid": false,
+        "conditions": []
+      }
+    ],
+    "$leavingCustomActions": [
+      {
+        "$id": "4c202a9d-d910-47f6-8cb8-771f4c3013ad",
+        "$typeOfContent": "",
+        "type": "ExecuteScript",
+        "$title": "Formata ItemEscolhido",
+        "$invalid": false,
+        "settings": {
+          "function": "run",
+          "source": "function run(siteConsegnadoItemEscolhido) {\n\tlet output = siteConsegnadoItemEscolhido.includes(\"value\") ? JSON.parse(siteConsegnadoItemEscolhido) : {};\n\n\tif (!output.value) output = { value: siteConsegnadoItemEscolhido };\n\n\treturn output;\n}",
+          "inputVariables": [
+            "ItemEscolhidoNotFormatted"
+          ],
+          "outputVariable": "ItemEscolhido",
+          "LocalTimeZoneEnabled": false
+        },
+        "conditions": []
+      },
+      {
+        "$id": "fc5bbba2-6b48-4531-849e-b69fb994dcc8",
+        "$typeOfContent": "",
+        "type": "ExecuteScript",
+        "$title": "paginaMenu",
+        "$invalid": false,
+        "settings": {
+          "function": "run",
+          "source": "function run(contadorPagina, itemEscolhido, itensFormatadoMenu) {\n\ttry {\n\t\titemEscolhido = JSON.parse(itemEscolhido);\n\t\titensFormatadoMenu = JSON.parse(itensFormatadoMenu);\n\t\tcontadorPagina = contadorPagina ? Number(contadorPagina) : 0;\n\n\t\tif (itemEscolhido.value.toLowerCase().includes(\"ver mais\") || itensFormatadoMenu.some((item) => item.rows.some((opt) => opt.id === Number(itemEscolhido.value) && opt.title.toLowerCase().includes(\"ver mais\")))) {\n\t\t\tcontadorPagina += 1;\n\t\t\treturn contadorPagina;\n\t\t}\n\t\tif (itemEscolhido.value.toLowerCase().includes(\"voltar\") || itensFormatadoMenu.some((item) => item.rows.some((opt) => opt.id === Number(itemEscolhido.value) && opt.title.toLowerCase().includes(\"voltar\")))) {\n\t\t\tcontadorPagina -= 1;\n\t\t\treturn contadorPagina;\t\t\t\n\t\t}\n\t\treturn\t-1;\n\t\t\n\t} catch (e) {\n\t\tthrow e;\n\t\treturn 0;\n\t}\n}\t",
+          "inputVariables": [
+            "context.contadorPagina",
+            "ItemEscolhido",
+            "itensFormatadoMenu"
+          ],
+          "outputVariable": "paginaMenu",
+          "LocalTimeZoneEnabled": false
+        },
+        "conditions": []
+      },
+      {
+        "$id": "b79f144d-4df4-492e-bad9-efe0931911b6",
+        "$typeOfContent": "",
+        "type": "SetVariable",
+        "$title": "contadorPagina",
+        "$invalid": false,
+        "settings": {
+          "variable": "contadorPagina",
+          "value": "{{paginaMenu}}"
+        },
+        "conditions": []
+      },
+      {
+        "$id": "2b253848-700a-4a60-b4bd-5535b1013849",
+        "$typeOfContent": "",
+        "type": "ExecuteScript",
+        "$title": "itemEscolhidoObjeto",
+        "$invalid": false,
+        "settings": {
+          "function": "run",
+          "source": "function run(itemEscolhido, itensFaqs, itensFormatadoMenu) {\n\ttry {\n\t\titensFaqs = JSON.parse(itensFaqs);\n\t\tlet itemsTotal = [];\n\t\titensFaqs.map((item) => { itemsTotal = [].concat(itemsTotal, item.rows) });\n\n\t\titemEscolhido = JSON.parse(itemEscolhido);\n\t\titensFormatadoMenu = JSON.parse(itensFormatadoMenu);\n\n\t\tlet itensFormatadoMenuTotal = [];\n\t\titensFormatadoMenu.map((item) => { itensFormatadoMenuTotal = [].concat(itensFormatadoMenuTotal, item.rows) });\n\t\t\n\t\tconst opcoes = [\n\t\t\t{ title: \"Ver mais opções\" },\n\t\t\t{ title: \"Voltar\" },\n\t\t]\n\n\t\treturn itemsTotal.concat(opcoes).find((conv, index) => \n\t\t\tconv.title.toString().toUpperCase() === itemEscolhido.value.toString().toUpperCase() ||\n\t\t\tconv.title.toString().toUpperCase().includes(itemEscolhido.value.toString().toUpperCase()) ||\n\t\t\titemEscolhido.value.toString().toUpperCase().includes(conv.title.toString().toUpperCase()) ||\n\t\t\titensFormatadoMenuTotal.some((itemMenu) => \n\t\t\t\titemMenu.id === Number(itemEscolhido.value) && (\n\t\t\t\t\tconv.title.toString().toUpperCase() === itemMenu.title.toString().toUpperCase() ||\n\t\t\t\t\tconv.title.toString().toUpperCase().includes(itemMenu.title.toString().toUpperCase()) ||\n\t\t\t\t\titemMenu.title.toString().toUpperCase().includes(conv.title.toString().toUpperCase())\n\t\t\t\t)\n\t\t\t)\n\t\t) || false;\n\t} catch (e) {\n\t\treturn false;\n\t}\n}",
+          "inputVariables": [
+            "ItemEscolhido",
+            "itensFaqs",
+            "itensFormatadoMenu"
+          ],
+          "outputVariable": "itemEscolhidoObjeto",
+          "LocalTimeZoneEnabled": false
+        },
+        "conditions": []
+      }
+    ],
+    "$inputSuggestions": [],
+    "$defaultOutput": {
+      "stateId": "fallback",
+      "$invalid": false
+    },
+    "isAiGenerated": false,
+    "$tags": [
+      {
+        "background": "#FFEC03",
+        "label": "script",
+        "id": "blip-tag-ae3a595a-b66c-81cc-e3fd-8b0da4e7cc88",
+        "canChangeBackground": false
+      },
+      {
+        "id": "blip-tag-f6bda5a6-f4a6-4a8f-8abb-c549d619bd95",
+        "label": "ExecuteScript",
+        "background": "#FF961E",
+        "canChangeBackground": false
+      },
+      {
+        "id": "blip-tag-11a15d0e-09a7-4e5e-9dc6-554458183f54",
+        "label": "SetVariable",
+        "background": "#FF4A1E",
+        "canChangeBackground": false
+      },
+      {
+        "id": "blip-tag-c11eaf7f-c5f6-41c6-837c-a54e8a542742",
+        "label": "SendMessage",
+        "background": "#EE82EE",
+        "canChangeBackground": false
+      },
+      {
+        "id": "blip-tag-b7dd0155-aa11-402b-b2bf-d06099dffa13",
+        "label": "UserInput",
+        "background": "#000000",
+        "canChangeBackground": false
+      }
+    ],
+    "id": "debad41c-6f9f-4c25-b520-258c7eacc3b5",
+    "root": false,
+    "$title": "Menu - Dinamico - Whatsapp",
+    "$position": {
+      "top": "573px",
+      "left": "966px"
+    },
+    "$invalidContentActions": false,
+    "$invalidOutputs": false,
+    "$invalidCustomActions": false,
+    "$invalid": false,
+    "invalidOutputs": true
+  },
+  "b437bea0-3344-4159-b0b8-489bf9ce4511": {
+    "$contentActions": [
+      {
+        "input": {
+          "bypass": true,
+          "$cardContent": {
+            "document": {
+              "id": "e2cb7eaf-b95b-4398-b01b-c5a3c4832cc9",
+              "type": "text/plain",
+              "textContent": "Entrada do usuário",
+              "content": "Entrada do usuário"
+            },
+            "editable": false,
+            "deletable": true,
+            "position": "right",
+            "editing": false
+          },
+          "$invalid": false
+        },
+        "$invalid": false
+      }
+    ],
+    "$conditionOutputs": [
+      {
+        "stateId": "eb1d8b9d-f60e-48f2-a93b-527096b189d5",
+        "typeOfStateId": "state",
+        "$connId": "con_88",
+        "$id": "484e0145-5926-4254-aa8c-99bc326ea3e4",
+        "conditions": [
+          {
+            "source": "context",
+            "comparison": "equals",
+            "values": [
+              "Erro ao formatar menu de sites de consignacão"
+            ],
+            "variable": "sitesConsignacaoFormatado"
+          }
+        ],
+        "$invalid": false
+      },
+      {
+        "typeOfStateId": "state",
+        "$connId": "con_93",
+        "$id": "70b2fbbb-37ee-4443-9255-b2ace7e59294",
+        "conditions": [
+          {
+            "source": "input",
+            "comparison": "exists",
+            "values": []
+          }
+        ],
+        "$invalid": false,
+        "stateId": "debad41c-6f9f-4c25-b520-258c7eacc3b5"
+      }
+    ],
+    "$enteringCustomActions": [
+      {
+        "$id": "4bbe19c4-0a00-4b77-aaef-4e7eae71f98d",
+        "$typeOfContent": "",
+        "type": "ExecuteScript",
+        "$title": "FormatadoMenu",
+        "$invalid": false,
+        "settings": {
+          "function": "run",
+          "source": "function run(page, itensFormatados) {\n\ttry {\n\t\titensFormatados = JSON.parse(itensFormatados);\n\t\tlet totalDeItensMenu = 0;\n\t\titensFormatados[page].map((item) => { totalDeItensMenu += item.rows.length });\n\t\tlet counter = totalDeItensMenu;\n\n\t\tconst opcoesFormatadas = itensFormatados[page].map((item, indexMenu, array) => ({\n\t\t\t...item,\n\t\t\trows: item.rows.map((opcao, index) => {\n\t\t\t\tconst output = ({\n\t\t\t\t\tid: ((array[indexMenu - 1] ? array[indexMenu - 1].rows.length : 0) + (index + 1)).toString(),\n\t\t\t\t})\n\n\t\t\t\tif(opcao.title) output.title = opcao.title;\n\t\t\t\tif(opcao.description) output.description = opcao.description;\n\t\t\t\treturn output;\n\t\t\t})\n\t\t}));\n\n\t\tlet navigation = \"{{itensMenuDinamico@navigation}}\";\n\n\t\tif(!navigation) navigation = \"Navegação\"\n\t\t\n\t\tif (itensFormatados[Number(page) + 1]) {\n\t\t\tconst indexOfOutros = opcoesFormatadas.findIndex((item) => item.title === navigation)\n\t\t\tif (opcoesFormatadas[indexOfOutros]){\n\t\t\t\topcoesFormatadas[indexOfOutros].rows.push({\n\t\t\t\t\tid: (counter + 1).toString(),\n\t\t\t\t\ttitle:\t'Ver mais opções',\n\t\t\t\t})\n\t\t\t}  else {\n\t\t\t\topcoesFormatadas.push({\n\t\t\t\t\ttitle: navigation,\n\t\t\t\t\trows: [{\n\t\t\t\t\tid: (counter + 1).toString(),\n\t\t\t\t\ttitle:\t'Ver mais opções',\n\t\t\t\t}]\n\t\t\t\t})\n\t\t\t}\n\t\t\tcounter += 1;\n\t\t}\n\n\t\tif (Number(page) !== 0) {\n\t\t\tconst indexOfOutros = opcoesFormatadas.findIndex((item) => item.title === navigation)\n\t\t\tif (opcoesFormatadas[indexOfOutros]){\n\t\t\t\topcoesFormatadas[indexOfOutros].rows.push({\n\t\t\t\t\tid: (counter + 1).toString(),\n\t\t\t\t\ttitle:\t'Voltar',\n\t\t\t\t})\n\t\t\t}  else {\n\t\t\t\topcoesFormatadas.push({\n\t\t\t\t\ttitle: navigation,\n\t\t\t\t\trows: [{\n\t\t\t\t\tid: (counter + 1).toString(),\n\t\t\t\t\ttitle:\t'Voltar',\n\t\t\t\t}]\n\t\t\t\t})\n\t\t\t}\n\t\t}\n\n\t\treturn opcoesFormatadas;\t\t\n\t} catch (err) {\n\t\tthrow err;\n\t}\n}",
+          "inputVariables": [
+            "paginaMenu",
+            "itensFormatados"
+          ],
+          "outputVariable": "itensFormatadoMenu",
+          "LocalTimeZoneEnabled": false
+        },
+        "conditions": []
+      }
+    ],
+    "$leavingCustomActions": [],
+    "$inputSuggestions": [],
+    "$defaultOutput": {
+      "stateId": "fallback",
+      "$invalid": false
+    },
+    "isAiGenerated": false,
+    "$tags": [
+      {
+        "background": "#FFEC03",
+        "label": "script",
+        "id": "blip-tag-ae3a595a-b66c-81cc-e3fd-8b0da4e7cc88",
+        "canChangeBackground": false
+      },
+      {
+        "id": "blip-tag-bb8c491a-c02d-4abe-af64-0848b1846c37",
+        "label": "ExecuteScript",
+        "background": "#FF961E",
+        "canChangeBackground": false
+      }
+    ],
+    "id": "b437bea0-3344-4159-b0b8-489bf9ce4511",
+    "root": false,
+    "$title": "Altera pagina menu - Whatsapp",
+    "$position": {
+      "top": "582px",
+      "left": "1208px"
+    },
+    "$invalidContentActions": false,
+    "$invalidOutputs": false,
+    "$invalidCustomActions": false,
+    "$invalid": false,
+    "invalidOutputs": true
+  },
+  "eb1d8b9d-f60e-48f2-a93b-527096b189d5": {
+    "$contentActions": [
+      {
+        "input": {
+          "bypass": true,
+          "$cardContent": {
+            "document": {
+              "id": "ff364fa9-291d-4564-830d-3a7ade1251b0",
+              "type": "text/plain",
+              "textContent": "Entrada do usuário",
+              "content": "Entrada do usuário"
+            },
+            "editable": false,
+            "deletable": true,
+            "position": "right",
+            "editing": false
+          },
+          "$invalid": false
+        },
+        "$invalid": false
+      }
+    ],
+    "$conditionOutputs": [
+      {
+        "typeOfStateId": "state",
+        "$connId": "con_98",
+        "$id": "0ab9a7b2-91be-4495-afbc-134c8dad0134",
+        "conditions": [
+          {
+            "source": "input",
+            "comparison": "exists",
+            "values": []
+          }
+        ],
+        "$invalid": false,
+        "stateId": "debad41c-6f9f-4c25-b520-258c7eacc3b5"
+      }
+    ],
+    "$enteringCustomActions": [
+      {
+        "$id": "ca50ffbc-36a6-4df1-a60b-9fac236a6a3b",
+        "$typeOfContent": "",
+        "type": "ExecuteScript",
+        "$title": "itensFormatados",
+        "$invalid": false,
+        "settings": {
+          "function": "run",
+          "source": "function formatterTitle(str) {\n\tlet titleStyle = \"{{itensMenuDinamico@titleStyle}}\";\n\n\tif(!titleStyle) titleStyle = \"none\";\n\ttitleStyle = titleStyle.toLowerCase();\n\n\tswitch (titleStyle) {\n\t\tcase \"capitalize\": {\n\t\t\treturn str.split(\" \").map((str2) => str2.charAt(0).toUpperCase() + str2.slice(1).toLowerCase()).join(\" \");\n\t\t}\n\t\tcase \"lowercase\": {\n\t\t\treturn str.toLowerCase();\n\t\t}\n\t\tcase \"uppercase\": {\n\t\t\treturn str.toUpperCase();\n\t\t}\n\t\tcase \"normal\": {\n\t\t\treturn str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();\n\t\t}\n\t\tdefault: {\n\t\t\treturn str;\n\t\t}\n\t}\n    \n}\n\nfunction formatterDescription(str) {\n\tlet titleStyle = \"{{itensMenuDinamico@descriptionStyle}}\";\n\n\tif(!titleStyle) titleStyle = \"none\";\n\ttitleStyle = titleStyle.toLowerCase();\n\n\tswitch (titleStyle) {\n\t\tcase \"capitalize\": {\n\t\t\treturn str.split(\" \").map((str2) => str2.charAt(0).toUpperCase() + str2.slice(1).toLowerCase()).join(\" \");\n\t\t}\n\t\tcase \"lowercase\": {\n\t\t\treturn str.toLowerCase();\n\t\t}\n\t\tcase \"uppercase\": {\n\t\t\treturn str.toUpperCase();\n\t\t}\n\t\tcase \"normal\": {\n\t\t\treturn str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();\n\t\t}\n\t\tdefault: {\n\t\t\treturn str;\n\t\t}\n\t}\n    \n}\n\nfunction run(items) {\n\ttry {\n\t\titems = JSON.parse(items);\n\t\tconst itemsFiltered = items;\n\n\t\tif (itemsFiltered.length === 0) return false;\n\n        let itemsTotal = [];\n        Object.values(items).map((item) => { itemsTotal = [].concat(itemsTotal, item.rows) });\n\n        const itemsMenu = [];\n        let sections = [];\n        \n        itensMenuCopy = {}\n\t\titemsFiltered.forEach((info, indexCategories, arrayCategories) => {\n            let page = [];\n\t\t\treturn {\n                title: info.title,\n                rows: info.rows.forEach((row, index, array) => {\n                    const item = formatterTitle(row.title.toString());\n                    const itemDescription = row.description ? formatterDescription(row.description.toString()) : \"\";\n                    let somaItensPagina = 1;\n                    sections.map((section) => { somaItensPagina += section.rows.length });\n                    somaItensPagina += page.length;\n\n                    page.push({ title: item, description: itemDescription })\n\n                    if (somaItensPagina !== 0 && (somaItensPagina % 8 === 0 && itemsTotal.length > 10) || index === array.length - 1) {\n                        if(sections.length === 0 || somaItensPagina <= 8) {\n                            sections.push(\n                                {\n                                    title: info.title,\n                                    rows: page,\n                                }\n                            );\n\n                            if (somaItensPagina >= 8 || (indexCategories === (arrayCategories.length - 1) && index === (array.length - 1) && sections.length > 0)) {\n\n                                itemsMenu.push(sections);\n                                sections = [];\n                            }\n                        } else {\n                            sections.push(\n                                {\n                                    title: info.title,\n                                    rows: page,\n                                }\n                            )\n                            itemsMenu.push(sections);\n\n                            sections = [];\n                        }\n                        page = [];\n                    }\n                    return { title: item, description: itemDescription }\n                })\n            }\n\n\t\t})\n        return itemsMenu;\n\t} catch (e) {\n\t\treturn false;\n\t}\n}",
+          "inputVariables": [
+            "itensFaqs"
+          ],
+          "outputVariable": "itensFormatados",
+          "LocalTimeZoneEnabled": false
+        },
+        "conditions": []
+      },
+      {
+        "$id": "a844dd41-2c00-4c91-8ed8-5a6ba0703629",
+        "$typeOfContent": "",
+        "type": "ExecuteScript",
+        "$title": "Formata para menu",
+        "$invalid": false,
+        "settings": {
+          "function": "run",
+          "source": "function run(itensMenu) {\n\ttry {\n\t\titensMenu = JSON.parse(itensMenu);\n\n\t\tconst lengthItensMenu = itensMenu[0].length - 1;\n\t\tlet totalDeItensMenu = [];\n\t\titensMenu[0].map((item) => { totalDeItensMenu += item.rows.length });\n\n\t\tconst opcoesFormatadas = itensMenu[0].map((item, indexMenu, array) => ({\n\t\t\t...item,\n\t\t\trows: item.rows.map((opcao, index) => {\n\t\t\t\tconst output = ({\n\t\t\t\t\tid: ((array[indexMenu - 1] ? array[indexMenu - 1].rows.length : 0) + (index + 1)).toString(),\n\t\t\t\t})\n\n\t\t\t\tif(opcao.title) output.title = opcao.title.slice(0,20);\n\t\t\t\tif(opcao.description) output.description = opcao.description.slice(0,70);\n\t\t\t\treturn output;\n\t\t\t})\n\t\t}))\n\n\t\tlet navigation = \"{{itensMenuDinamico@navigation}}\";\n\n\t\tif(!navigation) navigation = \"Navegação\"\n\n\t\tif(itensMenu[1]) {\n\t\t\topcoesFormatadas.push({\n\t\t\t\ttitle: navigation,\n\t\t\t\trows: [{\n\t\t\t\t\tid: (totalDeItensMenu + 1).toString(),\n\t\t\t\t\ttitle:\t'Ver mais opções',\n\t\t\t\t}]\n\t\t\t})\n\t\t}\n\n\t\treturn opcoesFormatadas\t\n\t} catch (err) {\n\t\tthrow err;\n\t\treturn [{\n\t\t\ttitle: \"Menu\",\n\t\t\trows: [\n\t\t\t\t{\n\t\t\t\t\tid: '1',\n\t\t\t\t\ttitle:\t'Menu principal',\n\t\t\t\t},\n\t\t\t]\n\t\t}]\n\t}\n}",
+          "inputVariables": [
+            "itensFormatados"
+          ],
+          "outputVariable": "itensFormatadoMenu",
+          "LocalTimeZoneEnabled": false
+        },
+        "conditions": []
+      },
+      {
+        "$id": "8ae77eaf-df2a-4df7-9274-c0a3fcc39c6b",
+        "$typeOfContent": "",
+        "type": "SetVariable",
+        "$title": "Definir variável",
+        "$invalid": false,
+        "settings": {
+          "variable": "contadorPagina",
+          "value": "0"
+        },
+        "conditions": []
+      }
+    ],
+    "$leavingCustomActions": [],
+    "$inputSuggestions": [],
+    "$defaultOutput": {
+      "stateId": "fallback",
+      "$invalid": false
+    },
+    "isAiGenerated": false,
+    "$tags": [
+      {
+        "background": "#FFEC03",
+        "label": "script",
+        "id": "blip-tag-ae3a595a-b66c-81cc-e3fd-8b0da4e7cc88",
+        "canChangeBackground": false
+      },
+      {
+        "id": "blip-tag-a00fe665-98e6-4b35-8ddf-19a64f5a9dd7",
+        "label": "ExecuteScript",
+        "background": "#FF961E",
+        "canChangeBackground": false
+      },
+      {
+        "id": "blip-tag-925a0f76-bb06-4a4b-bfb6-01e0c711bc2f",
+        "label": "SetVariable",
+        "background": "#FF4A1E",
+        "canChangeBackground": false
+      }
+    ],
+    "id": "eb1d8b9d-f60e-48f2-a93b-527096b189d5",
+    "root": false,
+    "$title": "Itens do menu dinamico - Whatsapp",
+    "$position": {
+      "top": "559px",
+      "left": "746px"
+    },
+    "$invalidContentActions": false,
+    "$invalidOutputs": false,
+    "$invalidCustomActions": false,
+    "$invalid": false,
+    "invalidOutputs": true
+  },
+  "66639379-f272-456d-bb09-73177d8202ea": {
+    "$contentActions": [
+      {
+        "input": {
+          "bypass": true,
+          "$cardContent": {
+            "document": {
+              "id": "5eee5826-99e6-4d84-a38f-0ac6f40f0518",
+              "type": "text/plain",
+              "textContent": "Entrada do usuário",
+              "content": "Entrada do usuário"
+            },
+            "editable": false,
+            "deletable": true,
+            "position": "right",
+            "editing": false
+          },
+          "$invalid": false
+        },
+        "$invalid": false
+      },
+      {
+        "action": {
+          "$id": "63d5d19d-0540-459f-8997-7ca136d520fd",
+          "$typeOfContent": "chat-state",
+          "type": "SendMessage",
+          "settings": {
+            "id": "055024ae-8660-406b-a245-f737500b1f7a",
+            "type": "application/vnd.lime.chatstate+json",
+            "content": {
+              "state": "composing",
+              "interval": 1000
+            },
+            "metadata": {
+              "#stateName": "{{state.name}}",
+              "#stateId": "{{state.id}}",
+              "#messageId": "{{input.message@id}}",
+              "#previousStateId": "{{state.previous.id}}",
+              "#previousStateName": "{{state.previous.name}}"
+            }
+          },
+          "$cardContent": {
+            "document": {
+              "id": "055024ae-8660-406b-a245-f737500b1f7a",
+              "type": "application/vnd.lime.chatstate+json",
+              "content": {
+                "state": "composing",
+                "interval": 1000
+              }
+            },
+            "editable": true,
+            "deletable": true,
+            "position": "left"
+          }
+        },
+        "$invalid": false
+      }
+    ],
+    "$conditionOutputs": [
+      {
+        "stateId": "56cf2557-426f-4c1c-b1b4-ab4431610e67",
+        "typeOfStateId": "state",
+        "$connId": "con_103",
+        "$id": "67d88071-5c9a-4250-a445-6609e31fe8f2",
+        "conditions": [
+          {
+            "source": "context",
+            "comparison": "equals",
+            "values": [
+              "Instagram"
+            ],
+            "variable": "channel"
+          }
+        ],
+        "$isBuilderDefaultOutput": true,
+        "$invalid": false
+      },
+      {
+        "stateId": "eb1d8b9d-f60e-48f2-a93b-527096b189d5",
+        "typeOfStateId": "state",
+        "$connId": "con_108",
+        "$id": "0934f398-df49-4545-a1da-b03c9768cd2c",
+        "conditions": [
+          {
+            "source": "context",
+            "comparison": "contains",
+            "values": [
+              "wa.gw.msging.net"
+            ],
+            "variable": "contact.identity"
+          },
+          {
+            "values": [
+              "3",
+              "3.0"
+            ],
+            "source": "context",
+            "comparison": "greaterThan",
+            "variable": "quantidadeItens"
+          }
+        ],
+        "$invalid": false
+      },
+      {
+        "stateId": "32e7a8a7-adb8-4ae1-9a17-362de1fd2564",
+        "typeOfStateId": "state",
+        "$connId": "con_113",
+        "$id": "4ca814ea-84ed-40d0-9e88-072557e3562a",
+        "conditions": [
+          {
+            "source": "input",
+            "comparison": "exists",
+            "values": []
+          },
+          {
+            "values": [
+              "3",
+              "3.0"
+            ],
+            "source": "context",
+            "variable": "quantidadeItens",
+            "comparison": "greaterThan"
+          }
+        ],
+        "$invalid": false
+      },
+      {
+        "stateId": "ce0b14a1-ecb6-497b-877d-f43188ab6f54",
+        "typeOfStateId": "state",
+        "$connId": "con_118",
+        "$id": "1145f5f7-9c90-4654-92e1-a283d54a5526",
+        "conditions": [
+          {
+            "source": "context",
+            "comparison": "contains",
+            "values": [
+              "wa.gw.msging.net"
+            ],
+            "variable": "contact.identity"
+          }
+        ],
+        "$invalid": false
+      },
+      {
+        "stateId": "56cf2557-426f-4c1c-b1b4-ab4431610e67",
+        "typeOfStateId": "state",
+        "$connId": "con_123",
+        "$id": "5773534c-2708-4ae8-bf7d-da59b002a5b2",
+        "conditions": [
+          {
+            "source": "input",
+            "comparison": "exists",
+            "values": []
+          }
+        ],
+        "$invalid": false
+      }
+    ],
+    "$enteringCustomActions": [
+      {
+        "$id": "532eb3dd-76ed-42f4-b774-0ca69b281abd",
+        "$typeOfContent": "",
+        "type": "ExecuteScript",
+        "$title": "itensFaqs",
+        "$invalid": false,
+        "settings": {
+          "function": "run",
+          "source": "function run(itensMenuDinamico = {}) {\n\ttry {\n\t\titensMenuDinamico = JSON.parse(itensMenuDinamico);\n\n\t\tif(itensMenuDinamico.categories) return itensMenuDinamico.categories;\n\n\t\treturn {\n\t\t\ttitle: \"Menu\",\n\t\t\trows: [\n\t\t\t\t{\n\t\t\t\t\ttitle: \"Falar com atendente\",\n\t\t\t\t\tdescription: \"Falar com um de nossos atendentes\"\n\t\t\t\t},\n\t\t\t],\n\t\t}\n\t} catch (e){\n\t\treturn {\n\t\t\ttitle: \"Menu\",\n\t\t\trows: [\n\t\t\t\t{\n\t\t\t\t\ttitle: \"Falar com atendente\",\n\t\t\t\t\tdescription: \"Falar com um de nossos atendentes\"\n\t\t\t\t},\n\t\t\t],\n\t\t}\n\t}\n}",
+          "inputVariables": [
+            "itensMenuDinamico"
+          ],
+          "outputVariable": "itensFaqs",
+          "LocalTimeZoneEnabled": false
+        },
+        "conditions": [
+          {
+            "values": [],
+            "source": "context",
+            "comparison": "notExists",
+            "variable": "itensFaqs"
+          }
+        ]
+      },
+      {
+        "$id": "a183b325-41ab-4272-898f-82cc5ffd20b3",
+        "$typeOfContent": "",
+        "type": "ExecuteScript",
+        "$title": "quantidadeItens",
+        "$invalid": false,
+        "settings": {
+          "function": "run",
+          "source": "function run(itensMenuDinamico) {\n\ttry {\n\t\titensMenuDinamico = JSON.parse(itensMenuDinamico);\n\n\t\tconst todosItens = 0;\n\n\t\titensMenuDinamico.map((item) => { todosItens += item.rows.length });\n\n\t\treturn todosItens\n\t} catch (e){\n\t\treturn 1;\n\t}\n}",
+          "inputVariables": [
+            "itensFaqs"
+          ],
+          "outputVariable": "quantidadeItens",
+          "LocalTimeZoneEnabled": false
+        },
+        "conditions": []
+      }
+    ],
+    "$leavingCustomActions": [],
+    "$inputSuggestions": [],
+    "$defaultOutput": {
+      "stateId": "fallback",
+      "$invalid": false
+    },
+    "isAiGenerated": false,
+    "$tags": [
+      {
+        "id": "blip-tag-81da9029-a096-4b14-a41c-37b0a68a12e8",
+        "label": "ExecuteScript",
+        "background": "#FF961E",
+        "canChangeBackground": false
+      },
+      {
+        "id": "blip-tag-ebc4aaf2-f541-498d-ab35-d51ec0fa1a8f",
+        "label": "SendMessage",
+        "background": "#EE82EE",
+        "canChangeBackground": false
+      }
+    ],
+    "id": "66639379-f272-456d-bb09-73177d8202ea",
+    "root": false,
+    "$title": "Verifica canal de atendimento",
+    "$position": {
+      "top": "441px",
+      "left": "472px"
+    },
+    "$invalidContentActions": false,
+    "$invalidOutputs": false,
+    "$invalidCustomActions": false,
+    "$invalid": false
+  },
+  "d52f47b9-775f-4f25-97ea-900ec5c96fa8": {
+    "$contentActions": [
+      {
+        "input": {
+          "bypass": true,
+          "$cardContent": {
+            "document": {
+              "id": "0a4593aa-85a0-4cef-a4c0-b1374416abcf",
+              "type": "text/plain",
+              "content": "Entrada do usuário"
+            },
+            "editable": false,
+            "deletable": true,
+            "position": "right",
+            "editing": false
+          },
+          "$invalid": false
+        },
+        "$invalid": false
+      }
+    ],
+    "$conditionOutputs": [
+      {
+        "stateId": "end",
+        "typeOfStateId": "state",
+        "$connId": "con_128",
+        "$id": "eac5171d-f8ac-4e40-8ec3-51aefc70c02f",
+        "conditions": [
+          {
+            "source": "input",
+            "comparison": "exists",
+            "values": []
+          }
+        ],
+        "$invalid": false
+      },
+      {
+        "stateId": "end",
+        "typeOfStateId": "state",
+        "$connId": "con_133",
+        "$id": "ac718160-5c83-4dcd-b2b6-7cc088664ea1",
+        "conditions": [
+          {
+            "source": "input",
+            "comparison": "notExists",
+            "values": []
+          }
+        ],
+        "$invalid": false
+      }
+    ],
+    "$enteringCustomActions": [
+      {
+        "$id": "64c480cb-d1e6-4645-a05f-8454dfda3ac3",
+        "$typeOfContent": "",
+        "type": "SetVariable",
+        "$title": "itensFaqs",
+        "$invalid": false,
+        "settings": {
+          "variable": "itensFaqs",
+          "expiration": 1
+        },
+        "conditions": []
+      },
+      {
+        "$id": "d6ce94b9-519c-4be9-96ec-107549d42506",
+        "$typeOfContent": "",
+        "type": "TrackEvent",
+        "$title": "Opção escolhida Menu - Correto",
+        "$invalid": false,
+        "settings": {
+          "extras": {
+            "Identificador": "{{contact.identity}}",
+            "Nome": "{{contact.name}}",
+            "Telefone": "{{contact.phoneNumber}}",
+            "Email": "{{contact.email}}"
+          },
+          "action": "{{itemEscolhidoObjeto@title}}",
+          "category": "[{{application.identifier}}][{{tituloSubFluxo}}] Seleção - Válidos"
+        },
+        "conditions": [
+          {
+            "values": [
+              "false"
+            ],
+            "source": "context",
+            "comparison": "notEquals",
+            "variable": "itemEscolhidoObjeto"
+          },
+          {
+            "values": [],
+            "source": "input",
+            "comparison": "exists"
+          }
+        ]
+      },
+      {
+        "$id": "4c7a5e28-885e-4404-bb65-3dd311995260",
+        "$typeOfContent": "",
+        "type": "TrackEvent",
+        "$title": "Opção escolhida Menu - Incorreto",
+        "$invalid": false,
+        "settings": {
+          "extras": {
+            "Identificador": "{{contact.identity}}",
+            "Nome": "{{contact.name}}",
+            "Telefone": "{{contact.phoneNumber}}",
+            "Email": "{{contact.email}}"
+          },
+          "action": "{{input.content}}",
+          "category": "[{{application.identifier}}][{{tituloSubFluxo}}] Seleção - Inválidos"
+        },
+        "conditions": [
+          {
+            "values": [
+              "false"
+            ],
+            "source": "context",
+            "comparison": "equals",
+            "variable": "itemEscolhidoObjeto"
+          },
+          {
+            "values": [],
+            "source": "input",
+            "comparison": "exists"
+          }
+        ]
+      },
+      {
+        "$id": "61a2b254-b1ca-409f-8671-a4532ca5ed55",
+        "$typeOfContent": "",
+        "type": "TrackEvent",
+        "$title": "Opção escolhida Menu - Todos",
+        "$invalid": false,
+        "settings": {
+          "extras": {
+            "Identificador": "{{contact.identity}}",
+            "Nome": "{{contact.name}}",
+            "Telefone": "{{contact.phoneNumber}}",
+            "Email": "{{contact.email}}"
+          },
+          "action": "{{input.content}}",
+          "category": "[{{application.identifier}}][{{tituloSubFluxo}}] Seleção - Todos"
+        },
+        "conditions": [
+          {
+            "values": [],
+            "source": "input",
+            "comparison": "exists"
+          }
+        ]
+      },
+      {
+        "$id": "9dc293fa-d6a3-4c2c-9ccc-929330ede166",
+        "$typeOfContent": "",
+        "type": "TrackEvent",
+        "$title": "Exibição - Saida",
+        "$invalid": false,
+        "settings": {
+          "extras": {
+            "Identificador": "{{contact.identity}}",
+            "Nome": "{{contact.name}}",
+            "Telefone": "{{contact.phoneNumber}}",
+            "Email": "{{contact.email}}"
+          },
+          "action": "Saida",
+          "category": "[{{application.identifier}}][{{tituloSubFluxo}}] Exibição"
+        },
+        "conditions": [
+          {
+            "values": [],
+            "source": "input",
+            "comparison": "exists"
+          }
+        ]
+      }
+    ],
+    "$leavingCustomActions": [],
+    "$inputSuggestions": [],
+    "$defaultOutput": {
+      "stateId": "end",
+      "$invalid": false,
+      "typeOfStateId": "state"
+    },
+    "isAiGenerated": false,
+    "$tags": [
+      {
+        "id": "blip-tag-aa7465af-b1b3-4a66-828b-5774ea5aaf40",
+        "label": "SetVariable",
+        "background": "#FF4A1E",
+        "canChangeBackground": false
+      },
+      {
+        "id": "blip-tag-2a5ab1ea-41bd-407b-b877-cd8d14d1e4b3",
+        "label": "TrackEvent",
+        "background": "#61D36F",
+        "canChangeBackground": false
+      }
+    ],
+    "id": "d52f47b9-775f-4f25-97ea-900ec5c96fa8",
+    "$title": "[Saiu SUBFLUXO Menu Dinamico]",
+    "$position": {
+      "top": "266px",
+      "left": "973px"
+    },
+    "$invalidContentActions": false,
+    "$invalidOutputs": false,
+    "$invalidCustomActions": false,
+    "$invalid": false
+  },
+  "7daab8f5-b095-42cd-aa7a-6a8bc3db5a37": {
+    "$contentActions": [
+      {
+        "action": {
+          "$id": "821254d7-4b56-4061-84b4-f25ee547da5d",
+          "$typeOfContent": "chat-state",
+          "type": "SendMessage",
+          "settings": {
+            "id": "ba5b51c3-76d8-4892-80c3-669363724648",
+            "type": "application/vnd.lime.chatstate+json",
+            "content": {
+              "state": "composing",
+              "interval": 1000
+            }
+          },
+          "$cardContent": {
+            "document": {
+              "id": "ba5b51c3-76d8-4892-80c3-669363724648",
+              "type": "application/vnd.lime.chatstate+json",
+              "content": {
+                "state": "composing",
+                "interval": 1000
+              }
+            },
+            "editable": true,
+            "deletable": true,
+            "position": "left"
+          }
+        },
+        "$invalid": false
+      },
+      {
+        "action": {
+          "$id": "449d8ecb-f91a-4f72-8dcc-b68bacc07c70",
+          "$typeOfContent": "raw-content",
+          "type": "SendRawMessage",
+          "settings": {
+            "metadata": {},
+            "type": "application/json",
+            "rawContent": "{{corpoMenuDinamicoWhatsapp}}"
+          }
+        },
+        "$invalid": false
+      },
+      {
+        "input": {
+          "bypass": false,
+          "$cardContent": {
+            "document": {
+              "id": "8759d218-3a2a-40fc-b42e-197503353c18",
+              "type": "text/plain",
+              "textContent": "Entrada do usuário",
+              "content": "ItemEscolhidoNotFormatted"
+            },
+            "editable": false,
+            "deletable": true,
+            "position": "right",
+            "editing": false
+          },
+          "$invalid": false,
+          "variable": "ItemEscolhidoNotFormatted",
+          "expiration": "2:0"
+        },
+        "$invalid": false
+      }
+    ],
+    "$conditionOutputs": [
+      {
+        "stateId": "d52f47b9-775f-4f25-97ea-900ec5c96fa8",
+        "typeOfStateId": "state",
+        "$connId": "con_138",
+        "$id": "0e5351c9-239f-443a-acae-d7ce5d8d0a89",
+        "conditions": [
+          {
+            "source": "input",
+            "comparison": "exists",
+            "values": []
+          }
+        ],
+        "$invalid": false
+      }
+    ],
+    "$enteringCustomActions": [
+      {
+        "$id": "0d37fdd8-92b1-4136-936a-fe8c52d16271",
+        "$typeOfContent": "",
+        "type": "ExecuteScript",
+        "$title": "corpoMenuDinamicoWhatsapp",
+        "settings": {
+          "function": "run",
+          "source": "function formatterTags(text) {\n\tconst regexNegrito = /(<b>|<.b>)/g\n\tconst regexItalico = /(<i>|<.i>)/g\n\tconst regexTachado = /(<s>|<strike>|<.s>|<.strike>)/g\n\tconst regexMonoespacado = /(<tt>|<.tt>)/g\n\n\treturn text\n\t\t.replace(regexNegrito, \"*\")\n\t\t.replace(regexItalico, \"_\")\n\t\t.replace(regexTachado, \"~\")\n\t\t.replace(regexMonoespacado, \"```\")\n}\n\nfunction run(itensFormatadoMenu) {\n\titensFormatadoMenu = JSON.parse(itensFormatadoMenu);\n\tconst header = \"{{itensMenuDinamico@header}}\";\n\tconst body = \"{{itensMenuDinamico@body}}\";\n\tconst footer = \"{{itensMenuDinamico@footer}}\";\n\tlet button = \"{{itensMenuDinamico@button}}\";\n\n\tconst output = {\n\t\t\"recipient_type\": \"individual\",\n\t\t\"type\": \"interactive\",\n\t\t\"interactive\": {\n\t\t\t\"type\": \"button\",\n\t\t\t\n\t\t}\n\t}\n\n\tif (header) output.interactive.body = { text: header };\n\tif (body) {\n\t\tif (!header) output.interactive.body = { text: formatterTags(body) };\n\t\telse output.interactive.body.text += `\\n\\n ${formatterTags(body)}`;\n\t}\n\tif (footer) output.interactive.footer = { text: footer };\n\n\toutput.interactive.action = {\n\t\t\t\t\"buttons\": itensFormatadoMenu,\n\t\t\t}\n\n\treturn output;\n}",
+          "inputVariables": [
+            "itensFormatadoMenu"
+          ],
+          "outputVariable": "corpoMenuDinamicoWhatsapp",
+          "LocalTimeZoneEnabled": false
+        },
+        "$invalid": false,
+        "conditions": []
+      }
+    ],
+    "$leavingCustomActions": [
+      {
+        "$id": "31355da0-a9dc-4e49-a1b8-b5f36cac46d4",
+        "$typeOfContent": "",
+        "type": "ExecuteScript",
+        "$title": "Formata ItemEscolhido",
+        "$invalid": false,
+        "settings": {
+          "function": "run",
+          "source": "function run(siteConsegnadoItemEscolhido) {\n\tlet output = siteConsegnadoItemEscolhido.includes(\"value\") ? JSON.parse(siteConsegnadoItemEscolhido) : {};\n\n\tif (!output.value) output = { value: siteConsegnadoItemEscolhido };\n\n\treturn output;\n}",
+          "inputVariables": [
+            "ItemEscolhidoNotFormatted"
+          ],
+          "outputVariable": "ItemEscolhido",
+          "LocalTimeZoneEnabled": false
+        },
+        "conditions": []
+      },
+      {
+        "$id": "eb306f91-2c41-4d17-bc3a-a590d6b2528f",
+        "$typeOfContent": "",
+        "type": "ExecuteScript",
+        "$title": "itemEscolhidoObjeto",
+        "$invalid": false,
+        "settings": {
+          "function": "run",
+          "source": "function run(itemEscolhido, itensFaqs, itensFormatadoMenu) {\n\ttry {\n\t\titensFaqs = JSON.parse(itensFaqs);\n\t\tlet itemsTotal = [];\n\t\titensFaqs.map((item) => { itemsTotal = [].concat(itemsTotal, item.rows) });\n\n\t\titemEscolhido = JSON.parse(itemEscolhido);\n\t\titensFormatadoMenu = JSON.parse(itensFormatadoMenu);\n\n\t\tlet itensFormatadoMenuTotal = [];\n\t\titensFormatadoMenu.map((item) => { itensFormatadoMenuTotal = [].concat(itensFormatadoMenuTotal, item.reply) });\n\t\t\n\t\tconst opcoes = [\n\t\t\t{ title: \"Ver mais opções\" },\n\t\t\t{ title: \"Voltar\" },\n\t\t]\n\n\t\treturn itemsTotal.concat(opcoes).find((conv, index) => \n\t\t\tconv.title.toString().toUpperCase() === itemEscolhido.value.toString().toUpperCase() ||\n\t\t\tconv.title.toString().toUpperCase().includes(itemEscolhido.value.toString().toUpperCase()) ||\n\t\t\titemEscolhido.value.toString().toUpperCase().includes(conv.title.toString().toUpperCase()) ||\n\t\t\titensFormatadoMenuTotal.some((itemMenu) => \n\t\t\t\titemMenu.id === Number(itemEscolhido.value) && (\n\t\t\t\t\tconv.title.toString().toUpperCase() === itemMenu.title.toString().toUpperCase() ||\n\t\t\t\t\tconv.title.toString().toUpperCase().includes(itemMenu.title.toString().toUpperCase()) ||\n\t\t\t\t\titemMenu.title.toString().toUpperCase().includes(conv.title.toString().toUpperCase())\n\t\t\t\t)\n\t\t\t)\n\t\t) || false;\n\t} catch (e) {\n\t\treturn false;\n\t}\n}",
+          "inputVariables": [
+            "ItemEscolhido",
+            "itensFaqs",
+            "itensFormatadoMenu"
+          ],
+          "outputVariable": "itemEscolhidoObjeto",
+          "LocalTimeZoneEnabled": false
+        },
+        "conditions": []
+      }
+    ],
+    "$inputSuggestions": [],
+    "$defaultOutput": {
+      "stateId": "fallback",
+      "$invalid": false
+    },
+    "isAiGenerated": false,
+    "$tags": [
+      {
+        "id": "blip-tag-69279f2d-c108-43ca-91ac-eb3190cec867",
+        "label": "ExecuteScript",
+        "background": "#FF961E",
+        "canChangeBackground": false
+      },
+      {
+        "id": "blip-tag-e15b431e-8579-4ccb-bb45-afb95838cbcb",
+        "label": "SendMessage",
+        "background": "#EE82EE",
+        "canChangeBackground": false
+      },
+      {
+        "id": "blip-tag-066d915f-5fa1-46ab-97b5-2516526115ba",
+        "label": "UserInput",
+        "background": "#000000",
+        "canChangeBackground": false
+      }
+    ],
+    "id": "7daab8f5-b095-42cd-aa7a-6a8bc3db5a37",
+    "root": false,
+    "$title": "quickreply  dinamico - WHATSAPP",
+    "$position": {
+      "top": "915px",
+      "left": "956px"
+    },
+    "$invalidContentActions": false,
+    "$invalidOutputs": false,
+    "$invalidCustomActions": false,
+    "$invalid": false
+  },
+  "19b46c0a-3b47-4855-8186-9bfa172b1322": {
+    "$contentActions": [
+      {
+        "action": {
+          "$id": "6e74f5d8-165e-40ba-9647-5438b22ff13f",
+          "$typeOfContent": "chat-state",
+          "type": "SendMessage",
+          "settings": {
+            "id": "7a0d3bce-943a-4f74-84db-4d16f2cb6710",
+            "type": "application/vnd.lime.chatstate+json",
+            "content": {
+              "state": "composing",
+              "interval": 1000
+            }
+          },
+          "$cardContent": {
+            "document": {
+              "id": "7a0d3bce-943a-4f74-84db-4d16f2cb6710",
+              "type": "application/vnd.lime.chatstate+json",
+              "content": {
+                "state": "composing",
+                "interval": 1000
+              }
+            },
+            "editable": true,
+            "deletable": true,
+            "position": "left"
+          }
+        },
+        "$invalid": false
+      },
+      {
+        "action": {
+          "$id": "d9f89b12-a453-41f2-8bcd-c839b32a2cbe",
+          "$typeOfContent": "raw-content",
+          "type": "SendRawMessage",
+          "settings": {
+            "metadata": {},
+            "type": "application/vnd.lime.select+json",
+            "rawContent": "{\n        \"scope\": \"immediate\",\n        \"text\": \"{{textoCorpo}}\",\n        \"options\":  {{itensFormatadoMenu}}\n    }"
+          }
+        },
+        "$invalid": false
+      },
+      {
+        "input": {
+          "bypass": false,
+          "$cardContent": {
+            "document": {
+              "id": "dc8a8312-6c50-4863-ad08-84da5d411068",
+              "type": "text/plain",
+              "textContent": "Entrada do usuário",
+              "content": "ItemEscolhidoNotFormatted"
+            },
+            "editable": false,
+            "deletable": true,
+            "position": "right",
+            "editing": false
+          },
+          "$invalid": false,
+          "variable": "ItemEscolhidoNotFormatted",
+          "expiration": "2:0"
+        },
+        "$invalid": false
+      }
+    ],
+    "$conditionOutputs": [
+      {
+        "stateId": "d52f47b9-775f-4f25-97ea-900ec5c96fa8",
+        "typeOfStateId": "state",
+        "$connId": "con_143",
+        "$id": "58471761-5363-486a-b3ea-219d10241f43",
+        "conditions": [
+          {
+            "source": "input",
+            "comparison": "exists",
+            "values": []
+          }
+        ],
+        "$invalid": false
+      }
+    ],
+    "$enteringCustomActions": [
+      {
+        "$id": "e82c241b-6397-4057-b8dd-fa6cb33c8d05",
+        "$typeOfContent": "",
+        "type": "ExecuteScript",
+        "$title": "textoCorpo",
+        "$invalid": false,
+        "settings": {
+          "function": "run",
+          "source": "function run() {\n\tlet output = \"\";\n\n\tlet header = \"{{itensMenuDinamico@header}}\";\n\tlet body = \"{{itensMenuDinamico@body}}\";\n\tlet footer = \"{{itensMenuDinamico@footer}}\";\n\n\n\tif(header) output += `<b>${header}</b> \\n \\n`\n\tif(body) output += `${body} \\n \\n `\n\tif(footer) output += `<i>${footer}</i>`;\n\n\treturn output;\n}",
+          "inputVariables": [],
+          "outputVariable": "textoCorpo",
+          "LocalTimeZoneEnabled": false
+        },
+        "conditions": []
+      }
+    ],
+    "$leavingCustomActions": [
+      {
+        "$id": "68fabd24-0a0c-4196-a966-c088bb989d04",
+        "$typeOfContent": "",
+        "type": "ExecuteScript",
+        "$title": "Formata ItemEscolhido",
+        "$invalid": false,
+        "settings": {
+          "function": "run",
+          "source": "function run(siteConsegnadoItemEscolhido) {\n\tlet output = siteConsegnadoItemEscolhido.includes(\"value\") ? JSON.parse(siteConsegnadoItemEscolhido) : {};\n\n\tif (!output.value) output = { value: siteConsegnadoItemEscolhido };\n\n\treturn output;\n}",
+          "inputVariables": [
+            "ItemEscolhidoNotFormatted"
+          ],
+          "outputVariable": "ItemEscolhido",
+          "LocalTimeZoneEnabled": false
+        },
+        "conditions": []
+      },
+      {
+        "$id": "f98d5bf5-cb36-4877-aefd-f2a9c736cb86",
+        "$typeOfContent": "",
+        "type": "ExecuteScript",
+        "$title": "itemEscolhidoObjeto",
+        "$invalid": false,
+        "settings": {
+          "function": "run",
+          "source": "function run(itemEscolhido, itensFaqs, itensFormatadoMenu) {\n  try {\n    var valorEscolhido;\n\n    // normaliza itemEscolhido\n    if (typeof itemEscolhido === \"string\") {\n      try {\n        var parsed = JSON.parse(itemEscolhido);\n        if (parsed.value && parsed.value.value) {\n          valorEscolhido = parsed.value.value;\n        } else if (parsed.value) {\n          valorEscolhido = parsed.value;\n        } else {\n          valorEscolhido = itemEscolhido;\n        }\n      } catch (e) {\n        valorEscolhido = itemEscolhido;\n      }\n    } else if (typeof itemEscolhido === \"object\" && itemEscolhido !== null) {\n      if (itemEscolhido.value && itemEscolhido.value.value) {\n        valorEscolhido = itemEscolhido.value.value;\n      } else if (itemEscolhido.value) {\n        valorEscolhido = itemEscolhido.value;\n      }\n    }\n\n    if (!valorEscolhido) return false;\n\n    // parse listas\n    if (typeof itensFaqs === \"string\") itensFaqs = JSON.parse(itensFaqs);\n    if (typeof itensFormatadoMenu === \"string\") itensFormatadoMenu = JSON.parse(itensFormatadoMenu);\n\n    var itemsTotal = [];\n    for (var i = 0; i < itensFaqs.length; i++) {\n      if (itensFaqs[i].rows) {\n        itemsTotal = itemsTotal.concat(itensFaqs[i].rows);\n      }\n    }\n\n    var itensMenuTotal = [];\n    for (var j = 0; j < itensFormatadoMenu.length; j++) {\n      itensMenuTotal.push(itensFormatadoMenu[j]);\n    }\n\n    var opcoes = [\n      { title: \"Ver mais opções\" },\n      { title: \"Voltar\" }\n    ];\n\n    var todos = itemsTotal.concat(opcoes);\n\n    for (var k = 0; k < todos.length; k++) {\n      var conv = todos[k];\n\n      if (!conv.title) continue;\n\n      var title = conv.title.toUpperCase();\n      var escolhido = valorEscolhido.toUpperCase();\n\n      if (\n        title === escolhido ||\n        title.indexOf(escolhido) !== -1 ||\n        escolhido.indexOf(title) !== -1\n      ) {\n        return conv;\n      }\n\n      for (var m = 0; m < itensMenuTotal.length; m++) {\n        var menu = itensMenuTotal[m];\n        if (\n          menu.order === Number(valorEscolhido) &&\n          menu.text &&\n          (\n            title === menu.text.toUpperCase() ||\n            title.indexOf(menu.text.toUpperCase()) !== -1 ||\n            menu.text.toUpperCase().indexOf(title) !== -1\n          )\n        ) {\n          return conv;\n        }\n      }\n    }\n\n    return false;\n\n  } catch (e) {\n    return false;\n  }\n}\n",
+          "inputVariables": [
+            "ItemEscolhido",
+            "itensFaqs",
+            "itensFormatadoMenu"
+          ],
+          "outputVariable": "itemEscolhidoObjeto",
+          "LocalTimeZoneEnabled": false
+        },
+        "conditions": []
+      }
+    ],
+    "$inputSuggestions": [],
+    "$defaultOutput": {
+      "stateId": "fallback",
+      "$invalid": false
+    },
+    "isAiGenerated": false,
+    "$tags": [
+      {
+        "id": "blip-tag-b67cd7ca-fe6f-45b2-bfe8-c6cd016e9710",
+        "label": "ExecuteScript",
+        "background": "#FF961E",
+        "canChangeBackground": false
+      },
+      {
+        "id": "blip-tag-def22493-c5d6-4cc7-9db7-c2866b5d4dfa",
+        "label": "SendMessage",
+        "background": "#EE82EE",
+        "canChangeBackground": false
+      },
+      {
+        "id": "blip-tag-3432c0e3-09fd-4355-b495-7bda284c0891",
+        "label": "UserInput",
+        "background": "#000000",
+        "canChangeBackground": false
+      }
+    ],
+    "id": "19b46c0a-3b47-4855-8186-9bfa172b1322",
+    "root": false,
+    "$title": "quickreply  dinamico - BLIPCHAT",
+    "$position": {
+      "top": "731px",
+      "left": "993px"
+    },
+    "$invalidContentActions": false,
+    "$invalidOutputs": false,
+    "$invalidCustomActions": false,
+    "$invalid": false
+  },
+  "56cf2557-426f-4c1c-b1b4-ab4431610e67": {
+    "$contentActions": [
+      {
+        "input": {
+          "bypass": true,
+          "$cardContent": {
+            "document": {
+              "id": "b8009400-420c-467f-ba48-9b6d40f0a82c",
+              "type": "text/plain",
+              "textContent": "Entrada do usuário",
+              "content": "Entrada do usuário"
+            },
+            "editable": false,
+            "deletable": true,
+            "position": "right",
+            "editing": false
+          },
+          "$invalid": false
+        },
+        "$invalid": false
+      }
+    ],
+    "$conditionOutputs": [
+      {
+        "stateId": "19b46c0a-3b47-4855-8186-9bfa172b1322",
+        "typeOfStateId": "state",
+        "$connId": "con_148",
+        "$id": "90422e4e-a524-4708-a85e-7cc67441306e",
+        "conditions": [
+          {
+            "source": "input",
+            "comparison": "exists",
+            "values": []
+          }
+        ],
+        "$invalid": false
+      }
+    ],
+    "$enteringCustomActions": [
+      {
+        "$id": "dfb60de1-fc81-4645-8984-a3deba3e57d2",
+        "$typeOfContent": "",
+        "type": "ExecuteScript",
+        "$title": "Formata para menu",
+        "$invalid": false,
+        "settings": {
+          "function": "run",
+          "source": "function formatterTitle(str) {\n\tlet titleStyle = \"{{itensMenuDinamico@titleStyle}}\";\n\n\tif(!titleStyle) titleStyle = \"none\";\n\ttitleStyle = titleStyle.toLowerCase();\n\n\tswitch (titleStyle) {\n\t\tcase \"capitalize\": {\n\t\t\treturn str.split(\" \").map((str2) => str2.charAt(0).toUpperCase() + str2.slice(1).toLowerCase()).join(\" \");\n\t\t}\n\t\tcase \"lowercase\": {\n\t\t\treturn str.toLowerCase();\n\t\t}\n\t\tcase \"uppercase\": {\n\t\t\treturn str.toUpperCase();\n\t\t}\n\t\tcase \"normal\": {\n\t\t\treturn str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();\n\t\t}\n\t\tdefault: {\n\t\t\treturn str;\n\t\t}\n\t}\n    \n}\n\nfunction run(itens) {\n\ttry {\n\t\titens = JSON.parse(itens);\n\n\t\tlet itensMenu = [];\n\n\t\titens.map((item) => { itensMenu = [].concat(itensMenu, item.rows) });\n\n\t\tconst opcoesFormatadas = itensMenu.map((opcao, index) => ({\n\t\t\torder: index + 1,\n\t\t\ttext:\tformatterTitle(opcao.title),\n\t\t\ttype: \"application/json\",\n\t\t\tvalue: { value: formatterTitle(opcao.title) }\n\t\t}))\n\n\t\treturn opcoesFormatadas;\t\t\n\t} catch (err) {\n\t\treturn [\n\t\t\t{\n\t\t\t\torder: 1,\n\t\t\t\ttext:\t'Menu principal',\n\t\t\t\ttype: \"application/json\",\n\t\t\t\tvalue: { value: \"Menu principal\" }\n\t\t\t},\n\t\t];\n\t}\n}",
+          "inputVariables": [
+            "itensFaqs"
+          ],
+          "outputVariable": "itensFormatadoMenu",
+          "LocalTimeZoneEnabled": false
+        },
+        "conditions": []
+      }
+    ],
+    "$leavingCustomActions": [],
+    "$inputSuggestions": [],
+    "$defaultOutput": {
+      "stateId": "fallback",
+      "$invalid": false
+    },
+    "isAiGenerated": false,
+    "$tags": [
+      {
+        "id": "blip-tag-3fd43283-ac48-4f83-855f-e5ce8b6be546",
+        "label": "ExecuteScript",
+        "background": "#FF961E",
+        "canChangeBackground": false
+      }
+    ],
+    "id": "56cf2557-426f-4c1c-b1b4-ab4431610e67",
+    "root": false,
+    "$title": "Itens do quickreply dinamico",
+    "$position": {
+      "top": "626px",
+      "left": "464px"
+    },
+    "$invalidContentActions": false,
+    "$invalidOutputs": false,
+    "$invalidCustomActions": false,
+    "$invalid": false
+  },
+  "ce0b14a1-ecb6-497b-877d-f43188ab6f54": {
+    "$contentActions": [
+      {
+        "input": {
+          "bypass": true,
+          "$cardContent": {
+            "document": {
+              "id": "b8009400-420c-467f-ba48-9b6d40f0a82c",
+              "type": "text/plain",
+              "textContent": "Entrada do usuário",
+              "content": "Entrada do usuário"
+            },
+            "editable": false,
+            "deletable": true,
+            "position": "right",
+            "editing": false
+          },
+          "$invalid": false
+        },
+        "$invalid": false
+      }
+    ],
+    "$conditionOutputs": [
+      {
+        "stateId": "7daab8f5-b095-42cd-aa7a-6a8bc3db5a37",
+        "typeOfStateId": "state",
+        "$connId": "con_153",
+        "$id": "3d97a7c5-4a9e-44a6-b0b8-2b0d3ae6ce27",
+        "conditions": [
+          {
+            "source": "input",
+            "comparison": "exists",
+            "values": []
+          }
+        ],
+        "$invalid": false
+      }
+    ],
+    "$enteringCustomActions": [
+      {
+        "$id": "c3879b55-190a-4b06-a33b-85e279b00107",
+        "$typeOfContent": "",
+        "type": "ExecuteScript",
+        "$title": "Formata para menu",
+        "$invalid": false,
+        "settings": {
+          "function": "run",
+          "source": "function formatterTitle(str) {\n\tlet titleStyle = \"{{itensMenuDinamico@titleStyle}}\";\n\n\tif(!titleStyle) titleStyle = \"none\";\n\ttitleStyle = titleStyle.toLowerCase();\n\n\tswitch (titleStyle) {\n\t\tcase \"capitalize\": {\n\t\t\treturn str.split(\" \").map((str2) => str2.charAt(0).toUpperCase() + str2.slice(1).toLowerCase()).join(\" \");\n\t\t}\n\t\tcase \"lowercase\": {\n\t\t\treturn str.toLowerCase();\n\t\t}\n\t\tcase \"uppercase\": {\n\t\t\treturn str.toUpperCase();\n\t\t}\n\t\tcase \"normal\": {\n\t\t\treturn str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();\n\t\t}\n\t\tdefault: {\n\t\t\treturn str;\n\t\t}\n\t}\n    \n}\n\nfunction run(itens) {\n\ttry {\n\t\titens = JSON.parse(itens);\n\n\t\tlet itensMenu = [];\n\n\t\titens.map((item) => { itensMenu = [].concat(itensMenu, item.rows) });\n\n\t\tconst opcoesFormatadas = itensMenu.map((opcao, index) => ({\n\t\t\t\"type\": \"reply\",\n\t\t\t\"reply\": {\n\t\t\t\tid: index + 1,\n\t\t\t\ttitle:\tformatterTitle(opcao.title),\n\t\t\t}\n\t\t}))\n\n\t\treturn opcoesFormatadas;\t\t\n\t} catch (err) {\n\t\treturn [\n\t\t\t{\n\t\t\t\t\"type\": \"reply\",\n\t\t\t\t\"reply\": {\n\t\t\t\t\tid: 1,\n\t\t\t\t\ttitle:\t'Menu principal',\n\t\t\t\t}\n\t\t\t},\n\t\t];\n\t}\n}",
+          "inputVariables": [
+            "itensFaqs"
+          ],
+          "outputVariable": "itensFormatadoMenu",
+          "LocalTimeZoneEnabled": false
+        },
+        "conditions": []
+      }
+    ],
+    "$leavingCustomActions": [],
+    "$inputSuggestions": [],
+    "$defaultOutput": {
+      "stateId": "fallback",
+      "$invalid": false
+    },
+    "isAiGenerated": false,
+    "$tags": [
+      {
+        "id": "blip-tag-5646ca65-ccc1-4a4c-bda1-852f55430be3",
+        "label": "ExecuteScript",
+        "background": "#FF961E",
+        "canChangeBackground": false
+      }
+    ],
+    "id": "ce0b14a1-ecb6-497b-877d-f43188ab6f54",
+    "root": false,
+    "$title": "Itens do quickreply dinamico - whatsapp",
+    "$position": {
+      "top": "774px",
+      "left": "711px"
+    },
+    "$invalidContentActions": false,
+    "$invalidOutputs": false,
+    "$invalidCustomActions": false,
+    "$invalid": false
+  }
+}
