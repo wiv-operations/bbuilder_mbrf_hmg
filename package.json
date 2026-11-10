@@ -5,7 +5,10 @@
         "type-check": "tsc --noEmit",
         "prepare": "husky",
         "validate": "bbuilder validate",
-        "coverage-check": "node scripts/check-coverage.mjs"
+        "coverage-check": "node scripts/check-coverage.mjs",
+        "pull": "bbuilder pull && npm run pull:subflows",
+        "pull:subflows": "node .agents/skills/blip-subflows/scripts/subflows.mjs pull --all",
+        "postinstall": "node .agents/skills/blip-subflows/scripts/patch-blip-sdk.mjs && node .agents/skills/blip-subflows/scripts/patch-bbuilder.mjs"
     },
     "dependencies": {
         "bbuilder": "0.0.13"
