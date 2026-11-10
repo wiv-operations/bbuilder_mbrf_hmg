@@ -41,8 +41,8 @@
     "root": true,
     "$title": "Início",
     "$position": {
-      "top": "287px",
-      "left": "545px"
+      "top": "336px",
+      "left": "517px"
     }
   },
   "fallback": {
@@ -657,8 +657,8 @@
     },
     "$title": "Envia NPS - Whatsapp",
     "$position": {
-      "top": "830px",
-      "left": "722px"
+      "top": "824px",
+      "left": "718px"
     }
   },
   "b488159c-7e44-47c1-8fe5-a557809fe1f3": {
@@ -1161,11 +1161,40 @@
     ],
     "$enteringCustomActions": [
       {
+        "type": "ExecuteScript",
+        "settings": {
+          "function": "run",
+          "source": "function zero(x){\n    if (x < 10){\n         x = '0' + x;\n     } return x;\n}\n\nfunction run(){\n    let date = new Date()\n    let dia = date.getDate()\n    let mes = date.getMonth()\n    let ano = date.getFullYear()\n\n    mes = mes + 1\n    \n    let h = date.getHours()\n    let m = date.getMinutes()\n    let s = date.getSeconds()\n\n    m = zero(m);\n    s = zero(s);\n    dia = zero(dia)\n    mes = zero(mes)\n\n    const dataCompleta = `${dia}/${mes}/${ano}`\n    const horas = `${h}:${m}:${s}`\n\n    return {\n        dataCompleta\n    }\n}",
+          "inputVariables": [],
+          "outputVariable": "data",
+          "LocalTimeZoneEnabled": false
+        },
+        "conditions": []
+      },
+      {
+        "$description": "",
+        "$inputSchema": {
+          "type": "object",
+          "properties": {},
+          "required": []
+        },
+        "type": "ExecuteScriptV2",
+        "settings": {
+          "function": "run",
+          "source": "function run(tipoServico) {\n    try {\n        if (\n            tipoServico === null ||\n            tipoServico === undefined ||\n            String(tipoServico).trim() === \"\"\n        ) {\n            return \"Captação\";\n        }\n\n        return tipoServico;\n\n    } catch (error) {\n        return \"Captação\";\n    }\n}",
+          "inputVariables": [
+            "tipoServico"
+          ],
+          "outputVariable": "tipoServico"
+        },
+        "conditions": []
+      },
+      {
         "type": "TrackEvent",
         "settings": {
           "extras": {},
           "category": "Pesquisa de Satisfação - Contato inteligente - Informações",
-          "action": "Identificador: {{contact.identity}} | Nome: {{contact.name}} | Email: {{contact.email}} | Telefone: {{contact.phoneNumber}} | Nota: {{nota}} | Comentário: {{deskSurveyComment}}"
+          "action": "Data: {{data}} | Identificador: {{contact.identity}} | Nome: {{contact.name}} | Email: {{contact.email}} | Documento: {{contact.taxDocument}} | Serviço: {{tipoServico}} | Telefone: {{contact.phoneNumber}} | Nota: {{nota}} | Comentário: {{deskSurveyComment}}"
         },
         "conditions": []
       }

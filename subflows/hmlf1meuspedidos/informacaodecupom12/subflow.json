@@ -1,0 +1,15 @@
+{
+  "subflowId": 260378,
+  "shortName": "informacaodecupom12",
+  "tenantId": "mbrf",
+  "name": "Informação de cupom",
+  "description": "",
+  "image": "",
+  "userIdentity": "jeferson.oliveira@wiv.com.br",
+  "creationDate": "2026-10-28T11:44:02.844Z",
+  "flowCounter": 1,
+  "isShared": false,
+  "isActive": true,
+  "useSubflowInDeskAction": false,
+  "watermark": "9c4bb369-233a-49fd-9c25-7e4dfd451b21"
+}

@@ -49,3 +49,4 @@ yarn-error.log*
 # Backups do bbuilder — snapshots do estado publicado, podem conter secrets antigos.
 # Reconstituíveis via 'bbuilder pull'. Não versionamos.
 backup/
+subflows/**/.previous/

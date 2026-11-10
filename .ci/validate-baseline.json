@@ -1,26 +1,12 @@
 {
-  "generated_at": "2026-10-16",
-  "note": "Snapshot dos findings pré-existentes. Pre-commit e CI só reclamam de findings NOVOS. Para incorporar um finding corrigido, basta rodar scripts/update-validate-baseline.mjs.",
+  "generated_at": "2026-11-10",
+  "note": "Snapshot dos findings pré-existentes. Pre-commit e CI só reclamam de findings NOVOS.",
   "summary": {
-    "errors": 209,
-    "warnings": 15,
-    "total": 224
+    "errors": 213,
+    "warnings": 25,
+    "total": 238
   },
   "findings": [
-    {
-      "severity": "error",
-      "rule": "invalid-schema",
-      "flow": "hmgf1ajudaesuporte",
-      "stateId": "onboarding",
-      "message": "$leavingCustomActions.5.settings.body - Invalid input: expected string, received undefined"
-    },
-    {
-      "severity": "error",
-      "rule": "invalid-schema",
-      "flow": "hmgf1ajudaesuporte",
-      "stateId": "onboarding",
-      "message": "$leavingCustomActions.6.settings.body - Invalid input: expected string, received undefined"
-    },
     {
       "severity": "error",
       "rule": "invalid-schema",
@@ -41,6 +27,13 @@
       "flow": "hmgf1ajudaesuporte",
       "stateId": "66e024bb-72ee-48d6-b378-810cd79c0559",
       "message": "$enteringCustomActions.3.settings.body - Invalid input: expected string, received undefined"
+    },
+    {
+      "severity": "error",
+      "rule": "invalid-schema",
+      "flow": "hmgf1ajudaesuporte",
+      "stateId": "3ffca1cb-7745-437a-b309-705cd7e42377",
+      "message": "$enteringCustomActions.7.settings.body - Invalid input: expected string, received undefined"
     },
     {
       "severity": "error",
@@ -102,6 +95,13 @@
       "severity": "error",
       "rule": "invalid-schema",
       "flow": "hmgf1ajudaesuporte",
+      "stateId": "6637b088-dd54-46cf-8a80-a800eb6c506f",
+      "message": "$enteringCustomActions.8.settings.body - Invalid input: expected string, received undefined"
+    },
+    {
+      "severity": "error",
+      "rule": "invalid-schema",
+      "flow": "hmgf1ajudaesuporte",
       "stateId": "subflow:21a45a31-c6ad-4d89-a6dc-70c7f25e267f",
       "message": "Unrecognized keys: \"shortNameOfSubflow\", \"$imageUri\""
     },
@@ -151,6 +151,13 @@
       "severity": "error",
       "rule": "invalid-schema",
       "flow": "hmgf1ajudaesuporte",
+      "stateId": "223771c3-f762-425f-8d69-8cbd9a93adbe",
+      "message": "$enteringCustomActions.9.settings.body - Invalid input: expected string, received undefined"
+    },
+    {
+      "severity": "error",
+      "rule": "invalid-schema",
+      "flow": "hmgf1ajudaesuporte",
       "stateId": "subflow:3c19add1-81ba-4791-892b-670b6c46fc8d",
       "message": "Unrecognized keys: \"shortNameOfSubflow\", \"$imageUri\""
     },
@@ -160,20 +167,6 @@
       "flow": "hmgf1ajudaesuporte",
       "stateId": "subflow:a26d983f-afec-401b-b723-c69e313c8a6d",
       "message": "Unrecognized keys: \"shortNameOfSubflow\", \"$imageUri\""
-    },
-    {
-      "severity": "error",
-      "rule": "invalid-schema",
-      "flow": "hmgf1ajudaesuporte",
-      "stateId": "24898baf-feac-4f55-9639-becf41a5be2d",
-      "message": "$enteringCustomActions.2.settings.body - Invalid input: expected string, received undefined"
-    },
-    {
-      "severity": "error",
-      "rule": "invalid-schema",
-      "flow": "hmgf1ajudaesuporte",
-      "stateId": "24898baf-feac-4f55-9639-becf41a5be2d",
-      "message": "$enteringCustomActions.3.settings.body - Invalid input: expected string, received undefined"
     },
     {
       "severity": "error",
@@ -431,20 +424,6 @@
       "severity": "error",
       "rule": "invalid-schema",
       "flow": "hmgf1meucadastroo",
-      "stateId": "onboarding",
-      "message": "$leavingCustomActions.3.settings.body - Invalid input: expected string, received undefined"
-    },
-    {
-      "severity": "error",
-      "rule": "invalid-schema",
-      "flow": "hmgf1meucadastroo",
-      "stateId": "onboarding",
-      "message": "$leavingCustomActions.4.settings.body - Invalid input: expected string, received undefined"
-    },
-    {
-      "severity": "error",
-      "rule": "invalid-schema",
-      "flow": "hmgf1meucadastroo",
       "stateId": "subflow:c5be197c-541d-4187-a0f3-0c1f50020e38",
       "message": "Unrecognized keys: \"shortNameOfSubflow\", \"$imageUri\""
     },
@@ -612,20 +591,6 @@
     {
       "severity": "error",
       "rule": "invalid-schema",
-      "flow": "hmgf1meucadastroo",
-      "stateId": "7d85fcba-f18c-4216-9c35-0038a4873188",
-      "message": "$enteringCustomActions.2.settings.body - Invalid input: expected string, received undefined"
-    },
-    {
-      "severity": "error",
-      "rule": "invalid-schema",
-      "flow": "hmgf1meucadastroo",
-      "stateId": "7d85fcba-f18c-4216-9c35-0038a4873188",
-      "message": "$enteringCustomActions.3.settings.body - Invalid input: expected string, received undefined"
-    },
-    {
-      "severity": "error",
-      "rule": "invalid-schema",
       "flow": "hmgf2captacao",
       "stateId": "088f908d-1511-4a52-899a-32459830282c",
       "message": "Unrecognized key: \"addonsSettings\""
@@ -699,6 +664,48 @@
       "flow": "hmgf2captacao",
       "stateId": "1a571e3c-7a87-4e54-b82d-c2275a448f16",
       "message": "$enteringCustomActions.1.settings.body - Invalid input: expected string, received undefined"
+    },
+    {
+      "severity": "error",
+      "rule": "invalid-schema",
+      "flow": "hmgf2captacao",
+      "stateId": "ca616e6f-2b8a-44df-92fe-ded0042a65f8",
+      "message": "$enteringCustomActions.1.settings.body - Invalid input: expected string, received undefined"
+    },
+    {
+      "severity": "error",
+      "rule": "invalid-schema",
+      "flow": "hmgf2captacao",
+      "stateId": "subflow:426bc329-d89d-412c-85f6-a2f361041346",
+      "message": "Unrecognized keys: \"shortNameOfSubflow\", \"$imageUri\""
+    },
+    {
+      "severity": "error",
+      "rule": "invalid-schema",
+      "flow": "hmgf2captacao",
+      "stateId": "7e3b0dbc-cffd-48d0-b89d-78be597fafb2",
+      "message": "$enteringCustomActions.4.settings.body - Invalid input: expected string, received undefined"
+    },
+    {
+      "severity": "error",
+      "rule": "invalid-schema",
+      "flow": "hmgf2captacao",
+      "stateId": "7e3b0dbc-cffd-48d0-b89d-78be597fafb2",
+      "message": "$enteringCustomActions.5.settings.body - Invalid input: expected string, received undefined"
+    },
+    {
+      "severity": "error",
+      "rule": "invalid-schema",
+      "flow": "hmgf2captacao",
+      "stateId": "7e3b0dbc-cffd-48d0-b89d-78be597fafb2",
+      "message": "$enteringCustomActions.7.settings.body - Invalid input: expected string, received undefined"
+    },
+    {
+      "severity": "error",
+      "rule": "invalid-schema",
+      "flow": "hmgf2captacao",
+      "stateId": "928c2f4b-e7bb-4dc5-9663-7c8441496bee",
+      "message": "Unrecognized key: \"addonsSettings\""
     },
     {
       "severity": "error",
@@ -886,27 +893,6 @@
       "severity": "error",
       "rule": "invalid-schema",
       "flow": "hmgf2ofertaseoportunida",
-      "stateId": "a1199190-bde4-4c9d-bba0-998d234b1940",
-      "message": "$enteringCustomActions.8.settings.body - Invalid input: expected string, received undefined"
-    },
-    {
-      "severity": "error",
-      "rule": "invalid-schema",
-      "flow": "hmgf2ofertaseoportunida",
-      "stateId": "dc6be84b-3b90-42bd-9a06-ffeb9243a175",
-      "message": "$enteringCustomActions.2.settings.body - Invalid input: expected string, received undefined"
-    },
-    {
-      "severity": "error",
-      "rule": "invalid-schema",
-      "flow": "hmgf2ofertaseoportunida",
-      "stateId": "8b0f3d77-84fd-459e-bcff-d2de50da8eba",
-      "message": "$enteringCustomActions.4.settings.method - Invalid option: expected one of \"POST\"|\"GET\"|\"PUT\"|\"DELETE\""
-    },
-    {
-      "severity": "error",
-      "rule": "invalid-schema",
-      "flow": "hmgf2ofertaseoportunida",
       "stateId": "0892c280-59a1-46c5-8b6e-10d81fae6b44",
       "message": "$enteringCustomActions.5.settings.body - Invalid input: expected string, received undefined"
     },
@@ -929,13 +915,6 @@
       "rule": "invalid-schema",
       "flow": "hmgf2ofertaseoportunida",
       "stateId": "7c1bde2f-57c0-4512-980d-290417f8db51",
-      "message": "Unrecognized key: \"addonsSettings\""
-    },
-    {
-      "severity": "error",
-      "rule": "invalid-schema",
-      "flow": "hmgf2ofertaseoportunida",
-      "stateId": "4dc20455-e916-4f43-a6c5-caf884d06649",
       "message": "Unrecognized key: \"addonsSettings\""
     },
     {
@@ -1007,6 +986,20 @@
       "flow": "hmgf2ofertaseoportunida",
       "stateId": "17ea68a4-2414-4d97-b0d0-232ff6db36df",
       "message": "$enteringCustomActions.6.settings.method - Invalid option: expected one of \"POST\"|\"GET\"|\"PUT\"|\"DELETE\""
+    },
+    {
+      "severity": "error",
+      "rule": "invalid-schema",
+      "flow": "hmgf2ofertaseoportunida",
+      "stateId": "garante-checkout-carrinho",
+      "message": "$enteringCustomActions.5.settings.body - Invalid input: expected string, received undefined"
+    },
+    {
+      "severity": "error",
+      "rule": "invalid-schema",
+      "flow": "hmgf2ofertaseoportunida",
+      "stateId": "garante-checkout-carrinho",
+      "message": "$enteringCustomActions.17.settings.body - Invalid input: expected string, received undefined"
     },
     {
       "severity": "error",
@@ -1362,8 +1355,36 @@
       "severity": "error",
       "rule": "invalid-schema",
       "flow": "hmlf1meuspedidos",
+      "stateId": "74f20acf-72b4-4b5a-9cce-e4e2d34eb261",
+      "message": "$enteringCustomActions.7.settings.body - Invalid input: expected string, received undefined"
+    },
+    {
+      "severity": "error",
+      "rule": "invalid-schema",
+      "flow": "hmlf1meuspedidos",
+      "stateId": "23002bac-5f9d-432c-88ba-ef08dc467831",
+      "message": "$conditionOutputs.0.stateId - Invalid input: expected string, received undefined"
+    },
+    {
+      "severity": "error",
+      "rule": "invalid-schema",
+      "flow": "hmlf1meuspedidos",
+      "stateId": "23002bac-5f9d-432c-88ba-ef08dc467831",
+      "message": "$conditionOutputs.0 - Unrecognized key: \"$validationError\""
+    },
+    {
+      "severity": "error",
+      "rule": "invalid-schema",
+      "flow": "hmlf1meuspedidos",
       "stateId": "23002bac-5f9d-432c-88ba-ef08dc467831",
       "message": "$enteringCustomActions.3.settings.body - Invalid input: expected string, received undefined"
+    },
+    {
+      "severity": "error",
+      "rule": "invalid-schema",
+      "flow": "hmlf1meuspedidos",
+      "stateId": "e08e8c03-baa4-4317-95b6-1e4f3a9fa916",
+      "message": "$enteringCustomActions.7.settings.body - Invalid input: expected string, received undefined"
     },
     {
       "severity": "error",
@@ -1376,8 +1397,22 @@
       "severity": "error",
       "rule": "invalid-schema",
       "flow": "hmlf1meuspedidos",
+      "stateId": "d565b325-40bd-492d-a0a0-dce56a5fbf80",
+      "message": "$enteringCustomActions.7.settings.body - Invalid input: expected string, received undefined"
+    },
+    {
+      "severity": "error",
+      "rule": "invalid-schema",
+      "flow": "hmlf1meuspedidos",
       "stateId": "947e4ffb-546c-4dbd-aa47-066ebcbccd5e",
       "message": "$enteringCustomActions.3.settings.body - Invalid input: expected string, received undefined"
+    },
+    {
+      "severity": "error",
+      "rule": "invalid-schema",
+      "flow": "hmlf1meuspedidos",
+      "stateId": "f5fa0d5b-106c-40aa-8b9d-9554a4fd095e",
+      "message": "$enteringCustomActions.7.settings.body - Invalid input: expected string, received undefined"
     },
     {
       "severity": "error",
@@ -1410,20 +1445,6 @@
     {
       "severity": "error",
       "rule": "invalid-schema",
-      "flow": "hmlf1meuspedidos",
-      "stateId": "231406a0-8ec2-4e20-804b-c0efe2e035f8",
-      "message": "$enteringCustomActions.2.settings.body - Invalid input: expected string, received undefined"
-    },
-    {
-      "severity": "error",
-      "rule": "invalid-schema",
-      "flow": "hmlf1meuspedidos",
-      "stateId": "231406a0-8ec2-4e20-804b-c0efe2e035f8",
-      "message": "$enteringCustomActions.3.settings.body - Invalid input: expected string, received undefined"
-    },
-    {
-      "severity": "error",
-      "rule": "invalid-schema",
       "flow": "mbrfathhmg",
       "stateId": "fallback",
       "message": "Unrecognized key: \"addonsSettings\""
@@ -1440,7 +1461,7 @@
       "rule": "invalid-schema",
       "flow": "mbrfexcecoeshmg",
       "stateId": "welcome",
-      "message": "$conditionOutputs.10.conditions.0.source - Invalid option: expected one of \"input\"|\"context\""
+      "message": "$conditionOutputs.9.conditions.0.source - Invalid option: expected one of \"input\"|\"context\""
     },
     {
       "severity": "error",
@@ -1466,6 +1487,13 @@
     {
       "severity": "error",
       "rule": "invalid-schema",
+      "flow": "mbrfexcecoeshmg",
+      "stateId": "subflow:98e4dfb0-caa7-4e0a-9e63-031fcfbec230",
+      "message": "Unrecognized keys: \"shortNameOfSubflow\", \"$imageUri\""
+    },
+    {
+      "severity": "error",
+      "rule": "invalid-schema",
       "flow": "mbrffinalizarhmg",
       "stateId": "d49c2142-2229-438d-9bfb-c8991a34ce96",
       "message": "$leavingCustomActions.0.settings.context - Invalid input: expected object, received undefined"
@@ -1474,56 +1502,126 @@
       "severity": "warning",
       "rule": "unmatched-option",
       "flow": "mbrfajudoemalgomaishmg",
-      "stateId": "b253217e-bbfc-4733-a1a2-8d44084ecc04",
+      "stateId": "0aa60ef9-c638-42e2-949d-13dc13a01f2b",
       "message": "The option 'Sim' is offered but no condition output matches it, so choosing it falls through to the default output"
     },
     {
       "severity": "warning",
       "rule": "unmatched-option",
       "flow": "mbrfajudoemalgomaishmg",
-      "stateId": "b253217e-bbfc-4733-a1a2-8d44084ecc04",
+      "stateId": "0aa60ef9-c638-42e2-949d-13dc13a01f2b",
       "message": "The option 'Não' is offered but no condition output matches it, so choosing it falls through to the default output"
     },
     {
       "severity": "warning",
       "rule": "undefined-variable",
       "flow": "mbrfajudoemalgomaishmg",
-      "stateId": "b253217e-bbfc-4733-a1a2-8d44084ecc04",
+      "stateId": "0aa60ef9-c638-42e2-949d-13dc13a01f2b",
       "message": "'{{origem}}' is read but no action in the project writes 'origem', so it resolves to an empty string"
     },
     {
       "severity": "warning",
       "rule": "undefined-variable",
       "flow": "mbrfajudoemalgomaishmg",
-      "stateId": "b253217e-bbfc-4733-a1a2-8d44084ecc04",
+      "stateId": "0aa60ef9-c638-42e2-949d-13dc13a01f2b",
+      "message": "'{{channel}}' is read but no action in the project writes 'channel', so it resolves to an empty string"
+    },
+    {
+      "severity": "warning",
+      "rule": "unmatched-option",
+      "flow": "mbrfajudoemalgomaishmg",
+      "stateId": "3505a7e3-2c03-4326-b19b-28bd3c190a7f",
+      "message": "The option 'Consultar nova conta' is offered but no condition output matches it, so choosing it falls through to the default output"
+    },
+    {
+      "severity": "warning",
+      "rule": "unmatched-option",
+      "flow": "mbrfajudoemalgomaishmg",
+      "stateId": "3505a7e3-2c03-4326-b19b-28bd3c190a7f",
+      "message": "The option 'Menu inicial' is offered but no condition output matches it, so choosing it falls through to the default output"
+    },
+    {
+      "severity": "warning",
+      "rule": "unmatched-option",
+      "flow": "mbrfajudoemalgomaishmg",
+      "stateId": "3505a7e3-2c03-4326-b19b-28bd3c190a7f",
+      "message": "The option 'Encerrar conversa' is offered but no condition output matches it, so choosing it falls through to the default output"
+    },
+    {
+      "severity": "warning",
+      "rule": "undefined-variable",
+      "flow": "mbrfajudoemalgomaishmg",
+      "stateId": "3505a7e3-2c03-4326-b19b-28bd3c190a7f",
+      "message": "'{{origem}}' is read but no action in the project writes 'origem', so it resolves to an empty string"
+    },
+    {
+      "severity": "warning",
+      "rule": "undefined-variable",
+      "flow": "mbrfajudoemalgomaishmg",
+      "stateId": "3505a7e3-2c03-4326-b19b-28bd3c190a7f",
       "message": "'{{channel}}' is read but no action in the project writes 'channel', so it resolves to an empty string"
     },
     {
       "severity": "warning",
       "rule": "undefined-variable",
       "flow": "mbrfajudoemalgomaishmg",
-      "stateId": "3e6e3778-ba86-4b1f-a54a-71761f1294f8",
+      "stateId": "c3b64f7d-95c3-4de1-b17c-84ad38c6cf81",
       "message": "'{{origem}}' is read but no action in the project writes 'origem', so it resolves to an empty string"
     },
     {
       "severity": "warning",
       "rule": "undefined-variable",
       "flow": "mbrfajudoemalgomaishmg",
-      "stateId": "3e6e3778-ba86-4b1f-a54a-71761f1294f8",
+      "stateId": "c3b64f7d-95c3-4de1-b17c-84ad38c6cf81",
       "message": "'{{channel}}' is read but no action in the project writes 'channel', so it resolves to an empty string"
     },
     {
       "severity": "warning",
       "rule": "undefined-variable",
       "flow": "mbrfajudoemalgomaishmg",
-      "stateId": "debb045e-7ea6-472d-a339-b8d397d835e2",
+      "stateId": "4fcc7bd0-21aa-4362-8094-69619f7a36a3",
       "message": "'{{origem}}' is read but no action in the project writes 'origem', so it resolves to an empty string"
     },
     {
       "severity": "warning",
       "rule": "undefined-variable",
       "flow": "mbrfajudoemalgomaishmg",
-      "stateId": "debb045e-7ea6-472d-a339-b8d397d835e2",
+      "stateId": "4fcc7bd0-21aa-4362-8094-69619f7a36a3",
+      "message": "'{{channel}}' is read but no action in the project writes 'channel', so it resolves to an empty string"
+    },
+    {
+      "severity": "warning",
+      "rule": "unmatched-option",
+      "flow": "mbrfajudoemalgomaishmg",
+      "stateId": "1f1c0916-de4b-46c6-89ec-69766b25694b",
+      "message": "The option 'Me autenticar' is offered but no condition output matches it, so choosing it falls through to the default output"
+    },
+    {
+      "severity": "warning",
+      "rule": "unmatched-option",
+      "flow": "mbrfajudoemalgomaishmg",
+      "stateId": "1f1c0916-de4b-46c6-89ec-69766b25694b",
+      "message": "The option 'Não sou cliente' is offered but no condition output matches it, so choosing it falls through to the default output"
+    },
+    {
+      "severity": "warning",
+      "rule": "unmatched-option",
+      "flow": "mbrfajudoemalgomaishmg",
+      "stateId": "1f1c0916-de4b-46c6-89ec-69766b25694b",
+      "message": "The option 'Encerrar conversa' is offered but no condition output matches it, so choosing it falls through to the default output"
+    },
+    {
+      "severity": "warning",
+      "rule": "undefined-variable",
+      "flow": "mbrfajudoemalgomaishmg",
+      "stateId": "1f1c0916-de4b-46c6-89ec-69766b25694b",
+      "message": "'{{origem}}' is read but no action in the project writes 'origem', so it resolves to an empty string"
+    },
+    {
+      "severity": "warning",
+      "rule": "undefined-variable",
+      "flow": "mbrfajudoemalgomaishmg",
+      "stateId": "1f1c0916-de4b-46c6-89ec-69766b25694b",
       "message": "'{{channel}}' is read but no action in the project writes 'channel', so it resolves to an empty string"
     },
     {

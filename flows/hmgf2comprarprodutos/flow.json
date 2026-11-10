@@ -227,7 +227,8 @@
       },
       {
         "input": {
-          "bypass": false
+          "bypass": false,
+          "expiration": "0:15"
         }
       }
     ],
@@ -305,7 +306,7 @@
           "function": "run",
           "source": "function run(itensCarrinhoFormatado) {\n    try {\n        const dados = typeof itensCarrinhoFormatado === \"string\"\n            ? JSON.parse(itensCarrinhoFormatado)\n            : itensCarrinhoFormatado;\n\n        const pedidos = (dados && dados.pedidos) || [];\n\n        if (!pedidos.length) {\n            return \"\";\n        }\n\n        // 1234.5 -> \"1.234,50\" (sem \"R$\", porque o texto já tem o prefixo)\n        const formatarValor = v => (Math.round((Number(v) || 0) * 100) / 100)\n            .toFixed(2)\n            .replace(\".\", \",\")\n            .replace(/\\B(?=(\\d{3})+(?!\\d))/g, \".\");\n\n        const itens = pedidos.map(item =>\n            \"Item: \" + (item.produto || \"\") + \"\\n\" +\n            \"Quantidade: \" + (Number(item.quantidade) || 0) + \"\\n\" +\n            \"Preço: R$\" + formatarValor(item.valorUnitario)\n        ).join(\"\\n\\n\");\n\n        // Total com desconto; se não vier, usa o subtotal ou soma os itens\n        const somaItens = pedidos.reduce((s, i) => s + (Number(i.subtotal) || 0), 0);\n        const valorTotal = dados.total != null ? dados.total\n            : dados.subtotal != null ? dados.subtotal\n            : somaItens;\n\n        return \"Percebi que seu último pedido com a gente foi esse:\\n\\n\" +\n            itens + \"\\n\\n\" +\n            \"Total do pedido: R$\" + formatarValor(valorTotal) + \"\\n\\n\" +\n            \"*Gostaria de repetir o mesmo pedido?*\";\n\n    } catch (error) {\n        return \"\";\n    }\n}",
           "inputVariables": [
-            "itensCarrinhoFormatado"
+            "itensCompraBucket"
           ],
           "outputVariable": "textoUltimaCompra",
           "LocalTimeZoneEnabled": false
@@ -430,7 +431,7 @@
     "$enteringCustomActions": [],
     "$leavingCustomActions": [],
     "$defaultOutput": {
-      "stateId": "740f2bf2-1552-47ec-a844-2aedef177ba6",
+      "stateId": "f8e3a40c-feca-4829-b796-6ef0477d0a48",
       "typeOfStateId": "state"
     },
     "$localCustomActions": [],
@@ -460,9 +461,19 @@
         "conditions": [
           {
             "source": "context",
-            "comparison": "exists",
-            "values": [],
-            "variable": "contact.extras.smartsalesOrder"
+            "variable": "statusBucketCompra",
+            "comparison": "equals",
+            "values": [
+              "200"
+            ]
+          },
+          {
+            "source": "context",
+            "variable": "bucketCompraBody@status",
+            "comparison": "equals",
+            "values": [
+              "success"
+            ]
           }
         ]
       },
@@ -478,7 +489,116 @@
         ]
       }
     ],
-    "$enteringCustomActions": [],
+    "$enteringCustomActions": [
+      {
+        "$description": "",
+        "$inputSchema": {
+          "type": "object",
+          "properties": {},
+          "required": []
+        },
+        "type": "SetVariable",
+        "settings": {
+          "variable": "statusBucketCompra",
+          "value": ""
+        },
+        "conditions": []
+      },
+      {
+        "$description": "",
+        "$inputSchema": {
+          "type": "object",
+          "properties": {},
+          "required": []
+        },
+        "type": "SetVariable",
+        "settings": {
+          "variable": "bucketCompraBody",
+          "value": ""
+        },
+        "conditions": []
+      },
+      {
+        "$description": "",
+        "$inputSchema": {
+          "type": "object",
+          "properties": {},
+          "required": []
+        },
+        "$title": "Busca compra SmartSales no bucket",
+        "type": "ProcessHttp",
+        "settings": {
+          "headers": {
+            "Authorization": "{{resource.routerKey}}"
+          },
+          "method": "POST",
+          "body": "{\"id\":\"{{random.guid}}\",\"to\":\"postmaster@msging.net\",\"method\":\"get\",\"uri\":\"/buckets/compra-smartsales-{{contact.taxDocument}}\"}",
+          "uri": "https://mbrf.http.msging.net/commands",
+          "responseStatusVariable": "statusBucketCompra",
+          "responseBodyVariable": "bucketCompraBody"
+        },
+        "conditions": [
+          {
+            "source": "context",
+            "variable": "contact.taxDocument",
+            "comparison": "exists",
+            "values": []
+          }
+        ],
+        "continueOnError": true
+      },
+      {
+        "$description": "",
+        "$inputSchema": {
+          "type": "object",
+          "properties": {},
+          "required": []
+        },
+        "type": "SetVariable",
+        "settings": {
+          "variable": "itensCompraBucket",
+          "value": ""
+        },
+        "conditions": []
+      },
+      {
+        "$description": "",
+        "$inputSchema": {
+          "type": "object",
+          "properties": {},
+          "required": []
+        },
+        "$title": "Itens da compra no bucket",
+        "type": "ExecuteScript",
+        "settings": {
+          "function": "run",
+          "source": "function run(bucketCompraBody) {\n    try {\n        var body = typeof bucketCompraBody === \"string\" ? JSON.parse(bucketCompraBody) : bucketCompraBody;\n        if (!body || body.status !== \"success\" || !body.resource) {\n            return \"\";\n        }\n        var valor = body.resource.itensCarrinhoFormatado;\n        if (valor === undefined || valor === null) {\n            return \"\";\n        }\n        return typeof valor === \"string\" ? valor : JSON.stringify(valor);\n    } catch (e) {\n        return \"\";\n    }\n}",
+          "inputVariables": [
+            "bucketCompraBody"
+          ],
+          "outputVariable": "itensCompraBucket",
+          "LocalTimeZoneEnabled": false
+        },
+        "conditions": [
+          {
+            "source": "context",
+            "variable": "statusBucketCompra",
+            "comparison": "equals",
+            "values": [
+              "200"
+            ]
+          },
+          {
+            "source": "context",
+            "variable": "bucketCompraBody@status",
+            "comparison": "equals",
+            "values": [
+              "success"
+            ]
+          }
+        ]
+      }
+    ],
     "$leavingCustomActions": [],
     "$defaultOutput": {
       "stateId": "fallback"

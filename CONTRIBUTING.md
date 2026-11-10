@@ -5,7 +5,7 @@ Este repositório hospeda os **flows** do chatbot da Central MBRF rodando no Bli
 ## Ciclo de contribuição
 
 1. Crie uma branch a partir de `main`.
-2. Edite o(s) `flows/<identifier>/flow.json` localmente ou pelo canvas do Blip (nesse caso rode `bbuilder pull` antes de commitar).
+2. Edite o(s) `flows/<identifier>/flow.json` localmente ou pelo canvas do Blip (nesse caso rode `npm run pull` antes de commitar: baixa flows e subflows).
 3. Antes de commitar, o hook de pre-commit roda `bbuilder validate` e `npm run type-check`. Se falhar, corrija.
 4. Para cada state novo ou alterado, adicione (ou atualize) um cenário em `tests/jornadas.test.ts` e aponte o CT em `tests/coverage.json`.
 5. Abra o PR. O GitHub Actions roda:
@@ -14,7 +14,7 @@ Este repositório hospeda os **flows** do chatbot da Central MBRF rodando no Bli
    - Smoke test (CT-20, CT-23, CT-25) contra o bot publicado em QAS.
 6. Após aprovação, o merge dispara a **suíte E2E completa**. Enquanto rodar, outros merges não são bloqueados; mas o status check sinaliza falhas.
 7. Quando quiser, rode manualmente o workflow **Suite completa (manual)** pela aba Actions. Ele dispara a suíte inteira + `bbuilder diff --published` e, se detectar drift (alguém editou pelo canvas sem commitar), abre uma issue automaticamente.
-8. **Publicar** continua ação manual: `bbuilder publish` roda localmente, com confirmação explícita. O CI nunca publica.
+8. **Publicar** continua ação manual: `bbuilder publish <identifier>` roda localmente (só os flows indicados; `--all` para todos), com confirmação explícita. O CI nunca publica.
 
 ## Convenções
 
@@ -54,7 +54,7 @@ A conta de serviço precisa de permissão de **leitura e teste** no router `hmgm
 ## Perguntas comuns
 
 **Posso editar pelo canvas do Blip?**
-Pode, mas rode `bbuilder pull` imediatamente depois para trazer a mudança ao repo e abra um PR. Senão a próxima rodada manual do workflow "Suite completa" acusa drift.
+Pode, mas rode `npm run pull` imediatamente depois para trazer a mudança ao repo e abra um PR. Senão a próxima rodada manual do workflow "Suite completa" acusa drift.
 
 **Preciso criar CT para mudança de posição no canvas?**
 Não. O `check-coverage.mjs` já ignora mudanças só em `$position`.

@@ -1,5 +1,5 @@
 import { flowtest } from 'bbuilder/test'
-import { MASSA, Run, blocoA, expectMsg, has, lastMenu, smartsalesOrder } from './helpers/e2e.ts'
+import { MASSA, Run, blocoA, cnpjTeste, currentCart, expectMsg, has, lastMenu, smartsalesOrder } from './helpers/e2e.ts'
 
 const EMAIL = MASSA.usuarios[0]!    // bovino@uorak.com → 9 contas, ao menos uma elegível
 const EMAIL_PEND = MASSA.usuarios[1]! // bovinos@uorak.com → 12 contas, "AUDILEIDE…" tem pendências
@@ -195,25 +195,72 @@ flowtest('CT-48 NLU → Comércio Exterior', { timeout: 180_000 }, async ctx => 
 
 /* ---------- Recomprar ---------- */
 
-flowtest('CT-49 Recomprar: com smartsalesOrder → menu Pedido anterior → Repetir pedido', { timeout: 300_000 }, async ctx => {
+// A compra SmartSales fica no bucket do roteador, por CNPJ (compra-smartsales-<taxDocument>).
+// Os testes partem de "[GO TO] Valida tipo menu" com um CNPJ fictício, para não depender
+// das contas da massa nem de compras reais gravadas para elas.
+const VALIDA_TIPO_MENU = { subbotIdentifier: 'hmgf2captacao', subbotState: '928c2f4b-e7bb-4dc5-9663-7c8441496bee' }
+
+flowtest('CT-49 Recomprar: compra no bucket → menu com Recomprar → pedido do bucket → Repetir pedido', { timeout: 300_000, position: VALIDA_TIPO_MENU }, async ctx => {
     const run = new Run(ctx, 'CT-49')
-    // injetamos o smartsalesOrder antes do menu inicial, para que "🔁 Recomprar" apareça
-    await run.say('Olá', 15000)
-    await run.say(MASSA.telefone, 10000)
-    await run.say('Sim', 10000)
-    await run.say(EMAIL, 10000)
-    await run.say(MASSA.senha, 20000)
-    await run.setExtras({ smartsalesOrder: JSON.stringify(smartsalesOrder(2)) })
-    const menuInicial = lastMenu(await run.say('Sim', 25000, 90000))
-    run.note(`menu inicial com smartsalesOrder: ${menuInicial?.options.join(' | ')}`)
-    const recomprar = menuInicial?.options.find(o => o.includes('Recomprar'))
-    if (!recomprar) {
-        run.note('⚠️ opção "Recomprar" não apareceu mesmo com smartsalesOrder — subflow de menu Smart Sales não considerou o extra. Registrando como achado.')
-        return
+    const cnpj = cnpjTeste()
+    await run.setTaxDocument(cnpj)
+    await run.setCompraBucket(cnpj, 2)
+    try {
+        const menuInicial = lastMenu(await run.say('Olá', 25000, 90000))
+        run.note(`menu inicial com compra no bucket: ${menuInicial?.options.join(' | ')}`)
+        const recomprar = menuInicial?.options.find(o => o.includes('Recomprar'))
+        if (!recomprar) throw new Error('[CT-49] opção "Recomprar" não apareceu com compra no bucket')
+
+        const pedido = await run.say(recomprar, 20000, 60000)
+        expectMsg(run, pedido, /Percebi que seu último pedido/, 'resumo do pedido anterior vindo do bucket')
+        expectMsg(run, pedido, /Asa de Frango Sadia/, 'item do pedido salvo no bucket')
+
+        const msgs = await run.say('Repetir pedido', 25000, 180000)
+        run.note(`após Repetir pedido: ${msgs.map(m => m.text.slice(0, 60)).join(' || ')}`)
+        const extras = await run.getExtras()
+        const order = JSON.parse(extras.smartsalesOrder ?? '{}')
+        if (order.status !== 'draft' || order.total !== smartsalesOrder(2).total) {
+            throw new Error(`[CT-49] smartsalesOrder do extras não veio do bucket em draft: ${extras.smartsalesOrder?.slice(0, 160)}`)
+        }
+        if (extras.currentCart !== JSON.stringify(currentCart(2))) {
+            throw new Error(`[CT-49] currentCart do extras não veio do bucket: ${extras.currentCart?.slice(0, 160)}`)
+        }
+        run.note('extras restaurados do bucket: smartsalesOrder em draft e currentCart')
+    } finally {
+        await run.setCompraBucket(cnpj, null)
     }
-    await run.say(recomprar, 20000, 60000)
-    const msgs = await run.say('Repetir pedido', 25000, 180000)
-    run.note(`após Repetir pedido: ${msgs.map(m => m.text.slice(0, 60)).join(' || ')}`)
+})
+
+flowtest('CT-53 Captação: sem compra no bucket → menu sem Recomprar', { timeout: 180_000, position: VALIDA_TIPO_MENU }, async ctx => {
+    const run = new Run(ctx, 'CT-53')
+    const cnpj = cnpjTeste()
+    await run.setTaxDocument(cnpj)
+    await run.setCompraBucket(cnpj, null)
+    const menuInicial = lastMenu(await run.say('Olá', 25000, 90000))
+    run.note(`menu inicial sem compra no bucket: ${menuInicial?.options.join(' | ')}`)
+    if (!menuInicial?.options.some(o => o.toLowerCase().includes('oferta'))) {
+        throw new Error('[CT-53] menu inicial não apareceu')
+    }
+    if (menuInicial.options.some(o => o.includes('Recomprar'))) {
+        throw new Error('[CT-53] opção "Recomprar" apareceu sem compra no bucket')
+    }
+})
+
+flowtest('CT-54 Comprar produtos: compra no bucket → resumo do pedido anterior', { timeout: 240_000, position: VALIDA_TIPO_MENU }, async ctx => {
+    const run = new Run(ctx, 'CT-54')
+    const cnpj = cnpjTeste()
+    await run.setTaxDocument(cnpj)
+    await run.setCompraBucket(cnpj, 3)
+    try {
+        const menuInicial = lastMenu(await run.say('Olá', 25000, 90000))
+        const comprar = menuInicial?.options.find(o => o.includes('Comprar produtos'))
+        if (!comprar) throw new Error(`[CT-54] opção "Comprar produtos" não apareceu: ${menuInicial?.options.join(' | ')}`)
+        const pedido = await run.say(comprar, 20000, 60000)
+        expectMsg(run, pedido, /Percebi que seu último pedido/, 'resumo do pedido anterior vindo do bucket')
+        expectMsg(run, pedido, /Quantidade: 3/, 'quantidade do pedido salvo no bucket')
+    } finally {
+        await run.setCompraBucket(cnpj, null)
+    }
 })
 
 /* ---------- Finalizar / NPS ---------- */

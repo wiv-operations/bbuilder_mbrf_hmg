@@ -1,0 +1,15 @@
+{
+  "subflowId": 248747,
+  "shortName": "menudeendereco6",
+  "tenantId": "mbrf",
+  "name": "Menu de endereco",
+  "description": "",
+  "image": "",
+  "userIdentity": "vinicius.alves@whitewall.dev",
+  "creationDate": "2026-10-16T17:15:22.202Z",
+  "flowCounter": 1,
+  "isShared": false,
+  "isActive": true,
+  "useSubflowInDeskAction": false,
+  "watermark": "9c4bb369-233a-49fd-9c25-7e4dfd451b21"
+}

@@ -6,6 +6,6 @@
   "builder:useTunnelOwnerContext": "true",
   "TraceTargetType": "Http",
   "TraceMode": "All",
-  "TraceTarget": "https://take-api-beholder.cs.blip.ai/api/traces/hmlf1meuspedidos",
-  "TraceCacheMode": 0
+  "TraceTarget": "https://plugins-api.wiv.com.br/v1/plugins/errorlogs/trace?botIdentifier=hmgmbrf&publicKey=26b5d93a-dc91-4fac-9b65-fb241680019a&sourceBotIdentifier=hmlf1meuspedidos",
+  "builder:actionExecutionTimeout": "45"
 }
